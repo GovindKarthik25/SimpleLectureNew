@@ -12,11 +12,19 @@
     <string name="hint_ConfirmPassword">ConfirmPassword</string>
     <string name="hint_mobile">Mobile No</string>
 
+    <string name="loading">Loading&#8230;</string>
+
     <string name="btn_LogIn">Log In</string>
     <string name="btn_ForgotPassword">Forgot Password</string>
-    <string name="btn_sign_up">Sign Up</string>
     <string name="btn_Submit">SubMit</string>
+    <string name="btn_sign_up">Sign Up</string>
 
+
+
+   <!-- SnackBar Msg-->
+    <string name="dismiss">Dismiss</string>
+
+   <!-- Error Msg-->
     <string name="err_msg_name">Enter your full name</string>
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_password">Enter the password</string>
@@ -26,6 +34,8 @@
     <string name="err_msg_NewPassword">Enter the New Password</string>
     <string name="err_msg_ConfirmPassword">Enter the Confirm Password</string>
     <string name="err_msg_notMatchConfirmPassword">New Password must match Confirm Password</string>
+    <string name="noInternetConnection">No internet connection!</string>
+
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

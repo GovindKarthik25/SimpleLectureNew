@@ -1,6 +1,7 @@
 package com.simplelecture.main.util;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.DisplayMetrics;
@@ -8,6 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+
+import com.simplelecture.main.R;
+
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -163,6 +167,35 @@ public class Util {
 
         return convertText;
 
+    }
+
+    /**
+     * Description : waiting Message Custom.
+     * @param activity
+     * @param title
+     * @param message
+     */
+    public ProgressDialogCustom waitingMessageCustom(Activity activity, String title, String message){
+
+        ProgressDialogCustom pd = new ProgressDialogCustom(activity, R.drawable.abc_spinner_mtrl_am_alpha);
+        pd.setCancelable(false);
+        pd.show();
+        return pd;
+    }
+
+    /**
+     * Description : Waiting message.
+     * @param activity
+     * @param title
+     * @param message
+     */
+    public ProgressDialog waitingMessage(Activity activity, String title, String message){
+        ProgressDialog pd = new ProgressDialog(activity);
+        pd.setTitle(title);
+        pd.setMessage(message);
+        pd.setCancelable(false);
+        pd.show();
+        return pd;
     }
 
 }

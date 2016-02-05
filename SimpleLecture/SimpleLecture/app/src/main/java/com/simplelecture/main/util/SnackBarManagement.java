@@ -18,6 +18,8 @@ public class SnackBarManagement {
     private CustomSnackbarListener customSnackbarListner;
     private Context context;
     private CoordinatorLayout coordinatorLayout;
+    private Snackbar snackbar;
+
 
     public SnackBarManagement(){
 
@@ -28,22 +30,25 @@ public class SnackBarManagement {
     }
 
     public SnackBarManagement(Context context, CustomSnackbarListener customSnackbarListener){
-        this.customSnackbarListner = customSnackbarListener;
         this.context = context;
+        this.customSnackbarListner = customSnackbarListener;
     }
 
     public void snackBarNotification(final Activity activity, int alertTag, String message, final String actionMsg) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-      View convertView = inflater.inflate(R.layout.coordinatelayout, null);
+        View convertView = inflater.inflate(R.layout.coordinatelayout, null);
         coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
 
-        Snackbar snackbar = Snackbar
+        snackbar = Snackbar
                 .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
                 .setAction(actionMsg, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if(customSnackbarListner != null)
+                        if(customSnackbarListner != null) {
                             customSnackbarListner.alertResult(view);
+                        } else {
+                            snackbar.dismiss();
+                        }
                     }
                 });
 

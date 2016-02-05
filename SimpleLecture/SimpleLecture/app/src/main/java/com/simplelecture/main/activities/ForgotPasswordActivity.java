@@ -1,5 +1,7 @@
 package com.simplelecture.main.activities;
 
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +12,15 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.ForgotPasswordController;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.ProgressDialogCustom;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
+
+import java.sql.Connection;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -19,11 +29,16 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private EditText input_emailForgotPassword;
     private TextInputLayout inputLayoutEmail;
     private Button btn_ForgotPassword;
+    private SnackBarManagement snack;
+    private String[] param_get_ForgotPassword = new String[] {Constants.GET_FORGOTPASSWORD};
+    private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_forgotpassword);
+
+        snack = new SnackBarManagement(getApplicationContext());
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -42,17 +57,83 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
      */
     private void submitForm() {
 
-        if (!Validator.validateEmail(this, input_emailForgotPassword, inputLayoutEmail, getString(R.string.err_msg_email))) {
+        if (!Validator.validateEmail(ForgotPasswordActivity.this, input_emailForgotPassword, inputLayoutEmail, getString(R.string.err_msg_email))) {
             return;
         }
 
-        Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
+        if (new ConnectionDetector(this).isConnectingToInternet()) {
+
+            Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
+            pd = new Util().waitingMessage(this, "", getResources().getString(R.string.loading));
+            new Connection().execute(param_get_ForgotPassword);
+        } else {
+            Toast.makeText(getApplicationContext(), "success!", Toast.LENGTH_SHORT).show();
+            snack.snackBarNotification(ForgotPasswordActivity.this, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         if (v == btn_ForgotPassword) {
             submitForm();
+        }
+    }
+
+    private class Connection extends AsyncTask<String, Void, String> {
+
+        String forgotPasswordOutput;
+        String email = input_emailForgotPassword.getText().toString().trim();
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+        }
+
+        @Override
+        protected String doInBackground(String... urls) {
+
+            try {
+                if(urls[0].equals(param_get_ForgotPassword[0])) {
+
+                    forgotPasswordOutput = new ForgotPasswordController().getForgotPassword(email);
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return urls[0];
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+
+            super.onPostExecute(result);
+            try {
+                pd.cancel();
+                if (result.equals(param_get_ForgotPassword[0])) {
+                    /* if(response!=null){
+                       if(response.getStatusCode().equals("200")){
+
+
+
+                        } else {
+                            pd.cancel();
+
+
+                        }
+
+                    }*/
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            }
         }
     }
 }
