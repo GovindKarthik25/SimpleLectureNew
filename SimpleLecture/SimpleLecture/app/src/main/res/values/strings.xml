@@ -51,7 +51,21 @@
     </string>
     <string name="title_activity_home">HomeActivity</string>
 
+    <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="navigation_drawer_combo">Combo Courses</string>
+    <string name="navigation_drawer_course">Course Categories</string>
+    <string name="navigation_drawer_demo">Demo Videos</string>
+    <string name="navigation_drawer_mycourses">My Courses</string>
+    <string name="navigation_drawer_excercies">Excercies</string>
+    <string name="navigation_drawer_forum">Forum</string>
+    <string name="navigation_drawer_login">Login</string>
+    <string name="navigation_drawer_dashboard">Dashboard</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
 
 </resources>
