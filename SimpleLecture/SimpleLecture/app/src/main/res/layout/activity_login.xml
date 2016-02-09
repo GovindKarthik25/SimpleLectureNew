@@ -75,24 +75,45 @@
                 android:id="@+id/createAccountTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Sign up"
+                android:layout_weight="1"
                 android:gravity="left"
-                android:textColor="#224455"
-                android:layout_weight="1" />
+                android:text="Sign up"
+                android:textColor="#224455" />
 
             <TextView
                 android:id="@+id/forgotPasswordtextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="ForgotPassword"
+                android:layout_weight="1"
                 android:gravity="right"
-                android:textColor="#224455"
-                android:layout_weight="1" />
+                android:text="ForgotPassword"
+                android:textColor="#224455" />
 
 
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:background="#223344">
 
+            <!--<com.facebook.login.widget.LoginButton-->
+                <!--android:id="@+id/facebooklogin_button"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="30dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:background="@mipmap/com_facebook_icon"/>-->
+
+            <ImageView
+                android:id="@+id/googleImageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dip"
+                android:background="@android:drawable/ic_input_add" />
+
+        </LinearLayout>
     </LinearLayout>
 
 

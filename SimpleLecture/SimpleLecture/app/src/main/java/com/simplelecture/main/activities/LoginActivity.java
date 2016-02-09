@@ -11,8 +11,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.widget.LoginButton;
 import com.simplelecture.main.R;
 import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
@@ -24,6 +29,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPassword;
     private Button btn_Login;
     private TextView createAccountTextView, forgotPasswordtextView;
+    private LoginButton facebooklogin_button;
+
+    /*@Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
+        //facebooklogin_button = (LoginButton) findViewById(R.id.facebooklogin_button);
 
         inputName.addTextChangedListener(new MyTextWatcher(inputName));
         inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
@@ -53,6 +76,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_Login.setOnClickListener(this);
         createAccountTextView.setOnClickListener(this);
         forgotPasswordtextView.setOnClickListener(this);
+
+        /*// Initialize the SDK before executing any other operations,
+        // especially, if you're using Facebook UI elements.*/
+       // FacebookSdk.sdkInitialize(getApplicationContext());
     }
 
     /**

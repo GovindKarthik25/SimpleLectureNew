@@ -13,6 +13,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,10 +25,21 @@
         <activity android:name=".activities.CreateAccountActivity" />
         <activity android:name=".activities.ForgotPasswordActivity" />
         <activity android:name=".activities.ChangePasswordActivity" />
+        <activity android:name=".activities.HomeActivity" />
+
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
         <activity
-            android:name=".activities.HomeActivity"
-            android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme"></activity>
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
     </application>
+
+    <!--keytool -exportcert -alias androiddebugkey -keystore %HOMEPATH%\.android\debug.keystore | openssl sha1 -binary | openssl-->
+    <!--base64-->
 
 </manifest>
