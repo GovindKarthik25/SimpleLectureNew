@@ -45,9 +45,9 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_splash);
 
         nextButton = (Button) findViewById(R.id.nextButton);
-        nextButton.setClickable(false);
-        nextButton.setEnabled(false);
-        nextButton.setFocusable(false);
+        //nextButton.setClickable(false);
+        //nextButton.setEnabled(false);
+        //nextButton.setFocusable(false);
         pageIndicator = (ViewPagerIndicator) findViewById(R.id.page_indicator);
 
         // Instantiate a ViewPager and a PagerAdapter.
@@ -65,7 +65,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                 // but for simplicity, the activity provides the actions in this sample.
                 pageIndicator.setViewPager(mPager);
 
-                validateTheButton();
+              //  validateTheButton();
                 //pageIndicator.notifyDataSetChanged();
 
             }

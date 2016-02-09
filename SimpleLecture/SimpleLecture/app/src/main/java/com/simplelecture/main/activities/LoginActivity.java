@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Validating form
      */
     private void submitForm() {
-        if (!Validator.validateName(this, inputName, inputLayoutName, getString(R.string.err_msg_name))) {
+        /*if (!Validator.validateName(this, inputName, inputLayoutName, getString(R.string.err_msg_name))) {
             return;
         }
 
@@ -69,10 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!Validator.validatePassword(this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
             return;
-        }
+        }*/
 
         new ViewManager().gotoHomeView(this);
-        Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
