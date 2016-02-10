@@ -1,11 +1,15 @@
 package com.simplelecture.main.activities;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -32,6 +36,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private SnackBarManagement snack;
     private String[] param_get_ForgotPassword = new String[] {Constants.GET_FORGOTPASSWORD};
     private ProgressDialog pd;
+    CoordinatorLayout coordinatorLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         btn_ForgotPassword = (Button) findViewById(R.id.btn_ForgotPassword);
 
         btn_ForgotPassword.setOnClickListener(this);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
     }
 
     /**
@@ -61,14 +68,14 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             return;
         }
 
-        if (new ConnectionDetector(this).isConnectingToInternet()) {
+        if (!new ConnectionDetector(this).isConnectingToInternet()) {
 
             Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
             pd = new Util().waitingMessage(this, "", getResources().getString(R.string.loading));
             new Connection().execute(param_get_ForgotPassword);
         } else {
-            Toast.makeText(getApplicationContext(), "success!", Toast.LENGTH_SHORT).show();
-            snack.snackBarNotification(ForgotPasswordActivity.this, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+
+            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }
 
     }

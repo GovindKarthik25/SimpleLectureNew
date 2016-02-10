@@ -17,7 +17,6 @@ public class SnackBarManagement {
 
     private CustomSnackbarListener customSnackbarListner;
     private Context context;
-    private CoordinatorLayout coordinatorLayout;
     private Snackbar snackbar;
 
 
@@ -34,11 +33,7 @@ public class SnackBarManagement {
         this.customSnackbarListner = customSnackbarListener;
     }
 
-    public void snackBarNotification(final Activity activity, int alertTag, String message, final String actionMsg) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-        View convertView = inflater.inflate(R.layout.coordinatelayout, null);
-
-        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
+    public void snackBarNotification(final CoordinatorLayout coordinatorLayout, int alertTag, String message, final String actionMsg) {
 
         snackbar = Snackbar
                 .make(coordinatorLayout, message, Snackbar.LENGTH_LONG)
