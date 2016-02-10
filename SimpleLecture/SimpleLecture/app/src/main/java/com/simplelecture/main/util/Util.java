@@ -3,7 +3,11 @@ package com.simplelecture.main.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.graphics.Rect;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -38,28 +42,31 @@ public class Util {
     /**
      * Description: To hideKeyboard when onTouch of view.
      */
-    public static void hideKeyboard(Activity activity){
+    public static void hideKeyboard(Activity activity) {
         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
     }
 
     /**
      * format float value into two decimal places
+     *
      * @param inValue
      * @return
      */
-    public static String decFormat(float inValue){
+    public static String decFormat(float inValue) {
         String shortString = "";
         DecimalFormat twoDec = new DecimalFormat("0.00", new DecimalFormatSymbols(Locale.US));
         shortString = (twoDec.format(inValue));
         return shortString;
     }
+
     /**
      * Description : This method formats the String data empty, null into Hyphen char.
+     *
      * @param data
      * @return string data with formated.
      */
     public static String formatN2H(String data) {
-        if(data == null || data.trim().equals("") || data.equals("null")){
+        if (data == null || data.trim().equals("") || data.equals("null")) {
             data = "";
         }
         return data;
@@ -67,6 +74,7 @@ public class Util {
 
     /**
      * Description : Converts text password to "SHA256" Format.
+     *
      * @param input
      * @return
      * @throws NoSuchAlgorithmException
@@ -79,7 +87,7 @@ public class Util {
         byte[] byteData = digest.digest(input.getBytes("UTF-8"));
         StringBuffer sb = new StringBuffer();
 
-        for (int i = 0; i < byteData.length; i++){
+        for (int i = 0; i < byteData.length; i++) {
             sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
         }
         return sb.toString();
@@ -87,6 +95,7 @@ public class Util {
 
     /**
      * Formatting the date
+     *
      * @param value
      * @return
      */
@@ -100,6 +109,7 @@ public class Util {
 
     /**
      * Split the url
+     *
      * @param urlHost
      * @return
      */
@@ -139,7 +149,7 @@ public class Util {
      * @param inputDate
      * @return
      */
-    public static String formateDateFromstring(String inputFormat, String outputFormat, String inputDate){
+    public static String formateDateFromstring(String inputFormat, String outputFormat, String inputDate) {
 
         Date parsed = null;
         String outputDate = "";
@@ -171,11 +181,12 @@ public class Util {
 
     /**
      * Description : waiting Message Custom.
+     *
      * @param activity
      * @param title
      * @param message
      */
-    public ProgressDialogCustom waitingMessageCustom(Activity activity, String title, String message){
+    public ProgressDialogCustom waitingMessageCustom(Activity activity, String title, String message) {
 
         ProgressDialogCustom pd = new ProgressDialogCustom(activity, R.drawable.abc_spinner_mtrl_am_alpha);
         pd.setCancelable(false);
@@ -185,17 +196,38 @@ public class Util {
 
     /**
      * Description : Waiting message.
+     *
      * @param activity
      * @param title
      * @param message
      */
-    public ProgressDialog waitingMessage(Activity activity, String title, String message){
+    public ProgressDialog waitingMessage(Activity activity, String title, String message) {
         ProgressDialog pd = new ProgressDialog(activity);
         pd.setTitle(title);
         pd.setMessage(message);
         pd.setCancelable(false);
         pd.show();
         return pd;
+    }
+
+    public String keyHashgenrate(Activity activity) {
+        String keyHash = null;
+        try {
+
+            PackageInfo info = activity.getPackageManager().getPackageInfo("com.simplelecture.main", PackageManager.GET_SIGNATURES);
+            for (Signature signature : info.signatures) {
+                MessageDigest md = MessageDigest.getInstance("SHA");
+                md.update(signature.toByteArray());
+                Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
+                keyHash = Base64.encodeToString(md.digest(), Base64.DEFAULT);
+
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return keyHash;
     }
 
 }

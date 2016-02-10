@@ -1,11 +1,15 @@
 package com.simplelecture.main.activities;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +31,9 @@ import com.simplelecture.main.R;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private Toolbar toolbar;
