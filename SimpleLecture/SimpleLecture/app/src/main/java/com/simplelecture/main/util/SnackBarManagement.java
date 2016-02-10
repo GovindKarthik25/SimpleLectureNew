@@ -37,6 +37,7 @@ public class SnackBarManagement {
     public void snackBarNotification(final Activity activity, int alertTag, String message, final String actionMsg) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
         View convertView = inflater.inflate(R.layout.coordinatelayout, null);
+
         coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
 
         snackbar = Snackbar
