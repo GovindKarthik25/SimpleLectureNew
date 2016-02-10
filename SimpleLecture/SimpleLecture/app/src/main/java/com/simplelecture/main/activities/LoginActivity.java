@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,10 +16,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.simplelecture.main.R;
+import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
 
@@ -30,27 +36,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_Login;
     private TextView createAccountTextView, forgotPasswordtextView;
     private LoginButton facebooklogin_button;
+    private CallbackManager callbackManager;
 
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-
-        // Logs 'install' and 'app activate' App Events.
-        AppEventsLogger.activateApp(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
-    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*// Initialize the SDK before executing any other operations,
+        // especially, if you're using Facebook UI elements.*/
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+
+        //facebook callbackManager
+        callbackManager = CallbackManager.Factory.create();
+
+
+        final SessionManager sessionManager = SessionManager.getInstance();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -67,19 +69,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
-        //facebooklogin_button = (LoginButton) findViewById(R.id.facebooklogin_button);
-
-        inputName.addTextChangedListener(new MyTextWatcher(inputName));
-        inputEmail.addTextChangedListener(new MyTextWatcher(inputEmail));
-        inputPassword.addTextChangedListener(new MyTextWatcher(inputPassword));
+        facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
 
         btn_Login.setOnClickListener(this);
         createAccountTextView.setOnClickListener(this);
         forgotPasswordtextView.setOnClickListener(this);
 
-        /*// Initialize the SDK before executing any other operations,
-        // especially, if you're using Facebook UI elements.*/
-       // FacebookSdk.sdkInitialize(getApplicationContext());
+        facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Log.v("onSuccess", "onSuccess");
+                // If Facebook login is true Go to Homeview
+                sessionManager.setLoginStatus(true);
+
+                new ViewManager().gotoHomeView(LoginActivity.this);
+
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+
+            @Override
+            public void onError(FacebookException e) {
+
+            }
+        });
+
     }
 
     /**
@@ -112,34 +129,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private class MyTextWatcher implements TextWatcher {
 
-        private View view;
-
-        private MyTextWatcher(View view) {
-            this.view = view;
-        }
-
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        public void afterTextChanged(Editable editable) {
-            switch (view.getId()) {
-                case R.id.input_name:
-                    Validator.validateName(LoginActivity.this, inputName, inputLayoutName, getString(R.string.err_msg_name));
-                    break;
-                case R.id.input_email:
-                    Validator.validateEmail(LoginActivity.this, inputEmail, inputLayoutEmail, getString(R.string.err_msg_email));
-                    break;
-                case R.id.input_password:
-                    Validator.validatePassword(LoginActivity.this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password));
-                    break;
-            }
-        }
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

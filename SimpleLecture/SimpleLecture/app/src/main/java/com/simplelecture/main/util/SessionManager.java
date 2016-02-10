@@ -5,6 +5,7 @@ package com.simplelecture.main.util;
  */
 public class SessionManager {
     private static SessionManager instance;
+    private static boolean loginStatus = false;
 
     static {
         try {
@@ -23,5 +24,13 @@ public class SessionManager {
 
     public static void setInstance(SessionManager instance) {
         SessionManager.instance = instance;
+    }
+
+    public static boolean isLoginStatus() {
+        return loginStatus;
+    }
+
+    public static void setLoginStatus(boolean loginStatus) {
+        SessionManager.loginStatus = loginStatus;
     }
 }
