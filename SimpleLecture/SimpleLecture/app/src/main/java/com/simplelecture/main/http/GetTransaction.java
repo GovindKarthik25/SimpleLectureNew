@@ -10,40 +10,43 @@ import java.net.URI;
 /**
  * Created by M1032185 on 2/5/2016.
  */
-public class GetTransaction extends Transaction {
+public abstract class GetTransaction extends Transaction {
 
     protected JSONObject mRequestBody;
 
     URI mUri;
 
-    public GetTransaction(JSONObject jsonObject,Context context) {
+    public GetTransaction(JSONObject jsonObject, Context context) {
         super(context);
         mRequestBody = jsonObject;
     }
 
     @Override
+    public void initializeExecution() throws Exception {
+        super.initializeExecution();
+
+        mRequestBody = setupRequestBody();
+    }
+
+    protected abstract JSONObject setupRequestBody();
+
+    @Override
     protected HttpResponse sendRequest() throws IOException {
-        return mRestMethod.sendGetRequest(getRequestUri());
+        return mRestMethod.sendGetRequest(mUri);
 
     }
 
     @Override
     protected String getRequestBody() {
-        return null;
-    }
+        if (mRequestBody != null) {
+            return mRequestBody.toString();
+        }
 
-    @Override
-    protected String getUri() {
-        return null;
-    }
-
-    @Override
-    protected URI getRequestUri() {
         return null;
     }
 
     @Override
     protected void setupRequestUri() {
-
+        mUri = URI.create(getUri() + getUrlPrefix());
     }
 }
