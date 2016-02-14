@@ -24,6 +24,7 @@ import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.fragments.DemoFragment;
 import com.simplelecture.main.fragments.ExercisesFragment;
 import com.simplelecture.main.fragments.ForumFragment;
+import com.simplelecture.main.fragments.HomeFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 
@@ -122,7 +123,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         switch (position) {
             case 0:
-                fragment = new ComboCoursesFragment();
+                fragment = new HomeFragment();
                 setTitle("Combo Courses");
                 break;
             case 1:

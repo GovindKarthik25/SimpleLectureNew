@@ -181,8 +181,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!Validator.validatePassword(this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
             return;
         }*/
-
-        new ViewManager().gotoHomeView(this);
+        //new ViewManager().gotoHomeView(this);
+        new ViewManager().gotoComboCourseView(this);
+        //new ViewManager().gotoSingleCourseView(this);
     }
 
 
