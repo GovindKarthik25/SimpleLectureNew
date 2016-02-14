@@ -10,6 +10,9 @@ android {
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "BASE_URL","\"http://23.101.16.251:8080/hsdf/web/rest/VolvoWearablesApp/setdata/\""
+
     }
     buildTypes {
         release {
