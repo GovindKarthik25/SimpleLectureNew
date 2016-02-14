@@ -18,15 +18,21 @@ import android.widget.Toast;
 import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.controller.ForgotPasswordController;
+import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.http.TransactionProcessor;
+import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.JsonFactory;
 import com.simplelecture.main.util.ProgressDialogCustom;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
 
+import org.json.JSONObject;
+
 import java.sql.Connection;
 
-public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener {
+public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener, NetworkLayer {
 
     private Toolbar toolbar;
     private EditText searchEditText;
@@ -34,7 +40,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private TextInputLayout inputLayoutEmail;
     private Button btn_ForgotPassword;
     private SnackBarManagement snack;
-    private String[] param_get_ForgotPassword = new String[] {Constants.GET_FORGOTPASSWORD};
+    private String[] param_get_ForgotPassword = new String[]{Constants.GET_FORGOTPASSWORD};
     private ProgressDialog pd;
     CoordinatorLayout coordinatorLayout;
 
@@ -68,11 +74,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             return;
         }
 
-        if (!new ConnectionDetector(this).isConnectingToInternet()) {
+        if (new ConnectionDetector(this).isConnectingToInternet()) {
 
             Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
             pd = new Util().waitingMessage(this, "", getResources().getString(R.string.loading));
-            new Connection().execute(param_get_ForgotPassword);
+
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getForgotPwdParams("test", "test", "test", "test", "tst");
+            ForgotPasswordTransaction forgotPasswordTransaction = new ForgotPasswordTransaction(jsonObject, this);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(this);
+            transactionProcessor.execute(forgotPasswordTransaction);
+
+//            new Connection().execute(param_get_ForgotPassword);
+
+//            new Connection().execute(param_get_ForgotPassword);
         } else {
 
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
@@ -85,6 +100,20 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         if (v == btn_ForgotPassword) {
             submitForm();
         }
+    }
+
+    @Override
+    public void parseResponse(String response) {
+        pd.cancel();
+
+        Toast.makeText(getApplicationContext(), "Response" + response, Toast.LENGTH_LONG).show();
+
+    }
+
+    @Override
+    public void showError(String error) {
+        pd.cancel();
+        Toast.makeText(getApplicationContext(), "Response" + error, Toast.LENGTH_LONG).show();
     }
 
     private class Connection extends AsyncTask<String, Void, String> {
@@ -103,7 +132,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         protected String doInBackground(String... urls) {
 
             try {
-                if(urls[0].equals(param_get_ForgotPassword[0])) {
+                if (urls[0].equals(param_get_ForgotPassword[0])) {
 
                     forgotPasswordOutput = new ForgotPasswordController().getForgotPassword(email);
 
