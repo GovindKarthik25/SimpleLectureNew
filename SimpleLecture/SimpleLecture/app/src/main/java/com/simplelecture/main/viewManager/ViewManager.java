@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
+import com.simplelecture.main.activities.DashboardActivity;
 import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
@@ -37,7 +38,7 @@ public class ViewManager {
      */
     public Intent gotoLoginView(Activity activity) {
         intent = new Intent(activity, LoginActivity.class);
-         setDisplay(activity, intent);
+        setDisplay(activity, intent);
         //activity.finish();
         return intent;
     }
@@ -93,6 +94,12 @@ public class ViewManager {
      */
     public Intent gotoComboCourseView(Activity activity) {
         intent = new Intent(activity, ComboCourseActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    public Intent gotoDashboardView(Activity activity) {
+        intent = new Intent(activity, DashboardActivity.class);
         setDisplay(activity, intent);
         return intent;
     }

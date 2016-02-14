@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onStart() {
         super.onStart();
 
-        mGoogleApiClient.connect();
+//        mGoogleApiClient.connect();
 
     }
 
@@ -182,7 +182,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }*/
         //new ViewManager().gotoHomeView(this);
-        new ViewManager().gotoComboCourseView(this);
+//        new ViewManager().gotoComboCourseView(this);
+        new ViewManager().gotoDashboardView(this);
         //new ViewManager().gotoSingleCourseView(this);
     }
 
