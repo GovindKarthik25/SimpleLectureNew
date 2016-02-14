@@ -1,7 +1,7 @@
 package com.simplelecture.main.controller;
 
 
-import com.simplelecture.main.bizProcess.DataSynchronizationBizProcess;
+import com.simplelecture.main.bizprocess.DataSynchronizationBizProcess;
 
 public class ForgotPasswordController {
 	

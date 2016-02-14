@@ -11,6 +11,7 @@ import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.SingleCourseActivity;
+import com.simplelecture.main.activities.VideoPlayerActivity;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -114,4 +115,17 @@ public class ViewManager {
         setDisplay(activity, intent);
         return intent;
     }
+
+    /**
+     * Description: go to Video Player View
+     *
+     * @return
+     */
+    public Intent gotoVideoPlayerView(Activity activity) {
+        intent = new Intent(activity, VideoPlayerActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+
 }
