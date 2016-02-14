@@ -4,26 +4,32 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
+import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.util.ViewPagerIndicator;
+import com.simplelecture.main.util.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ComboCoursesFragment.OnFragmentInteractionListener} interface
+ * {@link HomeFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ComboCoursesFragment#newInstance} factory method to
+ * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ComboCoursesFragment extends Fragment {
+public class HomeFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,6 +43,14 @@ public class ComboCoursesFragment extends Fragment {
 
     RecyclerView recyclerView;
 
+    private ViewPager mPager;
+
+    /**
+     * The pager adapter, which provides the pages to the view pager widget.
+     */
+    private PagerAdapter mPagerAdapter;
+    private ViewPagerIndicator pageIndicator;
+
     ComboCoursesAdapter comboCoursesAdapter;
 
     /**
@@ -48,8 +62,8 @@ public class ComboCoursesFragment extends Fragment {
      * @return A new instance of fragment ComboCoursesFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ComboCoursesFragment newInstance(String param1, String param2) {
-        ComboCoursesFragment fragment = new ComboCoursesFragment();
+    public static HomeFragment newInstance(String param1, String param2) {
+        HomeFragment fragment = new HomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -57,7 +71,7 @@ public class ComboCoursesFragment extends Fragment {
         return fragment;
     }
 
-    public ComboCoursesFragment() {
+    public HomeFragment() {
         // Required empty public constructor
     }
 
@@ -75,8 +89,29 @@ public class ComboCoursesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View convertView = inflater.inflate(R.layout.fragment_combo_courses, container, false);
+        View convertView = inflater.inflate(R.layout.fragment_home, container, false);
 
+        pageIndicator = (ViewPagerIndicator)convertView.findViewById(R.id.page_indicator);
+
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = (ViewPager)convertView.findViewById(R.id.pager);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        mPager.setAdapter(mPagerAdapter);
+        pageIndicator.setViewPager(mPager);
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                // When changing pages, reset the action bar actions since they are dependent
+                // on which page is currently active. An alternative approach is to have each
+                // fragment expose actions itself (rather than the activity exposing actions),
+                // but for simplicity, the activity provides the actions in this sample.
+                pageIndicator.setViewPager(mPager);
+
+                //pageIndicator.notifyDataSetChanged();
+
+            }
+        });
 
         ArrayList<String> data = new ArrayList<>();
         data.add("test1");

@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 
 import com.simplelecture.main.activities.ChangePasswordActivity;
+import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
 import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
+import com.simplelecture.main.activities.SingleCourseActivity;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -80,6 +82,28 @@ public class ViewManager {
      */
     public Intent gotoHomeView(Activity activity) {
         intent = new Intent(activity, HomeActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Combo Course View
+     *
+     * @return
+     */
+    public Intent gotoComboCourseView(Activity activity) {
+        intent = new Intent(activity, ComboCourseActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Single Course View
+     *
+     * @return
+     */
+    public Intent gotoSingleCourseView(Activity activity) {
+        intent = new Intent(activity, SingleCourseActivity.class);
         setDisplay(activity, intent);
         return intent;
     }

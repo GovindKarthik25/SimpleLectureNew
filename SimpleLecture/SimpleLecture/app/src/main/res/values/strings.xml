@@ -20,11 +20,10 @@
     <string name="btn_sign_up">Sign Up</string>
 
 
-
-   <!-- SnackBar Msg-->
+    <!-- SnackBar Msg-->
     <string name="dismiss">Dismiss</string>
 
-   <!-- Error Msg-->
+    <!-- Error Msg-->
     <string name="err_msg_name">Enter your full name</string>
     <string name="err_msg_email">Enter valid email address</string>
     <string name="err_msg_password">Enter the password</string>
@@ -51,14 +50,19 @@
     <string name="navigation_drawer_login">Login</string>
     <string name="navigation_drawer_dashboard">Dashboard</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
+    <string name="comboCourse">Combo Course</string>
+    <string name="courseFeature">Course Feature</string>
+    <string name="courseDescription">Course Description</string>
+    <string name="courseIndex">Course Index</string>
+    <string name="courseBenifits">Course Benifits</string>
+    <string name="fAQ">FAQ</string>
+    <string name="review">Review</string>
 
     <!--Facebook_app_id-->
     <string name="facebook_app_id">190332871324339</string>
-
-
 
 
 </resources>
