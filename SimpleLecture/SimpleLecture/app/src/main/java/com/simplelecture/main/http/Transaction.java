@@ -1,5 +1,6 @@
 package com.simplelecture.main.http;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.io.IOException;
@@ -16,9 +17,24 @@ public abstract class Transaction {
 
     String mResponseString;
 
-    private void initExecution(){
+    Context mContext;
+
+    public Transaction(Context context) {
+        mContext = context;
+    }
+
+//    private void initExecution() {
+//        mRestMethod = RestMethod.getInstance();
+//        mResponse = new HttpResponse();
+//    }
+
+    public void initializeExecution() throws IllegalStateException, Exception {
+
+        // Initialize uri and headers
+        setupRequestUri();
         mRestMethod = RestMethod.getInstance();
         mResponse = new HttpResponse();
+
     }
 
     /**
@@ -39,16 +55,24 @@ public abstract class Transaction {
         return null;
     }
 
-    public boolean execute(){
+    public HttpResponse execute() {
 
         Log.d("", "Init Execution");
-        initExecution();
         try {
+            initializeExecution();
             mResponse = sendRequest();
+            mResponseString = mResponse.getResponseBody();
+
+
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        return false;
+
+        return mResponse;
+
+
     }
 
 
@@ -59,5 +83,12 @@ public abstract class Transaction {
     protected abstract String getUri();
 
     protected abstract URI getRequestUri();
+
+    protected abstract void setupRequestUri();
+
+    protected String getUrlPrefix() {
+        return "";
+    }
+
 
 }

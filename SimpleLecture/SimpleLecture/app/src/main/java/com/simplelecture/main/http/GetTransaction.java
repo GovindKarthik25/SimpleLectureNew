@@ -1,5 +1,7 @@
 package com.simplelecture.main.http;
 
+import android.content.Context;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -14,7 +16,8 @@ public class GetTransaction extends Transaction {
 
     URI mUri;
 
-    public GetTransaction(JSONObject jsonObject) {
+    public GetTransaction(JSONObject jsonObject,Context context) {
+        super(context);
         mRequestBody = jsonObject;
     }
 
@@ -37,5 +40,10 @@ public class GetTransaction extends Transaction {
     @Override
     protected URI getRequestUri() {
         return null;
+    }
+
+    @Override
+    protected void setupRequestUri() {
+
     }
 }

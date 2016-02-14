@@ -8,7 +8,7 @@ import android.util.Log;
 /**
  * Created by M1032185 on 2/4/2016.
  */
-public class TransactionProcessor extends AsyncTask<Transaction, Integer, Boolean> {
+public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpResponse> {
 
     public static final String TAG = TransactionProcessor.class.getName();
 
@@ -29,28 +29,55 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, Boolea
     }
 
     @Override
-    protected Boolean doInBackground(Transaction... params) {
+    protected HttpResponse doInBackground(Transaction... params) {
 
         mT = params[0];
-        boolean status = false;
+        HttpResponse response = null;
 
         // Execute transaction
         try {
             Log.d("Transaction", "Transaction begins");
-            status = mT.execute();
+            response = mT.execute();
         } catch (Exception e) {
             final String tName = mT.getClass().getSimpleName();
             Log.d(TAG, "Error while executing transaction %s for op %s id %d");
-            status = false;
         }
 
-        return status;
+        return response;
     }
 
     @Override
-    protected void onPostExecute(Boolean status) {
-        super.onPostExecute(status);
+    protected void onPostExecute(HttpResponse response) {
+        super.onPostExecute(response);
 
-        ((NetworkLayer) mContext).parseResponse(mT.getResponseBody());
+        final int statusCode = response.getStatusCode();
+
+        if (isSuccesfulStatusCode(statusCode)) {
+            ((NetworkLayer) mContext).parseResponse(response.getResponseBody());
+        } else {
+            String message = handleDefaultErrors(statusCode);
+            ((NetworkLayer) mContext).showError(message);
+        }
     }
+
+    protected boolean isSuccesfulStatusCode(final int statusCode) {
+        return statusCode == 200;
+    }
+
+    private String handleDefaultErrors(int statusCode) {
+
+        String errorMessage = null;
+        switch (statusCode) {
+            case 404:
+                break;
+            case 500:
+                break;
+            case 400:
+                errorMessage = "Bad Request.";
+                break;
+        }
+
+        return errorMessage;
+    }
+
 }

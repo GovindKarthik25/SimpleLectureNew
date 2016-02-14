@@ -6,4 +6,6 @@ package com.simplelecture.main.http;
 public interface NetworkLayer {
 
     public void parseResponse(String response);
+
+    public void showError(String error);
 }

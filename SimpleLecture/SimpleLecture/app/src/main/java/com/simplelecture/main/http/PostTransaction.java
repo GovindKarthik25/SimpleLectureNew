@@ -1,5 +1,7 @@
 package com.simplelecture.main.http;
 
+import android.content.Context;
+
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -8,19 +10,32 @@ import java.net.URI;
 /**
  * Created by M1032185 on 2/5/2016.
  */
-public class PostTransaction extends Transaction {
+public abstract class PostTransaction extends Transaction {
 
     protected JSONObject mRequestBody;
 
     URI mUri;
 
-    public PostTransaction(JSONObject jsonObject) {
-        mRequestBody = jsonObject;
+    Context mContext;
+
+    public PostTransaction(JSONObject jsonObject, Context context) {
+        super(context);
+        mRequestBody = new JSONObject();
+        mContext = context;
     }
 
     @Override
+    public void initializeExecution() throws Exception {
+        super.initializeExecution();
+
+        mRequestBody = setupRequestBody();
+    }
+
+    protected abstract JSONObject setupRequestBody();
+
+    @Override
     protected HttpResponse sendRequest() throws IOException {
-        return mRestMethod.sendPostRequest(getRequestUri(), getRequestBody());
+        return mRestMethod.sendPostRequest(mUri, getRequestBody());
     }
 
     @Override
@@ -33,13 +48,8 @@ public class PostTransaction extends Transaction {
     }
 
     @Override
-    protected String getUri() {
-        return "";
-    }
-
-    @Override
-    protected URI getRequestUri() {
+    protected void setupRequestUri() {
         // Construct base URL
-        return mUri = URI.create(getUri());
+        mUri = URI.create(getUri() + getUrlPrefix());
     }
 }
