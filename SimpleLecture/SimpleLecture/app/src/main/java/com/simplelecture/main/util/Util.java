@@ -16,7 +16,12 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.simplelecture.main.R;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
@@ -228,6 +233,26 @@ public class Util {
             e.printStackTrace();
         }
         return keyHash;
+    }
+
+    //Parsing web service response and creating it in json format.
+    public static String streamlineHttpResponse(HttpURLConnection con) throws IOException {
+        if (con == null) {
+            return "";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        int responseCode = con.getResponseCode();
+        InputStream content = responseCode >= 200 && responseCode <= 299 ? con.getInputStream() : con.getErrorStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(content));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            builder.append(line);
+            builder.append("\n");
+        }
+        content.close();
+        reader.close();
+        return builder.toString();
     }
 
 }

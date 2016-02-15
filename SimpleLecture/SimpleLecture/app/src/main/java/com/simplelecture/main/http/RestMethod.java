@@ -2,6 +2,8 @@ package com.simplelecture.main.http;
 
 //import com.pumpkin.angelsensorpoc.Utils;
 
+import com.simplelecture.main.util.Util;
+
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -74,7 +76,7 @@ public class RestMethod implements IRestMethod {
             response.setMethod("GET");
             response.setUri(uri);
             response.setStatusCode(urlConnection.getResponseCode());
-//            response.setResponseBody(Utils.streamLineHttpResponse(urlConnection));
+            response.setResponseBody(Util.streamlineHttpResponse(urlConnection));
             response.setStatusLine(urlConnection.getResponseMessage());
             response.setPostRequestBody("");
 

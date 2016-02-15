@@ -3,6 +3,7 @@ package com.simplelecture.main.http;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 /**
@@ -16,11 +17,16 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
 
     Context mContext;
 
-    private Transaction mT;
+    Fragment mFragmentContext;
 
+    private Transaction mT;
 
     public TransactionProcessor(Context context) {
         mContext = context;
+    }
+
+    public TransactionProcessor(Fragment fragmentContext) {
+        mFragmentContext = fragmentContext;
     }
 
     @Override
@@ -53,7 +59,7 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
         final int statusCode = response.getStatusCode();
 
         if (isSuccesfulStatusCode(statusCode)) {
-            ((NetworkLayer) mContext).parseResponse(response.getResponseBody());
+            ((NetworkLayer) mFragmentContext).parseResponse(response.getResponseBody());
         } else {
             String message = handleDefaultErrors(statusCode);
             ((NetworkLayer) mContext).showError(message);
