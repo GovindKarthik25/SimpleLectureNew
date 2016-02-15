@@ -40,9 +40,6 @@ public class VideoPlayerActivity extends AppCompatActivity {
 
         videoView = (VideoView) findViewById(R.id.videoView);
 
-        videoView.setVideoPath("http://www.ebookfrenzy.com/android_book/movie.mp4");
-
-
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
@@ -59,9 +56,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
         try {
             //set the media controller in the VideoView
             videoView.setMediaController(mediaController);
-
             //set the uri of the video to be played
-            videoView.setVideoURI(Uri.parse("https://www.youtube.com/embed/Li-SqK-pt50"));
+            videoView.setVideoURI(Uri.parse("https://player.vimeo.com/video/125168796"));
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
@@ -87,6 +83,15 @@ public class VideoPlayerActivity extends AppCompatActivity {
             }
         });
 
+        videoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+
+        public void onCompletion(MediaPlayer mp) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            finish();
+        }
+    });
 
 
 
