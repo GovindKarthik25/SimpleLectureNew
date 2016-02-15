@@ -16,6 +16,8 @@ public class VideoPlayerActivity extends AppCompatActivity {
     private int position = 0;
     private ProgressDialog progressDialog;
     VideoView videoView;
+    // Insert your Video URL
+    String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -54,10 +56,13 @@ public class VideoPlayerActivity extends AppCompatActivity {
         progressDialog.show();
 
         try {
+
+            Uri video = Uri.parse(VideoURL);
+            //set the uri of the video to be played
+            videoView.setVideoURI(video);
+
             //set the media controller in the VideoView
             videoView.setMediaController(mediaController);
-            //set the uri of the video to be played
-            videoView.setVideoURI(Uri.parse("https://player.vimeo.com/video/125168796"));
 
         } catch (Exception e) {
             Log.e("Error", e.getMessage());
