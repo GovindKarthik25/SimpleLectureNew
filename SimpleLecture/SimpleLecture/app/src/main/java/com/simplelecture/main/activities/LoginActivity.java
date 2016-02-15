@@ -184,8 +184,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //new ViewManager().gotoHomeView(this);
 //        new ViewManager().gotoComboCourseView(this);
        // new ViewManager().gotoDashboardView(this);
-        //new ViewManager().gotoSingleCourseView(this);
-        new ViewManager().gotoVideoPlayerView(this);
+        new ViewManager().gotoSingleCourseView(this);
+//        new ViewManager().gotoVideoPlayerView(this);
     }
 
 
