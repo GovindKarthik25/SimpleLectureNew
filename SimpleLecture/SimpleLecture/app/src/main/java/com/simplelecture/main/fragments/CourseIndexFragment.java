@@ -117,6 +117,7 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
             JSONObject jsonObject = new JSONObject(response);
 
 
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

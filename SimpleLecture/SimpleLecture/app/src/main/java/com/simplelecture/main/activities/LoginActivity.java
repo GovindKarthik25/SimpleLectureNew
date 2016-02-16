@@ -36,6 +36,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.simplelecture.main.R;
+import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
@@ -181,11 +182,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!Validator.validatePassword(this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
             return;
         }*/
-        //new ViewManager().gotoHomeView(this);
-//        new ViewManager().gotoComboCourseView(this);
+
+
+        LoginModel loginModel = new LoginModel();
+        loginModel.setUe(inputEmail.toString());
+        loginModel.setUp(inputPassword.toString());
+
+        //http://simplelecture.com/mservice/User/Validate
+        //{'ue':'deekshanaidu19@gmail.com','up':'SL25611320'}
+
         new ViewManager().gotoDashboardView(this);
-//        new ViewManager().gotoSingleCourseView(this);
-//        new ViewManager().gotoVideoPlayerView(this);
+
     }
 
 
