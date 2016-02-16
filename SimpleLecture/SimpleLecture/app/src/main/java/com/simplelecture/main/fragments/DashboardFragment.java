@@ -6,13 +6,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import java.util.ArrayList;
 
@@ -101,6 +105,15 @@ public class DashboardFragment extends Fragment {
         recyclerView.setLayoutManager(gridLayoutManager);
         comboCoursesAdapter = new ComboCoursesAdapter(data);
         recyclerView.setAdapter(comboCoursesAdapter);
+
+        comboCoursesAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+                ViewManager viewManager = new ViewManager();
+                viewManager.gotoSingleCourseView(getActivity());
+            }
+        });
 
         return convertView;
 
