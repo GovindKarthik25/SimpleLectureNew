@@ -9,5 +9,5 @@ public interface IRestMethod {
 
     public HttpResponse sendPostRequest(URI uri, String body);
 
-    public HttpResponse sendGetRequest(URI uri);
+    public HttpResponse sendGetRequest(URI uri,String token);
 }

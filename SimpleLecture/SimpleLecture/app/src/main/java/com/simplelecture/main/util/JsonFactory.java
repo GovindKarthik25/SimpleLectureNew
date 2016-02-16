@@ -10,9 +10,21 @@ public class JsonFactory {
 
     JSONObject jsonObject;
 
-    public JsonFactory(){
+    public JsonFactory() {
 
         jsonObject = new JSONObject();
+    }
+
+    public JSONObject getLoginParams(String ue, String up) {
+
+        try {
+            jsonObject.put("ue", ue);
+            jsonObject.put("up", up);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
     }
 
     public JSONObject getForgotPwdParams(String userEmail, String userHeight, String userWeight, String journeyId, String deviceid) {

@@ -10,25 +10,21 @@ import org.json.JSONObject;
 import java.net.URI;
 
 /**
- * Created by M1032185 on 2/14/2016.
+ * Created by M1032185 on 2/16/2016.
  */
-public class ForgotPasswordTransaction extends PostTransaction {
+public class LoginTransaction extends PostTransaction {
 
     JSONObject jsonObject;
 
-    public ForgotPasswordTransaction(JSONObject jsonObject,Context context) {
-        super(jsonObject,context);
+    public LoginTransaction(JSONObject jsonObject, Context context) {
+        super(jsonObject, context);
         this.jsonObject = jsonObject;
+
     }
 
     @Override
     protected JSONObject setupRequestBody() {
         return jsonObject;
-    }
-
-    @Override
-    protected String getUrlPrefix() {
-        return "authorizedriver";
     }
 
     @Override
@@ -46,5 +42,8 @@ public class ForgotPasswordTransaction extends PostTransaction {
         return null;
     }
 
-
+    @Override
+    protected String getUrlPrefix() {
+        return "Validate";
+    }
 }

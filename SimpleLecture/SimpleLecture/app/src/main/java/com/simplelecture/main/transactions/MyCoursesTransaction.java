@@ -2,6 +2,7 @@ package com.simplelecture.main.transactions;
 
 import android.content.Context;
 
+import com.simplelecture.main.BuildConfig;
 import com.simplelecture.main.http.GetTransaction;
 
 import org.json.JSONObject;
@@ -9,14 +10,18 @@ import org.json.JSONObject;
 import java.net.URI;
 
 /**
- * Created by M1032185 on 2/15/2016.
+ * Created by M1032185 on 2/16/2016.
  */
-public class GetCoursesIndexTransaction extends GetTransaction {
+public class MyCoursesTransaction extends GetTransaction {
 
-    String testUri =  "http://simplelecture.com/mobile/getcoursedetails?cId=1";
+    private String mUrlEncoded;
 
-    public GetCoursesIndexTransaction(JSONObject jsonObject, Context context) {
+    private String mHeaderVal;
+
+    public MyCoursesTransaction(JSONObject jsonObject, Context context, String urlEncoded, String headerVal) {
         super(jsonObject, context);
+        mUrlEncoded = urlEncoded;
+        mHeaderVal = headerVal;
     }
 
     @Override
@@ -26,7 +31,7 @@ public class GetCoursesIndexTransaction extends GetTransaction {
 
     @Override
     protected String getUri() {
-        return testUri;
+        return BuildConfig.BASE_URL;
     }
 
     @Override
@@ -36,11 +41,11 @@ public class GetCoursesIndexTransaction extends GetTransaction {
 
     @Override
     protected String getHeader() {
-        return null;
+        return mHeaderVal;
     }
 
     @Override
     protected String getUrlPrefix() {
-        return "";
+        return "MyCourses/" + mUrlEncoded;
     }
 }

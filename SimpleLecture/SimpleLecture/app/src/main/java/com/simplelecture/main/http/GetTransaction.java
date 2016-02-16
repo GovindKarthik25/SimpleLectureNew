@@ -16,6 +16,8 @@ public abstract class GetTransaction extends Transaction {
 
     URI mUri;
 
+    String header;
+
     public GetTransaction(JSONObject jsonObject, Context context) {
         super(context);
         mRequestBody = jsonObject;
@@ -32,7 +34,7 @@ public abstract class GetTransaction extends Transaction {
 
     @Override
     protected HttpResponse sendRequest() throws IOException {
-        return mRestMethod.sendGetRequest(mUri);
+        return mRestMethod.sendGetRequest(mUri,getHeader());
 
     }
 

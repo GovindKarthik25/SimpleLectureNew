@@ -37,6 +37,11 @@ public class GetCourses extends GetTransaction {
     }
 
     @Override
+    protected String getHeader() {
+        return null;
+    }
+
+    @Override
     protected String getUrlPrefix() {
         return mUrlEncoded;
     }

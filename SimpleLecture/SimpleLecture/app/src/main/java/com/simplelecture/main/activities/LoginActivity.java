@@ -36,15 +36,18 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.simplelecture.main.R;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.util.SessionManager;
+import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NetworkLayer {
 
 
     private Toolbar toolbar;
@@ -185,8 +188,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         LoginModel loginModel = new LoginModel();
-        loginModel.setUe(inputEmail.toString());
-        loginModel.setUp(inputPassword.toString());
+        loginModel.setUe("deekshanaidu19@gmail.com");
+        loginModel.setUp("SL25611320");
+
+        //Login Service
+//        ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
+
+        //My Courses service
+        ApiService.getApiService().doGetMyCourses("60", LoginActivity.this);
 
         //http://simplelecture.com/mservice/User/Validate
         //{'ue':'deekshanaidu19@gmail.com','up':'SL25611320'}
@@ -328,5 +337,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void parseResponse(String response) {
+
+        Log.i(TAG, response);
+
+        Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+
+//        Util.storeToPrefrences(LoginActivity.this,"uToken","Pass token here");
+
+    }
+
+    @Override
+    public void showError(String error) {
+        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+
     }
 }

@@ -19,11 +19,11 @@ public class RestMethod implements IRestMethod {
 
     public static RestMethod restMethod = new RestMethod();
 
-    private RestMethod(){
+    private RestMethod() {
 
     }
 
-    public static RestMethod getInstance(){
+    public static RestMethod getInstance() {
         return restMethod;
     }
 
@@ -47,7 +47,7 @@ public class RestMethod implements IRestMethod {
             httpResponse.setMethod("POST");
             httpResponse.setUri(uri);
             httpResponse.setStatusCode(connection.getResponseCode());
-//            httpResponse.setResponseBody(Utils.streamLineHttpResponse(connection));
+            httpResponse.setResponseBody(Util.streamlineHttpResponse(connection));
             httpResponse.setStatusLine(connection.getResponseMessage());
             httpResponse.setPostRequestBody(body);
 
@@ -62,7 +62,7 @@ public class RestMethod implements IRestMethod {
     }
 
     @Override
-    public HttpResponse sendGetRequest(URI uri) {
+    public HttpResponse sendGetRequest(URI uri, String token) {
 
         HttpResponse response = null;
         try {
@@ -70,6 +70,7 @@ public class RestMethod implements IRestMethod {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("GET");
+            urlConnection.setRequestProperty("token", token);
             urlConnection.connect();
 
             response = new HttpResponse();

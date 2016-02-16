@@ -3,6 +3,7 @@ package com.simplelecture.main.util;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -35,6 +36,9 @@ import java.util.Locale;
  */
 public class Util {
 
+    public static final String PREFRENCES_NAME = "simplelecture_pref";
+
+    public static final String TAG = "SIMPLE_LECTURE";
 
     /**
      * Description: To hideKeyboard when onTouch of view.
@@ -131,7 +135,7 @@ public class Util {
      * @return
      */
     public static boolean isKeyboardShown(View rootView) {
-		/* 128dp = 32dp * 4, minimum button height 32dp and generic 4 rows soft keyboard */
+        /* 128dp = 32dp * 4, minimum button height 32dp and generic 4 rows soft keyboard */
         final int SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD = 128;
 
         Rect r = new Rect();
@@ -254,5 +258,21 @@ public class Util {
         reader.close();
         return builder.toString();
     }
+
+    //Storing vals to shared preferences for future usage
+    public static void storeToPrefrences(Context context, String type, String vid) {
+
+        SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(type, vid);
+        editor.commit();
+    }
+
+    //Gets stored data from prefrences
+    public static String getFromPrefrences(Context context, String type) {
+        SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
+        return preferences.getString(type, "");
+    }
+
 
 }

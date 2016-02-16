@@ -59,10 +59,21 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
         final int statusCode = response.getStatusCode();
 
         if (isSuccesfulStatusCode(statusCode)) {
-            ((NetworkLayer) mFragmentContext).parseResponse(response.getResponseBody());
+
+            if (mContext != null) {
+                ((NetworkLayer) mContext).parseResponse(response.getResponseBody());
+            } else {
+                ((NetworkLayer) mFragmentContext).parseResponse(response.getResponseBody());
+            }
         } else {
             String message = handleDefaultErrors(statusCode);
             ((NetworkLayer) mContext).showError(message);
+
+            if (mContext != null) {
+                ((NetworkLayer) mContext).showError(message);
+            } else {
+                ((NetworkLayer) mFragmentContext).showError(message);
+            }
         }
     }
 
@@ -80,6 +91,9 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
                 break;
             case 400:
                 errorMessage = "Bad Request.";
+                break;
+            case 401:
+                errorMessage = "Un Authorized.";
                 break;
         }
 

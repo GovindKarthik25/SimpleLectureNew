@@ -86,6 +86,8 @@ public abstract class Transaction {
 
     protected abstract void setupRequestUri();
 
+    protected abstract String getHeader();
+
     protected String getUrlPrefix() {
         return "";
     }
