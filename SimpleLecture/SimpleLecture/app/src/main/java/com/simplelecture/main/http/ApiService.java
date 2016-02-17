@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.simplelecture.main.model.LoginModel;
+import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
 import com.simplelecture.main.util.JsonFactory;
@@ -53,6 +54,14 @@ public class ApiService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void getCourseDetails(String uId, Context mContext) {
+
+        CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(coursesDetailsTransaction);
 
     }
 }

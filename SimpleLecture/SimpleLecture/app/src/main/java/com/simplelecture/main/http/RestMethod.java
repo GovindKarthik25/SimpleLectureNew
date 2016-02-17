@@ -77,7 +77,11 @@ public class RestMethod implements IRestMethod {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("GET");
-            urlConnection.setRequestProperty("token", token);
+            //add token to header
+            if (!token.isEmpty()) {
+                urlConnection.setRequestProperty("token", token);
+            }
+
             urlConnection.connect();
 
             response = new HttpResponse();

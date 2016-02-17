@@ -39,9 +39,9 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        GetCoursesIndexTransaction getCoursesIndexTransaction = new GetCoursesIndexTransaction(null, getActivity());
-        TransactionProcessor transactionProcessor = new TransactionProcessor(this);
-        transactionProcessor.execute(getCoursesIndexTransaction);
+//        GetCoursesIndexTransaction getCoursesIndexTransaction = new GetCoursesIndexTransaction(null, getActivity());
+//        TransactionProcessor transactionProcessor = new TransactionProcessor(this);
+//        transactionProcessor.execute(getCoursesIndexTransaction);
 
     }
 
