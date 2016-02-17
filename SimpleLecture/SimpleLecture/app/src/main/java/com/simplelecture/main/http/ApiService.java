@@ -27,24 +27,32 @@ public class ApiService {
     }
 
     public void doLogin(LoginModel loginModel, Context context) {
-        JsonFactory jsonFactory = new JsonFactory();
-        JSONObject jsonObject = jsonFactory.getLoginParams(loginModel.getUe(), loginModel.getUp());
-        LoginTransaction loginTransaction = new LoginTransaction(jsonObject, context);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(context);
-        transactionProcessor.execute(loginTransaction);
+        try {
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getLoginParams(loginModel.getUe(), loginModel.getUp());
+            LoginTransaction loginTransaction = new LoginTransaction(jsonObject, context);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(context);
+            transactionProcessor.execute(loginTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
-    public void doGetMyCourses(String uId, Context mContext) {
+    public void doGetMyCourses(Context mContext, String uId) {
 
-        //use this to get token stored in prefrences
-//        String token = Util.getFromPrefrences(mContext, "urkey");
+        try {
+            //use this to get token stored in prefrences
+            String token = Util.getFromPrefrences(mContext, "uToken");
 
-        String token = "alc3ZXpKOE1MSWl2aVlBV25tNHlpSHlRc3N3MkYvWGFLZGRsV3FLU0QzWT06REVFS1NIQU5BSURVMTlAR01BSUwuQ09NOjYzNTkxMjM1MjY4NzE0Njg0OQ==";
+            //String token = "alc3ZXpKOE1MSWl2aVlBV25tNHlpSHlRc3N3MkYvWGFLZGRsV3FLU0QzWT06REVFS1NIQU5BSURVMTlAR01BSUwuQ09NOjYzNTkxMjM1MjY4NzE0Njg0OQ==";
 
-        MyCoursesTransaction myCoursesTransaction = new MyCoursesTransaction(null, mContext, uId, token);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
-        transactionProcessor.execute(myCoursesTransaction);
+            MyCoursesTransaction myCoursesTransaction = new MyCoursesTransaction(null, mContext, uId, token);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(myCoursesTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

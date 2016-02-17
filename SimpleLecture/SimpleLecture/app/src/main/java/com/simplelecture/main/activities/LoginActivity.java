@@ -36,11 +36,17 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.viewmodel.LoginResponseModel;
+import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
+import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
@@ -51,6 +57,7 @@ import org.json.JSONObject;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NetworkLayer {
 
@@ -80,6 +87,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 400;
+    private String[] param_get_Login = new String[]{Constants.GET_LOGINSIGNIN};
 
 
     @Override
@@ -198,12 +206,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         //Login Service
         ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
-
-        //My Courses service
-        // ApiService.getApiService().doGetMyCourses("60", LoginActivity.this);
-
-        //http://simplelecture.com/mservice/User/Validate
-        //{'ue':'deekshanaidu19@gmail.com','up':'SL25611320'}
 
 
     }
@@ -345,20 +347,38 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void parseResponse(String response) {
-        Log.v("response", "response");
+        Log.i("response", "response");
         Log.i(TAG, response);
         try {
             Gson gson = new Gson();
-            JSONObject reader = new JSONObject(response);
+            JSONObject jSONObject = new JSONObject(response);
             LoginResponseModel loginResponseModelObj = gson.fromJson(response, LoginResponseModel.class);
             Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
 
             Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
             Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
 
-            Log.v("loginResponseModelObj", loginResponseModelObj.toString());
 
-            new ViewManager().gotoDashboardView(this);
+            //My Courses service
+            ApiService.getApiService().doGetMyCourses(LoginActivity.this, Util.getFromPrefrences(LoginActivity.this, "uId"));
+
+            JsonParser parser = new JsonParser();
+            String myCoursesContent = jSONObject.getString("myCourses");
+            JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
+
+            ArrayList<myCourses> myCoursesLstArray = new ArrayList<myCourses>();
+            for (JsonElement obj : jarray) {
+                myCourses myCoursesObj = gson.fromJson(obj, myCourses.class);
+                myCoursesLstArray.add(myCoursesObj);
+            }
+
+            /*Setting data to main arraylist*/
+            MyCoursesResponseModel myCoursesResponseModelObj = new MyCoursesResponseModel();
+            myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
+
+
+            Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
+            // new ViewManager().gotoDashboardView(this);
 
 
         } catch (JSONException e) {

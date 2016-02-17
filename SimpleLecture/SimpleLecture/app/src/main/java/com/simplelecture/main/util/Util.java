@@ -262,10 +262,14 @@ public class Util {
     //Storing vals to shared preferences for future usage
     public static void storeToPrefrences(Context context, String type, String vid) {
 
-        SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(type, vid);
-        editor.commit();
+        try {
+            SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(type, vid);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //Gets stored data from prefrences
