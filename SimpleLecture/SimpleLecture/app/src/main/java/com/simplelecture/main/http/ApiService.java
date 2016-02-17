@@ -1,6 +1,7 @@
 package com.simplelecture.main.http;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.transactions.LoginTransaction;
@@ -26,7 +27,6 @@ public class ApiService {
     }
 
     public void doLogin(LoginModel loginModel, Context context) {
-
         JsonFactory jsonFactory = new JsonFactory();
         JSONObject jsonObject = jsonFactory.getLoginParams(loginModel.getUe(), loginModel.getUp());
         LoginTransaction loginTransaction = new LoginTransaction(jsonObject, context);

@@ -26,6 +26,23 @@ public class LoginResponseModel {
         this.uId = uId;
     }
 
+
+    public String getuName() {
+        return uName;
+    }
+
+    public void setuName(String uName) {
+        this.uName = uName;
+    }
+
+    public String getuToken() {
+        return uToken;
+    }
+
+    public void setuToken(String uToken) {
+        this.uToken = uToken;
+    }
+
     @Override
     public String toString() {
         return "LoginResponseModel{" +

@@ -56,24 +56,28 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
     protected void onPostExecute(HttpResponse response) {
         super.onPostExecute(response);
 
-        final int statusCode = response.getStatusCode();
+        try {
+            final int statusCode = response.getStatusCode();
 
-        if (isSuccesfulStatusCode(statusCode)) {
+            if (isSuccesfulStatusCode(statusCode)) {
 
-            if (mContext != null) {
-                ((NetworkLayer) mContext).parseResponse(response.getResponseBody());
+                if (mContext != null) {
+                    ((NetworkLayer) mContext).parseResponse(response.getResponseBody());
+                } else {
+                    ((NetworkLayer) mFragmentContext).parseResponse(response.getResponseBody());
+                }
             } else {
-                ((NetworkLayer) mFragmentContext).parseResponse(response.getResponseBody());
-            }
-        } else {
-            String message = handleDefaultErrors(statusCode);
-            ((NetworkLayer) mContext).showError(message);
-
-            if (mContext != null) {
+                String message = handleDefaultErrors(statusCode);
                 ((NetworkLayer) mContext).showError(message);
-            } else {
-                ((NetworkLayer) mFragmentContext).showError(message);
+
+                if (mContext != null) {
+                    ((NetworkLayer) mContext).showError(message);
+                } else {
+                    ((NetworkLayer) mFragmentContext).showError(message);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -84,6 +88,7 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
     private String handleDefaultErrors(int statusCode) {
 
         String errorMessage = null;
+        Log.e("statusCode--> " , statusCode +"");
         switch (statusCode) {
             case 404:
                 break;

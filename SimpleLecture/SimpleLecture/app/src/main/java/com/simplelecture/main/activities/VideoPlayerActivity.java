@@ -18,6 +18,7 @@ public class VideoPlayerActivity extends AppCompatActivity {
     VideoView videoView;
     // Insert your Video URL
     String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
+   // String VideoURL ="https://player.vimeo.com/video/49462103";
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {

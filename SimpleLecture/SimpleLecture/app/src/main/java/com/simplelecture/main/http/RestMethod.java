@@ -2,6 +2,8 @@ package com.simplelecture.main.http;
 
 //import com.pumpkin.angelsensorpoc.Utils;
 
+import android.util.Log;
+
 import com.simplelecture.main.util.Util;
 
 import java.io.BufferedOutputStream;
@@ -33,6 +35,8 @@ public class RestMethod implements IRestMethod {
         HttpResponse httpResponse = null;
         try {
             URL url = new URL(uri.toString());
+            Log.v("url-->", url.toString());
+            Log.v("body-->", body.toString());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty("content-type", "application/json");
             connection.setRequestMethod("POST");
@@ -58,6 +62,7 @@ public class RestMethod implements IRestMethod {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return httpResponse;
     }
 
@@ -67,6 +72,8 @@ public class RestMethod implements IRestMethod {
         HttpResponse response = null;
         try {
             URL url = new URL(uri.toString());
+            Log.v("url-->", url.toString());
+            Log.v("token-->", token.toString());
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("GET");
