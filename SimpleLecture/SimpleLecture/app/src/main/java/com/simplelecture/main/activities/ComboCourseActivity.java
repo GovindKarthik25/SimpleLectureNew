@@ -48,8 +48,6 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(false);
         }
-
-
     }
 
     private void setupViewPager(ViewPager viewPager) {

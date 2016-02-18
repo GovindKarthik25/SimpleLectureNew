@@ -238,17 +238,14 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 param_get_MyCoursesDetails = false;
 
-                Log.i("courseDetailsResp***", courseDetailsResponseModel.toString()+" ***** ");
+                Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
 
-                if(courseDetailsResponseModel.isCombo()){
+                if (courseDetailsResponseModel.isCombo()) {
                     new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
                     new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
                 }
-
-
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -258,7 +255,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void showError(String error) {
-        if(pd.isShowing()){
+        if (pd.isShowing()) {
             pd.cancel();
         }
         pd.cancel();

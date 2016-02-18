@@ -1,6 +1,7 @@
 package com.simplelecture.main.fragments;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -13,12 +14,14 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.adapters.ExpandableListAdapter;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -70,7 +73,6 @@ public class CourseIndexFragment extends Fragment {
         }
 
 
-
     }
 
     @Override
@@ -82,6 +84,8 @@ public class CourseIndexFragment extends Fragment {
         // get the listview
         expListView = (ExpandableListView) convertView.findViewById(R.id.lvExp);
 
+        expListView.setOnChildClickListener(onChildClickListener);
+
         // preparing list data
         prepareListData();
 
@@ -92,6 +96,18 @@ public class CourseIndexFragment extends Fragment {
 
         return convertView;
     }
+
+
+    ExpandableListView.OnChildClickListener onChildClickListener = new ExpandableListView.OnChildClickListener() {
+        @Override
+        public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
+
+            ViewManager viewManager = new ViewManager();
+            viewManager.gotoVideoPlayerView(getActivity());
+
+            return true;
+        }
+    };
 
     /*
      * Preparing the list data

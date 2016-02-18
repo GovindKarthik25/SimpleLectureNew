@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.simplelecture.main.model.LoginModel;
+import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
@@ -58,11 +59,21 @@ public class ApiService {
 
     }
 
-    public void doGetCourseDetails(String uId, Context mContext,Fragment fragmentContext) {
+    public void doGetCourseDetails(String uId, Context mContext, Fragment fragmentContext) {
 
         CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
         TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
         transactionProcessor.execute(coursesDetailsTransaction);
+
+    }
+
+    //Courses index
+    public void doGetChapters(Context mContext, String uId, Fragment fragmentContext) {
+        String token = Util.getFromPrefrences(mContext, "uToken");
+
+        ChaptersTransaction chaptersTransaction = new ChaptersTransaction(null, mContext, uId, token);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+        transactionProcessor.execute(chaptersTransaction);
 
     }
 

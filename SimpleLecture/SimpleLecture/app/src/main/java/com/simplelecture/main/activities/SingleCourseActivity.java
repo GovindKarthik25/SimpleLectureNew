@@ -20,6 +20,7 @@ import com.simplelecture.main.fragments.CourseFeatureFragment;
 import com.simplelecture.main.fragments.CourseIndexFragment;
 import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +36,15 @@ public class SingleCourseActivity extends AppCompatActivity {
 
     String cId;
 
+    CourseDetailsResponseModel courseDetailsResponseModelObj;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_course);
 
         intent = getIntent();
-        cId = intent.getStringExtra("cid");
+        courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetailsResponseModel");
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -62,8 +65,6 @@ public class SingleCourseActivity extends AppCompatActivity {
         for(int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(false);
         }*/
-
-
     }
 
     private void setupViewPager(ViewPager viewPager) {
