@@ -44,6 +44,6 @@ public class LoginTransaction extends PostTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return "Validate";
+        return "User/Validate";
     }
 }

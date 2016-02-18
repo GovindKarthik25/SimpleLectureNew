@@ -110,8 +110,9 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoSingleCourseView(Activity activity) {
+    public Intent gotoSingleCourseView(Activity activity, String cId) {
         intent = new Intent(activity, SingleCourseActivity.class);
+        intent.putExtra("cid", cId);
         setDisplay(activity, intent);
         return intent;
     }

@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
             param_get_Login = true;
-            pd = new Util().waitingMessage(LoginActivity.this,"",  getResources().getString(R.string.loading));
+            pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
             pd.setCanceledOnTouchOutside(false);
             //Login Service
             ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
@@ -367,7 +367,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, response);
         try {
             pd.cancel();
-            if(param_get_Login) {
+            if (param_get_Login) {
                 Gson gson = new Gson();
                 JSONObject jSONObject = new JSONObject(response);
                 LoginResponseModel loginResponseModelObj = gson.fromJson(response, LoginResponseModel.class);
@@ -380,6 +380,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 param_get_Login = false;
             }
 
+            /*Setting data to main arraylist*/
+            MyCoursesResponseModel myCoursesResponseModelObj = new MyCoursesResponseModel();
+//            myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
+
+            Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
+//            new ViewManager().gotoDashboardView(this);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -390,7 +397,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void showError(String error) {
         Log.v("error", "error");
         pd.cancel();
-        if(error.isEmpty()){
+        if (error.isEmpty()) {
             error = "Error";
         }
         snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));

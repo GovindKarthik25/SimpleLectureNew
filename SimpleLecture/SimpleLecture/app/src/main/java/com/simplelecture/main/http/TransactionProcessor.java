@@ -68,7 +68,6 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
                 }
             } else {
                 String message = handleDefaultErrors(statusCode);
-                ((NetworkLayer) mContext).showError(message);
 
                 if (mContext != null) {
                     ((NetworkLayer) mContext).showError(message);
@@ -88,9 +87,10 @@ public class TransactionProcessor extends AsyncTask<Transaction, Integer, HttpRe
     private String handleDefaultErrors(int statusCode) {
 
         String errorMessage = null;
-        Log.e("statusCode--> " , statusCode +"");
+        Log.e("statusCode--> ", statusCode + "");
         switch (statusCode) {
             case 404:
+                errorMessage = "Not Found.";
                 break;
             case 500:
                 break;

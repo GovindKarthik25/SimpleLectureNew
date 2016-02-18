@@ -123,28 +123,9 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         View convertView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
 
-       /* ArrayList<String> data = new ArrayList<>();
-        data.add("test1");
-        data.add("test2");
-        data.add("test3");
-        data.add("test4");
-        data.add("test5");
-        data.add("test6");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");*/
-
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
 
-
         return convertView;
-
     }
 
     @Override
@@ -158,14 +139,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
             recyclerView.setAdapter(dashboardAdapter);
 
-            dashboardAdapter.setOnItemClickListener(new OnItemClickListener() {
-                @Override
-                public void onItemClick(View view, int position) {
-
-                    ViewManager viewManager = new ViewManager();
-                    viewManager.gotoSingleCourseView(getActivity());
-                }
-            });
+            dashboardAdapter.setOnItemClickListener(onItemClickListener);
         }
     }
 
@@ -175,6 +149,16 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             mListener.onFragmentInteraction(uri);
         }
     }
+
+    OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            myCourses myCoursesObj = myCoursesLstArray.get(position);
+
+            ViewManager viewManager = new ViewManager();
+            viewManager.gotoSingleCourseView(getActivity(), myCoursesObj.getcId());
+        }
+    };
 
     @Override
     public void onAttach(Activity activity) {
@@ -222,6 +206,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
                 recyclerView.setAdapter(dashboardAdapter);
+                dashboardAdapter.setOnItemClickListener(onItemClickListener);
 
                 dashboardAdapter.notifyDataSetChanged();
 

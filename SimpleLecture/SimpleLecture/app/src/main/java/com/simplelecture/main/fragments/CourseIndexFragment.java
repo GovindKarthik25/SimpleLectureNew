@@ -8,7 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ExpandableListAdapter;
 import com.simplelecture.main.http.ApiService;
@@ -39,7 +42,7 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
     }
 
     private SnackBarManagement snack;
-    private String mParam1;
+    private String uId;
     private String mParam2;
 
     private static final String ARG_PARAM1 = "param1";
@@ -49,6 +52,13 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
     private ProgressDialog pd;
     private CoordinatorLayout coordinatorLayout;
 
+    public static CourseIndexFragment newInstance(String param1) {
+        CourseIndexFragment fragment = new CourseIndexFragment();
+        Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,8 +67,7 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
         snack = new SnackBarManagement(getActivity());
 
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            uId = getArguments().getString(ARG_PARAM1);
         }
 
         if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
@@ -66,7 +75,7 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
             pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
             pd.setCanceledOnTouchOutside(false);
             //My Courses service
-            ApiService.getApiService().doGetCourseDetails("", getActivity(), CourseIndexFragment.this);
+            ApiService.getApiService().doGetCourseDetails(uId, getActivity(), CourseIndexFragment.this);
         } else {
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }
@@ -134,17 +143,23 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
         listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
         listDataChild.put(listDataHeader.get(1), nowShowing);
         listDataChild.put(listDataHeader.get(2), comingSoon);
+        listDataChild.put(listDataHeader.get(3), comingSoon);
+
     }
 
     @Override
     public void parseResponse(String response) {
 
-//        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
 
         try {
-
+            pd.cancel();
             if (param_get_MyCourses) {
+
                 JSONObject jsonObject = new JSONObject(response);
+                Gson gson = new Gson();
+                JsonParser parser = new JsonParser();
+//                String myCoursesContent = jSONObject.getString("myCourses");
 
 
             } else {
@@ -161,6 +176,8 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void showError(String error) {
+
+        pd.cancel();
 
     }
 }

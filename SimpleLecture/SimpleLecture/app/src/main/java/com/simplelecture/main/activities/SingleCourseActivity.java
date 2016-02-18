@@ -1,5 +1,6 @@
 package com.simplelecture.main.activities;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,10 +31,17 @@ public class SingleCourseActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private EditText searchEditText;
 
+    Intent intent;
+
+    String cId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_course);
+
+        intent = getIntent();
+        cId = intent.getStringExtra("cid");
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -62,7 +70,7 @@ public class SingleCourseActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CourseFeatureFragment(), getResources().getString(R.string.courseFeature));
         adapter.addFrag(new CourseDescriptionFragment(), getResources().getString(R.string.courseDescription));
-        adapter.addFrag(new CourseIndexFragment(), getResources().getString(R.string.courseIndex));
+        adapter.addFrag(CourseIndexFragment.newInstance(cId), getResources().getString(R.string.courseIndex));
         adapter.addFrag(new CourseBenifitsFragment(), getResources().getString(R.string.courseBenifits));
         adapter.addFrag(new FAQFragment(), getResources().getString(R.string.fAQ));
         adapter.addFrag(new ReviewFragment(), getResources().getString(R.string.review));
