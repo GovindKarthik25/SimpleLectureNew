@@ -1,6 +1,7 @@
 package com.simplelecture.main.http;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.simplelecture.main.model.LoginModel;
@@ -40,7 +41,7 @@ public class ApiService {
 
     }
 
-    public void doGetMyCourses(Context mContext, String uId) {
+    public void doGetMyCourses(Context mContext, String uId, Fragment fragmentContext) {
 
         try {
             //use this to get token stored in prefrences
@@ -49,7 +50,7 @@ public class ApiService {
             //String token = "alc3ZXpKOE1MSWl2aVlBV25tNHlpSHlRc3N3MkYvWGFLZGRsV3FLU0QzWT06REVFS1NIQU5BSURVMTlAR01BSUwuQ09NOjYzNTkxMjM1MjY4NzE0Njg0OQ==";
 
             MyCoursesTransaction myCoursesTransaction = new MyCoursesTransaction(null, mContext, uId, token);
-            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(myCoursesTransaction);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,11 +58,12 @@ public class ApiService {
 
     }
 
-    public void getCourseDetails(String uId, Context mContext) {
+    public void doGetCourseDetails(String uId, Context mContext,Fragment fragmentContext) {
 
         CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
         transactionProcessor.execute(coursesDetailsTransaction);
 
     }
+
 }

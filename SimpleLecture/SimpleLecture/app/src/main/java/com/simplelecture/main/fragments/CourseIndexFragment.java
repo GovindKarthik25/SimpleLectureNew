@@ -1,18 +1,21 @@
 package com.simplelecture.main.fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ExpandableListView;
-import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ExpandableListAdapter;
+import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
-import com.simplelecture.main.http.TransactionProcessor;
-import com.simplelecture.main.transactions.GetCoursesIndexTransaction;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,13 +38,38 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
         // Required empty public constructor
     }
 
+    private SnackBarManagement snack;
+    private String mParam1;
+    private String mParam2;
+
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
+
+    private boolean param_get_MyCourses = false;
+    private ProgressDialog pd;
+    private CoordinatorLayout coordinatorLayout;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        GetCoursesIndexTransaction getCoursesIndexTransaction = new GetCoursesIndexTransaction(null, getActivity());
-//        TransactionProcessor transactionProcessor = new TransactionProcessor(this);
-//        transactionProcessor.execute(getCoursesIndexTransaction);
+        snack = new SnackBarManagement(getActivity());
+
+        if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
+        }
+
+        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+            param_get_MyCourses = true;
+            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+            pd.setCanceledOnTouchOutside(false);
+            //My Courses service
+            ApiService.getApiService().doGetCourseDetails("", getActivity(), CourseIndexFragment.this);
+        } else {
+            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+        }
 
     }
 
@@ -114,8 +142,14 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
 //        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
 
         try {
-            JSONObject jsonObject = new JSONObject(response);
 
+            if (param_get_MyCourses) {
+                JSONObject jsonObject = new JSONObject(response);
+
+
+            } else {
+                param_get_MyCourses = false;
+            }
 
 
         } catch (JSONException e) {

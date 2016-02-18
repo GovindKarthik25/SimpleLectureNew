@@ -106,10 +106,10 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
         if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
             param_get_MyCourses = true;
-            pd = new Util().waitingMessage(getActivity(),"",  getResources().getString(R.string.loading));
+            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
             pd.setCanceledOnTouchOutside(false);
             //My Courses service
-            ApiService.getApiService().doGetMyCourses(DashboardFragment.this.getContext(), Util.getFromPrefrences(getActivity(), "uId"));
+            ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
         } else {
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }
@@ -151,20 +151,22 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
-        recyclerView.setAdapter(dashboardAdapter);
 
-        dashboardAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
+        if (dashboardAdapter != null) {
+            dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
+            recyclerView.setAdapter(dashboardAdapter);
 
-                ViewManager viewManager = new ViewManager();
-                viewManager.gotoSingleCourseView(getActivity());
-            }
-        });
+            dashboardAdapter.setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
+
+                    ViewManager viewManager = new ViewManager();
+                    viewManager.gotoSingleCourseView(getActivity());
+                }
+            });
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -197,7 +199,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         try {
             pd.cancel();
 
-            if(param_get_MyCourses) {
+            if (param_get_MyCourses) {
                 JSONObject jSONObject = new JSONObject(response);
                 Gson gson = new Gson();
                 JsonParser parser = new JsonParser();
@@ -215,7 +217,14 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
                 Log.i("myCoursesLstArray**->", myCoursesLstArray.size() + "");
 
+                //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+
+
+                dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
+                recyclerView.setAdapter(dashboardAdapter);
+
                 dashboardAdapter.notifyDataSetChanged();
+
                 Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
                 param_get_MyCourses = false;
             }
