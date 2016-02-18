@@ -19,7 +19,7 @@ public class Constants {
     public static String SERVICE_URL = "http://204.9.137.199/api/";
 
     /*Api Sevices*/
-    public static String GET_LOGINSIGNIN = "login/signIn";
+    public static String GET_LOGINSIGNIN = "User/Validate";
     public static String GET_FORGOTPASSWORD = "login/signIn";
     public static String GET_CREATEACCOUNT = "login/signIn";
     public static String GET_CHANGEPASSWORD = "login/signIn";

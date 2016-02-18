@@ -1,11 +1,13 @@
 package com.simplelecture.main.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -47,7 +49,9 @@ import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.viewmodel.LoginResponseModel;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
 import com.simplelecture.main.model.viewmodel.myCourses;
+import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SessionManager;
+import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
@@ -87,7 +91,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 400;
-    private String[] param_get_Login = new String[]{Constants.GET_LOGINSIGNIN};
+    private boolean param_get_Login = false;
+    private CoordinatorLayout coordinatorLayout;
+    private SnackBarManagement snack;
+    private ProgressDialog pd;
 
 
     @Override
@@ -102,7 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //facebook callbackManager
         callbackManager = CallbackManager.Factory.create();
 
-
+        snack = new SnackBarManagement(getApplicationContext());
         final SessionManager sessionManager = SessionManager.getInstance();
 
         signInButton = (SignInButton) findViewById(R.id.sign_in_button);
@@ -123,6 +130,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
         facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         btn_Login.setOnClickListener(this);
         createAccountTextView.setOnClickListener(this);
@@ -204,8 +213,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         loginModel.setUe("deekshanaidu19@gmail.com");
         loginModel.setUp("SL25611320");
 
-        //Login Service
-        ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
+        if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
+            param_get_Login = true;
+            pd = new Util().waitingMessage(LoginActivity.this,"",  getResources().getString(R.string.loading));
+            pd.setCanceledOnTouchOutside(false);
+            //Login Service
+            ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
+        } else {
+            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+        }
 
 
     }
@@ -350,36 +366,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Log.i("response", "response");
         Log.i(TAG, response);
         try {
-            Gson gson = new Gson();
-            JSONObject jSONObject = new JSONObject(response);
-            LoginResponseModel loginResponseModelObj = gson.fromJson(response, LoginResponseModel.class);
-            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
+            pd.cancel();
+            if(param_get_Login) {
+                Gson gson = new Gson();
+                JSONObject jSONObject = new JSONObject(response);
+                LoginResponseModel loginResponseModelObj = gson.fromJson(response, LoginResponseModel.class);
 
-            Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
-            Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
-
-
-            //My Courses service
-            ApiService.getApiService().doGetMyCourses(LoginActivity.this, Util.getFromPrefrences(LoginActivity.this, "uId"));
-
-            JsonParser parser = new JsonParser();
-            String myCoursesContent = jSONObject.getString("myCourses");
-            JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
-
-            ArrayList<myCourses> myCoursesLstArray = new ArrayList<myCourses>();
-            for (JsonElement obj : jarray) {
-                myCourses myCoursesObj = gson.fromJson(obj, myCourses.class);
-                myCoursesLstArray.add(myCoursesObj);
+                Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
+                Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
+                param_get_Login = false;
+                new ViewManager().gotoDashboardView(this);
+            } else {
+                param_get_Login = false;
             }
-
-            /*Setting data to main arraylist*/
-            MyCoursesResponseModel myCoursesResponseModelObj = new MyCoursesResponseModel();
-            myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
-
-
-            Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
-            // new ViewManager().gotoDashboardView(this);
-
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -390,7 +389,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void showError(String error) {
         Log.v("error", "error");
-        Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+        pd.cancel();
+        if(error.isEmpty()){
+            error = "Error";
+        }
+        snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
 
     }
 }

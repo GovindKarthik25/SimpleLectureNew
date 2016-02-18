@@ -118,5 +118,7 @@
         </LinearLayout>
     </LinearLayout>
 
-
+    <include
+        android:id="@+id/coordinatorLayout"
+        layout="@layout/coordinatelayout"></include>
 </RelativeLayout>

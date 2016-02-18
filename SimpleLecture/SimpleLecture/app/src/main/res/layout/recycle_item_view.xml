@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/courseimageView"
         android:layout_width="90dp"
         android:src="@mipmap/ic_launcher"
         android:layout_gravity="center"
