@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Created by Raos on 2/14/2016.
  */
-public class CourseIndexFragment extends Fragment implements NetworkLayer {
+public class CourseIndexFragment extends Fragment {
 
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
@@ -48,7 +48,6 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    private boolean param_get_MyCourses = false;
     private ProgressDialog pd;
     private CoordinatorLayout coordinatorLayout;
 
@@ -67,18 +66,10 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
         snack = new SnackBarManagement(getActivity());
 
         if (getArguments() != null) {
-            uId = getArguments().getString(ARG_PARAM1);
+            //uId = getArguments().getString(ARG_PARAM1);
         }
 
-        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-            param_get_MyCourses = true;
-            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-            pd.setCanceledOnTouchOutside(false);
-            //My Courses service
-            ApiService.getApiService().doGetCourseDetails(uId, getActivity(), CourseIndexFragment.this);
-        } else {
-            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-        }
+
 
     }
 
@@ -144,40 +135,6 @@ public class CourseIndexFragment extends Fragment implements NetworkLayer {
         listDataChild.put(listDataHeader.get(1), nowShowing);
         listDataChild.put(listDataHeader.get(2), comingSoon);
         listDataChild.put(listDataHeader.get(3), comingSoon);
-
-    }
-
-    @Override
-    public void parseResponse(String response) {
-
-        Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
-
-        try {
-            pd.cancel();
-            if (param_get_MyCourses) {
-
-                JSONObject jsonObject = new JSONObject(response);
-                Gson gson = new Gson();
-                JsonParser parser = new JsonParser();
-//                String myCoursesContent = jSONObject.getString("myCourses");
-
-
-            } else {
-                param_get_MyCourses = false;
-            }
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-    @Override
-    public void showError(String error) {
-
-        pd.cancel();
 
     }
 }

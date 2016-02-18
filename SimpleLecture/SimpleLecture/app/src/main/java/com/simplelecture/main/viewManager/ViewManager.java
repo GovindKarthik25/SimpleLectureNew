@@ -2,6 +2,7 @@ package com.simplelecture.main.viewManager;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Parcelable;
 
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
@@ -12,6 +13,7 @@ import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -93,8 +95,9 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoComboCourseView(Activity activity) {
+    public Intent gotoComboCourseView(Activity activity, CourseDetailsResponseModel courseDetailsResponseModel) {
         intent = new Intent(activity, ComboCourseActivity.class);
+        intent.putExtra("courseDetails", courseDetailsResponseModel);
         setDisplay(activity, intent);
         return intent;
     }
@@ -110,9 +113,9 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoSingleCourseView(Activity activity, String cId) {
+    public Intent gotoSingleCourseView(Activity activity, CourseDetailsResponseModel courseDetailsResponseModelObj) {
         intent = new Intent(activity, SingleCourseActivity.class);
-        intent.putExtra("cid", cId);
+        intent.putExtra("courseDetailsResponseModel", courseDetailsResponseModelObj);
         setDisplay(activity, intent);
         return intent;
     }

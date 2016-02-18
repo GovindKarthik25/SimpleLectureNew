@@ -1,11 +1,12 @@
 package com.simplelecture.main.model.viewmodel;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Raos on 2/16/2016.
  */
-public class CourseDetailsResponseModel  {
+public class CourseDetailsResponseModel implements Serializable {
 
     private String cId;
     private String cName;
@@ -13,14 +14,14 @@ public class CourseDetailsResponseModel  {
     private String cBenefits;
     private String cIcon;
     private String videoId;
-    private String isCombo;
+    private boolean isCombo;
     List<courseFeatures> courseFeature;
     private String courseCombos;
 
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoId, String isCombo, List<courseFeatures> courseFeature, String courseCombos) {
+    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoId, boolean isCombo, List<courseFeatures> courseFeature, String courseCombos) {
         this.cId = cId;
         this.cName = cName;
         this.cDesc = cDesc;
@@ -80,11 +81,11 @@ public class CourseDetailsResponseModel  {
         this.videoId = videoId;
     }
 
-    public String getIsCombo() {
+    public boolean isCombo() {
         return isCombo;
     }
 
-    public void setIsCombo(String isCombo) {
+    public void setIsCombo(boolean isCombo) {
         this.isCombo = isCombo;
     }
 
@@ -113,7 +114,7 @@ public class CourseDetailsResponseModel  {
                 ", cBenefits='" + cBenefits + '\'' +
                 ", cIcon='" + cIcon + '\'' +
                 ", videoId='" + videoId + '\'' +
-                ", isCombo='" + isCombo + '\'' +
+                ", isCombo=" + isCombo +
                 ", courseFeature=" + courseFeature +
                 ", courseCombos='" + courseCombos + '\'' +
                 '}';

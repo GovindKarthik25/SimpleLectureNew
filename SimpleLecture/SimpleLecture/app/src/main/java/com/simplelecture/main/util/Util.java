@@ -215,6 +215,7 @@ public class Util {
         pd.setTitle(title);
         pd.setMessage(message);
         pd.setCancelable(false);
+        pd.setCanceledOnTouchOutside(false);
         pd.show();
         return pd;
     }

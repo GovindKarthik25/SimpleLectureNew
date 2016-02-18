@@ -26,7 +26,9 @@ import com.simplelecture.main.adapters.DashboardAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
+import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -68,7 +70,9 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     private List<myCourses> myCoursesLstArray = new ArrayList<myCourses>();
     private MyCoursesResponseModel myCoursesResponseModelObj;
     private boolean param_get_MyCourses = false;
+    private boolean param_get_MyCoursesDetails = false;
     private ProgressDialog pd;
+    private List<courseFeatures> courseFeaturesLstArray;
 
 
     /**
@@ -155,8 +159,16 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         public void onItemClick(View view, int position) {
             myCourses myCoursesObj = myCoursesLstArray.get(position);
 
-            ViewManager viewManager = new ViewManager();
-            viewManager.gotoSingleCourseView(getActivity(), myCoursesObj.getcId());
+            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                param_get_MyCoursesDetails = true;
+                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                //My Courses service
+                ApiService.getApiService().doGetCourseDetails(myCoursesObj.getcId(), getActivity(), DashboardFragment.this);
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+
+
         }
     };
 
@@ -182,11 +194,11 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     public void parseResponse(String response) {
         try {
             pd.cancel();
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
 
             if (param_get_MyCourses) {
                 JSONObject jSONObject = new JSONObject(response);
-                Gson gson = new Gson();
-                JsonParser parser = new JsonParser();
                 String myCoursesContent = jSONObject.getString("myCourses");
                 JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
 
@@ -201,9 +213,6 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
                 Log.i("myCoursesLstArray**->", myCoursesLstArray.size() + "");
 
-                //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-
-
                 dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
                 recyclerView.setAdapter(dashboardAdapter);
                 dashboardAdapter.setOnItemClickListener(onItemClickListener);
@@ -212,6 +221,34 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
                 param_get_MyCourses = false;
+            } else if (param_get_MyCoursesDetails) {
+                CourseDetailsResponseModel courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
+                JSONObject jSONObject = new JSONObject(response);
+
+                String myCoursesContent = jSONObject.getString("courseFeatures");
+                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
+
+                courseFeaturesLstArray = new ArrayList<courseFeatures>();
+                for (JsonElement obj : jarray) {
+                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
+                    courseFeaturesLstArray.add(courseFeaturesObj);
+                }
+
+                courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
+
+                param_get_MyCoursesDetails = false;
+
+                Log.i("courseDetailsResp***", courseDetailsResponseModel.toString()+" ***** ");
+
+
+                if(courseDetailsResponseModel.isCombo()){
+                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
+                } else {
+                    new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+                }
+
+
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -221,7 +258,12 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void showError(String error) {
+        if(pd.isShowing()){
+            pd.cancel();
+        }
+        pd.cancel();
         Log.v("myCoursesLstArray", "error");
         param_get_MyCourses = false;
+        param_get_MyCoursesDetails = false;
     }
 }
