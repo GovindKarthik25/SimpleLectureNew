@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.model.viewmodel.myCourses;
+import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -46,13 +47,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-//        Picasso.with(activity)
-//                .load(myCoursesListArray.get(position).getcIcon())
-//                .placeholder(R.mipmap.ic_launcher)   // optional
-//                .error(R.mipmap.ic_launcher)      // optional
-//                .resize(250, 200)                        // optional
-//                .rotate(90)                             // optional
-//                .into(holder.courseimageView);
+        Picasso.with(activity)
+                .load(myCoursesListArray.get(position).getcIcon())
+                .placeholder(R.mipmap.ic_launcher)   // optional
+                .error(R.mipmap.ic_launcher)      // optional
+                //.resize(250, 200)                        // optional
+                //.rotate(90)                             // optional
+                .into(holder.courseimageView);
         holder.textView.setText(myCoursesListArray.get(position).getcName());
 
     }
