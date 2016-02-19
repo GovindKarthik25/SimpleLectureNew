@@ -1,11 +1,13 @@
 package com.simplelecture.main.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -30,10 +32,17 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private EditText searchEditText;
     private CourseDetailsResponseModel courseDetailsResponseModelObj;
 
+    Intent intent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_combo_course);
+
+        intent = getIntent();
+        if (intent.hasExtra("courseDetails")) {
+            courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
+        }
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -46,13 +55,6 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-      /*  Bundle bundle = getIntent().getExtras();
-        if(bundle != null) {
-            courseDetailsResponseModelObj = (CourseDetailsResponseModel) bundle.getSerializable("courseDetailsResponseModelObj");
-        }
-        */
-        
-        
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         tabStrip.setEnabled(false);
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
@@ -62,7 +64,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new ComboCoursesFragment(), getResources().getString(R.string.comboCourse));
+        adapter.addFrag(new ComboCoursesFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.comboCourse));
         adapter.addFrag(new CourseFeatureFragment(), getResources().getString(R.string.courseFeature));
         adapter.addFrag(new CourseDescriptionFragment(), getResources().getString(R.string.courseDescription));
         adapter.addFrag(new CourseBenifitsFragment(), getResources().getString(R.string.courseBenifits));
