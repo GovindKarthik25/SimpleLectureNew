@@ -22,7 +22,8 @@ public class CourseDetailsResponseModel implements Serializable {
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoId, boolean isCombo, List<courseFeatures> courseFeature, List<CourseCombos> courseCombos, List<ChaptersResponseModel> chaptersResponseModel) {
+    public CourseDetailsResponseModel(List<ChaptersResponseModel> chaptersResponseModel, String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoId, boolean isCombo, List<courseFeatures> courseFeature, List<CourseCombos> courseCombos) {
+        this.chaptersResponseModel = chaptersResponseModel;
         this.cId = cId;
         this.cName = cName;
         this.cDesc = cDesc;
@@ -32,7 +33,6 @@ public class CourseDetailsResponseModel implements Serializable {
         this.isCombo = isCombo;
         this.courseFeature = courseFeature;
         this.courseCombos = courseCombos;
-        this.chaptersResponseModel = chaptersResponseModel;
     }
 
     public String getcId() {

@@ -2,8 +2,6 @@ package com.simplelecture.main.viewManager;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Parcelable;
-
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
@@ -90,6 +88,13 @@ public class ViewManager {
         return intent;
     }
 
+
+    public Intent gotoDashboardView(Activity activity) {
+        intent = new Intent(activity, DashboardActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
     /**
      * Description: go to Combo Course View
      *
@@ -102,12 +107,6 @@ public class ViewManager {
         return intent;
     }
 
-    public Intent gotoDashboardView(Activity activity) {
-        intent = new Intent(activity, DashboardActivity.class);
-        setDisplay(activity, intent);
-        return intent;
-    }
-
     /**
      * Description: go to Single Course View
      *
@@ -115,7 +114,7 @@ public class ViewManager {
      */
     public Intent gotoSingleCourseView(Activity activity, CourseDetailsResponseModel courseDetailsResponseModelObj) {
         intent = new Intent(activity, SingleCourseActivity.class);
-        intent.putExtra("courseDetailsResponseModel", courseDetailsResponseModelObj);
+        intent.putExtra("courseDetails", courseDetailsResponseModelObj);
         setDisplay(activity, intent);
         return intent;
     }

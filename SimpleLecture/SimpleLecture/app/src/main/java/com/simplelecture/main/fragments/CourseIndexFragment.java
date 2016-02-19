@@ -1,7 +1,6 @@
 package com.simplelecture.main.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -18,6 +17,7 @@ import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.adapters.ExpandableListAdapter;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
@@ -39,6 +39,7 @@ public class CourseIndexFragment extends Fragment {
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<String>> listDataChild;
+    private CourseDetailsResponseModel courseDetailsResponseModelObj;
 
     public CourseIndexFragment() {
         // Required empty public constructor
@@ -54,10 +55,10 @@ public class CourseIndexFragment extends Fragment {
     private ProgressDialog pd;
     private CoordinatorLayout coordinatorLayout;
 
-    public static CourseIndexFragment newInstance(String param1) {
+    public static CourseIndexFragment newInstance(CourseDetailsResponseModel courseDetailsResponseModelObj) {
         CourseIndexFragment fragment = new CourseIndexFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM1, courseDetailsResponseModelObj);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,7 +70,8 @@ public class CourseIndexFragment extends Fragment {
         snack = new SnackBarManagement(getActivity());
 
         if (getArguments() != null) {
-            //uId = getArguments().getString(ARG_PARAM1);
+            courseDetailsResponseModelObj = (CourseDetailsResponseModel) getArguments().getSerializable(ARG_PARAM1);
+            Toast.makeText(getActivity(), "" + courseDetailsResponseModelObj, Toast.LENGTH_LONG).show();
         }
 
 

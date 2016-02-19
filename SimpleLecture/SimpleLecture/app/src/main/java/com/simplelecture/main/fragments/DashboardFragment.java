@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -76,6 +77,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     private ProgressDialog pd;
     private List<courseFeatures> courseFeaturesLstArray;
     private List<CourseCombos> courseCombosLstArray;
+    private CourseDetailsResponseModel courseDetailsResponseModel;
 
 
     /**
@@ -200,8 +202,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             pd.cancel();
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-            CourseDetailsResponseModel courseDetailsResponseModel = null;
-
+           // courseDetailsResponseModel = new CourseDetailsResponseModel();
             if (param_get_MyCourses) {
                 JSONObject jSONObject = new JSONObject(response);
                 String myCoursesContent = jSONObject.getString("myCourses");
@@ -259,6 +260,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
 
+
                 if (courseDetailsResponseModel.isCombo()) {
                     new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
@@ -286,7 +288,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
 
-                Log.i("chaptersResponseMo**", " * * * * " + chaptersResponseModelLstArray.toString());
+               // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
 
                 param_get_Details = false;
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);

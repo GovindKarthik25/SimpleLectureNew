@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -40,11 +41,16 @@ public class SingleCourseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("onCreate***", "onCreate***");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_course);
 
         intent = getIntent();
-        courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetailsResponseModel");
+        if (intent.hasExtra("courseDetails")) {
+            courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
+
+            Log.i("courseDetails***", courseDetailsResponseModelObj.toString());
+        }
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
@@ -71,7 +77,7 @@ public class SingleCourseActivity extends AppCompatActivity {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CourseFeatureFragment(), getResources().getString(R.string.courseFeature));
         adapter.addFrag(new CourseDescriptionFragment(), getResources().getString(R.string.courseDescription));
-        adapter.addFrag(CourseIndexFragment.newInstance(cId), getResources().getString(R.string.courseIndex));
+        adapter.addFrag(new CourseIndexFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseIndex));
         adapter.addFrag(new CourseBenifitsFragment(), getResources().getString(R.string.courseBenifits));
         adapter.addFrag(new FAQFragment(), getResources().getString(R.string.fAQ));
         adapter.addFrag(new ReviewFragment(), getResources().getString(R.string.review));
