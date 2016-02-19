@@ -17,7 +17,9 @@ import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.adapters.ExpandableListAdapter;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.courseTopics;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
@@ -38,7 +40,7 @@ public class CourseIndexFragment extends Fragment {
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
-    HashMap<String, List<String>> listDataChild;
+    HashMap<String, List<courseTopics>> listDataChild;
     private CourseDetailsResponseModel courseDetailsResponseModelObj;
 
     public CourseIndexFragment() {
@@ -54,6 +56,8 @@ public class CourseIndexFragment extends Fragment {
 
     private ProgressDialog pd;
     private CoordinatorLayout coordinatorLayout;
+
+    private List<ChaptersResponseModel> chaptersResponseModel = null;
 
     public static CourseIndexFragment newInstance(CourseDetailsResponseModel courseDetailsResponseModelObj) {
         CourseIndexFragment fragment = new CourseIndexFragment();
@@ -71,7 +75,6 @@ public class CourseIndexFragment extends Fragment {
 
         if (getArguments() != null) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) getArguments().getSerializable(ARG_PARAM1);
-            Toast.makeText(getActivity(), "" + courseDetailsResponseModelObj, Toast.LENGTH_LONG).show();
         }
 
 
@@ -87,6 +90,10 @@ public class CourseIndexFragment extends Fragment {
         expListView = (ExpandableListView) convertView.findViewById(R.id.lvExp);
 
         expListView.setOnChildClickListener(onChildClickListener);
+
+        chaptersResponseModel = courseDetailsResponseModelObj.getChaptersResponseModel();
+
+//        Toast.makeText(getActivity(), "" + chaptersResponseModel, Toast.LENGTH_LONG).show();
 
         // preparing list data
         prepareListData();
@@ -104,8 +111,8 @@ public class CourseIndexFragment extends Fragment {
         @Override
         public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
 
-            ViewManager viewManager = new ViewManager();
-            viewManager.gotoVideoPlayerView(getActivity());
+//            ViewManager viewManager = new ViewManager();
+//            viewManager.gotoVideoPlayerView(getActivity());
 
             return true;
         }
@@ -115,44 +122,13 @@ public class CourseIndexFragment extends Fragment {
      * Preparing the list data
 	 */
     private void prepareListData() {
+
         listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<String>>();
+        listDataChild = new HashMap<String, List<courseTopics>>();
 
-        // Adding child data
-        listDataHeader.add("Chapter 1");
-        listDataHeader.add("Chapter 2");
-        listDataHeader.add("Chapter 3");
-        listDataHeader.add("Chapter 4");
-
-        // Adding child data
-        List<String> top250 = new ArrayList<String>();
-        top250.add("Electric Charges and Fields");
-        top250.add("Electric Charges and Fields");
-        top250.add("Electric Charges and Fields");
-        top250.add("Electric Charges and Fields");
-        top250.add("Electric Charges and Fields");
-        top250.add("Electric Charges and Fields");
-        top250.add("Electric Charges and Fields");
-
-        List<String> nowShowing = new ArrayList<String>();
-        nowShowing.add("The Conjuring");
-        nowShowing.add("Despicable Me 2");
-        nowShowing.add("Turbo");
-        nowShowing.add("Grown Ups 2");
-        nowShowing.add("Red 2");
-        nowShowing.add("The Wolverine");
-
-        List<String> comingSoon = new ArrayList<String>();
-        comingSoon.add("2 Guns");
-        comingSoon.add("The Smurfs 2");
-        comingSoon.add("The Spectacular Now");
-        comingSoon.add("The Canyons");
-        comingSoon.add("Europa Report");
-
-        listDataChild.put(listDataHeader.get(0), top250); // Header, Child data
-        listDataChild.put(listDataHeader.get(1), nowShowing);
-        listDataChild.put(listDataHeader.get(2), comingSoon);
-        listDataChild.put(listDataHeader.get(3), comingSoon);
-
+        for (ChaptersResponseModel chaptersResponse : chaptersResponseModel) {
+            listDataHeader.add(chaptersResponse.getCcName());
+            listDataChild.put(chaptersResponse.getCcName(), chaptersResponse.getCourseTopics());
+        }
     }
 }

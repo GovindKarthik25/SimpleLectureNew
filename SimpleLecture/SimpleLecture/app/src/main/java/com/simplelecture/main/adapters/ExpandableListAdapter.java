@@ -1,6 +1,7 @@
 package com.simplelecture.main.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.VideoPlayerActivity;
+import com.simplelecture.main.model.viewmodel.courseTopics;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +25,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<String, List<courseTopics>> listDataChild;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<courseTopics>> listChildData) {
         this.mContext = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -84,7 +88,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        final courseTopics courseTopics = (com.simplelecture.main.model.viewmodel.courseTopics) getChild(groupPosition, childPosition);
+
+        final String childText = courseTopics.getCtName();
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) mContext
@@ -96,6 +102,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.lblListItem);
 
         txtListChild.setText(childText);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+                intent.putExtra("url", courseTopics.getCtVideo());
+                mContext.startActivity(intent);
+            }
+        });
+
         return convertView;
     }
 
