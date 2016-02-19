@@ -26,14 +26,15 @@ import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
-import com.simplelecture.main.model.viewmodel.CourseFeatures;
-import com.simplelecture.main.model.viewmodel.MyCourses;
+import com.simplelecture.main.model.viewmodel.courseFeatures;
+import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -66,14 +67,14 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     Activity activity = getActivity();
     private CoordinatorLayout coordinatorLayout;
     private SnackBarManagement snack;
-    private List<MyCourses> myCoursesLstArray;
+    private List<myCourses> myCoursesLstArray;
     private MyCoursesResponseModel myCoursesResponseModelObj;
     private boolean param_get_MyCourses = false;
     private boolean param_get_MyCoursesDetails = false;
     private boolean param_get_Details = false;
 
     private ProgressDialog pd;
-    private List<CourseFeatures> courseFeaturesLstArray;
+    private List<courseFeatures> courseFeaturesLstArray;
     private List<CourseCombos> courseCombosLstArray;
 
 
@@ -156,7 +157,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         }
     }
 
-    private MyCourses myCoursesObj;
+    private myCourses myCoursesObj;
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
@@ -206,9 +207,9 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 String myCoursesContent = jSONObject.getString("myCourses");
                 JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
 
-                myCoursesLstArray = new ArrayList<MyCourses>();
+                myCoursesLstArray = new ArrayList<myCourses>();
                 for (JsonElement obj : jarray) {
-                    MyCourses myCoursesObj = gson.fromJson(obj, MyCourses.class);
+                    myCourses myCoursesObj = gson.fromJson(obj, myCourses.class);
                     myCoursesLstArray.add(myCoursesObj);
                 }
 
@@ -231,14 +232,15 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 String myCoursesContent = jSONObject.getString("courseFeatures");
                 JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
 
-                courseFeaturesLstArray = new ArrayList<CourseFeatures>();
+                courseFeaturesLstArray = new ArrayList<courseFeatures>();
                 for (JsonElement obj : jarray) {
-                    CourseFeatures courseFeaturesObj = gson.fromJson(obj, CourseFeatures.class);
+                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
                     courseFeaturesLstArray.add(courseFeaturesObj);
                 }
 
                 String courseCombosContent = jSONObject.getString("courseCombos");
-                if (courseCombosContent != null || !courseCombosContent.equals("null")) {
+                Log.i("courseCombosContent", courseCombosContent.toString());
+                if (courseCombosContent != null && !courseCombosContent.equals("null")) {
                     JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
 
                     courseCombosLstArray = new ArrayList<CourseCombos>();
@@ -275,28 +277,16 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             } else if (param_get_Details) {
 
                 JsonArray jArray = parser.parse(response).getAsJsonArray();
-                ChaptersResponseModel chaptersResponseModelobj = null;
 
                 ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
                 for (JsonElement obj : jArray) {
-                    chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
+                    ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
                     chaptersResponseModelLstArray.add(chaptersResponseModelobj);
-
-                    /*JSONArray valarray = new JSONArray(response);
-                    for (int i = 0; i < valarray.length(); i++) {
-
-                        String courseTopics = valarray.getJSONObject(i).getString("courseTopics");
-                        ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(courseTopics, ChaptersResponseModel.class);
-                        chaptersResponseModelLstArray.add(chaptersResponseModelobj);
-                    }
-                    JSONArray courseTopicsarray = new JSONArray(response);
-                    jArray = courseTopicsarray.getJSONArray("courseTopics");
-                    JSONObject jSONObject = new JSONObject(response);
-                    String courseCombosContent = jSONObject.getString("courseTopics");*/
                 }
 
+                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
 
-                Log.i("chaptersResponseMo**", " * * * * " + chaptersResponseModelobj.toString());
+                Log.i("chaptersResponseMo**", " * * * * " + chaptersResponseModelLstArray.toString());
 
                 param_get_Details = false;
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);

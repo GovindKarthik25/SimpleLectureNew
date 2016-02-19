@@ -46,6 +46,6 @@ public class MyCoursesTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return "User/MyCourses/" + mUrlEncoded;
+        return "User/myCourses/" + mUrlEncoded;
     }
 }

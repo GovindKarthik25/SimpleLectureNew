@@ -7,20 +7,20 @@ import java.util.List;
  */
 public class MyCoursesResponseModel {
 
-    List<MyCourses> mycourses;
+    List<myCourses> mycourses;
 
     public MyCoursesResponseModel() {
     }
 
-    public MyCoursesResponseModel(List<MyCourses> mycourses) {
+    public MyCoursesResponseModel(List<myCourses> mycourses) {
         this.mycourses = mycourses;
     }
 
-    public List<MyCourses> getMycourses() {
+    public List<myCourses> getMycourses() {
         return mycourses;
     }
 
-    public void setMycourses(List<MyCourses> mycourses) {
+    public void setMycourses(List<myCourses> mycourses) {
         this.mycourses = mycourses;
     }
 
