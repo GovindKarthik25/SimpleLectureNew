@@ -12,24 +12,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
-import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.adapters.ComboCoursesAdapter;
 import com.simplelecture.main.adapters.DashboardAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
+import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.CourseFeatures;
+import com.simplelecture.main.model.viewmodel.MyCourses;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
-import com.simplelecture.main.model.viewmodel.courseFeatures;
-import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
@@ -67,12 +66,15 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     Activity activity = getActivity();
     private CoordinatorLayout coordinatorLayout;
     private SnackBarManagement snack;
-    private List<myCourses> myCoursesLstArray = new ArrayList<myCourses>();
+    private List<MyCourses> myCoursesLstArray;
     private MyCoursesResponseModel myCoursesResponseModelObj;
     private boolean param_get_MyCourses = false;
     private boolean param_get_MyCoursesDetails = false;
+    private boolean param_get_Details = false;
+
     private ProgressDialog pd;
-    private List<courseFeatures> courseFeaturesLstArray;
+    private List<CourseFeatures> courseFeaturesLstArray;
+    private List<CourseCombos> courseCombosLstArray;
 
 
     /**
@@ -154,16 +156,17 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         }
     }
 
+    private MyCourses myCoursesObj;
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            myCourses myCoursesObj = myCoursesLstArray.get(position);
+            myCoursesObj = myCoursesLstArray.get(position);
 
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                 param_get_MyCoursesDetails = true;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                 //My Courses service
-                ApiService.getApiService().doGetCourseDetails(myCoursesObj.getcId(), getActivity(), DashboardFragment.this);
+                ApiService.getApiService().doGetCourseDetails(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
             } else {
                 snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
             }
@@ -196,22 +199,22 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             pd.cancel();
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
+            CourseDetailsResponseModel courseDetailsResponseModel = null;
 
             if (param_get_MyCourses) {
                 JSONObject jSONObject = new JSONObject(response);
                 String myCoursesContent = jSONObject.getString("myCourses");
                 JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
 
-                myCoursesLstArray = new ArrayList<myCourses>();
+                myCoursesLstArray = new ArrayList<MyCourses>();
                 for (JsonElement obj : jarray) {
-                    myCourses myCoursesObj = gson.fromJson(obj, myCourses.class);
+                    MyCourses myCoursesObj = gson.fromJson(obj, MyCourses.class);
                     myCoursesLstArray.add(myCoursesObj);
                 }
 
             /*Setting data to main arraylist*/
                 myCoursesResponseModelObj = new MyCoursesResponseModel();
                 myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
-                Log.i("myCoursesLstArray**->", myCoursesLstArray.size() + "");
 
                 dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
                 recyclerView.setAdapter(dashboardAdapter);
@@ -222,18 +225,31 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
                 param_get_MyCourses = false;
             } else if (param_get_MyCoursesDetails) {
-                CourseDetailsResponseModel courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
+                courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
                 JSONObject jSONObject = new JSONObject(response);
 
                 String myCoursesContent = jSONObject.getString("courseFeatures");
                 JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
 
-                courseFeaturesLstArray = new ArrayList<courseFeatures>();
+                courseFeaturesLstArray = new ArrayList<CourseFeatures>();
                 for (JsonElement obj : jarray) {
-                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
+                    CourseFeatures courseFeaturesObj = gson.fromJson(obj, CourseFeatures.class);
                     courseFeaturesLstArray.add(courseFeaturesObj);
                 }
 
+                String courseCombosContent = jSONObject.getString("courseCombos");
+                if (courseCombosContent != null || !courseCombosContent.equals("null")) {
+                    JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
+
+                    courseCombosLstArray = new ArrayList<CourseCombos>();
+                    for (JsonElement obj : jarrray) {
+
+                        CourseCombos courseCombosObj = gson.fromJson(obj, CourseCombos.class);
+                        courseCombosLstArray.add(courseCombosObj);
+                    }
+                    courseDetailsResponseModel.setCourseCombos(courseCombosLstArray);
+
+                }
                 courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
 
                 param_get_MyCoursesDetails = false;
@@ -244,8 +260,47 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 if (courseDetailsResponseModel.isCombo()) {
                     new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
-                    new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+
+                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                        param_get_Details = true;
+
+                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                        //My Courses service
+                        ApiService.getApiService().doGetChapters(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
+                    } else {
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+
                 }
+            } else if (param_get_Details) {
+
+                JsonArray jArray = parser.parse(response).getAsJsonArray();
+                ChaptersResponseModel chaptersResponseModelobj = null;
+
+                ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
+                for (JsonElement obj : jArray) {
+                    chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
+                    chaptersResponseModelLstArray.add(chaptersResponseModelobj);
+
+                    /*JSONArray valarray = new JSONArray(response);
+                    for (int i = 0; i < valarray.length(); i++) {
+
+                        String courseTopics = valarray.getJSONObject(i).getString("courseTopics");
+                        ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(courseTopics, ChaptersResponseModel.class);
+                        chaptersResponseModelLstArray.add(chaptersResponseModelobj);
+                    }
+                    JSONArray courseTopicsarray = new JSONArray(response);
+                    jArray = courseTopicsarray.getJSONArray("courseTopics");
+                    JSONObject jSONObject = new JSONObject(response);
+                    String courseCombosContent = jSONObject.getString("courseTopics");*/
+                }
+
+
+                Log.i("chaptersResponseMo**", " * * * * " + chaptersResponseModelobj.toString());
+
+                param_get_Details = false;
+                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+
             }
         } catch (JSONException e) {
             e.printStackTrace();

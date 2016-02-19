@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.myCourses;
+import com.simplelecture.main.model.viewmodel.MyCourses;
 import com.squareup.picasso.Picasso;
 //import com.squareup.picasso.Picasso;
 
@@ -24,12 +24,12 @@ import static com.simplelecture.main.R.id.item_layout;
  */
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyViewHolder> {
 
-    List<myCourses> myCoursesListArray;
+    List<MyCourses> myCoursesListArray;
     Activity activity;
 
     OnItemClickListener mItemClickListener;
 
-    public DashboardAdapter(Activity activty, List<myCourses> myCoursesLstArray) {
+    public DashboardAdapter(Activity activty, List<MyCourses> myCoursesLstArray) {
         this.activity = activty;
         this.myCoursesListArray = myCoursesLstArray;
 

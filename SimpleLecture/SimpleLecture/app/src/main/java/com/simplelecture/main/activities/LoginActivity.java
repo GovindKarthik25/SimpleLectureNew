@@ -3,24 +3,17 @@ package com.simplelecture.main.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +21,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
@@ -38,30 +30,19 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
-import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.viewmodel.LoginResponseModel;
-import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
-import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
-import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, NetworkLayer {
 
@@ -103,17 +84,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
-        FacebookSdk.sdkInitialize(getApplicationContext());
+        //FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         //facebook callbackManager
-        callbackManager = CallbackManager.Factory.create();
+      //  callbackManager = CallbackManager.Factory.create();
 
         snack = new SnackBarManagement(getApplicationContext());
         final SessionManager sessionManager = SessionManager.getInstance();
 
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(googleClientListenr);
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
@@ -127,21 +106,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         inputPassword = (EditText) findViewById(R.id.input_password);
         btn_Login = (Button) findViewById(R.id.btn_Login);
 
+
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
-        facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
+       // facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
+        //signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         btn_Login.setOnClickListener(this);
+        // signInButton.setOnClickListener(googleClientListenr);
+
         createAccountTextView.setOnClickListener(this);
         forgotPasswordtextView.setOnClickListener(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+       /* mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).addScope(Plus.SCOPE_PLUS_PROFILE).build();
+                .addScope(Plus.SCOPE_PLUS_LOGIN).addScope(Plus.SCOPE_PLUS_PROFILE).build();*/
 
-        facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        /*facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.v("onSuccess", "onSuccess");
@@ -161,7 +145,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onError(FacebookException e) {
 
             }
-        });
+        });*/
     }
 
     @Override
@@ -210,8 +194,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
         LoginModel loginModel = new LoginModel();
-        loginModel.setUe("deekshanaidu19@gmail.com");
-        loginModel.setUp("SL25611320");
+        loginModel.setUe("karthikrao19@gmail.com");
+        loginModel.setUp("simple");
 
         if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
             param_get_Login = true;
@@ -370,21 +354,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (param_get_Login) {
                 Gson gson = new Gson();
                 JSONObject jSONObject = new JSONObject(response);
-                LoginResponseModel loginResponseModelObj = gson.fromJson(response, LoginResponseModel.class);
+                boolean isSuccess = jSONObject.getBoolean("isSuccess");
 
-                Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
-                Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
-                param_get_Login = false;
-                new ViewManager().gotoDashboardView(this);
+                if (isSuccess) {
+                    String dataResponse = jSONObject.getString("data");
+
+                    LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);
+                    loginResponseModelObj.setIsSuccess(isSuccess);
+
+                    Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
+                    Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
+                    param_get_Login = false;
+                    new ViewManager().gotoDashboardView(this);
+                } else {
+                    param_get_Login = false;
+                }
             } else {
                 param_get_Login = false;
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.loginFailed), getResources().getString(R.string.dismiss));
             }
 
-            /*Setting data to main arraylist*/
-            MyCoursesResponseModel myCoursesResponseModelObj = new MyCoursesResponseModel();
-//            myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
 
-            Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
 //            new ViewManager().gotoDashboardView(this);
 
         } catch (JSONException e) {

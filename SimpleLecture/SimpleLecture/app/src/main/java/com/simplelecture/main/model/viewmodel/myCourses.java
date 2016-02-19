@@ -5,16 +5,16 @@ import java.io.Serializable;
 /**
  * Created by Raos on 2/16/2016.
  */
-public class myCourses implements Serializable {
+public class MyCourses {
 
     private String cId;
     private String cName;
     private String cIcon;
 
-    public myCourses() {
+    public MyCourses() {
     }
 
-    public myCourses(String cId, String cName, String cIcon) {
+    public MyCourses(String cId, String cName, String cIcon) {
         this.cId = cId;
         this.cName = cName;
         this.cIcon = cIcon;
@@ -46,7 +46,7 @@ public class myCourses implements Serializable {
 
     @Override
     public String toString() {
-        return "myCourses{" +
+        return "MyCourses{" +
                 "cId='" + cId + '\'' +
                 ", cName='" + cName + '\'' +
                 ", cIcon='" + cIcon + '\'' +

@@ -34,6 +34,7 @@
     <string name="err_msg_ConfirmPassword">Enter the Confirm Password</string>
     <string name="err_msg_notMatchConfirmPassword">New Password must match Confirm Password</string>
     <string name="noInternetConnection">No internet connection!</string>
+    <string name="loginFailed">Login Failed</string>
 
 
     <string name="title_activity_home">HomeActivity</string>

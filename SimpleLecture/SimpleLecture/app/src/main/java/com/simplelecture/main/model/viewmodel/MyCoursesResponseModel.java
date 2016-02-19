@@ -1,6 +1,5 @@
 package com.simplelecture.main.model.viewmodel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -8,20 +7,20 @@ import java.util.List;
  */
 public class MyCoursesResponseModel {
 
-    List<myCourses> mycourses;
+    List<MyCourses> mycourses;
 
     public MyCoursesResponseModel() {
     }
 
-    public MyCoursesResponseModel(List<myCourses> mycourses) {
+    public MyCoursesResponseModel(List<MyCourses> mycourses) {
         this.mycourses = mycourses;
     }
 
-    public List<myCourses> getMycourses() {
+    public List<MyCourses> getMycourses() {
         return mycourses;
     }
 
-    public void setMycourses(List<myCourses> mycourses) {
+    public void setMycourses(List<MyCourses> mycourses) {
         this.mycourses = mycourses;
     }
 

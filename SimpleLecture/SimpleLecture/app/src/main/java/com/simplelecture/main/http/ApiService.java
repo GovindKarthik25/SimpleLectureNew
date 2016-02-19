@@ -59,7 +59,7 @@ public class ApiService {
 
     }
 
-    public void doGetCourseDetails(String uId, Context mContext, Fragment fragmentContext) {
+    public void doGetCourseDetails(Context mContext, Fragment fragmentContext, String uId) {
 
         CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
         TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
@@ -68,7 +68,7 @@ public class ApiService {
     }
 
     //Courses index
-    public void doGetChapters(Context mContext, String uId, Fragment fragmentContext) {
+    public void doGetChapters(Context mContext, Fragment fragmentContext, String uId) {
         String token = Util.getFromPrefrences(mContext, "uToken");
 
         ChaptersTransaction chaptersTransaction = new ChaptersTransaction(null, mContext, uId, token);

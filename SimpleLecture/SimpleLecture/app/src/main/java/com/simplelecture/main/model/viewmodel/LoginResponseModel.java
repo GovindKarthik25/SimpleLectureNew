@@ -8,14 +8,16 @@ public class LoginResponseModel {
     private String uId;
     private String uName;
     private String uToken;
+    private boolean isSuccess;
 
     public LoginResponseModel() {
     }
 
-    public LoginResponseModel(String uId, String uName, String uToken) {
+    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess) {
         this.uId = uId;
         this.uName = uName;
         this.uToken = uToken;
+        this.isSuccess = isSuccess;
     }
 
     public String getuId() {
@@ -43,12 +45,21 @@ public class LoginResponseModel {
         this.uToken = uToken;
     }
 
+    public boolean isSuccess() {
+        return isSuccess;
+    }
+
+    public void setIsSuccess(boolean isSuccess) {
+        this.isSuccess = isSuccess;
+    }
+
     @Override
     public String toString() {
         return "LoginResponseModel{" +
                 "uId='" + uId + '\'' +
                 ", uName='" + uName + '\'' +
                 ", uToken='" + uToken + '\'' +
+                ", isSuccess=" + isSuccess +
                 '}';
     }
 }

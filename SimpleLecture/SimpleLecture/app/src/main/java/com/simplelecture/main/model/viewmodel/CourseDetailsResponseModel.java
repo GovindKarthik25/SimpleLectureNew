@@ -15,22 +15,22 @@ public class CourseDetailsResponseModel implements Serializable {
     private String cIcon;
     private String videoId;
     private boolean isCombo;
-    List<courseFeatures> courseFeature;
-    private String courseCombos;
+    private List<CourseFeatures> courseFeature;
+    private List<CourseCombos> courseCombos;
 
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoId, boolean isCombo, List<courseFeatures> courseFeature, String courseCombos) {
+    public CourseDetailsResponseModel(String cId, List<CourseCombos> courseCombos, List<CourseFeatures> courseFeature, boolean isCombo, String videoId, String cIcon, String cBenefits, String cDesc, String cName) {
         this.cId = cId;
-        this.cName = cName;
-        this.cDesc = cDesc;
-        this.cBenefits = cBenefits;
-        this.cIcon = cIcon;
-        this.videoId = videoId;
-        this.isCombo = isCombo;
-        this.courseFeature = courseFeature;
         this.courseCombos = courseCombos;
+        this.courseFeature = courseFeature;
+        this.isCombo = isCombo;
+        this.videoId = videoId;
+        this.cIcon = cIcon;
+        this.cBenefits = cBenefits;
+        this.cDesc = cDesc;
+        this.cName = cName;
     }
 
     public String getcId() {
@@ -89,19 +89,19 @@ public class CourseDetailsResponseModel implements Serializable {
         this.isCombo = isCombo;
     }
 
-    public List<courseFeatures> getCourseFeature() {
+    public List<CourseFeatures> getCourseFeature() {
         return courseFeature;
     }
 
-    public void setCourseFeature(List<courseFeatures> courseFeature) {
+    public void setCourseFeature(List<CourseFeatures> courseFeature) {
         this.courseFeature = courseFeature;
     }
 
-    public String getCourseCombos() {
+    public List<CourseCombos> getCourseCombos() {
         return courseCombos;
     }
 
-    public void setCourseCombos(String courseCombos) {
+    public void setCourseCombos(List<CourseCombos> courseCombos) {
         this.courseCombos = courseCombos;
     }
 
@@ -116,7 +116,7 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", videoId='" + videoId + '\'' +
                 ", isCombo=" + isCombo +
                 ", courseFeature=" + courseFeature +
-                ", courseCombos='" + courseCombos + '\'' +
+                ", courseCombos=" + courseCombos +
                 '}';
     }
 }
