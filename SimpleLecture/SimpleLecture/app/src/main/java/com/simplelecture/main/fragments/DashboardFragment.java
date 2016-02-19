@@ -303,9 +303,13 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         if (pd.isShowing()) {
             pd.cancel();
         }
-        pd.cancel();
+        if(error.isEmpty()){
+            error = "Error in connection";
+        }
+        snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
         Log.v("myCoursesLstArray", "error");
         param_get_MyCourses = false;
         param_get_MyCoursesDetails = false;
+        param_get_Details = false;
     }
 }

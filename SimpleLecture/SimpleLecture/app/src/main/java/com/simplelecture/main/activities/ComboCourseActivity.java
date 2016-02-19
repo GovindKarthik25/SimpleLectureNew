@@ -19,6 +19,7 @@ import com.simplelecture.main.fragments.CourseFeatureFragment;
 import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 
 
 public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -27,6 +28,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private EditText searchEditText;
+    private CourseDetailsResponseModel courseDetailsResponseModelObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +45,14 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+      /*  Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            courseDetailsResponseModelObj = (CourseDetailsResponseModel) bundle.getSerializable("courseDetailsResponseModelObj");
+        }
+        */
+        
+        
         LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         tabStrip.setEnabled(false);
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
