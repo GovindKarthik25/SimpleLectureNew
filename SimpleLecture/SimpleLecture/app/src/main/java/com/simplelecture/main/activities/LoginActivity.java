@@ -49,10 +49,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private Toolbar toolbar;
     private EditText searchEditText;
-    private EditText inputName, inputEmail, inputPassword;
+    private EditText inputEmail, inputPassword; //inputName
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPassword;
     private Button btn_Login;
-    private TextView createAccountTextView, forgotPasswordtextView;
+  //  private TextView createAccountTextView, forgotPasswordtextView;
     private LoginButton facebooklogin_button;
     private CallbackManager callbackManager;
 
@@ -98,17 +98,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         searchEditText.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
+
+        //inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
         inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
-        inputName = (EditText) findViewById(R.id.input_name);
+        //inputName = (EditText) findViewById(R.id.input_name);
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPassword = (EditText) findViewById(R.id.input_password);
         btn_Login = (Button) findViewById(R.id.btn_Login);
 
 
-        createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
-        forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
+       // createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
+       // forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
        // facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
         //signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
@@ -118,8 +119,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_Login.setOnClickListener(this);
         // signInButton.setOnClickListener(googleClientListenr);
 
-        createAccountTextView.setOnClickListener(this);
-        forgotPasswordtextView.setOnClickListener(this);
+        //createAccountTextView.setOnClickListener(this);
+        //forgotPasswordtextView.setOnClickListener(this);
 
        /* mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
@@ -223,11 +224,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         if (v == btn_Login) {
             submitForm();
-        } else if (v == createAccountTextView) {
+        } /*else if (v == createAccountTextView) {
             new ViewManager().gotoCreateAccountView(this);
         } else if (v == forgotPasswordtextView) {
             new ViewManager().gotoForgotPasswordView(this);
-        }
+        }*/
     }
 
 
@@ -235,6 +236,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        item.setVisible(false);
+        this.invalidateOptionsMenu();
+
+        MenuItem item1 = menu.findItem(R.id.action_settings);
+        item1.setVisible(false);
+        this.invalidateOptionsMenu();
+
+        MenuItem item2 = menu.findItem(R.id.action_changePassword);
+        item2.setVisible(false);
+        this.invalidateOptionsMenu();
+
         return true;
     }
 

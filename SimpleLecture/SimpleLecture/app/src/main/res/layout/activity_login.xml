@@ -19,7 +19,7 @@
         android:paddingRight="20dp"
         android:paddingTop="60dp">
 
-        <android.support.design.widget.TextInputLayout
+       <!-- <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_name"
                 android:singleLine="true" />
-        </android.support.design.widget.TextInputLayout>
+        </android.support.design.widget.TextInputLayout>-->
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/input_layout_email"
@@ -67,7 +67,7 @@
             android:text="@string/btn_LogIn"
             android:textColor="@android:color/white" />
 
-        <LinearLayout
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:layout_marginTop="?attr/actionBarSize">
@@ -91,7 +91,7 @@
                 android:textColor="#224455" />
 
 
-        </LinearLayout>
+        </LinearLayout>-->
 
        <!-- <LinearLayout
             android:layout_width="match_parent"

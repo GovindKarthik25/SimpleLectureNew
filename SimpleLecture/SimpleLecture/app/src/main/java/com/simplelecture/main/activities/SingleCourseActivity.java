@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -65,6 +66,13 @@ public class SingleCourseActivity extends AppCompatActivity {
 
         TabLayout.Tab tab = tabLayout.getTabAt(2);
         tab.select();
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                return true;
+            }
+        });
 
         /*LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(2));
         tabStrip.setEnabled(false);
