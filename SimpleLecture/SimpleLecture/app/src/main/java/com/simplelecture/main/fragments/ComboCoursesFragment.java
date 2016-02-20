@@ -1,8 +1,10 @@
 package com.simplelecture.main.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,12 +14,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
+import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.courseFeatures;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +47,7 @@ import java.util.ArrayList;
  * Use the {@link ComboCoursesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ComboCoursesFragment extends Fragment {
+public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -43,6 +63,14 @@ public class ComboCoursesFragment extends Fragment {
     ComboCoursesAdapter comboCoursesAdapter;
 
     CourseDetailsResponseModel courseDetailsResponseModelObj;
+    private CourseCombos courseCombosObj;
+    private boolean param_get_MyCoursesDetails = false;
+    private boolean param_get_Details = false;
+
+    private ProgressDialog pd;
+    private CoordinatorLayout coordinatorLayout;
+    private SnackBarManagement snack;
+    private CourseDetailsResponseModel courseDetailsResponseModel;
 
     /**
      * Use this factory method to create a new instance of
@@ -70,7 +98,6 @@ public class ComboCoursesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) getArguments().getSerializable(ARG_PARAM1);
-            Toast.makeText(getActivity(), "" + courseDetailsResponseModelObj, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -79,31 +106,16 @@ public class ComboCoursesFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View convertView = inflater.inflate(R.layout.fragment_combo_courses, container, false);
-
-
-        ArrayList<String> data = new ArrayList<>();
-        data.add("test1");
-        data.add("test2");
-        data.add("test3");
-        data.add("test4");
-        data.add("test5");
-        data.add("test6");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
+        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
 
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        comboCoursesAdapter = new ComboCoursesAdapter(data);
+        comboCoursesAdapter = new ComboCoursesAdapter(getActivity(), courseDetailsResponseModelObj.getCourseCombos());
         recyclerView.setAdapter(comboCoursesAdapter);
+
+        comboCoursesAdapter.setOnItemClickListener(onItemClickListener);
 
 
         return convertView;
@@ -133,5 +145,106 @@ public class ComboCoursesFragment extends Fragment {
         mListener = null;
     }
 
+    OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            courseCombosObj = courseDetailsResponseModelObj.getCourseCombos().get(position);
 
+            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                param_get_MyCoursesDetails = true;
+                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                //My Courses service
+                ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+
+        }
+    };
+
+
+    @Override
+    public void parseResponse(String response) {
+
+        try {
+            pd.cancel();
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            List<courseFeatures> courseFeaturesLstArray;
+            List<CourseCombos> courseCombosLstArray;
+            if (param_get_MyCoursesDetails) {
+                courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
+                JSONObject jSONObject = new JSONObject(response);
+
+                String myCoursesContent = jSONObject.getString("courseFeatures");
+                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
+
+                courseFeaturesLstArray = new ArrayList<courseFeatures>();
+                for (JsonElement obj : jarray) {
+                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
+                    courseFeaturesLstArray.add(courseFeaturesObj);
+                }
+
+                String courseCombosContent = jSONObject.getString("courseCombos");
+                Log.i("courseCombosContent", courseCombosContent.toString());
+                if (courseCombosContent != null && !courseCombosContent.equals("null")) {
+                    JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
+
+                    courseCombosLstArray = new ArrayList<CourseCombos>();
+                    for (JsonElement obj : jarrray) {
+
+                        CourseCombos courseCombosObj = gson.fromJson(obj, CourseCombos.class);
+                        courseCombosLstArray.add(courseCombosObj);
+                    }
+                    courseDetailsResponseModel.setCourseCombos(courseCombosLstArray);
+
+                }
+                courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
+
+                param_get_MyCoursesDetails = false;
+
+                Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
+
+
+                if (!courseDetailsResponseModel.isCombo()) {
+
+                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                        param_get_Details = true;
+
+                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                        //My Courses service
+                        ApiService.getApiService().doGetChapters(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
+                    } else {
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+
+                }
+            } else if (param_get_Details) {
+
+                JsonArray jArray = parser.parse(response).getAsJsonArray();
+
+                ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
+                for (JsonElement obj : jArray) {
+                    ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
+                    chaptersResponseModelLstArray.add(chaptersResponseModelobj);
+                }
+
+                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+
+                // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
+
+                param_get_Details = false;
+                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void showError(String error) {
+
+    }
 }

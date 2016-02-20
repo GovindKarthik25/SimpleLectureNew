@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment {
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
-        comboCoursesAdapter = new ComboCoursesAdapter(data);
+      //  comboCoursesAdapter = new ComboCoursesAdapter(data);
         recyclerView.setAdapter(comboCoursesAdapter);
 
 

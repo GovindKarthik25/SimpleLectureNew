@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class CourseCombos implements Serializable {
 
-    private int cId;
+    private String cId;
     private String cName;
     private String cIcon;
     private int cdPrice;
@@ -16,19 +16,19 @@ public class CourseCombos implements Serializable {
     public CourseCombos() {
     }
 
-    public CourseCombos(int cId, String catName, int cdPrice, String cIcon, String cName) {
+    public CourseCombos(String cId, String cName, String cIcon, int cdPrice, String catName) {
         this.cId = cId;
-        this.catName = catName;
-        this.cdPrice = cdPrice;
-        this.cIcon = cIcon;
         this.cName = cName;
+        this.cIcon = cIcon;
+        this.cdPrice = cdPrice;
+        this.catName = catName;
     }
 
-    public int getcId() {
+    public String getcId() {
         return cId;
     }
 
-    public void setcId(int cId) {
+    public void setcId(String cId) {
         this.cId = cId;
     }
 

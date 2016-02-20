@@ -78,7 +78,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     private List<courseFeatures> courseFeaturesLstArray;
     private List<CourseCombos> courseCombosLstArray;
     private CourseDetailsResponseModel courseDetailsResponseModel;
-
+    private myCourses myCoursesObj;
 
     /**
      * Use this factory method to create a new instance of
@@ -159,7 +159,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         }
     }
 
-    private myCourses myCoursesObj;
+
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
