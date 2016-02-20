@@ -5,11 +5,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -55,6 +57,7 @@ public class SingleCourseActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(courseDetailsResponseModelObj.getcName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -92,6 +95,16 @@ public class SingleCourseActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();

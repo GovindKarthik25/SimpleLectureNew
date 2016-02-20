@@ -4,6 +4,14 @@
     <color name="colorPrimaryDark">#E64A19</color>
     <color name="colorAccent">#303F9F</color>
     <color name="colorDrawer">#C62828</color>
+    <color name="listItemHeader">#FFE4CF</color>
+    <color name="listItemChild">#F5F5F5</color>
+    <color name="listTextColor">#FF9648</color>
+
+
+
+
+
 
 
 

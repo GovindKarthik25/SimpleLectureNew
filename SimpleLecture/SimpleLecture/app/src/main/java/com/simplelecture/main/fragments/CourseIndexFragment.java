@@ -102,6 +102,17 @@ public class CourseIndexFragment extends Fragment {
 
         // setting list adapter
         expListView.setAdapter(listAdapter);
+        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            private int lastExpandedGroupPosition;
+
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                if (groupPosition != lastExpandedGroupPosition) {
+                    expListView.collapseGroup(lastExpandedGroupPosition);
+                }
+                lastExpandedGroupPosition = groupPosition;
+            }
+        });
 
         return convertView;
     }

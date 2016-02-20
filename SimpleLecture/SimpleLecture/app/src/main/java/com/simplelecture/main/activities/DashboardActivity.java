@@ -44,7 +44,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 

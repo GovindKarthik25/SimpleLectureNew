@@ -29,7 +29,7 @@ import com.simplelecture.main.splash.SplashActivity;
 /**
  * A fragment representing a single step in a wizard. The fragment shows a dummy title indicating
  * the page number, along with some dummy text.
- *
+ * <p/>
  * <p>This class is used by the and {@link
  * SplashActivity} samples.</p>
  */
@@ -46,8 +46,8 @@ public class ScreenSlidePageFragment extends Fragment {
 
 
     int[] mResources = {
-            R.drawable.abc_btn_rating_star_off_mtrl_alpha,
-            R.drawable.abc_btn_check_to_on_mtrl_015,
+            R.mipmap.splash,
+            R.mipmap.landing_screen,
             R.drawable.abc_btn_check_to_on_mtrl_000,
             R.drawable.abc_btn_check_to_on_mtrl_015
     };
@@ -75,14 +75,13 @@ public class ScreenSlidePageFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                             Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater
                 .inflate(R.layout.fragment_screen_slide_page, container, false);
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
         imageView.setImageResource(mResources[mPageNumber]);
-
 
 
         return rootView;

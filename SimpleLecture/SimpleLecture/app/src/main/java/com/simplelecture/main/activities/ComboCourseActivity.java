@@ -3,11 +3,13 @@ package com.simplelecture.main.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -49,6 +51,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         setSupportActionBar(toolbar);
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
+        getSupportActionBar().setTitle(courseDetailsResponseModelObj.getcName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
@@ -86,6 +89,19 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     public void onFragmentInteraction(Uri uri) {
 
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
    /* class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
