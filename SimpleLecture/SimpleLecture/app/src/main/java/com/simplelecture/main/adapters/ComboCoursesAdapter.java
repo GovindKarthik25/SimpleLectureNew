@@ -51,7 +51,7 @@ public class ComboCoursesAdapter extends RecyclerView.Adapter<ComboCoursesAdapte
 
         Picasso.with(activity)
                 .load(courseCombosList.get(position).getcIcon())
-                .placeholder(R.mipmap.ic_launcher)   // optional
+                .placeholder(R.mipmap.loading)   // optional
                 .error(R.mipmap.ic_launcher)      // optional
                         //.resize(250, 200)                        // optional
                         //.rotate(90)                             // optional
