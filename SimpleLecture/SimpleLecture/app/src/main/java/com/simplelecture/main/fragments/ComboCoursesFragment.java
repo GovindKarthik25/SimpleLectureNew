@@ -71,6 +71,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     private CoordinatorLayout coordinatorLayout;
     private SnackBarManagement snack;
     private CourseDetailsResponseModel courseDetailsResponseModel;
+    private boolean param_IsCombo;
 
     /**
      * Use this factory method to create a new instance of
@@ -206,18 +207,36 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                 Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
 
-                if (!courseDetailsResponseModel.isCombo()) {
+                if (param_IsCombo && courseDetailsResponseModel.isCombo()) {
+                    param_IsCombo = false;
+                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
 
-                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                        param_get_Details = true;
+                } else {
 
-                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                        //My Courses service
-                        ApiService.getApiService().doGetChapters(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
+                    if (courseDetailsResponseModel.isCombo()) {
+                        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                            param_get_MyCoursesDetails = true;
+                            param_IsCombo = true;
+                            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                            //My Courses service
+                            ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
+                        } else {
+                            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                        }
+
                     } else {
-                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-                    }
 
+                        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                            param_get_Details = true;
+
+                            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                            //My Courses service
+                            ApiService.getApiService().doGetChapters(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
+                        } else {
+                            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                        }
+
+                    }
                 }
             } else if (param_get_Details) {
 
