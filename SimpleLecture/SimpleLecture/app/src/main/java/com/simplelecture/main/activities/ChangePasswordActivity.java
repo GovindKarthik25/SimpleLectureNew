@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
 
 public class ChangePasswordActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,6 +31,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         searchEditText.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         input_layout_OldPassword = (TextInputLayout) findViewById(R.id.input_layout_OldPassword);
         input_layout_NewPassword = (TextInputLayout) findViewById(R.id.input_layout_NewPassword);
         input_layout_ConfirmPassword = (TextInputLayout) findViewById(R.id.input_layout_ConfirmPassword);

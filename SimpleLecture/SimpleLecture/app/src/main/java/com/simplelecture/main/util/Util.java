@@ -7,7 +7,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.graphics.Color;
 import android.graphics.Rect;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -277,6 +281,12 @@ public class Util {
     public static String getFromPrefrences(Context context, String type) {
         SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
         return preferences.getString(type, "");
+    }
+
+    public static Spannable setActionBarText(String actionBarText){
+        Spannable text = new SpannableString(actionBarText);
+        text.setSpan(new ForegroundColorSpan(Color.WHITE), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return text;
     }
 
 

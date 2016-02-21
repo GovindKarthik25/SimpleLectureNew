@@ -27,6 +27,7 @@ import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.HomeFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.util.Util;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener {
 
@@ -52,6 +53,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 

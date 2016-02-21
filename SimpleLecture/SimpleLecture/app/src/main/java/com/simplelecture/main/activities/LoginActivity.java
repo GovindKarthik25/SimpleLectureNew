@@ -3,11 +3,16 @@ package com.simplelecture.main.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -52,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText inputEmail, inputPassword; //inputName
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPassword;
     private Button btn_Login;
-  //  private TextView createAccountTextView, forgotPasswordtextView;
+    //  private TextView createAccountTextView, forgotPasswordtextView;
     private LoginButton facebooklogin_button;
     private CallbackManager callbackManager;
 
@@ -88,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //facebook callbackManager
-      //  callbackManager = CallbackManager.Factory.create();
+        //  callbackManager = CallbackManager.Factory.create();
 
         snack = new SnackBarManagement(getApplicationContext());
         final SessionManager sessionManager = SessionManager.getInstance();
@@ -99,6 +104,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
+
         //inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
         inputLayoutPassword = (TextInputLayout) findViewById(R.id.input_layout_password);
@@ -108,9 +116,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_Login = (Button) findViewById(R.id.btn_Login);
 
 
-       // createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
-       // forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
-       // facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
+        // createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
+        // forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
+        // facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
         //signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
 

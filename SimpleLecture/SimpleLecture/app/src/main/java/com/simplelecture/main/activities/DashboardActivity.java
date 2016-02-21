@@ -26,6 +26,7 @@ import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.SupportFragment;
 import com.simplelecture.main.fragments.TestPapersFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.util.Util;
 
 public class DashboardActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -41,6 +42,8 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
 
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);

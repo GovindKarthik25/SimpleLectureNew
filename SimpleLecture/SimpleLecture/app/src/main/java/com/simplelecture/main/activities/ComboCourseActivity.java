@@ -25,6 +25,7 @@ import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.util.Util;
 
 
 public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -49,10 +50,13 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
         getSupportActionBar().setTitle(courseDetailsResponseModelObj.getcName());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 

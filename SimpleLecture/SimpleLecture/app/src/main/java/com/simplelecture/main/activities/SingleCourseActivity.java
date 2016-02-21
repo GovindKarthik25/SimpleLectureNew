@@ -25,6 +25,7 @@ import com.simplelecture.main.fragments.CourseIndexFragment;
 import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,8 @@ public class SingleCourseActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(courseDetailsResponseModelObj.getcName());
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -77,11 +80,11 @@ public class SingleCourseActivity extends AppCompatActivity {
             }
         });
 
-        /*LinearLayout tabStrip = ((LinearLayout)tabLayout.getChildAt(2));
+        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         tabStrip.setEnabled(false);
-        for(int i = 0; i < tabStrip.getChildCount(); i++) {
+        for (int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(false);
-        }*/
+        }
     }
 
     private void setupViewPager(ViewPager viewPager) {

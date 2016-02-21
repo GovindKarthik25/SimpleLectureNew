@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
 
 public class CreateAccountActivity extends AppCompatActivity implements View.OnClickListener{
@@ -29,6 +30,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
+        //Changing the action bar color
+        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
         inputLayoutMobile = (TextInputLayout) findViewById(R.id.input_layout_mobile);
