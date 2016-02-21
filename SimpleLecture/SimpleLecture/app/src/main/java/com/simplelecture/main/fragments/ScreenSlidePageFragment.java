@@ -46,10 +46,10 @@ public class ScreenSlidePageFragment extends Fragment {
 
 
     int[] mResources = {
-            R.mipmap.splash,
-            R.mipmap.landing_screen,
-            R.drawable.abc_btn_check_to_on_mtrl_000,
-            R.drawable.abc_btn_check_to_on_mtrl_015
+            R.mipmap.splash_screen,
+            R.mipmap.splash_screen,
+            R.mipmap.splash_screen,
+            R.mipmap.splash_screen
     };
 
 
