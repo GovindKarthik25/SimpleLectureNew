@@ -17,8 +17,9 @@ public class VideoPlayerActivity extends AppCompatActivity {
     private ProgressDialog progressDialog;
     VideoView videoView;
     // Insert your Video URL
-    String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
+   // String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
    // String VideoURL ="https://player.vimeo.com/video/49462103";
+    String VideoURL = "https://skyfiregcs-a.akamaihd.net/exp=1456168998~acl=%2A%2F417416851.mp4%2A~hmac=29ec19a55c263cd688b82416f7ebbb1c62a75dd5ce50d8dfddf4f239aa7c4c3a/2tierchgci/vimeo-prod-skyfire-std-us/01/4784/4/123921946/417416851.mp4";
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
