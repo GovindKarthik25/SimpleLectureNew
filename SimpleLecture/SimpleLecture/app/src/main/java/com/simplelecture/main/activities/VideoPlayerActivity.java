@@ -10,6 +10,8 @@ import android.util.Log;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.http.ApiService;
@@ -18,6 +20,7 @@ import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class VideoPlayerActivity extends AppCompatActivity implements NetworkLayer {
@@ -158,9 +161,16 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
             }
 
             JSONObject jSONObject = new JSONObject(response);
-            String getUrlprogressiveContent = jSONObject.getString("progressive");
-            JSONObject object2 = new JSONObject(getUrlprogressiveContent);
-            videoURL = object2.getString("url");
+            String requestResponse = jSONObject.getString("request");
+            JSONObject object1 = new JSONObject(requestResponse);
+            String fileResponse = object1.getString("files");
+
+            JSONObject json = new JSONObject(fileResponse);
+            JSONArray jArray = json.getJSONArray("progressive");
+            JSONObject json_data = jArray.getJSONObject(0);
+            videoURL = json_data.getString("url");
+
+            Log.i("videoURL", "*******************" +videoURL);
 
             OnPrepareVideoPlay(videoURL);
 
