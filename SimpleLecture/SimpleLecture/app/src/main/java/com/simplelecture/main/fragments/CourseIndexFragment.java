@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -120,8 +121,7 @@ public class CourseIndexFragment extends Fragment {
 
     ExpandableListView.OnChildClickListener onChildClickListener = new ExpandableListView.OnChildClickListener() {
         @Override
-        public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long l) {
-
+        public boolean onChildClick(ExpandableListView expandableListView, View view, int groupPosition, int childPosition, long id) {
 //            ViewManager viewManager = new ViewManager();
 //            viewManager.gotoVideoPlayerView(getActivity());
 

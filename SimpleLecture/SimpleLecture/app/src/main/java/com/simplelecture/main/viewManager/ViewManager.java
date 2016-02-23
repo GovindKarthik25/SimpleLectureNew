@@ -1,6 +1,7 @@
 package com.simplelecture.main.viewManager;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
@@ -124,9 +125,10 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoVideoPlayerView(Activity activity) {
-        intent = new Intent(activity, VideoPlayerActivity.class);
-        setDisplay(activity, intent);
+    public Intent gotoVideoPlayerView(Context mContext, String videoId) {
+        intent = new Intent(mContext, VideoPlayerActivity.class);
+        intent.putExtra("videoId", videoId);
+        mContext.startActivity(intent);
         return intent;
     }
 

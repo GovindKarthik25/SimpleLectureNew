@@ -3,6 +3,7 @@ package com.simplelecture.main.activities;
 import android.app.ProgressDialog;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,11 @@ import android.widget.MediaController;
 import android.widget.VideoView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.fragments.DashboardFragment;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
 
 public class VideoPlayerActivity extends AppCompatActivity {
 
@@ -19,7 +25,13 @@ public class VideoPlayerActivity extends AppCompatActivity {
     // Insert your Video URL
    // String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
    // String VideoURL ="https://player.vimeo.com/video/49462103";
-    String VideoURL = "https://skyfiregcs-a.akamaihd.net/exp=1456168998~acl=%2A%2F417416851.mp4%2A~hmac=29ec19a55c263cd688b82416f7ebbb1c62a75dd5ce50d8dfddf4f239aa7c4c3a/2tierchgci/vimeo-prod-skyfire-std-us/01/4784/4/123921946/417416851.mp4";
+    //https://player.vimeo.com/video/124017989/config
+    String VideoURL = "https://skyfiregcs-a.akamaihd.net/exp=1456228769~acl=%2A%2F417392989.mp4%2A~hmac=72b702c5c083e14535952aa82d25ffd2f4b5634242451fdba3485a58159e851c/2tierchgci/vimeo-prod-skyfire-std-us/01/4803/4/124017989/417392989.mp4";
+    private String videoId;
+    private ProgressDialog pd;
+    private boolean param_get_VideoPlayer = false;
+    private SnackBarManagement snack;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -42,8 +54,25 @@ public class VideoPlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_player);
 
+        Bundle bundle = getIntent().getExtras();
+        videoId = (String) bundle.get("videoId");
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        Log.i("videoId", videoId);
+
         videoView = (VideoView) findViewById(R.id.videoView);
 
+
+       /* if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
+            param_get_VideoPlayer = true;
+            pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
+            pd.setCanceledOnTouchOutside(false);
+            //My Courses service
+            //ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
+        } else {
+            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+        }
+*/
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);

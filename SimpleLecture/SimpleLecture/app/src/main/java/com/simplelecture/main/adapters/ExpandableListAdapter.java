@@ -107,8 +107,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
 
+            //    new ViewManager().gotoVideoPlayerView(mContext.getApplicationContext(), courseTopics.getCtVideo());
+
                 Intent intent = new Intent(mContext, VideoPlayerActivity.class);
-                intent.putExtra("url", courseTopics.getCtVideo());
+                intent.putExtra("videoId", courseTopics.getCtVideo());
                 mContext.startActivity(intent);
             }
         });
