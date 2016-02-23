@@ -37,6 +37,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     private boolean param_get_VideoPlayer = false;
     private SnackBarManagement snack;
     private CoordinatorLayout coordinatorLayout;
+    private boolean videoPause;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -59,6 +60,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         super.onPause();
 
         if(videoView.isPlaying()){
+            videoPause = true;
             videoView.pause();
         }
 
@@ -67,6 +69,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     @Override
     protected void onResume() {
         super.onResume();
+        if(videoPause) {
+            videoPause = false;
+            videoView.resume();
+        }
 
     }
 
@@ -84,7 +90,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         videoView = (VideoView) findViewById(R.id.videoView);
 
 
-        if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
+        if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()){
             param_get_VideoPlayer = true;
             pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
             pd.setCanceledOnTouchOutside(false);
