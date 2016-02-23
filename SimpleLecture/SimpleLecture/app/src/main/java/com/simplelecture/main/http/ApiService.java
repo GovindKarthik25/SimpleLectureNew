@@ -2,11 +2,11 @@ package com.simplelecture.main.http;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
+import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
 import com.simplelecture.main.util.JsonFactory;
@@ -74,6 +74,15 @@ public class ApiService {
         ChaptersTransaction chaptersTransaction = new ChaptersTransaction(null, mContext, uId, token);
         TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
         transactionProcessor.execute(chaptersTransaction);
+
+    }
+
+    //Vimeo Video
+    public void doGetVimeoVideoURL(Context mContext, Fragment fragmentContext, String videoId) {
+
+        VimeoVideoTransaction vimeoVideoTransaction = new VimeoVideoTransaction(null, mContext, videoId);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+        transactionProcessor.execute(vimeoVideoTransaction);
 
     }
 

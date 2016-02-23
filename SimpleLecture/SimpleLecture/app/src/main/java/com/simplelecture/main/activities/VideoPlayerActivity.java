@@ -63,16 +63,15 @@ public class VideoPlayerActivity extends AppCompatActivity {
         videoView = (VideoView) findViewById(R.id.videoView);
 
 
-       /* if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
+        if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
             param_get_VideoPlayer = true;
             pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
             pd.setCanceledOnTouchOutside(false);
             //My Courses service
-            //ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
+            ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, null, videoId);
         } else {
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }
-*/
         MediaController mediaController = new MediaController(this);
         mediaController.setAnchorView(videoView);
         videoView.setMediaController(mediaController);
