@@ -78,10 +78,10 @@ public class ApiService {
     }
 
     //Vimeo Video
-    public void doGetVimeoVideoURL(Context mContext, Fragment fragmentContext, String videoId) {
+    public void doGetVimeoVideoURL(Context mContext, String videoId) {
 
         VimeoVideoTransaction vimeoVideoTransaction = new VimeoVideoTransaction(null, mContext, videoId);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(vimeoVideoTransaction);
 
     }

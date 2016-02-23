@@ -86,7 +86,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
             pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
             pd.setCanceledOnTouchOutside(false);
             //My Courses service
-            ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, null, videoId);
+            ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this,videoId);
         } else {
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }

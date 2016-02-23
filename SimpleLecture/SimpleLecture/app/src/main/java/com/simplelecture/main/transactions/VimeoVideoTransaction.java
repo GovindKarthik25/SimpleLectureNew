@@ -2,6 +2,7 @@ package com.simplelecture.main.transactions;
 
 import android.content.Context;
 
+import com.simplelecture.main.BuildConfig;
 import com.simplelecture.main.http.GetTransaction;
 
 import org.json.JSONObject;
@@ -27,7 +28,7 @@ public class VimeoVideoTransaction extends GetTransaction {
 
     @Override
     protected String getUri() {
-        return null;
+        return BuildConfig.VIDEO_URL;
     }
 
     @Override
@@ -37,11 +38,11 @@ public class VimeoVideoTransaction extends GetTransaction {
 
     @Override
     protected String getHeader() {
-        return null;
+        return "";
     }
 
     @Override
     protected String getUrlPrefix() {
-        return "https://player.vimeo.com/video/"+ videoId +"/config";
+        return videoId + "/config";
     }
 }
