@@ -31,7 +31,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     // String VideoURL = "http://www.androidbegin.com/tutorial/AndroidCommercial.3gp";
     // String VideoURL ="https://player.vimeo.com/video/49462103";
     //https://player.vimeo.com/video/124017989/config
-    String videoURL = "https://skyfiregcs-a.akamaihd.net/exp=1456228769~acl=%2A%2F417392989.mp4%2A~hmac=72b702c5c083e14535952aa82d25ffd2f4b5634242451fdba3485a58159e851c/2tierchgci/vimeo-prod-skyfire-std-us/01/4803/4/124017989/417392989.mp4";
+    String videoURL = "";
     private String videoId;
     private ProgressDialog pd;
     private boolean param_get_VideoPlayer = false;
