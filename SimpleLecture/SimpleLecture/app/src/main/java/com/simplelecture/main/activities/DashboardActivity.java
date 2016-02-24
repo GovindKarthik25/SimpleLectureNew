@@ -1,5 +1,6 @@
 package com.simplelecture.main.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -34,6 +35,14 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private EditText searchEditText;
+
+    @Override
+    public void onBackPressed() {
+        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

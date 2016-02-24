@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#E64A19</color>
     <color name="colorAccent">#ff4400</color>
     <color name="colorDrawer">#C62828</color>
-    <color name="listItemHeader">#ffe4cf</color>
+    <color name="listItemHeader">#eeeeee</color> // #eeeeee ffe4cf
     <color name="listItemChild">#F5F5F5</color>
     <color name="listTextColor">#FF9648</color>
 

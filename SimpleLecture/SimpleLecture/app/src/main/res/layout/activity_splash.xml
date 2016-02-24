@@ -11,18 +11,18 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomRelativeLayout">
 
-    <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-    <com.simplelecture.main.util.ViewPagerIndicator
-        android:id="@+id/page_indicator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dip"
-        android:gravity="center" />
+        <com.simplelecture.main.util.ViewPagerIndicator
+            android:id="@+id/page_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dip"
+            android:gravity="center" />
 
     </RelativeLayout>
 
@@ -30,16 +30,27 @@
         android:id="@+id/bottomRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="60dip"
-        android:background="@color/colorPrimary"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimary">
 
-
-        <Button
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/bottomRelativeLayoutInner"
+            android:layout_width="60dip"
             android:layout_height="match_parent"
-            android:background="@mipmap/arrow"
-            android:id="@+id/nextButton"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true" />
+            android:layout_alignParentRight="true"
+            android:background="@color/colorPrimaryDark">
+
+            <Button
+                android:id="@+id/nextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dip"
+                android:background="@drawable/arrow"
+                android:layout_centerInParent="true"/>
+
+
+        </RelativeLayout>
+
+
     </RelativeLayout>
 </RelativeLayout>

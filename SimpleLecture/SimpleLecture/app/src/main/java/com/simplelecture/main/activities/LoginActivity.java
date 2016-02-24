@@ -44,6 +44,7 @@ import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.util.Validator;
 import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONException;
@@ -82,6 +83,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SnackBarManagement snack;
     private ProgressDialog pd;
 
+
+    @Override
+    public void onBackPressed() {
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,25 +197,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void submitForm() {
         /*if (!Validator.validateName(this, inputName, inputLayoutName, getString(R.string.err_msg_name))) {
             return;
-        }
-
-        if (!Validator.validateEmail(this, inputEmail, inputLayoutEmail, getString(R.string.err_msg_email))) {
-            return;
-        }
-
-        if (!Validator.validatePassword(this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
-            return;
         }*/
 
 
+        if (!Validator.validateEmail(LoginActivity.this, inputEmail, inputLayoutEmail, getString(R.string.err_msg_email))) {
+            return;
+        }
+
+        if (!Validator.validatePassword(LoginActivity.this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
+            return;
+        }
+
         LoginModel loginModel = new LoginModel();
-        loginModel.setUe("karthikrao19@gmail.com");
-        loginModel.setUp("simple");
+        /*loginModel.setUe("karthikrao19@gmail.com");
+        loginModel.setUp("simple");*/
+
+        loginModel.setUe(inputEmail.getText().toString().trim());
+        loginModel.setUp(inputPassword.getText().toString().trim());
 
         if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
             param_get_Login = true;
             pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
-            pd.setCanceledOnTouchOutside(false);
             //Login Service
             ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
         } else {
@@ -230,6 +238,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        Util.hideKeyboard(LoginActivity.this, v);
         if (v == btn_Login) {
             submitForm();
         } /*else if (v == createAccountTextView) {
@@ -389,10 +398,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     new ViewManager().gotoDashboardView(this);
                 } else {
                     param_get_Login = false;
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.loginFailed), getResources().getString(R.string.dismiss));
                 }
             } else {
                 param_get_Login = false;
-                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.loginFailed), getResources().getString(R.string.dismiss));
             }
 
 
