@@ -86,9 +86,9 @@ public class ViewPagerIndicator extends LinearLayout implements OnPageChangeList
                 ImageView item = new ImageView(context);
 
                 if (i == pager.getCurrentItem()) {
-                    item.setImageResource(R.drawable.bulb_lit);
+                    item.setImageResource(R.mipmap.bulb_lit);
                 } else {
-                    item.setImageResource(R.drawable.bulb_unlit);
+                    item.setImageResource(R.mipmap.bulb_unlit);
                 }
 
                 item.setTag(i);
@@ -126,9 +126,9 @@ public class ViewPagerIndicator extends LinearLayout implements OnPageChangeList
                 ImageView item = items.get(i);
                 if (item != null) {
                     if (i == position) {
-                        item.setImageResource(R.drawable.bulb_lit);
+                        item.setImageResource(R.mipmap.bulb_lit);
                     } else {
-                        item.setImageResource(R.drawable.bulb_unlit);
+                        item.setImageResource(R.mipmap.bulb_unlit);
                     }
                 }
             }
