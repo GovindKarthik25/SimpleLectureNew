@@ -28,7 +28,7 @@ public class VimeoVideoTransaction extends GetTransaction {
 
     @Override
     protected String getUri() {
-        return BuildConfig.VIDEO_URL;
+        return BuildConfig.BASE_URL;
     }
 
     @Override
@@ -43,6 +43,11 @@ public class VimeoVideoTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return videoId + "/config";
+        return "Course/TopicVideo/" + videoId;
     }
+
+   /* @Override
+    protected String getUrlPrefix() {
+        return videoId + "/config";
+    }*/
 }
