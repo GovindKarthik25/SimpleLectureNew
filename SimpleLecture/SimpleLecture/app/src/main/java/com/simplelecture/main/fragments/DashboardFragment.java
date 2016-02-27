@@ -72,7 +72,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     private MyCoursesResponseModel myCoursesResponseModelObj;
     private boolean param_get_MyCourses = false;
     private boolean param_get_MyCoursesDetails = false;
-    private boolean param_get_Details = false;
+    private boolean param_get_Chapters = false;
 
     private ProgressDialog pd;
     private List<courseFeatures> courseFeaturesLstArray;
@@ -266,7 +266,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 } else {
 
                     if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                        param_get_Details = true;
+                        param_get_Chapters = true;
 
                         pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                         //My Courses service
@@ -276,7 +276,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                     }
 
                 }
-            } else if (param_get_Details) {
+            } else if (param_get_Chapters) {
 
                 JsonArray jArray = parser.parse(response).getAsJsonArray();
 
@@ -290,7 +290,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
 
-                param_get_Details = false;
+                param_get_Chapters = false;
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
 
             }
@@ -312,6 +312,6 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         Log.v("myCoursesLstArray", "error");
         param_get_MyCourses = false;
         param_get_MyCoursesDetails = false;
-        param_get_Details = false;
+        param_get_Chapters = false;
     }
 }
