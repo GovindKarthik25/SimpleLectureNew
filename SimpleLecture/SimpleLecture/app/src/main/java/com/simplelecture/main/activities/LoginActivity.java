@@ -3,6 +3,7 @@ package com.simplelecture.main.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //facebook callbackManager
         //  callbackManager = CallbackManager.Factory.create();
 
-        snack = new SnackBarManagement(getApplicationContext());
+        snack = new SnackBarManagement(LoginActivity.this);
         final SessionManager sessionManager = SessionManager.getInstance();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
@@ -416,11 +417,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void showError(String error) {
         Log.v("error", "error");
-        pd.cancel();
-        if (error.isEmpty()) {
-            error = "Error";
+        try {
+            pd.cancel();
+            if (error.isEmpty()) {
+                error = "Error in Login";
+            }
+            snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         }
-        snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
 
     }
 }

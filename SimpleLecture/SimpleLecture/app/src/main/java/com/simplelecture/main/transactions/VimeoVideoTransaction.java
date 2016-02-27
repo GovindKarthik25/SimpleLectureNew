@@ -14,11 +14,13 @@ import java.net.URI;
  */
 public class VimeoVideoTransaction extends GetTransaction {
 
-    private final String videoId;
+    private final int ctId;
+    private String mHeaderVal;
 
-    public VimeoVideoTransaction(JSONObject jsonObject, Context context, String videoid) {
+    public VimeoVideoTransaction(JSONObject jsonObject, Context context, int ctid, String headerVal) {
         super(jsonObject, context);
-        videoId = videoid;
+        ctId = ctid;
+        mHeaderVal = headerVal;
     }
 
     @Override
@@ -38,12 +40,12 @@ public class VimeoVideoTransaction extends GetTransaction {
 
     @Override
     protected String getHeader() {
-        return "";
+        return mHeaderVal;
     }
 
     @Override
     protected String getUrlPrefix() {
-        return "Course/TopicVideo/" + videoId;
+        return "Course/TopicVideo/" + ctId;
     }
 
    /* @Override

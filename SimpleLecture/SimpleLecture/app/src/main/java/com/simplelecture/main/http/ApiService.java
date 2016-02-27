@@ -78,9 +78,12 @@ public class ApiService {
     }
 
     //Vimeo Video
-    public void doGetVimeoVideoURL(Context mContext, String videoId) {
+    public void doGetVimeoVideoURL(Context mContext, int videoId) {
 
-        VimeoVideoTransaction vimeoVideoTransaction = new VimeoVideoTransaction(null, mContext, videoId);
+        //use this to get token stored in prefrences
+        String token = Util.getFromPrefrences(mContext, "uToken");
+
+        VimeoVideoTransaction vimeoVideoTransaction = new VimeoVideoTransaction(null, mContext, videoId, token);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(vimeoVideoTransaction);
 

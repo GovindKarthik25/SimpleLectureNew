@@ -3,6 +3,7 @@ package com.simplelecture.main.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,10 +108,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
 
+                Log.i("ctId", "ctId--->" + courseTopics.getCtId());
             //    new ViewManager().gotoVideoPlayerView(mContext.getApplicationContext(), courseTopics.getCtVideo());
-
                 Intent intent = new Intent(mContext, VideoPlayerActivity.class);
-                intent.putExtra("videoId", courseTopics.getCtVideo());
+                intent.putExtra("ctId1", courseTopics.getCtId());
                 mContext.startActivity(intent);
             }
         });

@@ -32,7 +32,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     // String VideoURL ="https://player.vimeo.com/video/49462103";
     //https://player.vimeo.com/video/124017989/config
     String videoURL = "";
-    private String videoId;
+    private int ctId;
     private ProgressDialog pd;
     private boolean param_get_VideoPlayer = false;
     private SnackBarManagement snack;
@@ -82,20 +82,19 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         setContentView(R.layout.activity_video_player);
 
         Bundle bundle = getIntent().getExtras();
-        videoId = (String) bundle.get("videoId");
+        ctId = bundle.getInt("ctId1");
+        Log.i("ctId", "ctId" + ctId);
+
+        snack = new SnackBarManagement(VideoPlayerActivity.this);
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-
-        Log.i("videoId", videoId);
-
         videoView = (VideoView) findViewById(R.id.videoView);
 
 
         if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()){
             param_get_VideoPlayer = true;
             pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
-            pd.setCanceledOnTouchOutside(false);
             //My Courses service
-            ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this,videoId);
+            ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, ctId);
         } else {
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }
@@ -165,18 +164,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
             if (pd.isShowing()) {
                 pd.dismiss();
             }
+            Log.i("videoURL", "*******************" + response);
 
             JSONObject jSONObject = new JSONObject(response);
-            String requestResponse = jSONObject.getString("request");
-            JSONObject object1 = new JSONObject(requestResponse);
-            String fileResponse = object1.getString("files");
-
-            JSONObject json = new JSONObject(fileResponse);
-            JSONArray jArray = json.getJSONArray("progressive");
-            JSONObject json_data = jArray.getJSONObject(0);
-            videoURL = json_data.getString("url");
-
-            Log.i("videoURL", "*******************" +videoURL);
+            videoURL = jSONObject.getString("Url");
 
             OnPrepareVideoPlay(videoURL);
 
