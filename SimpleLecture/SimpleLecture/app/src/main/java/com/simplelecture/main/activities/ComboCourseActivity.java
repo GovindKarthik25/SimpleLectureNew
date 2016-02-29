@@ -41,6 +41,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(ComboCourseActivity.this);
         setContentView(R.layout.activity_combo_course);
 
         intent = getIntent();

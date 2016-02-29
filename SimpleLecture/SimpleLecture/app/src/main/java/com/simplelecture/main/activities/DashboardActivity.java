@@ -47,6 +47,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(DashboardActivity.this);
         setContentView(R.layout.activity_dashboard);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);

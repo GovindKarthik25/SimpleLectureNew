@@ -16,4 +16,8 @@
         android:id="@+id/coordinatorLayout"
         layout="@layout/coordinatelayout"></include>
 
+    <include
+        android:id="@+id/floatingActionButton"
+        layout="@layout/floating_actionbutton"></include>
+
 </RelativeLayout>

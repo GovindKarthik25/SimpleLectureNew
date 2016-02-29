@@ -289,5 +289,10 @@ public class Util {
         return text;
     }
 
+    public static void secureScreenShot(Activity activity) {
+        activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+    }
+
+
 
 }

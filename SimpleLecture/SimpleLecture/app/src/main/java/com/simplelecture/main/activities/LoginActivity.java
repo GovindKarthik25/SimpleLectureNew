@@ -83,6 +83,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CoordinatorLayout coordinatorLayout;
     private SnackBarManagement snack;
     private ProgressDialog pd;
+    private LoginModel loginModel;
 
 
     @Override
@@ -93,6 +94,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Util.secureScreenShot(LoginActivity.this);
 
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
@@ -121,6 +124,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         inputEmail = (EditText) findViewById(R.id.input_email);
         inputPassword = (EditText) findViewById(R.id.input_password);
         btn_Login = (Button) findViewById(R.id.btn_Login);
+        inputEmail.setText(Util.getFromPrefrences(LoginActivity.this, "email"));
 
 
         // createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
@@ -196,33 +200,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      * Validating form
      */
     private void submitForm() {
+        try {
         /*if (!Validator.validateName(this, inputName, inputLayoutName, getString(R.string.err_msg_name))) {
             return;
         }*/
 
 
-        if (!Validator.validateEmail(LoginActivity.this, inputEmail, inputLayoutEmail, getString(R.string.err_msg_email))) {
-            return;
-        }
+            if (!Validator.validateEmail(LoginActivity.this, inputEmail, inputLayoutEmail, getString(R.string.err_msg_email))) {
+                return;
+            }
 
-        if (!Validator.validatePassword(LoginActivity.this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
-            return;
-        }
+            if (!Validator.validatePassword(LoginActivity.this, inputPassword, inputLayoutPassword, getString(R.string.err_msg_password))) {
+                return;
+            }
 
-        LoginModel loginModel = new LoginModel();
+            loginModel = new LoginModel();
         /*loginModel.setUe("karthikrao19@gmail.com");
         loginModel.setUp("simple");*/
 
-        loginModel.setUe(inputEmail.getText().toString().trim());
-        loginModel.setUp(inputPassword.getText().toString().trim());
+            loginModel.setUe(inputEmail.getText().toString().trim());
+            loginModel.setUp(inputPassword.getText().toString().trim());
 
-        if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
-            param_get_Login = true;
-            pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
-            //Login Service
-            ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
-        } else {
-            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
+                param_get_Login = true;
+                pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
+                //Login Service
+                ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
 
@@ -239,14 +247,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
-        Util.hideKeyboard(LoginActivity.this, v);
-        if (v == btn_Login) {
-            submitForm();
-        } /*else if (v == createAccountTextView) {
-            new ViewManager().gotoCreateAccountView(this);
-        } else if (v == forgotPasswordtextView) {
-            new ViewManager().gotoForgotPasswordView(this);
-        }*/
+        try {
+            Util.hideKeyboard(LoginActivity.this, v);
+            if (v == btn_Login) {
+                submitForm();
+            } /*else if (v == createAccountTextView) {
+                new ViewManager().gotoCreateAccountView(this);
+            } else if (v == forgotPasswordtextView) {
+                new ViewManager().gotoForgotPasswordView(this);
+            }*/
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -393,6 +405,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);
                     loginResponseModelObj.setIsSuccess(isSuccess);
 
+                    Util.storeToPrefrences(LoginActivity.this, "email", loginModel.getUe());
                     Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
                     Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
                     param_get_Login = false;

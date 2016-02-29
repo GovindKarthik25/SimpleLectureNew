@@ -24,6 +24,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(ChangePasswordActivity.this);
         setContentView(R.layout.activity_changepassword);
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object

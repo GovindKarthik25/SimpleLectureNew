@@ -79,6 +79,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(VideoPlayerActivity.this);
         setContentView(R.layout.activity_video_player);
 
         Bundle bundle = getIntent().getExtras();

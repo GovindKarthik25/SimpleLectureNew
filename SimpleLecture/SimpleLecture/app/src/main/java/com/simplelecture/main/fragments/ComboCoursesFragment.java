@@ -2,6 +2,7 @@ package com.simplelecture.main.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -97,6 +98,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        snack = new SnackBarManagement(getContext());
         if (getArguments() != null) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) getArguments().getSerializable(ARG_PARAM1);
         }
@@ -149,15 +151,19 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            courseCombosObj = courseDetailsResponseModelObj.getCourseCombos().get(position);
+            try {
+                courseCombosObj = courseDetailsResponseModelObj.getCourseCombos().get(position);
 
-            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                param_get_MyCoursesDetails = true;
-                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                //My Courses service
-                ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
-            } else {
-                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                    param_get_MyCoursesDetails = true;
+                    pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                    //My Courses service
+                    ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }
@@ -264,6 +270,19 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void showError(String error) {
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            if (error.isEmpty()) {
+                error = "Error in connection";
+            }
 
+            snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
+            param_get_MyCoursesDetails = false;
+            param_get_Details = false;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

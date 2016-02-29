@@ -82,8 +82,7 @@ public class CourseIndexFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View convertView = inflater.inflate(R.layout.fragment_course_index, container, false);
 
@@ -134,12 +133,16 @@ public class CourseIndexFragment extends Fragment {
 	 */
     private void prepareListData() {
 
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<courseTopics>>();
+        try {
+            listDataHeader = new ArrayList<String>();
+            listDataChild = new HashMap<String, List<courseTopics>>();
 
-        for (ChaptersResponseModel chaptersResponse : chaptersResponseModel) {
-            listDataHeader.add(chaptersResponse.getCcName());
-            listDataChild.put(chaptersResponse.getCcName(), chaptersResponse.getCourseTopics());
+            for (ChaptersResponseModel chaptersResponse : chaptersResponseModel) {
+                listDataHeader.add(chaptersResponse.getCcName());
+                listDataChild.put(chaptersResponse.getCcName(), chaptersResponse.getCourseTopics());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

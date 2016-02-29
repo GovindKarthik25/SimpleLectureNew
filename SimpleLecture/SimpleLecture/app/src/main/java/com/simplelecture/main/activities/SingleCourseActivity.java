@@ -47,6 +47,7 @@ public class SingleCourseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("onCreate***", "onCreate***");
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(SingleCourseActivity.this);
         setContentView(R.layout.activity_single_course);
 
         intent = getIntent();

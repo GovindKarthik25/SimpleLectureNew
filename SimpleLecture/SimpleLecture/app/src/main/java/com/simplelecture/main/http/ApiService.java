@@ -69,23 +69,31 @@ public class ApiService {
 
     //Courses index
     public void doGetChapters(Context mContext, Fragment fragmentContext, String uId) {
-        String token = Util.getFromPrefrences(mContext, "uToken");
+        try {
+            String token = Util.getFromPrefrences(mContext, "uToken");
 
-        ChaptersTransaction chaptersTransaction = new ChaptersTransaction(null, mContext, uId, token);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
-        transactionProcessor.execute(chaptersTransaction);
+            ChaptersTransaction chaptersTransaction = new ChaptersTransaction(null, mContext, uId, token);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(chaptersTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     //Vimeo Video
     public void doGetVimeoVideoURL(Context mContext, int videoId) {
 
-        //use this to get token stored in prefrences
-        String token = Util.getFromPrefrences(mContext, "uToken");
+        try {
+            //use this to get token stored in prefrences
+            String token = Util.getFromPrefrences(mContext, "uToken");
 
-        VimeoVideoTransaction vimeoVideoTransaction = new VimeoVideoTransaction(null, mContext, videoId, token);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
-        transactionProcessor.execute(vimeoVideoTransaction);
+            VimeoVideoTransaction vimeoVideoTransaction = new VimeoVideoTransaction(null, mContext, videoId, token);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(vimeoVideoTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

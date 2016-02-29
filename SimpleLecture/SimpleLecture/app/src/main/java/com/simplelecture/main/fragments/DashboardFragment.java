@@ -2,9 +2,11 @@ package com.simplelecture.main.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -30,6 +32,7 @@ import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
@@ -66,7 +69,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
     DashboardAdapter dashboardAdapter;
     Activity activity = getActivity();
-    private CoordinatorLayout coordinatorLayout;
+    private CoordinatorLayout coordinatorLayout, floatingCoordinatorLayout;
     private SnackBarManagement snack;
     private List<myCourses> myCoursesLstArray;
     private MyCoursesResponseModel myCoursesResponseModelObj;
@@ -79,6 +82,8 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     private List<CourseCombos> courseCombosLstArray;
     private CourseDetailsResponseModel courseDetailsResponseModel;
     private myCourses myCoursesObj;
+    private AlertMessageManagement alertMessageManagement;
+    private FloatingActionButton floatingAction;
 
     /**
      * Use this factory method to create a new instance of
@@ -106,31 +111,29 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        snack = new SnackBarManagement(getActivity());
+        try {
+            snack = new SnackBarManagement(getContext());
+            alertMessageManagement = new AlertMessageManagement(getContext());
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+            if (getArguments() != null) {
+                mParam1 = getArguments().getString(ARG_PARAM1);
+                mParam2 = getArguments().getString(ARG_PARAM2);
+            }
 
-        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-            param_get_MyCourses = true;
-            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-            pd.setCanceledOnTouchOutside(false);
-            //My Courses service
-            ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
-        } else {
-            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            loadGetMyCourses();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View convertView = inflater.inflate(R.layout.fragment_dashboard, container, false);
         coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
+        floatingCoordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.floatingActionButton);
+        floatingAction = (FloatingActionButton) floatingCoordinatorLayout.findViewById(R.id.floatingAction);
 
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
 
@@ -141,14 +144,41 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
+        try {
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+            recyclerView.setLayoutManager(gridLayoutManager);
 
-        if (dashboardAdapter != null) {
-            dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
-            recyclerView.setAdapter(dashboardAdapter);
+            if (dashboardAdapter != null) {
+                dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
+                recyclerView.setAdapter(dashboardAdapter);
 
-            dashboardAdapter.setOnItemClickListener(onItemClickListener);
+                dashboardAdapter.setOnItemClickListener(onItemClickListener);
+            }
+
+            floatingAction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    loadGetMyCourses();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private void loadGetMyCourses() {
+        try {
+            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                param_get_MyCourses = true;
+                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                //My Courses service
+                ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
+            } else {
+                alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -163,15 +193,19 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            myCoursesObj = myCoursesLstArray.get(position);
+            try {
+                myCoursesObj = myCoursesLstArray.get(position);
 
-            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                param_get_MyCoursesDetails = true;
-                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                //My Courses service
-                ApiService.getApiService().doGetCourseDetails(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
-            } else {
-                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                    param_get_MyCoursesDetails = true;
+                    pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                    //My Courses service
+                    ApiService.getApiService().doGetCourseDetails(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
 
@@ -202,7 +236,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             pd.cancel();
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-           // courseDetailsResponseModel = new CourseDetailsResponseModel();
+            // courseDetailsResponseModel = new CourseDetailsResponseModel();
             if (param_get_MyCourses) {
                 JSONObject jSONObject = new JSONObject(response);
                 String myCoursesContent = jSONObject.getString("myCourses");
@@ -260,7 +294,6 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
 
-
                 if (courseDetailsResponseModel.isCombo()) {
                     new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
@@ -288,7 +321,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
 
-               // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
+                // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
 
                 param_get_Chapters = false;
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
@@ -302,16 +335,21 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void showError(String error) {
-        if (pd.isShowing()) {
-            pd.cancel();
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            if (error.isEmpty()) {
+                error = "Error in connection";
+            }
+
+            snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
+            Log.v("myCoursesLstArray", "error");
+            param_get_MyCourses = false;
+            param_get_MyCoursesDetails = false;
+            param_get_Chapters = false;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if(error.isEmpty()){
-            error = "Error in connection";
-        }
-        snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
-        Log.v("myCoursesLstArray", "error");
-        param_get_MyCourses = false;
-        param_get_MyCoursesDetails = false;
-        param_get_Chapters = false;
     }
 }

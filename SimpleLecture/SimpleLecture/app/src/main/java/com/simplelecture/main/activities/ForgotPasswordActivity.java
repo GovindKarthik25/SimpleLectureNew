@@ -47,6 +47,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(ForgotPasswordActivity.this);
         setContentView(R.layout.activity_forgotpassword);
 
         snack = new SnackBarManagement(getApplicationContext());
