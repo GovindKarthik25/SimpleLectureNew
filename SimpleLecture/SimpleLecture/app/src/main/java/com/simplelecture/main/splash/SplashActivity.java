@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
+import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
 import com.simplelecture.main.viewManager.ViewManager;
@@ -42,6 +43,8 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Util.secureScreenShot(SplashActivity.this);
+
         setContentView(R.layout.activity_splash);
 
         nextButton = (Button) findViewById(R.id.nextButton);

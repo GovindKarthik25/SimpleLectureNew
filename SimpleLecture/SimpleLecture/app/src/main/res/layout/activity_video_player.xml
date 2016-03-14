@@ -6,13 +6,35 @@
     tools:context="com.simplelecture.main.activities.VideoPlayerActivity">
 
     <VideoView
+        android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/videoView"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" />
 
     <include
         android:id="@+id/coordinatorLayout"
         layout="@layout/coordinatelayout"></include>
+
+    <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/floatingActionButton"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/floatingActionBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="top|end"
+            android:layout_marginRight="10dip"
+            android:src="@mipmap/back" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
 </RelativeLayout>

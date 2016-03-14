@@ -236,7 +236,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             pd.cancel();
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-            // courseDetailsResponseModel = new CourseDetailsResponseModel();
+           // Log.i("response*******", "response**"+response.toString());
             if (param_get_MyCourses) {
                 JSONObject jSONObject = new JSONObject(response);
                 String myCoursesContent = jSONObject.getString("myCourses");
@@ -258,7 +258,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 dashboardAdapter.notifyDataSetChanged();
 
-                Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
+               // Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
                 param_get_MyCourses = false;
             } else if (param_get_MyCoursesDetails) {
                 courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
@@ -274,7 +274,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 }
 
                 String courseCombosContent = jSONObject.getString("courseCombos");
-                Log.i("courseCombosContent", courseCombosContent.toString());
+                //Log.i("courseCombosContent", courseCombosContent.toString());
                 if (courseCombosContent != null && !courseCombosContent.equals("null")) {
                     JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
 
@@ -291,7 +291,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
                 param_get_MyCoursesDetails = false;
 
-                Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
+              //  Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
 
                 if (courseDetailsResponseModel.isCombo()) {

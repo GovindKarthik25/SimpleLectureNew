@@ -1,12 +1,17 @@
 package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -38,6 +43,8 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     private SnackBarManagement snack;
     private CoordinatorLayout coordinatorLayout;
     private boolean videoPause;
+    private FloatingActionButton floatingActionBack;
+    private CoordinatorLayout floatingCoordinatorLayout;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -82,22 +89,34 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         Util.secureScreenShot(VideoPlayerActivity.this);
         setContentView(R.layout.activity_video_player);
 
-        Bundle bundle = getIntent().getExtras();
-        ctId = bundle.getInt("ctId1");
-        Log.i("ctId", "ctId" + ctId);
+        try {
+            Bundle bundle = getIntent().getExtras();
+            ctId = bundle.getInt("ctId1");
+            Log.i("ctId", "ctId" + ctId);
 
-        snack = new SnackBarManagement(VideoPlayerActivity.this);
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
-        videoView = (VideoView) findViewById(R.id.videoView);
+            snack = new SnackBarManagement(VideoPlayerActivity.this);
+            coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+            videoView = (VideoView) findViewById(R.id.videoView);
+            floatingCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.floatingActionButton);
+            floatingActionBack = (FloatingActionButton) floatingCoordinatorLayout.findViewById(R.id.floatingActionBack);
 
+            floatingActionBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
 
-        if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()){
-            param_get_VideoPlayer = true;
-            pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
-            //My Courses service
-            ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, ctId);
-        } else {
-            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()){
+                param_get_VideoPlayer = true;
+                pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
+                //My Courses service
+                ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, ctId);
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+        } catch (Resources.NotFoundException e) {
+            e.printStackTrace();
         }
 
 
@@ -105,16 +124,20 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
             public void onPrepared(MediaPlayer mediaPlayer) {
-                Log.i("TAG", "Duration = " + videoView.getDuration());
-                // close the progress bar and play the video
-                pd.dismiss();
-                //if we have a position on savedInstanceState, the video playback should start from here
-                videoView.seekTo(position);
-                if (position == 0) {
-                    videoView.start();
-                } else {
-                    //if we come from a resumed activity, video playback will be paused
-                    videoView.pause();
+              //  Log.i("TAG", "Duration = " + videoView.getDuration());
+                try {
+                    // close the progress bar and play the video
+                    pd.dismiss();
+                    //if we have a position on savedInstanceState, the video playback should start from here
+                    videoView.seekTo(position);
+                    if (position == 0) {
+                        videoView.start();
+                    } else {
+                        //if we come from a resumed activity, video playback will be paused
+                        videoView.pause();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
