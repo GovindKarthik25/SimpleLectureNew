@@ -2,12 +2,9 @@ package com.simplelecture.main.activities;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -18,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.simplelecture.main.R;
-import com.simplelecture.main.fragments.ComboCoursesFragment;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
 import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.fragments.DemoFragment;

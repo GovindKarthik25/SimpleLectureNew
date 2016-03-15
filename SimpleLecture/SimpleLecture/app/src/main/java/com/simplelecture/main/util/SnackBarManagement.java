@@ -1,14 +1,11 @@
 package com.simplelecture.main.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
-import com.simplelecture.main.R;
 
 /**
  * Created by karthik.rao on 03-02-2016.

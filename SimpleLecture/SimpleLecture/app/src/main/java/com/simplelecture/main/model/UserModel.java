@@ -8,8 +8,6 @@
 package com.simplelecture.main.model;
 
 
-import com.simplelecture.main.util.Validator;
-
 public class UserModel {
 
 	private String UserID;

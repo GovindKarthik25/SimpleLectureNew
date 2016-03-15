@@ -40,11 +40,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.ComboCourseActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:parentActivityName="com.simplelecture.main.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SingleCourseActivity"
-            android:parentActivityName=".activities.HomeActivity"
+            android:parentActivityName="com.simplelecture.main.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.VideoPlayerActivity"

@@ -14,16 +14,10 @@ import android.widget.LinearLayout;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
-import com.simplelecture.main.fragments.ComboCoursesFragment;
-import com.simplelecture.main.fragments.CourseBenifitsFragment;
-import com.simplelecture.main.fragments.CourseDescriptionFragment;
-import com.simplelecture.main.fragments.CourseFeatureFragment;
 import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.fragments.ExercisesFragment;
-import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
-import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.SupportFragment;
 import com.simplelecture.main.fragments.TestPapersFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;

@@ -8,24 +8,18 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
-import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class VideoPlayerActivity extends AppCompatActivity implements NetworkLayer {

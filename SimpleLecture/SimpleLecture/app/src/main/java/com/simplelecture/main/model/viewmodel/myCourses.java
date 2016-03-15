@@ -1,7 +1,5 @@
 package com.simplelecture.main.model.viewmodel;
 
-import java.io.Serializable;
-
 /**
  * Created by Raos on 2/16/2016.
  */

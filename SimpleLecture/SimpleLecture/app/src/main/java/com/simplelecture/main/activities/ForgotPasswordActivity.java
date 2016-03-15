@@ -1,15 +1,12 @@
 package com.simplelecture.main.activities;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,14 +20,11 @@ import com.simplelecture.main.http.TransactionProcessor;
 import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.JsonFactory;
-import com.simplelecture.main.util.ProgressDialogCustom;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
 
 import org.json.JSONObject;
-
-import java.sql.Connection;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener, NetworkLayer {
 

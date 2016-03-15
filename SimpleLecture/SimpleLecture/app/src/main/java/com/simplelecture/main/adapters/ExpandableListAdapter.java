@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.courseTopics;
-import com.simplelecture.main.viewManager.ViewManager;
 
 import java.util.HashMap;
 import java.util.List;
