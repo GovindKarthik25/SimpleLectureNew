@@ -3,19 +3,26 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_coumbo"
-            android:title="@string/navigation_drawer_combo" />
-    </group>
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_course"
-            android:title="@string/navigation_drawer_course" />
+            android:id="@+id/nav_home"
+            android:title="@string/navigation_Home" />
     </group>
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_demo"
+            android:id="@+id/nav_course"
+            android:title="@string/navigation_drawer_courseCategories" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_SampleVideos"
             android:title="@string/navigation_drawer_demo" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_dashboard"
+            android:title="@string/navigation_drawer_dashboard" />
     </group>
 
     <group android:checkableBehavior="single">
@@ -38,8 +45,19 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_dashboard"
-            android:title="@string/navigation_drawer_dashboard" />
+            android:id="@+id/nav_Support"
+            android:title="@string/navigation_drawer_Support" />
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_LeagalPolicy"
+            android:title="@string/navigation_drawer_LeagalPolicy" />
+    </group>
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_AboutUs"
+            android:title="@string/navigation_drawer_AboutUs" />
+    </group>
 </menu>

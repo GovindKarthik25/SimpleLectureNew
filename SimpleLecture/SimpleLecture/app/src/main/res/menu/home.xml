@@ -2,8 +2,23 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_login"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_Login"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_myProfile"
+        android:orderInCategory="101"
+        android:title="@string/action_myProfile"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_Signin"
+        android:orderInCategory="102"
+        android:title="@string/action_Signin"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_logout"
+        android:orderInCategory="103"
+        android:title="@string/action_Logout"
         app:showAsAction="never" />
 </menu>

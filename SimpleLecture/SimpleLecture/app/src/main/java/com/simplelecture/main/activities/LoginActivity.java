@@ -76,10 +76,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginModel loginModel;
 
 
-    @Override
+    /*@Override
     public void onBackPressed() {
 
-    }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

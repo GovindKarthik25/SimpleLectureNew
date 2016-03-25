@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
 import com.simplelecture.main.util.Util;
@@ -27,6 +28,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     private PagerAdapter mPagerAdapter;
     private ViewPagerIndicator pageIndicator;
     private Button nextButton;
+    private Button buttonExplore, buttonSignin;
 
     @Override
     public void onBackPressed() {
@@ -48,6 +50,8 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_splash);
 
         nextButton = (Button) findViewById(R.id.nextButton);
+        buttonExplore = (Button) findViewById(R.id.buttonExplore);
+        buttonSignin = (Button) findViewById(R.id.buttonSignin);
         //nextButton.setClickable(false);
         //nextButton.setEnabled(false);
         //nextButton.setFocusable(false);
@@ -68,12 +72,15 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
                 // but for simplicity, the activity provides the actions in this sample.
                 pageIndicator.setViewPager(mPager);
 
-              //  validateTheButton();
+                //  validateTheButton();
                 //pageIndicator.notifyDataSetChanged();
 
             }
         });
 
+
+        buttonExplore.setOnClickListener(this);
+        buttonSignin.setOnClickListener(this);
         nextButton.setOnClickListener(this);
     }
 
@@ -92,7 +99,11 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View v) {
         if (v == nextButton) {
+            new ViewManager().gotoHomeView(this);
+        } else if (v == buttonExplore) {
             new ViewManager().gotoLoginView(this);
+        } else if (v == buttonSignin) {
+            new ViewManager().gotoSigninView(this);
         }
     }
 }

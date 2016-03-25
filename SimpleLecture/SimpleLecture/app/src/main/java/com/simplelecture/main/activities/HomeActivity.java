@@ -24,6 +24,7 @@ import com.simplelecture.main.fragments.HomeFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener {
 
@@ -51,7 +52,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toggle.syncState();
 
         //Changing the action bar color
-        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
+        getSupportActionBar().setTitle(Util.setActionBarText("Home"));
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -84,7 +85,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_login) {
+            new ViewManager().gotoLoginView(this);
+        } else if(id == R.id.action_myProfile) {
+            return true;
+        } else if(id == R.id.action_Signin){
+            new ViewManager().gotoSigninView(this);
+        } else if(id == R.id.action_logout){
             return true;
         }
 
@@ -96,19 +103,25 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_coumbo) {
+        if (id == R.id.nav_home) {
             displayView(0);
         } else if (id == R.id.nav_course) {
             displayView(1);
-        } else if (id == R.id.nav_demo) {
+        } else if (id == R.id.nav_SampleVideos) {
             displayView(2);
-        } else if (id == R.id.nav_my_courses) {
-            displayView(3);
-        } else if (id == R.id.nav_excercises) {
-            displayView(4);
-        } else if (id == R.id.nav_forum) {
-            displayView(5);
         } else if (id == R.id.nav_dashboard) {
+            displayView(3);
+        } else if (id == R.id.nav_my_courses) {
+            displayView(4);
+        } else if (id == R.id.nav_excercises) {
+            displayView(5);
+        } else if (id == R.id.nav_forum) {
+            displayView(6);
+        } else if (id == R.id.nav_Support) {
+            displayView(6);
+        } else if (id == R.id.nav_LeagalPolicy) {
+            displayView(6);
+        } else if (id == R.id.nav_AboutUs) {
             displayView(6);
         }
 
@@ -124,35 +137,43 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
-                setTitle("Combo Courses");
+                setTitle(getResources().getString(R.string.navigation_Home));
                 break;
             case 1:
                 fragment = new CourseCategoriesFragment();
-                setTitle("Courses Categories");
+                setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
                 break;
             case 2:
                 fragment = new DemoFragment();
-                setTitle("Demo Videos");
-
+                setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:
-                fragment = new MyCoursesFragment();
-                setTitle("My Courses");
-
+                fragment = new DashboardFragment();
+                setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
                 break;
             case 4:
-                fragment = new ExercisesFragment();
-                setTitle("Excercies");
+                fragment = new MyCoursesFragment();
+                setTitle(getResources().getString(R.string.navigation_drawer_mycourses));
                 break;
-
             case 5:
-                fragment = new ForumFragment();
-                setTitle("Forum");
+                fragment = new ExercisesFragment();
+                setTitle(getResources().getString(R.string.navigation_drawer_excercies));
                 break;
-
             case 6:
+                fragment = new ForumFragment();
+                setTitle(getResources().getString(R.string.navigation_drawer_forum));
+                break;
+            case 7:
                 fragment = new DashboardFragment();
-                setTitle("Dashboard");
+                setTitle(getResources().getString(R.string.navigation_drawer_Support));
+                break;
+            case 8:
+                fragment = new DashboardFragment();
+                setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
+                break;
+            case 9:
+                fragment = new DashboardFragment();
+                setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
                 break;
 
         }

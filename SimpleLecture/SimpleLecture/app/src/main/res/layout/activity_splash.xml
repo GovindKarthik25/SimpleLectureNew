@@ -44,12 +44,34 @@
                 android:id="@+id/nextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_marginRight="5dip"
-                android:background="@drawable/arrow"
-                android:layout_centerInParent="true"/>
+                android:background="@drawable/arrow" />
 
 
         </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonExplore"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dip"
+            android:text="Explore"
+            android:background="@drawable/button_border"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/buttonSignin"
+            android:layout_width="120dip"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dip"
+            android:layout_toEndOf="@+id/buttonExplore"
+            android:text="Signin"
+            android:background="@drawable/button_border"
+            android:textColor="@color/white" />
 
 
     </RelativeLayout>

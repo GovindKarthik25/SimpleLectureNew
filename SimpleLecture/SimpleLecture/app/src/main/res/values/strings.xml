@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Simple Lecture</string>
-    <string name="action_settings">Setting</string>
+    <string name="action_myProfile">My Profile</string>
+    <string name="action_Login">Login</string>
+    <string name="action_Logout">Logout</string>
+    <string name="action_Signin">Signin</string>
     <string name="action_ChangePassword">Change Password</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Search</string>
@@ -11,13 +14,19 @@
     <string name="hint_NewPassword">NewPassword</string>
     <string name="hint_ConfirmPassword">ConfirmPassword</string>
     <string name="hint_mobile">Mobile No</string>
+    <string name="hint_Name">Name</string>
+    <string name="hint_OTPNo">Enter OTP number</string>
 
     <string name="loading">Loading&#8230;</string>
 
-    <string name="btn_LogIn">Log In</string>
+    <string name="btn_LogIn">Login</string>
     <string name="btn_ForgotPassword">Forgot Password</string>
     <string name="btn_Submit">SubMit</string>
-    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_sign_up">Sign up</string>
+    <string name="btn_verify">Verify</string>
+
+
+    <string name="txt_resendOTP">Resend OTP</string>
 
 
     <!-- SnackBar Msg-->
@@ -42,12 +51,15 @@
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="navigation_drawer_combo">Combo Courses</string>
-    <string name="navigation_drawer_course">Course Categories</string>
-    <string name="navigation_drawer_demo">Demo Videos</string>
+    <string name="navigation_Home">Home</string>
+    <string name="navigation_drawer_courseCategories">Course Categories</string>
+    <string name="navigation_drawer_demo">Sample Videos</string>
     <string name="navigation_drawer_mycourses">My Courses</string>
     <string name="navigation_drawer_excercies">Excercies</string>
     <string name="navigation_drawer_forum">Forum</string>
+    <string name="navigation_drawer_Support">Support</string>
+    <string name="navigation_drawer_LeagalPolicy">Leagal Policy</string>
+    <string name="navigation_drawer_AboutUs">About Us</string>
     <string name="navigation_drawer_login">Login</string>
     <string name="navigation_drawer_dashboard">Dashboard</string>
 

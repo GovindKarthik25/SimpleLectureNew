@@ -7,6 +7,9 @@
     <color name="listItemHeader">#eeeeee</color> // #eeeeee ffe4cf
     <color name="listItemChild">#F5F5F5</color>
     <color name="listTextColor">#FF9648</color>
+    <color name="white">#FFFFFF</color>
+    <color name="transperent">#00FFFFFF</color>
+
 
 
 

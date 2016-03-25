@@ -10,6 +10,7 @@ import com.simplelecture.main.activities.DashboardActivity;
 import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
+import com.simplelecture.main.activities.OTPcodeActivity;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
@@ -50,8 +51,19 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoCreateAccountView(Activity activity) {
+    public Intent gotoSigninView(Activity activity) {
         intent = new Intent(activity, CreateAccountActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to OTP code View
+     *
+     * @return
+     */
+    public Intent gotoOTPcodeView(Activity activity) {
+        intent = new Intent(activity, OTPcodeActivity.class);
         setDisplay(activity, intent);
         return intent;
     }
