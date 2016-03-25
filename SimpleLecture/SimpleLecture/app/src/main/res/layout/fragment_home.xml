@@ -4,53 +4,235 @@
     android:layout_height="match_parent"
     tools:context="com.simplelecture.main.fragments.ComboCoursesFragment">
 
-    <RelativeLayout
-        android:id="@+id/viewPagerRelativeLayout"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_above="@+id/bottomRelativeLayout">
+        android:layout_height="wrap_content">
 
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/pager"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
 
-        <com.simplelecture.main.util.ViewPagerIndicator
-            android:id="@+id/page_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dip"
-            android:gravity="center" />
+            <RelativeLayout
+                android:id="@+id/viewPagerRelativeLayout"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_above="@+id/bottomRelativeLayout">
 
-    </RelativeLayout>
+                <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/viewPagerRelativeLayout"
-        android:layout_marginBottom="50dp"
-        android:scrollbars="vertical" />
+            </RelativeLayout>
 
+            <RelativeLayout
+                android:id="@+id/page_indicator_strip"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/viewPagerRelativeLayout"
+                android:background="@android:color/darker_gray">
+
+                <com.simplelecture.main.util.ViewPagerIndicator
+                    android:id="@+id/page_indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/cart_strip"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_below="@+id/page_indicator_strip"
+                android:background="@android:color/background_light"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:src="@mipmap/ic_launcher" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="20dp"
+                    android:layout_weight="1"
+                    android:text="You have 2 courses in your \n account check now"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="20dp"
+                    android:src="@android:drawable/ic_input_add" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/courses_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cart_strip"
+                android:background="@android:color/darker_gray"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="Combo Courses"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="View all"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/courses_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/courses_title"
+                android:paddingTop="5dp"
+                android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/recomended_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/courses_recycler_view"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="Recomended Courses"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="View all"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recomended_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/recomended_title"
+                android:paddingTop="5dp"
+                android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/most_view_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/recomended_recycler_view"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="Most Viewed"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:text="View all"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/most_viewed_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/most_view_title"
+                android:paddingTop="5dp"
+                android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/testimonials_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/most_viewed_recycler_view"
+                android:layout_marginTop="5dp"
+                android:background="@android:color/darker_gray"
+                android:orientation="horizontal"
+                android:padding="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:text="Testimonials"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/testimonials_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_below="@id/testimonials_title"
+                android:paddingTop="5dp"
+                android:layout_marginBottom="50dp"
+                android:scrollbars="vertical" />
+
+        </RelativeLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="@color/colorPrimaryDark">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:text="Powered by Simplelecture.com © 2015"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:gravity="center"
-            android:layout_gravity="center_vertical" />
+            android:textSize="12sp" />
+
 
     </LinearLayout>
-
-
 </RelativeLayout>

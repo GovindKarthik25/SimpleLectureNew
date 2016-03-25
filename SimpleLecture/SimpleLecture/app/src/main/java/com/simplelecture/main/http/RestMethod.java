@@ -40,6 +40,7 @@ public class RestMethod implements IRestMethod {
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty("content-type", "application/json");
             connection.setRequestMethod("POST");
+            connection.setConnectTimeout(15000);
             connection.setDoOutput(true);
             connection.setChunkedStreamingMode(0);
 
@@ -76,7 +77,7 @@ public class RestMethod implements IRestMethod {
             HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.setDoInput(true);
             urlConnection.setRequestMethod("GET");
-//            urlConnection.setConnectTimeout(15000);
+            urlConnection.setConnectTimeout(15000);
             //add token to header
             if (!token.isEmpty()) {
                 Log.v("token-->", token.toString());

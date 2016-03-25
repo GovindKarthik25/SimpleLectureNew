@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
+import com.simplelecture.main.transactions.HomePageDataTransaction;
 import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
@@ -95,6 +96,13 @@ public class ApiService {
             e.printStackTrace();
         }
 
+    }
+
+    public void doGetHomeScreenData(Context mContext, Fragment fragmentContext, String uId) {
+
+        HomePageDataTransaction homePageDataTransaction = new HomePageDataTransaction(null, mContext, uId);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+        transactionProcessor.execute(homePageDataTransaction);
     }
 
 }

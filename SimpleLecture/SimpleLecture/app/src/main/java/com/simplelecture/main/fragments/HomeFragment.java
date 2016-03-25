@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +15,12 @@ import android.view.ViewGroup;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
+import com.simplelecture.main.adapters.CoursesAdapter;
 import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
+import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
 
@@ -29,7 +34,7 @@ import java.util.ArrayList;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements NetworkLayer {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -41,7 +46,13 @@ public class HomeFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
+    RecyclerView coursesList;
+
+    RecyclerView recomendedCoursesView;
+
+    RecyclerView mostViewedList;
+
+    RecyclerView testimonialsList;
 
     private ViewPager mPager;
 
@@ -52,6 +63,7 @@ public class HomeFragment extends Fragment {
     private ViewPagerIndicator pageIndicator;
 
     ComboCoursesAdapter comboCoursesAdapter;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -91,10 +103,10 @@ public class HomeFragment extends Fragment {
 
         View convertView = inflater.inflate(R.layout.fragment_home, container, false);
 
-        pageIndicator = (ViewPagerIndicator)convertView.findViewById(R.id.page_indicator);
+        pageIndicator = (ViewPagerIndicator) convertView.findViewById(R.id.page_indicator);
 
         // Instantiate a ViewPager and a PagerAdapter.
-        mPager = (ViewPager)convertView.findViewById(R.id.pager);
+        mPager = (ViewPager) convertView.findViewById(R.id.pager);
         mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPager.setAdapter(mPagerAdapter);
@@ -130,15 +142,44 @@ public class HomeFragment extends Fragment {
         data.add("test8");
         data.add("test9");
 
-        recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
-      //  comboCoursesAdapter = new ComboCoursesAdapter(data);
-        recyclerView.setAdapter(comboCoursesAdapter);
+        //combo courses list
+        coursesList = (RecyclerView) convertView.findViewById(R.id.courses_recycler_view);
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        coursesList.setLayoutManager(linearLayoutManager);
+        CoursesAdapter coursesAdapter = new CoursesAdapter(getActivity(), data);
+        coursesList.setAdapter(coursesAdapter);
 
+        //recomended courses list
+        recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
+        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        recomendedCoursesView.setLayoutManager(linearLayoutManager1);
+        CoursesAdapter coursesAdapter1 = new CoursesAdapter(getActivity(), data);
+        recomendedCoursesView.setAdapter(coursesAdapter);
+
+        //most viewed list
+        mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
+        LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        mostViewedList.setLayoutManager(linearLayoutManager2);
+        CoursesAdapter coursesAdapter2 = new CoursesAdapter(getActivity(), data);
+        mostViewedList.setAdapter(coursesAdapter2);
+
+        //testimonials list
+        testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
+        LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        testimonialsList.setLayoutManager(linearLayoutManager3);
+        TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), data);
+        testimonialsList.setAdapter(testimonialsAdapter);
 
         return convertView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ApiService.getApiService().doGetHomeScreenData(getActivity(), HomeFragment.this, "261");
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -163,5 +204,15 @@ public class HomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void parseResponse(String response) {
+
+    }
+
+    @Override
+    public void showError(String error) {
+
     }
 }
