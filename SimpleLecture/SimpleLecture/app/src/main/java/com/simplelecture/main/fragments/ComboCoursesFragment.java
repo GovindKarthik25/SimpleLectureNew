@@ -186,7 +186,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
                 courseFeaturesLstArray = new ArrayList<courseFeatures>();
                 for (JsonElement obj : jarray) {
-                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
+                    courseFeatures courseFeaturesObj = gson.fromJson(jarray, courseFeatures.class);
                     courseFeaturesLstArray.add(courseFeaturesObj);
                 }
 

@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
+import com.simplelecture.main.transactions.DemoTutorialTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
 import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
@@ -104,5 +105,19 @@ public class ApiService {
         TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
         transactionProcessor.execute(homePageDataTransaction);
     }
+
+    public void doGetDemoTutorial(Context mContext, Fragment fragmentContext) {
+
+        try {
+
+            DemoTutorialTransaction demoTutorialTransaction = new DemoTutorialTransaction(null, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(demoTutorialTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
 }

@@ -3,10 +3,12 @@ package com.simplelecture.main.viewManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
 import com.simplelecture.main.activities.DashboardActivity;
+import com.simplelecture.main.activities.DemoTutorialActivity;
 import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
@@ -140,6 +142,18 @@ public class ViewManager {
     public Intent gotoVideoPlayerView(Context mContext, String videoId) {
         intent = new Intent(mContext, VideoPlayerActivity.class);
         intent.putExtra("videoId", videoId);
+        mContext.startActivity(intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Video Player View
+     *
+     * @return
+     */
+    public Intent gotoDemoTourView(Context mContext) {
+        intent = new Intent(mContext, DemoTutorialActivity.class);
+//        intent.putExtra("videoId", videoId);
         mContext.startActivity(intent);
         return intent;
     }

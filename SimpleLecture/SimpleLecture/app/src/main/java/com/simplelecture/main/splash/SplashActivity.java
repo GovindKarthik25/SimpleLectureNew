@@ -101,7 +101,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         if (v == nextButton) {
             new ViewManager().gotoHomeView(this);
         } else if (v == buttonExplore) {
-            new ViewManager().gotoLoginView(this);
+            new ViewManager().gotoDemoTourView(this);
         } else if (v == buttonSignin) {
             new ViewManager().gotoSigninView(this);
         }
