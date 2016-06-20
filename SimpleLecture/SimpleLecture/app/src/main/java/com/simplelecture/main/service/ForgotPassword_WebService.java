@@ -20,7 +20,7 @@ public class ForgotPassword_WebService extends BaseWebservice {
 
 		//Log.i("jsonInputData-->", jsonInputData);
 
-		response = wsClient.wsConnect(Constants.GET_FORGOTPASSWORD, "", "", jsonInputData, "Post");
+//		response = wsClient.wsConnect(Constants.GET_FORGOTPASSWORD, "", "", jsonInputData, "Post");
 		//Log.i("jsonOutputCreate-->", response);
 		return response;
 	}

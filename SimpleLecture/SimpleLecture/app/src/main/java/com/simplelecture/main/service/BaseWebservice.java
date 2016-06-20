@@ -10,7 +10,7 @@ public class BaseWebservice {
 
 	public BaseWebservice() {
 		wsClient = new WSClient();
-		gson = wsClient.getGsonBuilder();
+//		gson = wsClient.getGsonBuilder();
 		ReturnCodes.ERRSTRING = "";
 	}
 }

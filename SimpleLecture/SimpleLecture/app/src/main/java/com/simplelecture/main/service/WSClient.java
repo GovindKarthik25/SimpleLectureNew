@@ -11,12 +11,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.net.URL;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import android.util.Log;
@@ -28,7 +22,7 @@ import com.simplelecture.main.constants.Constants;
 public class WSClient {
 
 	@SuppressWarnings("deprecation")
-	DefaultHttpClient httpClient = null;
+//	DefaultHttpClient httpClient = null;
 
 	public WSClient() {
 
@@ -45,8 +39,8 @@ public class WSClient {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
-	private String wsCall(String methodName, String header, String jsonInputHeader, String jsonInputData, String httpType)
+//	@SuppressWarnings("deprecation")
+	/*private String wsCall(String methodName, String header, String jsonInputHeader, String jsonInputData, String httpType)
 			throws Exception {
 		String responseString = "";
 		HttpResponse response;
@@ -111,16 +105,16 @@ public class WSClient {
 
 		// SessionManager.httpClient.getConnectionManager().shutdown();
 
-		/*
+		*//*
 		 * responseString = responseString.replaceAll("'''", "'");
 		 * responseString = responseString.replaceAll("''", "'"); responseString
 		 * = responseString.replaceAll("'", "''");
-		 */// SQLLITE Insert issue.
+		 *//*// SQLLITE Insert issue.
 
 		return responseString;
 	}
 
-	/**
+	*//**
 	 * Description : wsConnect
 	 * 
 	 * @param methodName
@@ -129,7 +123,7 @@ public class WSClient {
 	 * @param jsonInputData
 	 * @param httpType
 	 * @return
-	 */
+	 *//*
 	public String wsConnect(String methodName, String header,
 			String jsonInputHeader, String jsonInputData, String httpType) {
 		String responseString = "";
@@ -153,5 +147,5 @@ public class WSClient {
 		return builder.create();
 	}
 
-
+*/
 }
