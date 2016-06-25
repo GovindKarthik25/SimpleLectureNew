@@ -131,7 +131,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             try {
                 if (urls[0].equals(param_get_ForgotPassword[0])) {
 
-                    forgotPasswordOutput = new ForgotPasswordController().getForgotPassword(email);
+                   // forgotPasswordOutput = new ForgotPasswordController().getForgotPassword(email);
 
                 }
 

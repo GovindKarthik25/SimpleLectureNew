@@ -209,6 +209,9 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     @Override
     public void parseResponse(String response) {
 
+
+        
+
     }
 
     @Override
