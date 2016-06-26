@@ -13,7 +13,6 @@ import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.OTPcodeActivity;
-import com.simplelecture.main.fragments.SelectYourCoursesFragment;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
@@ -164,11 +163,12 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoSelectedCourse(Context mContext) {
+    /*public Intent gotoSelectedCourse(Context mContext) {
+
         intent = new Intent(mContext, SelectYourCoursesFragment.class);
         mContext.startActivity(intent);
         return intent;
-    }
+    }*/
 
 
 }

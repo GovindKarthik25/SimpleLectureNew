@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +21,7 @@ import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
 
@@ -178,7 +179,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ApiService.getApiService().doGetHomeScreenData(getActivity(), HomeFragment.this, "261");
+        ApiService.getApiService().doGetHomeScreenData(getActivity(), HomeFragment.this, Util.getFromPrefrences(getContext(), "SelectYourCategoryID"));
 
     }
 
@@ -208,7 +209,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void parseResponse(String response) {
-
+        /*Log.i("parseResponse--***", response.toString());*/
 
 
 
@@ -216,6 +217,8 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
     @Override
     public void showError(String error) {
-
+        /*if (pd.isShowing()) {
+            pd.cancel();
+        }*/
     }
 }
