@@ -1,6 +1,7 @@
 package com.simplelecture.main.splash;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.widget.Button;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
+import com.simplelecture.main.fragments.SelectYourCoursesFragment;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
@@ -101,7 +103,10 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         if (v == nextButton) {
             new ViewManager().gotoHomeView(this);
         } else if (v == buttonExplore) {
-            new ViewManager().gotoDemoTourView(this);
+            SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            selectYourCoursesFragment.show(fragmentManager, "");
+
         } else if (v == buttonSignin) {
             new ViewManager().gotoSigninView(this);
         }

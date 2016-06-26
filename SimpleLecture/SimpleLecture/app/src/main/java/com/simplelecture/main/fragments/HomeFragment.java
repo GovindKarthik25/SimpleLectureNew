@@ -210,7 +210,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     public void parseResponse(String response) {
 
 
-        
+
 
     }
 

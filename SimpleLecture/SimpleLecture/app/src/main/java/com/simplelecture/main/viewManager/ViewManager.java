@@ -13,6 +13,7 @@ import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.OTPcodeActivity;
+import com.simplelecture.main.fragments.SelectYourCoursesFragment;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
@@ -154,6 +155,17 @@ public class ViewManager {
     public Intent gotoDemoTourView(Context mContext) {
         intent = new Intent(mContext, DemoTutorialActivity.class);
 //        intent.putExtra("videoId", videoId);
+        mContext.startActivity(intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Video Player View
+     *
+     * @return
+     */
+    public Intent gotoSelectedCourse(Context mContext) {
+        intent = new Intent(mContext, SelectYourCoursesFragment.class);
         mContext.startActivity(intent);
         return intent;
     }

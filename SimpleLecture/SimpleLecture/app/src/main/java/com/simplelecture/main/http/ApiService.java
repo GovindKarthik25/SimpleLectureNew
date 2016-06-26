@@ -8,9 +8,10 @@ import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.DemoTutorialTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
-import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
+import com.simplelecture.main.transactions.SelectMyCourseTransaction;
+import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.util.JsonFactory;
 import com.simplelecture.main.util.Util;
 
@@ -113,6 +114,19 @@ public class ApiService {
             DemoTutorialTransaction demoTutorialTransaction = new DemoTutorialTransaction(null, mContext);
             TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
             transactionProcessor.execute(demoTutorialTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void doGetSelectYourCourse(Context mContext, Fragment fragmentContext) {
+
+        try {
+
+            SelectMyCourseTransaction selectMyCourseTransaction = new SelectMyCourseTransaction(null, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(selectMyCourseTransaction);
         } catch (Exception e) {
             e.printStackTrace();
         }

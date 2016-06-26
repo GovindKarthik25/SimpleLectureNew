@@ -81,10 +81,13 @@
     <string name="excercise">Excercise</string>
     <string name="forum">Forum</string>
     <string name="support">Support</string>
+    <string name="selectyouCourse">Select your Course</string>
+
 
 
     <!--Facebook_app_id-->
     <string name="facebook_app_id">190332871324339</string>
+    <string name="title_activity_select_your_courses">SelectYourCoursesActivity</string>
 
 
 </resources>
