@@ -19,14 +19,14 @@ import static com.simplelecture.main.R.id.item_layout;
 /**
  * Created by M1032185 on 1/31/2016.
  */
-public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapter.MyViewHolder> {
+public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.MyViewHolder> {
 
     private final Activity activity;
     List<String> courseCombosList;
 
     OnItemClickListener mItemClickListener;
 
-    public TestimonialsAdapter(Activity activty, List<String> courseCombos) {
+    public HomeCoursesAdapter(Activity activty, List<String> courseCombos) {
         this.activity = activty;
         this.courseCombosList = courseCombos;
 
@@ -36,7 +36,7 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.testimonial_item_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_courses_item_view, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -57,8 +57,8 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 //            } else {
 //                holder.courseimageView.setImageResource(R.mipmap.app_icon);
 //            }
-            holder.text_Name.setText(courseCombosList.get(position));
-            holder.text_Content.setText(courseCombosList.get(position));
+            holder.subNameText.setText(courseCombosList.get(position));
+            holder.textPrice.setText(courseCombosList.get(position));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,15 +77,15 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView text_Name;
-        TextView text_Content;
+        TextView subNameText;
+        TextView textPrice;
         ImageView courseimageView;
         LinearLayout itemLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            text_Name = (TextView) itemView.findViewById(R.id.text_Name);
-            text_Content = (TextView) itemView.findViewById(R.id.text_Content);
+            subNameText = (TextView) itemView.findViewById(R.id.text_subject);
+            textPrice = (TextView) itemView.findViewById(R.id.text_price);
             courseimageView = (ImageView) itemView.findViewById(R.id.courseimageView);
             itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             itemView.setOnClickListener(this);

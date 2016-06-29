@@ -28,9 +28,8 @@
             <RelativeLayout
                 android:id="@+id/page_indicator_strip"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_below="@+id/viewPagerRelativeLayout"
-                android:background="@android:color/darker_gray">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/viewPagerRelativeLayout">
 
                 <com.simplelecture.main.util.ViewPagerIndicator
                     android:id="@+id/page_indicator"
@@ -79,26 +78,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cart_strip"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorAccent"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="Combo Courses"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="View all"
-                    android:textColor="@color/colorAccent"
+                    android:layout_weight="0.5"
+                    android:gravity="start|center"
+                    android:text="@string/comboCourse"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@android:drawable/presence_audio_away"
+                    android:gravity="center|end"
+                    android:text="@string/viewall"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -116,26 +116,28 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/courses_recycler_view"
                 android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorAccent"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="Recomended Courses"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="View all"
-                    android:textColor="@color/colorAccent"
+                    android:layout_weight="0.5"
+                    android:gravity="start|center"
+                    android:text="@string/course"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@android:drawable/presence_audio_away"
+                    android:gravity="center|end"
+                    android:text="@string/viewall"
+
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -153,26 +155,27 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/recomended_recycler_view"
                 android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorAccent"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_weight="1"
-                    android:text="Most Viewed"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="View all"
-                    android:textColor="@color/colorAccent"
+                    android:layout_weight="0.5"
+                    android:gravity="start|center"
+                    android:text="@string/mostViewed"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableRight="@android:drawable/presence_audio_away"
+                    android:gravity="center|end"
+                    android:text="@string/viewall"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
@@ -190,18 +193,18 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/most_viewed_recycler_view"
                 android:layout_marginTop="5dp"
-                android:background="@android:color/darker_gray"
+                android:background="@color/colorAccent"
                 android:orientation="horizontal"
-                android:padding="5dp">
+                android:padding="4dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
                     android:layout_weight="1"
-                    android:text="Testimonials"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp" />
+                    android:gravity="start|center"
+                    android:text="@string/Testimonials"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
 
             </LinearLayout>
 

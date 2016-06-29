@@ -8,35 +8,32 @@
 
     <LinearLayout
         android:layout_width="350dp"
-        android:layout_height="180dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:background="@android:color/darker_gray"
+        android:background="@drawable/itemborder"
         android:orientation="vertical"
         android:padding="5dp">
 
-
         <TextView
-            android:id="@+id/text_subject"
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
-            android:gravity="left"
-            android:text="Mathematicsfsdfsdfffffffffffffsddddddddddddddsddddddddddddddddddddsssssssssssssssssss"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/text_price"
+            android:id="@+id/text_Name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:gravity="center"
-            android:text="Rs.1000/-"
+            android:layout_marginTop="5dp"
+            android:gravity="start"
+            android:text="karthik"
+            android:textColor="@color/colorAccent"
+            android:textSize="15sp" />
 
-            android:textColor="@android:color/holo_red_light"
-            android:textSize="13sp" />
+        <TextView
+            android:id="@+id/text_Content"
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="left"
+            android:text="Mathematicsfsdfsdfffffffffff ffsddddddddddddddsddddddddddddddddddddsssssssssssssssssss"
+            android:textSize="12sp" />
 
     </LinearLayout>
 

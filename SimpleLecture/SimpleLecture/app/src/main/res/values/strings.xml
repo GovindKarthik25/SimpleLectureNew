@@ -85,6 +85,14 @@
 
 
 
+    <!--Home screen-->
+
+    <string name="course">Course</string>
+    <string name="mostViewed">Most Viewed</string>
+    <string name="Testimonials">Testimonials</string>
+    <string name="viewall">View all</string>
+
+
     <!--Facebook_app_id-->
     <string name="facebook_app_id">190332871324339</string>
     <string name="title_activity_select_your_courses">SelectYourCoursesActivity</string>

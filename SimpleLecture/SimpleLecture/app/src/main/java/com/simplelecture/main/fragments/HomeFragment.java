@@ -1,6 +1,7 @@
 package com.simplelecture.main.fragments;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,19 +9,28 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
-import com.simplelecture.main.adapters.CoursesAdapter;
+import com.simplelecture.main.adapters.HomeComboCoursesAdapter;
+import com.simplelecture.main.adapters.HomeCoursesAdapter;
+import com.simplelecture.main.adapters.HomeMostViewedAdapter;
 import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
 import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
@@ -64,6 +74,10 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private ViewPagerIndicator pageIndicator;
 
     ComboCoursesAdapter comboCoursesAdapter;
+    private ProgressDialog pd;
+    private boolean param_get_HomeScreenData = false;
+    private AlertMessageManagement alertMessageManagement;
+    private SnackBarManagement snack;
 
 
     /**
@@ -91,11 +105,24 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+        try {
+
+            snack = new SnackBarManagement(getContext());
+            alertMessageManagement = new AlertMessageManagement(getContext());
+
+            if (getArguments() != null) {
+                mParam1 = getArguments().getString(ARG_PARAM1);
+                mParam2 = getArguments().getString(ARG_PARAM2);
+            }
+
+            callHomeDataService();
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -148,22 +175,22 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 //        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         coursesList.setLayoutManager(linearLayoutManager);
-        CoursesAdapter coursesAdapter = new CoursesAdapter(getActivity(), data);
-        coursesList.setAdapter(coursesAdapter);
+        HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), data);
+        coursesList.setAdapter(homeComboCoursesAdapter);
 
         //recomended courses list
         recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recomendedCoursesView.setLayoutManager(linearLayoutManager1);
-        CoursesAdapter coursesAdapter1 = new CoursesAdapter(getActivity(), data);
-        recomendedCoursesView.setAdapter(coursesAdapter);
+        HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), data);
+        recomendedCoursesView.setAdapter(homeCoursesAdapter);
 
         //most viewed list
         mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
-        CoursesAdapter coursesAdapter2 = new CoursesAdapter(getActivity(), data);
-        mostViewedList.setAdapter(coursesAdapter2);
+        HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), data);
+        mostViewedList.setAdapter(homeMostViewedAdapter);
 
         //testimonials list
         testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
@@ -179,7 +206,6 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ApiService.getApiService().doGetHomeScreenData(getActivity(), HomeFragment.this, Util.getFromPrefrences(getContext(), "SelectYourCategoryID"));
 
     }
 
@@ -207,18 +233,68 @@ public class HomeFragment extends Fragment implements NetworkLayer {
         mListener = null;
     }
 
-    @Override
-    public void parseResponse(String response) {
-        /*Log.i("parseResponse--***", response.toString());*/
 
+    private void callHomeDataService() {
 
+        try {
+            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                param_get_HomeScreenData = true;
+                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+
+                ApiService.getApiService().doGetHomeScreenData(getActivity(), HomeFragment.this, Util.getFromPrefrences(getContext(), "SelectYourCategoryID"));
+            } else {
+                alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
+    public void parseResponse(String response) {
+        /*Log.i("parseResponse--***", response.toString());*/
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+            if (param_get_HomeScreenData) {
+                JsonArray jArray = parser.parse(response).getAsJsonArray();
+
+                ArrayList<HomePageResponseModel> homePageResponseModelLstArray = new ArrayList<HomePageResponseModel>();
+                for (JsonElement obj : jArray) {
+                    HomePageResponseModel homePageResponseModelobj = gson.fromJson(obj, HomePageResponseModel.class);
+                    homePageResponseModelLstArray.add(homePageResponseModelobj);
+                }
+
+                   displayAndSetTheItem(homePageResponseModelLstArray);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    private void displayAndSetTheItem(ArrayList<HomePageResponseModel> homePageResponseModelLstArray) {
+        try {
+
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void showError(String error) {
-        /*if (pd.isShowing()) {
+        if (pd.isShowing()) {
             pd.cancel();
-        }*/
+        }
+
+        param_get_HomeScreenData = false;
     }
 }
