@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
+import com.simplelecture.main.model.viewmodel.Courses;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -22,13 +25,13 @@ import static com.simplelecture.main.R.id.item_layout;
 public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.MyViewHolder> {
 
     private final Activity activity;
-    List<String> courseCombosList;
+    private List<Courses> coursesLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public HomeCoursesAdapter(Activity activty, List<String> courseCombos) {
+    public HomeCoursesAdapter(Activity activty, List<Courses> coursesLstAray) {
         this.activity = activty;
-        this.courseCombosList = courseCombos;
+        this.coursesLstArray = coursesLstAray;
 
     }
 
@@ -57,8 +60,8 @@ public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.
 //            } else {
 //                holder.courseimageView.setImageResource(R.mipmap.app_icon);
 //            }
-            holder.subNameText.setText(courseCombosList.get(position));
-            holder.textPrice.setText(courseCombosList.get(position));
+            holder.subNameText.setText(coursesLstArray.get(position).getCatName());
+            holder.textPrice.setText(coursesLstArray.get(position).getCdPrice());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +71,7 @@ public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.
 
     @Override
     public int getItemCount() {
-        return courseCombosList.size();
+        return coursesLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {

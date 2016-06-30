@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.simplelecture.main.model.viewmodel.Testimonials;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -22,13 +25,13 @@ import static com.simplelecture.main.R.id.item_layout;
 public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapter.MyViewHolder> {
 
     private final Activity activity;
-    List<String> courseCombosList;
+    List<Testimonials> testimonialsLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public TestimonialsAdapter(Activity activty, List<String> courseCombos) {
+    public TestimonialsAdapter(Activity activty, List<Testimonials> testimonialsLstAray) {
         this.activity = activty;
-        this.courseCombosList = courseCombos;
+        this.testimonialsLstArray = testimonialsLstAray;
 
     }
 
@@ -57,8 +60,8 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 //            } else {
 //                holder.courseimageView.setImageResource(R.mipmap.app_icon);
 //            }
-            holder.text_Name.setText(courseCombosList.get(position));
-            holder.text_Content.setText(courseCombosList.get(position));
+            holder.text_Name.setText(testimonialsLstArray.get(position).gettName());
+            holder.text_Content.setText(testimonialsLstArray.get(position).gettDesc());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +71,7 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 
     @Override
     public int getItemCount() {
-        return courseCombosList.size();
+        return testimonialsLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {

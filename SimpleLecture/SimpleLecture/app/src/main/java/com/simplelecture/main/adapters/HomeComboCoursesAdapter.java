@@ -11,7 +11,11 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
+import com.simplelecture.main.model.viewmodel.CourseCombos;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -22,13 +26,13 @@ import static com.simplelecture.main.R.id.item_layout;
 public class HomeComboCoursesAdapter extends RecyclerView.Adapter<HomeComboCoursesAdapter.MyViewHolder> {
 
     private final Activity activity;
-    List<String> courseCombosList;
+    List<CourseCombos> courseCombosLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public HomeComboCoursesAdapter(Activity activty, List<String> courseCombos) {
+    public HomeComboCoursesAdapter(Activity activty, List<CourseCombos> courseCombosLstAray) {
         this.activity = activty;
-        this.courseCombosList = courseCombos;
+        this.courseCombosLstArray = courseCombosLstAray;
 
     }
 
@@ -45,21 +49,20 @@ public class HomeComboCoursesAdapter extends RecyclerView.Adapter<HomeComboCours
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         try {
-//            if (!courseCombosList.get(position).getcIcon().equals("") || courseCombosList.get(position).getcIcon() != null) {
-//
-//                Picasso.with(activity)
-//                        .load(courseCombosList.get(position).getcIcon())
-//                        .placeholder(R.mipmap.loading)   // optional
-//                        .error(R.mipmap.app_icon)      // optional
-//                                //.resize(250, 200)                        // optional
-//                                //.rotate(90)                             // optional
-//                        .into(holder.courseimageView);
-//            } else {
-//                holder.courseimageView.setImageResource(R.mipmap.app_icon);
-//            }
-            holder.subNameText.setText(courseCombosList.get(position));
-            holder.textPrice.setText(courseCombosList.get(position));
-            holder.text_desc.setText("dd");
+            if (!courseCombosLstArray.get(position).getcIcon().equals("") || courseCombosLstArray.get(position).getcIcon() != null) {
+
+                Picasso.with(activity)
+                        .load(courseCombosLstArray.get(position).getcIcon())
+                        .placeholder(R.mipmap.loading)   // optional
+                        .error(R.mipmap.app_icon);      // optional
+                //.resize(250, 200)                        // optional
+                //.rotate(90)                             // optional             .into(holder.courseimageView);
+            } else {
+                holder.courseimageView.setImageResource(R.mipmap.app_icon);
+            }
+            holder.subNameText.setText(courseCombosLstArray.get(position).getCatName());
+            holder.textPrice.setText(courseCombosLstArray.get(position).getCdPrice());
+            holder.text_desc.setText(courseCombosLstArray.get(position).getcName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +71,7 @@ public class HomeComboCoursesAdapter extends RecyclerView.Adapter<HomeComboCours
 
     @Override
     public int getItemCount() {
-        return courseCombosList.size();
+        return courseCombosLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {

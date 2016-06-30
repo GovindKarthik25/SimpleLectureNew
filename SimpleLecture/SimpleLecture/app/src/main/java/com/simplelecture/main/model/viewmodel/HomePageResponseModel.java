@@ -11,6 +11,7 @@ public class HomePageResponseModel implements Serializable {
     private int MyCoursesCount;
 
     private List<Banners> bannersLst;
+    private List<CourseCombos> courseCombosLst;
     private List<Courses> coursesLst;
     private List<PopularCourses> popularCoursesLst;
     private List<Testimonials> testimonialsLst;
@@ -20,12 +21,21 @@ public class HomePageResponseModel implements Serializable {
     public HomePageResponseModel() {
     }
 
-    public HomePageResponseModel(int myCoursesCount, List<Banners> bannersLst, List<Courses> coursesLst, List<Testimonials> testimonialsLst, List<PopularCourses> popularCoursesLst) {
+    public HomePageResponseModel(int myCoursesCount, List<Banners> bannersLst, List<CourseCombos> courseCombosLst, List<Courses> coursesLst, List<PopularCourses> popularCoursesLst, List<Testimonials> testimonialsLst) {
         MyCoursesCount = myCoursesCount;
         this.bannersLst = bannersLst;
+        this.courseCombosLst = courseCombosLst;
         this.coursesLst = coursesLst;
-        this.testimonialsLst = testimonialsLst;
         this.popularCoursesLst = popularCoursesLst;
+        this.testimonialsLst = testimonialsLst;
+    }
+
+    public List<Banners> getBannersLst() {
+        return bannersLst;
+    }
+
+    public void setBannersLst(List<Banners> bannersLst) {
+        this.bannersLst = bannersLst;
     }
 
     public int getMyCoursesCount() {
@@ -36,12 +46,12 @@ public class HomePageResponseModel implements Serializable {
         MyCoursesCount = myCoursesCount;
     }
 
-    public List<Banners> getBannersLst() {
-        return bannersLst;
+    public List<CourseCombos> getCourseCombosLst() {
+        return courseCombosLst;
     }
 
-    public void setBannersLst(List<Banners> bannersLst) {
-        this.bannersLst = bannersLst;
+    public void setCourseCombosLst(List<CourseCombos> courseCombosLst) {
+        this.courseCombosLst = courseCombosLst;
     }
 
     public List<Courses> getCoursesLst() {
@@ -73,6 +83,7 @@ public class HomePageResponseModel implements Serializable {
         return "HomePageResponseModel{" +
                 "MyCoursesCount=" + MyCoursesCount +
                 ", bannersLst=" + bannersLst +
+                ", courseCombosLst=" + courseCombosLst +
                 ", coursesLst=" + coursesLst +
                 ", popularCoursesLst=" + popularCoursesLst +
                 ", testimonialsLst=" + testimonialsLst +

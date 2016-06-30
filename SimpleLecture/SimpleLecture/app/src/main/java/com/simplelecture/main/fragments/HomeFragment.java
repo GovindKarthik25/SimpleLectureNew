@@ -27,7 +27,12 @@ import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.Banners;
+import com.simplelecture.main.model.viewmodel.CourseCombos;
+import com.simplelecture.main.model.viewmodel.Courses;
 import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.simplelecture.main.model.viewmodel.PopularCourses;
+import com.simplelecture.main.model.viewmodel.Testimonials;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -36,6 +41,7 @@ import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,11 +64,8 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private OnFragmentInteractionListener mListener;
 
     RecyclerView coursesList;
-
     RecyclerView recomendedCoursesView;
-
     RecyclerView mostViewedList;
-
     RecyclerView testimonialsList;
 
     private ViewPager mPager;
@@ -78,6 +81,12 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private boolean param_get_HomeScreenData = false;
     private AlertMessageManagement alertMessageManagement;
     private SnackBarManagement snack;
+    private ArrayList<HomePageResponseModel> homePageResponseModelLstArray;
+    private List<Banners> bannersLstArray;
+    private List<CourseCombos> courseCombosLstArray;
+    private List<Courses> coursesLstArray;
+    private List<PopularCourses> popularCoursesLstArray;
+    private List<Testimonials> testimonialsLstArray;
 
 
     /**
@@ -135,7 +144,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager());
+        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), bannersLstArray);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPager.setAdapter(mPagerAdapter);
         pageIndicator.setViewPager(mPager);
@@ -153,50 +162,33 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             }
         });
 
-        ArrayList<String> data = new ArrayList<>();
-        data.add("test1");
-        data.add("test2");
-        data.add("test3");
-        data.add("test4");
-        data.add("test5");
-        data.add("test6");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-        data.add("test7");
-        data.add("test8");
-        data.add("test9");
-
         //combo courses list
         coursesList = (RecyclerView) convertView.findViewById(R.id.courses_recycler_view);
 //        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         coursesList.setLayoutManager(linearLayoutManager);
-        HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), data);
+        HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
         coursesList.setAdapter(homeComboCoursesAdapter);
 
         //recomended courses list
         recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recomendedCoursesView.setLayoutManager(linearLayoutManager1);
-        HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), data);
+        HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
         recomendedCoursesView.setAdapter(homeCoursesAdapter);
 
         //most viewed list
         mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
-        HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), data);
+        HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), popularCoursesLstArray);
         mostViewedList.setAdapter(homeMostViewedAdapter);
 
         //testimonials list
         testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         testimonialsList.setLayoutManager(linearLayoutManager3);
-        TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), data);
+        TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), testimonialsLstArray);
         testimonialsList.setAdapter(testimonialsAdapter);
 
         return convertView;
@@ -263,13 +255,15 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             if (param_get_HomeScreenData) {
                 JsonArray jArray = parser.parse(response).getAsJsonArray();
 
-                ArrayList<HomePageResponseModel> homePageResponseModelLstArray = new ArrayList<HomePageResponseModel>();
+                homePageResponseModelLstArray = new ArrayList<HomePageResponseModel>();
                 for (JsonElement obj : jArray) {
                     HomePageResponseModel homePageResponseModelobj = gson.fromJson(obj, HomePageResponseModel.class);
                     homePageResponseModelLstArray.add(homePageResponseModelobj);
                 }
 
-                   displayAndSetTheItem(homePageResponseModelLstArray);
+                displayAndSetTheItem(homePageResponseModelLstArray);
+
+
             }
 
         } catch (Exception e) {
@@ -281,6 +275,16 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
     private void displayAndSetTheItem(ArrayList<HomePageResponseModel> homePageResponseModelLstArray) {
         try {
+
+            for (HomePageResponseModel homePageResponseModelObj : homePageResponseModelLstArray) {
+                bannersLstArray = (ArrayList<Banners>) homePageResponseModelObj.getBannersLst();
+                courseCombosLstArray = (ArrayList<CourseCombos>) homePageResponseModelObj.getCourseCombosLst();
+                coursesLstArray = (ArrayList<Courses>) homePageResponseModelObj.getCoursesLst();
+                popularCoursesLstArray = (ArrayList<PopularCourses>) homePageResponseModelObj.getPopularCoursesLst();
+                testimonialsLstArray = (ArrayList<Testimonials>) homePageResponseModelObj.getTestimonialsLst();
+
+            }
+
 
 
 

@@ -11,7 +11,10 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.simplelecture.main.model.viewmodel.PopularCourses;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -22,13 +25,13 @@ import static com.simplelecture.main.R.id.item_layout;
 public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAdapter.MyViewHolder> {
 
     private final Activity activity;
-    List<String> courseCombosList;
+    List<PopularCourses> popularCoursesLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public HomeMostViewedAdapter(Activity activty, List<String> courseCombos) {
+    public HomeMostViewedAdapter(Activity activty, List<PopularCourses> popularCoursesLstAray) {
         this.activity = activty;
-        this.courseCombosList = courseCombos;
+        this.popularCoursesLstArray = popularCoursesLstAray;
 
     }
 
@@ -57,8 +60,8 @@ public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAd
 //            } else {
 //                holder.courseimageView.setImageResource(R.mipmap.app_icon);
 //            }
-            holder.subNameText.setText(courseCombosList.get(position));
-            holder.textPrice.setText(courseCombosList.get(position));
+            holder.subNameText.setText(popularCoursesLstArray.get(position).getCatName());
+            holder.textPrice.setText(popularCoursesLstArray.get(position).getCdPrice());
             holder.textView_class.setText("ddd");
         } catch (Exception e) {
             e.printStackTrace();
@@ -68,7 +71,7 @@ public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAd
 
     @Override
     public int getItemCount() {
-        return courseCombosList.size();
+        return popularCoursesLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {

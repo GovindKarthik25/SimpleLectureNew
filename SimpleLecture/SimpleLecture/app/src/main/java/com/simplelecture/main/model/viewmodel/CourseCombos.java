@@ -12,16 +12,18 @@ public class CourseCombos implements Serializable {
     private String cIcon;
     private int cdPrice;
     private String catName;
+    private String courses;
 
     public CourseCombos() {
     }
 
-    public CourseCombos(String cId, String cName, String cIcon, int cdPrice, String catName) {
+    public CourseCombos(String cId, String cName, String cIcon, int cdPrice, String catName, String courses) {
         this.cId = cId;
         this.cName = cName;
         this.cIcon = cIcon;
         this.cdPrice = cdPrice;
         this.catName = catName;
+        this.courses = courses;
     }
 
     public String getcId() {
@@ -64,14 +66,23 @@ public class CourseCombos implements Serializable {
         this.catName = catName;
     }
 
+    public String getCourses() {
+        return courses;
+    }
+
+    public void setCourses(String courses) {
+        this.courses = courses;
+    }
+
     @Override
     public String toString() {
-        return "courseCombos{" +
-                "cId=" + cId +
+        return "CourseCombos{" +
+                "cId='" + cId + '\'' +
                 ", cName='" + cName + '\'' +
                 ", cIcon='" + cIcon + '\'' +
                 ", cdPrice=" + cdPrice +
                 ", catName='" + catName + '\'' +
+                ", courses='" + courses + '\'' +
                 '}';
     }
 }
