@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by Raos on 6/28/2016.
  */
-public class Courses implements Serializable {
+public class HomeCoursesModel implements Serializable {
 
     private int cId;
     private String cName;
@@ -13,10 +13,10 @@ public class Courses implements Serializable {
     private int cdPrice;
     private String catName;
 
-    public Courses() {
+    public HomeCoursesModel() {
     }
 
-    public Courses(int cId, String cName, String cIcon, int cdPrice, String catName) {
+    public HomeCoursesModel(int cId, String cName, String cIcon, int cdPrice, String catName) {
         this.cId = cId;
         this.cName = cName;
         this.cIcon = cIcon;
@@ -66,7 +66,7 @@ public class Courses implements Serializable {
 
     @Override
     public String toString() {
-        return "Courses{" +
+        return "HomeCoursesModel{" +
                 "cId=" + cId +
                 ", cName='" + cName + '\'' +
                 ", cIcon='" + cIcon + '\'' +

@@ -5,16 +5,16 @@ import java.io.Serializable;
 /**
  * Created by Raos on 6/28/2016.
  */
-public class Testimonials  implements Serializable {
+public class HomeTestimonialsModel implements Serializable {
 
     private String tName;
     private String tDesc;
     private String tImage;
 
-    public Testimonials() {
+    public HomeTestimonialsModel() {
     }
 
-    public Testimonials(String tName, String tDesc, String tImage) {
+    public HomeTestimonialsModel(String tName, String tDesc, String tImage) {
         this.tName = tName;
         this.tDesc = tDesc;
         this.tImage = tImage;
@@ -46,7 +46,7 @@ public class Testimonials  implements Serializable {
 
     @Override
     public String toString() {
-        return "Testimonials{" +
+        return "HomeTestimonialsModel{" +
                 "tName='" + tName + '\'' +
                 ", tDesc='" + tDesc + '\'' +
                 ", tImage='" + tImage + '\'' +
