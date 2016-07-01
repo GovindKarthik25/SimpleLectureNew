@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -90,6 +91,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private List<HomeCoursesModel> coursesLstArray;
     private List<HomePopularCoursesModel> homePopularCoursesModelLstArray;
     private List<HomeTestimonialsModel> homeTestimonialsModelLstArray;
+    private LinearLayout courses_titleLinearLayout, recomended_titleLinearLayout, most_view_titleLinearLayout, testimonials_titleLinearLayout;
 
 
     /**
@@ -145,6 +147,14 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
         pageIndicator = (ViewPagerIndicator) convertView.findViewById(R.id.page_indicator);
 
+        courses_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.courses_titleLinearLayout);
+        courses_titleLinearLayout.setVisibility(View.GONE);
+        recomended_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.recomended_titleLinearLayout);
+        recomended_titleLinearLayout.setVisibility(View.GONE);
+        most_view_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.most_view_titleLinearLayout);
+        most_view_titleLinearLayout.setVisibility(View.GONE);
+        testimonials_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.testimonials_titleLinearLayout);
+
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
         if (bannersLstArray != null) {
@@ -169,32 +179,39 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
         //combo courses list
         coursesList = (RecyclerView) convertView.findViewById(R.id.courses_recycler_view);
-//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         coursesList.setLayoutManager(linearLayoutManager);
-  /*      HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
-        coursesList.setAdapter(homeComboCoursesAdapter);*/
+        if (courseCombosLstArray != null) {
+            HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+            coursesList.setAdapter(homeComboCoursesAdapter);
+        }
 
         //recomended courses list
         recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recomendedCoursesView.setLayoutManager(linearLayoutManager1);
-        /*HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
-        recomendedCoursesView.setAdapter(homeCoursesAdapter);*/
+        if (coursesLstArray != null) {
+            HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+            recomendedCoursesView.setAdapter(homeCoursesAdapter);
+        }
 
         //most viewed list
         mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
-        /*HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
-        mostViewedList.setAdapter(homeMostViewedAdapter);*/
+        if (homePopularCoursesModelLstArray != null) {
+            HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+            mostViewedList.setAdapter(homeMostViewedAdapter);
+        }
 
         //testimonials list
         testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         testimonialsList.setLayoutManager(linearLayoutManager3);
-        /*TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
-        testimonialsList.setAdapter(testimonialsAdapter);*/
+        if (homeTestimonialsModelLstArray != null) {
+            TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
+            testimonialsList.setAdapter(testimonialsAdapter);
+        }
 
         return convertView;
     }
@@ -333,6 +350,16 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             mPager.setPageTransformer(true, new ZoomOutPageTransformer());
             mPager.setAdapter(mPagerAdapter);
             pageIndicator.setViewPager(mPager);
+
+            if (courseCombosLstArray.size() > 0) {
+                courses_titleLinearLayout.setVisibility(View.VISIBLE);
+            }
+            if (coursesLstArray.size() > 0) {
+                recomended_titleLinearLayout.setVisibility(View.VISIBLE);
+            }
+            if (homePopularCoursesModelLstArray.size() > 0) {
+                most_view_titleLinearLayout.setVisibility(View.VISIBLE);
+            }
 
             HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
             coursesList.setAdapter(homeComboCoursesAdapter);

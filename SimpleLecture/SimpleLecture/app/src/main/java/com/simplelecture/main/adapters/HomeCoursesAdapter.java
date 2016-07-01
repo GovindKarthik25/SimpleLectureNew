@@ -2,6 +2,7 @@ package com.simplelecture.main.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,10 +58,11 @@ public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.
                         //.rotate(90)                             // optional
                         .into(holder.courseimageView);
             } else {
-                holder.courseimageView.setImageResource(R.mipmap.app_icon);
+                holder.courseimageView.setImageResource(R.mipmap.loading);
             }
-            holder.subNameText.setText(coursesLstArray.get(position).getCatName());
-            holder.textPrice.setText(String.valueOf(coursesLstArray.get(position).getCdPrice()));
+            holder.subNameText.setText(coursesLstArray.get(position).getcName());
+            holder.subNameText.setMovementMethod(new ScrollingMovementMethod());
+            holder.textPrice.setText("Rs." +String.valueOf(coursesLstArray.get(position).getCdPrice()) +"/-");
 
         } catch (Exception e) {
             e.printStackTrace();

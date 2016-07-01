@@ -12,8 +12,7 @@
         android:orientation="vertical"
         android:background="@drawable/itemborder"
         android:paddingBottom="10dip"
-
-        android:padding="5dp">
+        android:padding="4dp">
 
         <ImageView
             android:id="@+id/courseimageView"
@@ -26,18 +25,19 @@
             android:id="@+id/text_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:gravity="left"
-            android:layout_marginTop="10dp"
-            android:text="Mathematics"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:text=""
             android:textSize="13sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="5dp"
             android:gravity="left"
-            android:text="Mathematics"
+            android:text=""
             android:textColor="@color/colorAccent"
             android:textSize="12sp"
             android:id="@+id/text_priceCombo" />
@@ -47,7 +47,8 @@
             android:layout_height="wrap_content"
             android:text="New Text"
             android:gravity="left"
-            android:layout_marginLeft="10dp"
+            android:textSize="5pt"
+            android:layout_marginLeft="5dp"
             android:id="@+id/text_Combodesc" />
 
 

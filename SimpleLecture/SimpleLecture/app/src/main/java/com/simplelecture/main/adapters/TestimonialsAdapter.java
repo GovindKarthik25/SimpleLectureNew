@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.model.viewmodel.HomeTestimonialsModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,18 +47,19 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         try {
-//            if (!courseCombosList.get(position).getcIcon().equals("") || courseCombosList.get(position).getcIcon() != null) {
-//
-//                Picasso.with(activity)
-//                        .load(courseCombosList.get(position).getcIcon())
-//                        .placeholder(R.mipmap.loading)   // optional
-//                        .error(R.mipmap.app_icon)      // optional
-//                                //.resize(250, 200)                        // optional
-//                                //.rotate(90)                             // optional
-//                        .into(holder.courseimageView);
-//            } else {
-//                holder.courseimageView.setImageResource(R.mipmap.app_icon);
-//            }
+            if (!homeTestimonialsModelLstArray.get(position).gettImage().equals("") && homeTestimonialsModelLstArray.get(position).gettImage() != null) {
+
+                Picasso.with(activity)
+                        .load(homeTestimonialsModelLstArray.get(position).gettImage())
+                        .placeholder(R.mipmap.loading)   // optional
+                        .error(R.mipmap.app_icon)      // optional
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
+                        .into(holder.imageViewPhotos);
+            } else {
+                holder.imageViewPhotos.setImageResource(R.mipmap.loading);
+            }
+
             holder.text_Name.setText(homeTestimonialsModelLstArray.get(position).gettName());
             holder.text_Content.setText(homeTestimonialsModelLstArray.get(position).gettDesc());
 
@@ -80,14 +82,14 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 
         TextView text_Name;
         TextView text_Content;
-        ImageView courseimageView;
+        ImageView imageViewPhotos;
         LinearLayout itemLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             text_Name = (TextView) itemView.findViewById(R.id.text_Name);
             text_Content = (TextView) itemView.findViewById(R.id.text_Content);
-            courseimageView = (ImageView) itemView.findViewById(R.id.courseimageView);
+            imageViewPhotos = (ImageView) itemView.findViewById(R.id.imageViewPhotos);
             itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             itemView.setOnClickListener(this);
 

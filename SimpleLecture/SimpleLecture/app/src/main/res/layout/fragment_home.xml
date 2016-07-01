@@ -74,7 +74,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/courses_title"
+                android:id="@+id/courses_titleLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cart_strip"
@@ -105,13 +105,13 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/courses_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/courses_title"
+                android:layout_height="match_parent"
+                android:layout_below="@id/courses_titleLinearLayout"
                 android:paddingTop="5dp"
                 android:scrollbars="vertical" />
 
             <LinearLayout
-                android:id="@+id/recomended_title"
+                android:id="@+id/recomended_titleLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/courses_recycler_view"
@@ -144,13 +144,13 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recomended_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/recomended_title"
+                android:layout_height="match_parent"
+                android:layout_below="@id/recomended_titleLinearLayout"
                 android:paddingTop="5dp"
                 android:scrollbars="vertical" />
 
             <LinearLayout
-                android:id="@+id/most_view_title"
+                android:id="@+id/most_view_titleLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/recomended_recycler_view"
@@ -182,13 +182,13 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/most_viewed_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/most_view_title"
+                android:layout_height="match_parent"
+                android:layout_below="@id/most_view_titleLinearLayout"
                 android:paddingTop="5dp"
                 android:scrollbars="vertical" />
 
             <LinearLayout
-                android:id="@+id/testimonials_title"
+                android:id="@+id/testimonials_titleLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/most_viewed_recycler_view"
@@ -211,8 +211,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/testimonials_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_below="@id/testimonials_title"
+                android:layout_height="match_parent"
+                android:layout_below="@id/testimonials_titleLinearLayout"
                 android:layout_marginBottom="50dp"
                 android:paddingTop="5dp"
                 android:scrollbars="vertical" />
@@ -232,7 +232,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:gravity="center"
-            android:text="Powered by Simplelecture.com © 2015"
+            android:text="@string/Poweredby"
             android:textColor="@android:color/white"
             android:textSize="12sp" />
 

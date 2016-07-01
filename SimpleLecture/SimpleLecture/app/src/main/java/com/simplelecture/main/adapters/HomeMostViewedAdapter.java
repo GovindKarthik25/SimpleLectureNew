@@ -2,6 +2,7 @@ package com.simplelecture.main.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.method.ScrollingMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,11 +58,14 @@ public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAd
                         //.rotate(90)                             // optional
                         .into(holder.courseimageView);
             } else {
-                holder.courseimageView.setImageResource(R.mipmap.app_icon);
+                holder.courseimageView.setImageResource(R.mipmap.loading);
             }
+
             holder.subNameText.setText(homePopularCoursesModelLstArray.get(position).getcName());
-            holder.textPrice.setText(String.valueOf(homePopularCoursesModelLstArray.get(position).getCdPrice()));
-            holder.textView_class.setText("ddd");
+            holder.subNameText.setMovementMethod(new ScrollingMovementMethod());
+            holder.textView_class.setText("(" + homePopularCoursesModelLstArray.get(position).getCatName() + ")");
+            holder.textPrice.setText("Rs." + String.valueOf(homePopularCoursesModelLstArray.get(position).getCdPrice())+"/-");
+
         } catch (Exception e) {
             e.printStackTrace();
         }

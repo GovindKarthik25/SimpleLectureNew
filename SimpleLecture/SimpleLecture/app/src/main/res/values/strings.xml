@@ -88,9 +88,11 @@
     <!--Home screen-->
 
     <string name="course">Course</string>
-    <string name="mostViewed">Most Viewed</string>
+    <string name="mostViewed">Most Popular</string>
     <string name="Testimonials">Testimonials</string>
     <string name="viewall">View all</string>
+    <string name="Poweredby">Powered by Simplelecture.com © 2015</string>
+
 
 
     <!--Facebook_app_id-->

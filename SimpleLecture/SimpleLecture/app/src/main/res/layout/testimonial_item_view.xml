@@ -14,27 +14,40 @@
         android:orientation="vertical"
         android:padding="5dp">
 
-        <TextView
-            android:id="@+id/text_Name"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:layout_width="350dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
-            android:gravity="start"
-            android:text="karthik"
-            android:textColor="@color/colorAccent"
-            android:textSize="15sp" />
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/imageViewPhotos"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
+
+            <TextView
+                android:id="@+id/text_Name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:text="karthik"
+                android:textColor="@color/colorAccent"
+                android:textSize="15sp" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/text_Content"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="100dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="5dp"
             android:gravity="left"
-            android:text="Mathematicsfsdfsdfffffffffff ffsddddddddddddddsddddddddddddddddddddsssssssssssssssssss"
+            android:text=""
             android:textSize="12sp" />
 
     </LinearLayout>
+
 
 </LinearLayout>
