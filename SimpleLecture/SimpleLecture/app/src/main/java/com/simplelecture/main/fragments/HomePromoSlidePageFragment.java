@@ -16,15 +16,22 @@
 
 package com.simplelecture.main.fragments;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.model.viewmodel.HomeBannersModel;
 import com.simplelecture.main.splash.SplashActivity;
+import com.squareup.picasso.Picasso;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a single step in a wizard. The fragment shows a dummy title indicating
@@ -33,7 +40,7 @@ import com.simplelecture.main.splash.SplashActivity;
  * <p>This class is used by the and {@link
  * SplashActivity} samples.</p>
  */
-public class ScreenSlidePageFragment extends Fragment {
+public class HomePromoSlidePageFragment extends Fragment {
     /**
      * The argument key for the page number this fragment represents.
      */
@@ -43,45 +50,49 @@ public class ScreenSlidePageFragment extends Fragment {
      * The fragment's page number, which is set to the argument value for {@link #ARG_PAGE}.
      */
     private int mPageNumber;
-
-
-    int[] mResources = {
-            R.mipmap.splash_screen,
-            R.mipmap.splash2,
-            R.mipmap.splash_screen,
-            R.mipmap.splash3
-    };
-
+    private List<HomeBannersModel> bannersArrayLst;
 
     /**
      * Factory method for this fragment class. Constructs a new fragment for the given page number.
      */
-    public static ScreenSlidePageFragment create(int pageNumber) {
-        ScreenSlidePageFragment fragment = new ScreenSlidePageFragment();
+    public static HomePromoSlidePageFragment create(int pageNumber, List<HomeBannersModel> bannersLstArray) {
+        HomePromoSlidePageFragment fragment = new HomePromoSlidePageFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, pageNumber);
+        args.putSerializable("bannersLstArray", (Serializable) bannersLstArray);
         fragment.setArguments(args);
         return fragment;
     }
 
-    public ScreenSlidePageFragment() {
+    public HomePromoSlidePageFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageNumber = getArguments().getInt(ARG_PAGE);
+        bannersArrayLst = (ArrayList<HomeBannersModel>) getArguments().getSerializable("bannersLstArray");
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout containing a title and body text.
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_screen_slide_page, container, false);
 
         ImageView imageView = (ImageView) rootView.findViewById(R.id.imageView);
-        imageView.setImageResource(mResources[mPageNumber]);
 
+        if (!bannersArrayLst.get(mPageNumber).getImage().equals("") && bannersArrayLst.get(mPageNumber).getImage() != null) {
+
+            Picasso.with(getActivity())
+                    .load(bannersArrayLst.get(mPageNumber).getImage())
+                    .placeholder(R.mipmap.loading)   // optional
+                    .error(R.mipmap.app_icon)      // optional
+                    //.resize(250, 200)                        // optional
+                    //.rotate(90)                             // optional
+                    .into(imageView);
+        } else {
+            imageView.setImageResource(R.mipmap.app_icon);
+        }
 
         return rootView;
     }
@@ -90,6 +101,6 @@ public class ScreenSlidePageFragment extends Fragment {
      * Returns the page number represented by this fragment object.
      */
     public int getPageNumber() {
-        return mPageNumber;
+        return bannersArrayLst.size();
     }
 }

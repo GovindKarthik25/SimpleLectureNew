@@ -9,6 +9,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -146,10 +147,12 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
-        mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
-        mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-        mPager.setAdapter(mPagerAdapter);
-        pageIndicator.setViewPager(mPager);
+        if (bannersLstArray != null) {
+            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
+            mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+            mPager.setAdapter(mPagerAdapter);
+            pageIndicator.setViewPager(mPager);
+        }
         mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -326,15 +329,22 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private void displayAndSetTheItem() {
         try {
 
+            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
+            mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+            mPager.setAdapter(mPagerAdapter);
+            pageIndicator.setViewPager(mPager);
+
             HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
             coursesList.setAdapter(homeComboCoursesAdapter);
+
             HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
             recomendedCoursesView.setAdapter(homeCoursesAdapter);
+
             HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
             mostViewedList.setAdapter(homeMostViewedAdapter);
+
             TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
             testimonialsList.setAdapter(testimonialsAdapter);
-
 
         } catch (Exception e) {
             e.printStackTrace();
