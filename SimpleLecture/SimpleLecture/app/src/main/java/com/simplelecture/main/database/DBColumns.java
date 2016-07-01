@@ -154,7 +154,7 @@ public abstract class DBColumns implements BaseColumns {
 
 	//SpecialitiesDBHelper
 	public static final String specialityname = "SpecialityName";
-	public static final String courses = "Courses";
+	public static final String courses = "HomeCoursesModel";
 
 	//TopBannerDBHelper
 

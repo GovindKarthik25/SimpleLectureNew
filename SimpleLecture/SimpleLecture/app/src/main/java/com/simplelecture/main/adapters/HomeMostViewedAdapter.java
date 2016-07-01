@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
-import com.simplelecture.main.model.viewmodel.PopularCourses;
+import com.simplelecture.main.model.viewmodel.HomePopularCoursesModel;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -25,13 +24,13 @@ import static com.simplelecture.main.R.id.item_layout;
 public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAdapter.MyViewHolder> {
 
     private final Activity activity;
-    List<PopularCourses> popularCoursesLstArray;
+    List<HomePopularCoursesModel> homePopularCoursesModelLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public HomeMostViewedAdapter(Activity activty, List<PopularCourses> popularCoursesLstAray) {
+    public HomeMostViewedAdapter(Activity activty, List<HomePopularCoursesModel> homePopularCoursesModelLstAray) {
         this.activity = activty;
-        this.popularCoursesLstArray = popularCoursesLstAray;
+        this.homePopularCoursesModelLstArray = homePopularCoursesModelLstAray;
 
     }
 
@@ -48,20 +47,20 @@ public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAd
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         try {
-//            if (!courseCombosList.get(position).getcIcon().equals("") || courseCombosList.get(position).getcIcon() != null) {
-//
-//                Picasso.with(activity)
-//                        .load(courseCombosList.get(position).getcIcon())
-//                        .placeholder(R.mipmap.loading)   // optional
-//                        .error(R.mipmap.app_icon)      // optional
-//                                //.resize(250, 200)                        // optional
-//                                //.rotate(90)                             // optional
-//                        .into(holder.courseimageView);
-//            } else {
-//                holder.courseimageView.setImageResource(R.mipmap.app_icon);
-//            }
-            holder.subNameText.setText(popularCoursesLstArray.get(position).getCatName());
-            holder.textPrice.setText(popularCoursesLstArray.get(position).getCdPrice());
+            if (!homePopularCoursesModelLstArray.get(position).getcIcon().equals("") && homePopularCoursesModelLstArray.get(position).getcIcon() != null) {
+
+                Picasso.with(activity)
+                        .load(homePopularCoursesModelLstArray.get(position).getcIcon())
+                        .placeholder(R.mipmap.loading)   // optional
+                        .error(R.mipmap.app_icon)      // optional
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
+                        .into(holder.courseimageView);
+            } else {
+                holder.courseimageView.setImageResource(R.mipmap.app_icon);
+            }
+            holder.subNameText.setText(homePopularCoursesModelLstArray.get(position).getcName());
+            holder.textPrice.setText(String.valueOf(homePopularCoursesModelLstArray.get(position).getCdPrice()));
             holder.textView_class.setText("ddd");
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +70,7 @@ public class HomeMostViewedAdapter extends RecyclerView.Adapter<HomeMostViewedAd
 
     @Override
     public int getItemCount() {
-        return popularCoursesLstArray.size();
+        return homePopularCoursesModelLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {

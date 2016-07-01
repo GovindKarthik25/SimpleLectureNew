@@ -169,7 +169,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                 param_get_MyCourses = true;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                //My Courses service
+                //My HomeCoursesModel service
                 ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
             } else {
                 alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
@@ -196,7 +196,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                     param_get_MyCoursesDetails = true;
                     pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                    //My Courses service
+                    //My HomeCoursesModel service
                     ApiService.getApiService().doGetCourseDetails(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
@@ -299,7 +299,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                         param_get_Chapters = true;
 
                         pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                        //My Courses service
+                        //My HomeCoursesModel service
                         ApiService.getApiService().doGetChapters(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
                     } else {
                         snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));

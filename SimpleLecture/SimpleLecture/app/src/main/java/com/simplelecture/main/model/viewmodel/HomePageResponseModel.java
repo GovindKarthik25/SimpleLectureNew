@@ -10,31 +10,31 @@ public class HomePageResponseModel implements Serializable {
 
     private int MyCoursesCount;
 
-    private List<Banners> bannersLst;
+    private List<HomeBannersModel> bannersLst;
     private List<CourseCombos> courseCombosLst;
-    private List<Courses> coursesLst;
-    private List<PopularCourses> popularCoursesLst;
-    private List<Testimonials> testimonialsLst;
+    private List<HomeCoursesModel> coursesLst;
+    private List<HomePopularCoursesModel> homePopularCoursesModelLst;
+    private List<HomeTestimonialsModel> homeTestimonialsModelLst;
 
 
 
     public HomePageResponseModel() {
     }
 
-    public HomePageResponseModel(int myCoursesCount, List<Banners> bannersLst, List<CourseCombos> courseCombosLst, List<Courses> coursesLst, List<PopularCourses> popularCoursesLst, List<Testimonials> testimonialsLst) {
+    public HomePageResponseModel(int myCoursesCount, List<HomeBannersModel> bannersLst, List<CourseCombos> courseCombosLst, List<HomeCoursesModel> coursesLst, List<HomePopularCoursesModel> homePopularCoursesModelLst, List<HomeTestimonialsModel> homeTestimonialsModelLst) {
         MyCoursesCount = myCoursesCount;
         this.bannersLst = bannersLst;
         this.courseCombosLst = courseCombosLst;
         this.coursesLst = coursesLst;
-        this.popularCoursesLst = popularCoursesLst;
-        this.testimonialsLst = testimonialsLst;
+        this.homePopularCoursesModelLst = homePopularCoursesModelLst;
+        this.homeTestimonialsModelLst = homeTestimonialsModelLst;
     }
 
-    public List<Banners> getBannersLst() {
+    public List<HomeBannersModel> getBannersLst() {
         return bannersLst;
     }
 
-    public void setBannersLst(List<Banners> bannersLst) {
+    public void setBannersLst(List<HomeBannersModel> bannersLst) {
         this.bannersLst = bannersLst;
     }
 
@@ -54,28 +54,28 @@ public class HomePageResponseModel implements Serializable {
         this.courseCombosLst = courseCombosLst;
     }
 
-    public List<Courses> getCoursesLst() {
+    public List<HomeCoursesModel> getCoursesLst() {
         return coursesLst;
     }
 
-    public void setCoursesLst(List<Courses> coursesLst) {
+    public void setCoursesLst(List<HomeCoursesModel> coursesLst) {
         this.coursesLst = coursesLst;
     }
 
-    public List<PopularCourses> getPopularCoursesLst() {
-        return popularCoursesLst;
+    public List<HomePopularCoursesModel> getPopularCoursesLst() {
+        return homePopularCoursesModelLst;
     }
 
-    public void setPopularCoursesLst(List<PopularCourses> popularCoursesLst) {
-        this.popularCoursesLst = popularCoursesLst;
+    public void setPopularCoursesLst(List<HomePopularCoursesModel> homePopularCoursesModelLst) {
+        this.homePopularCoursesModelLst = homePopularCoursesModelLst;
     }
 
-    public List<Testimonials> getTestimonialsLst() {
-        return testimonialsLst;
+    public List<HomeTestimonialsModel> getHomeTestimonialsModelLst() {
+        return homeTestimonialsModelLst;
     }
 
-    public void setTestimonialsLst(List<Testimonials> testimonialsLst) {
-        this.testimonialsLst = testimonialsLst;
+    public void setHomeTestimonialsModelLst(List<HomeTestimonialsModel> homeTestimonialsModelLst) {
+        this.homeTestimonialsModelLst = homeTestimonialsModelLst;
     }
 
     @Override
@@ -85,8 +85,8 @@ public class HomePageResponseModel implements Serializable {
                 ", bannersLst=" + bannersLst +
                 ", courseCombosLst=" + courseCombosLst +
                 ", coursesLst=" + coursesLst +
-                ", popularCoursesLst=" + popularCoursesLst +
-                ", testimonialsLst=" + testimonialsLst +
+                ", homePopularCoursesModelLst=" + homePopularCoursesModelLst +
+                ", homeTestimonialsModelLst=" + homeTestimonialsModelLst +
                 '}';
     }
 }

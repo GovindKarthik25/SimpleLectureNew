@@ -61,7 +61,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), homePageResponseModelLstArray);
+        mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager(), null);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPager.setAdapter(mPagerAdapter);
         pageIndicator.setViewPager(mPager);

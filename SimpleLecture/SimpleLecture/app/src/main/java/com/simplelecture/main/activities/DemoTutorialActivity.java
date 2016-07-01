@@ -104,7 +104,7 @@ public class DemoTutorialActivity extends AppCompatActivity implements NetworkLa
                 if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                     param_get_DemoTutorial = true;
                     pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                    //My Courses service
+                    //My HomeCoursesModel service
                     ApiService.getApiService().doGetCourseDetails(getActivity(), DemoTutorialFragment.this, myCoursesObj.getcId());
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));

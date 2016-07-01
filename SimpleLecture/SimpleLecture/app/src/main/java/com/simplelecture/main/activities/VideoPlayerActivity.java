@@ -104,7 +104,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
             if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()){
                 param_get_VideoPlayer = true;
                 pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
-                //My Courses service
+                //My HomeCoursesModel service
                 ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, ctId);
             } else {
                 snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));

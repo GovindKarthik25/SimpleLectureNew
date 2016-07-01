@@ -155,7 +155,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                 if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                     param_get_MyCoursesDetails = true;
                     pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                    //My Courses service
+                    //My HomeCoursesModel service
                     ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
@@ -222,7 +222,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                             param_get_MyCoursesDetails = true;
                             param_IsCombo = true;
                             pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                            //My Courses service
+                            //My HomeCoursesModel service
                             ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
                         } else {
                             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
@@ -234,7 +234,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                             param_get_Details = true;
 
                             pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                            //My Courses service
+                            //My HomeCoursesModel service
                             ApiService.getApiService().doGetChapters(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
                         } else {
                             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));

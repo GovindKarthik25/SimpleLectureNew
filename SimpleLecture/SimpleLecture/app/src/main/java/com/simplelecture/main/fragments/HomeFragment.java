@@ -22,23 +22,25 @@ import com.simplelecture.main.adapters.ComboCoursesAdapter;
 import com.simplelecture.main.adapters.HomeComboCoursesAdapter;
 import com.simplelecture.main.adapters.HomeCoursesAdapter;
 import com.simplelecture.main.adapters.HomeMostViewedAdapter;
-import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
+import com.simplelecture.main.adapters.HomePromoSlidePagerAdapter;
 import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
-import com.simplelecture.main.model.viewmodel.Banners;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
-import com.simplelecture.main.model.viewmodel.Courses;
+import com.simplelecture.main.model.viewmodel.HomeBannersModel;
+import com.simplelecture.main.model.viewmodel.HomeCoursesModel;
 import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
-import com.simplelecture.main.model.viewmodel.PopularCourses;
-import com.simplelecture.main.model.viewmodel.Testimonials;
+import com.simplelecture.main.model.viewmodel.HomePopularCoursesModel;
+import com.simplelecture.main.model.viewmodel.HomeTestimonialsModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,11 +84,11 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private AlertMessageManagement alertMessageManagement;
     private SnackBarManagement snack;
     private ArrayList<HomePageResponseModel> homePageResponseModelLstArray;
-    private List<Banners> bannersLstArray;
+    private List<HomeBannersModel> bannersLstArray;
     private List<CourseCombos> courseCombosLstArray;
-    private List<Courses> coursesLstArray;
-    private List<PopularCourses> popularCoursesLstArray;
-    private List<Testimonials> testimonialsLstArray;
+    private List<HomeCoursesModel> coursesLstArray;
+    private List<HomePopularCoursesModel> homePopularCoursesModelLstArray;
+    private List<HomeTestimonialsModel> homeTestimonialsModelLstArray;
 
 
     /**
@@ -144,7 +146,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
-        mPagerAdapter = new ScreenSlidePagerAdapter(getFragmentManager(), bannersLstArray);
+        mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
         mPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mPager.setAdapter(mPagerAdapter);
         pageIndicator.setViewPager(mPager);
@@ -167,29 +169,29 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 //        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2, GridLayoutManager.HORIZONTAL, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         coursesList.setLayoutManager(linearLayoutManager);
-        HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
-        coursesList.setAdapter(homeComboCoursesAdapter);
+  /*      HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+        coursesList.setAdapter(homeComboCoursesAdapter);*/
 
         //recomended courses list
         recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recomendedCoursesView.setLayoutManager(linearLayoutManager1);
-        HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
-        recomendedCoursesView.setAdapter(homeCoursesAdapter);
+        /*HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+        recomendedCoursesView.setAdapter(homeCoursesAdapter);*/
 
         //most viewed list
         mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
-        HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), popularCoursesLstArray);
-        mostViewedList.setAdapter(homeMostViewedAdapter);
+        /*HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+        mostViewedList.setAdapter(homeMostViewedAdapter);*/
 
         //testimonials list
         testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         testimonialsList.setLayoutManager(linearLayoutManager3);
-        TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), testimonialsLstArray);
-        testimonialsList.setAdapter(testimonialsAdapter);
+        /*TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
+        testimonialsList.setAdapter(testimonialsAdapter);*/
 
         return convertView;
     }
@@ -250,19 +252,67 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             if (pd.isShowing()) {
                 pd.cancel();
             }
+            homePageResponseModelLstArray = new ArrayList<HomePageResponseModel>();
+            bannersLstArray = new ArrayList<HomeBannersModel>();
+            coursesLstArray = new ArrayList<HomeCoursesModel>();
+            courseCombosLstArray = new ArrayList<CourseCombos>();
+            homePopularCoursesModelLstArray = new ArrayList<HomePopularCoursesModel>();
+            homeTestimonialsModelLstArray = new ArrayList<HomeTestimonialsModel>();
+
+            JsonArray jArray;
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
             if (param_get_HomeScreenData) {
-                JsonArray jArray = parser.parse(response).getAsJsonArray();
 
-                homePageResponseModelLstArray = new ArrayList<HomePageResponseModel>();
+
+                HomePageResponseModel homePageResponseModelobj = gson.fromJson(response, HomePageResponseModel.class);
+                JSONObject jSONObject = new JSONObject(response);
+
+                String bannersLstResponse = jSONObject.getString("Banners");
+                jArray = parser.parse(bannersLstResponse).getAsJsonArray();
                 for (JsonElement obj : jArray) {
-                    HomePageResponseModel homePageResponseModelobj = gson.fromJson(obj, HomePageResponseModel.class);
-                    homePageResponseModelLstArray.add(homePageResponseModelobj);
+                    HomeBannersModel bannersobj = gson.fromJson(obj, HomeBannersModel.class);
+                    bannersLstArray.add(bannersobj);
                 }
 
-                displayAndSetTheItem(homePageResponseModelLstArray);
+                String coursesLstResponse = jSONObject.getString("Courses");
 
+                if (coursesLstResponse != null && !coursesLstResponse.equals("null")) {
+                    jArray = parser.parse(coursesLstResponse).getAsJsonArray();
+                    for (JsonElement obj : jArray) {
+                        HomeCoursesModel homeCoursesModelobj = gson.fromJson(obj, HomeCoursesModel.class);
+                        coursesLstArray.add(homeCoursesModelobj);
+                    }
+                }
+
+                String comboCoursesLstResponse = jSONObject.getString("ComboCourses");
+                jArray = parser.parse(comboCoursesLstResponse).getAsJsonArray();
+                for (JsonElement obj : jArray) {
+                    CourseCombos courseCombosModelobj = gson.fromJson(obj, CourseCombos.class);
+                    courseCombosLstArray.add(courseCombosModelobj);
+                }
+
+                String popularCoursesModelLstResponse = jSONObject.getString("PopularCourses");
+                jArray = parser.parse(popularCoursesModelLstResponse).getAsJsonArray();
+                for (JsonElement obj : jArray) {
+                    HomePopularCoursesModel homePopularCoursesModelobj = gson.fromJson(obj, HomePopularCoursesModel.class);
+                    homePopularCoursesModelLstArray.add(homePopularCoursesModelobj);
+                }
+
+                String homeTestimonialsModelLstResponse = jSONObject.getString("Testimonials");
+                jArray = parser.parse(homeTestimonialsModelLstResponse).getAsJsonArray();
+                for (JsonElement obj : jArray) {
+                    HomeTestimonialsModel homeTestimonialsModelobj = gson.fromJson(obj, HomeTestimonialsModel.class);
+                    homeTestimonialsModelLstArray.add(homeTestimonialsModelobj);
+                }
+
+                homePageResponseModelobj.setBannersLst(bannersLstArray);
+                homePageResponseModelobj.setCoursesLst(coursesLstArray);
+                homePageResponseModelobj.setCourseCombosLst(courseCombosLstArray);
+                homePageResponseModelobj.setPopularCoursesLst(homePopularCoursesModelLstArray);
+                homePageResponseModelobj.setHomeTestimonialsModelLst(homeTestimonialsModelLstArray);
+
+                displayAndSetTheItem();
 
             }
 
@@ -273,19 +323,17 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
     }
 
-    private void displayAndSetTheItem(ArrayList<HomePageResponseModel> homePageResponseModelLstArray) {
+    private void displayAndSetTheItem() {
         try {
 
-            for (HomePageResponseModel homePageResponseModelObj : homePageResponseModelLstArray) {
-                bannersLstArray = (ArrayList<Banners>) homePageResponseModelObj.getBannersLst();
-                courseCombosLstArray = (ArrayList<CourseCombos>) homePageResponseModelObj.getCourseCombosLst();
-                coursesLstArray = (ArrayList<Courses>) homePageResponseModelObj.getCoursesLst();
-                popularCoursesLstArray = (ArrayList<PopularCourses>) homePageResponseModelObj.getPopularCoursesLst();
-                testimonialsLstArray = (ArrayList<Testimonials>) homePageResponseModelObj.getTestimonialsLst();
-
-            }
-
-
+            HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+            coursesList.setAdapter(homeComboCoursesAdapter);
+            HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+            recomendedCoursesView.setAdapter(homeCoursesAdapter);
+            HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+            mostViewedList.setAdapter(homeMostViewedAdapter);
+            TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
+            testimonialsList.setAdapter(testimonialsAdapter);
 
 
         } catch (Exception e) {

@@ -11,10 +11,8 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
-import com.simplelecture.main.model.viewmodel.Testimonials;
+import com.simplelecture.main.model.viewmodel.HomeTestimonialsModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -25,13 +23,13 @@ import static com.simplelecture.main.R.id.item_layout;
 public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapter.MyViewHolder> {
 
     private final Activity activity;
-    List<Testimonials> testimonialsLstArray;
+    List<HomeTestimonialsModel> homeTestimonialsModelLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public TestimonialsAdapter(Activity activty, List<Testimonials> testimonialsLstAray) {
+    public TestimonialsAdapter(Activity activty, List<HomeTestimonialsModel> homeTestimonialsModelLstAray) {
         this.activity = activty;
-        this.testimonialsLstArray = testimonialsLstAray;
+        this.homeTestimonialsModelLstArray = homeTestimonialsModelLstAray;
 
     }
 
@@ -60,8 +58,8 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 //            } else {
 //                holder.courseimageView.setImageResource(R.mipmap.app_icon);
 //            }
-            holder.text_Name.setText(testimonialsLstArray.get(position).gettName());
-            holder.text_Content.setText(testimonialsLstArray.get(position).gettDesc());
+            holder.text_Name.setText(homeTestimonialsModelLstArray.get(position).gettName());
+            holder.text_Content.setText(homeTestimonialsModelLstArray.get(position).gettDesc());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,7 +69,7 @@ public class TestimonialsAdapter extends RecyclerView.Adapter<TestimonialsAdapte
 
     @Override
     public int getItemCount() {
-        return testimonialsLstArray.size();
+        return homeTestimonialsModelLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {

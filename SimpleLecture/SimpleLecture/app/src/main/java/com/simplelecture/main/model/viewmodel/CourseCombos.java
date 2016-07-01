@@ -12,7 +12,7 @@ public class CourseCombos implements Serializable {
     private String cIcon;
     private int cdPrice;
     private String catName;
-    private String courses;
+   /* private String courses;*/
 
     public CourseCombos() {
     }
@@ -23,7 +23,7 @@ public class CourseCombos implements Serializable {
         this.cIcon = cIcon;
         this.cdPrice = cdPrice;
         this.catName = catName;
-        this.courses = courses;
+       /* this.courses = courses;*/
     }
 
     public String getcId() {
@@ -66,13 +66,13 @@ public class CourseCombos implements Serializable {
         this.catName = catName;
     }
 
-    public String getCourses() {
+    /*public String getCourses() {
         return courses;
     }
 
     public void setCourses(String courses) {
         this.courses = courses;
-    }
+    }*/
 
     @Override
     public String toString() {
@@ -82,7 +82,6 @@ public class CourseCombos implements Serializable {
                 ", cIcon='" + cIcon + '\'' +
                 ", cdPrice=" + cdPrice +
                 ", catName='" + catName + '\'' +
-                ", courses='" + courses + '\'' +
                 '}';
     }
 }

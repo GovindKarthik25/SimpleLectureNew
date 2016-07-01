@@ -11,10 +11,9 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.Courses;
-import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.simplelecture.main.model.viewmodel.HomeCoursesModel;
+import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
@@ -25,11 +24,11 @@ import static com.simplelecture.main.R.id.item_layout;
 public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.MyViewHolder> {
 
     private final Activity activity;
-    private List<Courses> coursesLstArray;
+    private List<HomeCoursesModel> coursesLstArray;
 
     OnItemClickListener mItemClickListener;
 
-    public HomeCoursesAdapter(Activity activty, List<Courses> coursesLstAray) {
+    public HomeCoursesAdapter(Activity activty, List<HomeCoursesModel> coursesLstAray) {
         this.activity = activty;
         this.coursesLstArray = coursesLstAray;
 
@@ -48,20 +47,20 @@ public class HomeCoursesAdapter extends RecyclerView.Adapter<HomeCoursesAdapter.
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         try {
-//            if (!courseCombosList.get(position).getcIcon().equals("") || courseCombosList.get(position).getcIcon() != null) {
-//
-//                Picasso.with(activity)
-//                        .load(courseCombosList.get(position).getcIcon())
-//                        .placeholder(R.mipmap.loading)   // optional
-//                        .error(R.mipmap.app_icon)      // optional
-//                                //.resize(250, 200)                        // optional
-//                                //.rotate(90)                             // optional
-//                        .into(holder.courseimageView);
-//            } else {
-//                holder.courseimageView.setImageResource(R.mipmap.app_icon);
-//            }
+            if (!coursesLstArray.get(position).getcIcon().equals("") && coursesLstArray.get(position).getcIcon() != null) {
+
+                Picasso.with(activity)
+                        .load(coursesLstArray.get(position).getcIcon())
+                        .placeholder(R.mipmap.loading)   // optional
+                        .error(R.mipmap.app_icon)      // optional
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
+                        .into(holder.courseimageView);
+            } else {
+                holder.courseimageView.setImageResource(R.mipmap.app_icon);
+            }
             holder.subNameText.setText(coursesLstArray.get(position).getCatName());
-            holder.textPrice.setText(coursesLstArray.get(position).getCdPrice());
+            holder.textPrice.setText(String.valueOf(coursesLstArray.get(position).getCdPrice()));
 
         } catch (Exception e) {
             e.printStackTrace();

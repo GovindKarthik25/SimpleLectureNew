@@ -70,7 +70,7 @@ public class ApiService {
 
     }
 
-    //Courses index
+    //HomeCoursesModel index
     public void doGetChapters(Context mContext, Fragment fragmentContext, String uId) {
         try {
             String token = Util.getFromPrefrences(mContext, "uToken");

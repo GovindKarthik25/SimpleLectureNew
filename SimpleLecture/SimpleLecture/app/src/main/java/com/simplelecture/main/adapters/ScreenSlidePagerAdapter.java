@@ -7,11 +7,10 @@ package com.simplelecture.main.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import com.simplelecture.main.fragments.ScreenSlidePageFragment;
-import com.simplelecture.main.model.viewmodel.Banners;
-import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 
-import java.util.ArrayList;
+import com.simplelecture.main.fragments.ScreenSlidePageFragment;
+import com.simplelecture.main.model.viewmodel.HomeBannersModel;
+
 import java.util.List;
 
 /**
@@ -24,9 +23,9 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
      * The number of pages (wizard steps) to show in this demo.
      */
     private static final int NUM_PAGES = 4;
-    private final List<Banners> bannersLstArray;
+    private final List<HomeBannersModel> bannersLstArray;
 
-    public ScreenSlidePagerAdapter(FragmentManager fm, List<Banners> bannersLstAray) {
+    public ScreenSlidePagerAdapter(FragmentManager fm, List<HomeBannersModel> bannersLstAray) {
         super(fm);
 
         bannersLstArray = bannersLstAray;
@@ -40,6 +39,6 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        return bannersLstArray.size();
+        return NUM_PAGES;
     }
 }
