@@ -16,12 +16,8 @@ android {
         buildConfigField "String", "VIDEO_URL", "\"https://player.vimeo.com/video/\""
 
 
-
     }
     buildTypes {
-//        debug {
-//            debuggable true
-//        }
 
         release {
             minifyEnabled false

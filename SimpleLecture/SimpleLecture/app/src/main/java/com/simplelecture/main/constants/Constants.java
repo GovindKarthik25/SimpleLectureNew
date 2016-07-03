@@ -23,7 +23,7 @@ public class Constants {
     public static String GET_FORGOTPASSWORD = "login/signIn";
     public static String GET_CREATEACCOUNT = "login/signIn";
     public static String GET_CHANGEPASSWORD = "login/signIn";
-    public static String GET_DEMOTUTORIALS = "Home/DemoTutorials";
+    public static String GET_SAMPLEVIDEOS = "Home/SampleVideos";
     public static String GET_CATEGORY_ALL = "Category/All";
     public static String GET_HOME_PAGE = "/Home/Page";
 

@@ -29,7 +29,6 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
      */
     private PagerAdapter mPagerAdapter;
     private ViewPagerIndicator pageIndicator;
-    private Button nextButton;
     private Button buttonExplore, buttonSignin;
 
     @Override
@@ -51,12 +50,8 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
         setContentView(R.layout.activity_splash);
 
-        nextButton = (Button) findViewById(R.id.nextButton);
         buttonExplore = (Button) findViewById(R.id.buttonExplore);
         buttonSignin = (Button) findViewById(R.id.buttonSignin);
-        //nextButton.setClickable(false);
-        //nextButton.setEnabled(false);
-        //nextButton.setFocusable(false);
         pageIndicator = (ViewPagerIndicator) findViewById(R.id.page_indicator);
 
         // Instantiate a ViewPager and a PagerAdapter.
@@ -83,11 +78,10 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
 
         buttonExplore.setOnClickListener(this);
         buttonSignin.setOnClickListener(this);
-        nextButton.setOnClickListener(this);
     }
 
     private void validateTheButton() {
-        if (mPager.getCurrentItem() == mPagerAdapter.getCount() - 1) {
+        /*if (mPager.getCurrentItem() == mPagerAdapter.getCount() - 1) {
             nextButton.setClickable(true);
             nextButton.setEnabled(true);
             nextButton.setFocusable(true);
@@ -95,14 +89,12 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
             nextButton.setClickable(false);
             nextButton.setEnabled(false);
             nextButton.setFocusable(false);
-        }
+        }*/
     }
 
     @Override
     public void onClick(View v) {
-        if (v == nextButton) {
-            new ViewManager().gotoHomeView(this);
-        } else if (v == buttonExplore) {
+        if (v == buttonExplore) {
             SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             selectYourCoursesFragment.show(fragmentManager, "");

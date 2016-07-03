@@ -107,7 +107,7 @@ public class ApiService {
         transactionProcessor.execute(homePageDataTransaction);
     }
 
-    public void doGetDemoTutorial(Context mContext, Fragment fragmentContext) {
+    public void doGetVideoSampleTutorial(Context mContext, Fragment fragmentContext) {
 
         try {
 

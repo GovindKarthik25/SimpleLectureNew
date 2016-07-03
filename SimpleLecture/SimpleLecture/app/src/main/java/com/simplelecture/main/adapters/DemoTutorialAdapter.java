@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.DemoTutorialResponseModel;
+import com.simplelecture.main.model.viewmodel.SampleVideoResponseModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -23,14 +23,14 @@ import static com.simplelecture.main.R.id.item_layout;
  */
 public class DemoTutorialAdapter extends RecyclerView.Adapter<DemoTutorialAdapter.MyViewHolder> {
 
-    List<DemoTutorialResponseModel> demoTutorialResponseModelLstArray;
+    List<SampleVideoResponseModel> sampleVideoResponseModelLstArray;
     Activity activity;
 
     OnItemClickListener mItemClickListener;
 
-    public DemoTutorialAdapter(Activity activty, List<DemoTutorialResponseModel> demoTutorialResponseModelLstAray) {
+    public DemoTutorialAdapter(Activity activty, List<SampleVideoResponseModel> sampleVideoResponseModelLstAray) {
         this.activity = activty;
-        this.demoTutorialResponseModelLstArray = demoTutorialResponseModelLstAray;
+        this.sampleVideoResponseModelLstArray = sampleVideoResponseModelLstAray;
 
     }
 
@@ -49,27 +49,27 @@ public class DemoTutorialAdapter extends RecyclerView.Adapter<DemoTutorialAdapte
 
         try {
 
-            if (!demoTutorialResponseModelLstArray.get(position).getcIcon().equals("") || demoTutorialResponseModelLstArray.get(position).getcIcon() != null) {
+            if (!sampleVideoResponseModelLstArray.get(position).getSvImage().equals("") || sampleVideoResponseModelLstArray.get(position).getSvImage() != null) {
                 Picasso.with(activity)
-                        .load(demoTutorialResponseModelLstArray.get(position).getcIcon())
+                        .load(sampleVideoResponseModelLstArray.get(position).getSvImage())
                         .placeholder(R.mipmap.loading)   // optional
                         .error(R.mipmap.app_icon)      // optional
-                                //.resize(250, 200)                        // optional
-                                //.rotate(90)                             // optional
-                        .into(holder.courseimageView);
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
+                        .into(holder.samplevideoimageView);
             } else {
-                holder.courseimageView.setImageResource(R.mipmap.app_icon);
+                holder.samplevideoimageView.setImageResource(R.mipmap.loading);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.textView.setText(demoTutorialResponseModelLstArray.get(position).getcName());
+        holder.text_videoName.setText(sampleVideoResponseModelLstArray.get(position).getSvName());
 
     }
 
     @Override
     public int getItemCount() {
-        return demoTutorialResponseModelLstArray.size();
+        return sampleVideoResponseModelLstArray.size();
     }
 
     public void setOnItemClickListener(final OnItemClickListener mItemClickListener) {
@@ -78,15 +78,15 @@ public class DemoTutorialAdapter extends RecyclerView.Adapter<DemoTutorialAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textView;
-        ImageView courseimageView;
+        TextView text_videoName;
+        ImageView samplevideoimageView;
 
         LinearLayout itemLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.text_subject);
-            courseimageView = (ImageView) itemView.findViewById(R.id.courseimageView);
+            text_videoName = (TextView) itemView.findViewById(R.id.text_videoName);
+            samplevideoimageView = (ImageView) itemView.findViewById(R.id.samplevideoimageView);
             itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             itemView.setOnClickListener(this);
 

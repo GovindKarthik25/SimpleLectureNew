@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -92,6 +93,9 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private List<HomePopularCoursesModel> homePopularCoursesModelLstArray;
     private List<HomeTestimonialsModel> homeTestimonialsModelLstArray;
     private LinearLayout courses_titleLinearLayout, recomended_titleLinearLayout, most_view_titleLinearLayout, testimonials_titleLinearLayout;
+    private LinearLayout cart_stripLinearLayout;
+    private TextView cart_CountTextView;
+    private HomePageResponseModel homePageResponseModelobj;
 
 
     /**
@@ -154,6 +158,9 @@ public class HomeFragment extends Fragment implements NetworkLayer {
         most_view_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.most_view_titleLinearLayout);
         most_view_titleLinearLayout.setVisibility(View.GONE);
         testimonials_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.testimonials_titleLinearLayout);
+        cart_stripLinearLayout = (LinearLayout) convertView.findViewById(R.id.cart_stripLinearLayout);
+        cart_stripLinearLayout.setVisibility(View.GONE);
+        cart_CountTextView = (TextView) convertView.findViewById(R.id.cart_CountTextView);
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
@@ -195,7 +202,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             recomendedCoursesView.setAdapter(homeCoursesAdapter);
         }
 
-        //most viewed list
+        //most Popular list
         mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
@@ -265,6 +272,49 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
     }
 
+    private void displayAndSetTheItem() {
+        try {
+
+            if (homePageResponseModelobj.getMyCoursesCount() == 0) {
+                cart_stripLinearLayout.setVisibility(View.VISIBLE);
+                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " "+ homePageResponseModelobj.getMyCoursesCount() + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
+            } else {
+                cart_stripLinearLayout.setVisibility(View.VISIBLE);
+            }
+
+            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
+            mPager.setPageTransformer(true, new ZoomOutPageTransformer());
+            mPager.setAdapter(mPagerAdapter);
+            pageIndicator.setViewPager(mPager);
+
+            if (courseCombosLstArray.size() > 0) {
+                courses_titleLinearLayout.setVisibility(View.VISIBLE);
+            }
+            if (coursesLstArray.size() > 0) {
+                recomended_titleLinearLayout.setVisibility(View.VISIBLE);
+            }
+            if (homePopularCoursesModelLstArray.size() > 0) {
+                most_view_titleLinearLayout.setVisibility(View.VISIBLE);
+            }
+
+            HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+            coursesList.setAdapter(homeComboCoursesAdapter);
+
+            HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+            recomendedCoursesView.setAdapter(homeCoursesAdapter);
+
+            HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+            mostViewedList.setAdapter(homeMostViewedAdapter);
+
+            TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
+            testimonialsList.setAdapter(testimonialsAdapter);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     @Override
     public void parseResponse(String response) {
         /*Log.i("parseResponse--***", response.toString());*/
@@ -285,7 +335,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             if (param_get_HomeScreenData) {
 
 
-                HomePageResponseModel homePageResponseModelobj = gson.fromJson(response, HomePageResponseModel.class);
+                homePageResponseModelobj = gson.fromJson(response, HomePageResponseModel.class);
                 JSONObject jSONObject = new JSONObject(response);
 
                 String bannersLstResponse = jSONObject.getString("Banners");
@@ -343,41 +393,6 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
     }
 
-    private void displayAndSetTheItem() {
-        try {
-
-            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
-            mPager.setPageTransformer(true, new ZoomOutPageTransformer());
-            mPager.setAdapter(mPagerAdapter);
-            pageIndicator.setViewPager(mPager);
-
-            if (courseCombosLstArray.size() > 0) {
-                courses_titleLinearLayout.setVisibility(View.VISIBLE);
-            }
-            if (coursesLstArray.size() > 0) {
-                recomended_titleLinearLayout.setVisibility(View.VISIBLE);
-            }
-            if (homePopularCoursesModelLstArray.size() > 0) {
-                most_view_titleLinearLayout.setVisibility(View.VISIBLE);
-            }
-
-            HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
-            coursesList.setAdapter(homeComboCoursesAdapter);
-
-            HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
-            recomendedCoursesView.setAdapter(homeCoursesAdapter);
-
-            HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
-            mostViewedList.setAdapter(homeMostViewedAdapter);
-
-            TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
-            testimonialsList.setAdapter(testimonialsAdapter);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void showError(String error) {
         if (pd.isShowing()) {
@@ -386,4 +401,6 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
         param_get_HomeScreenData = false;
     }
+
+
 }

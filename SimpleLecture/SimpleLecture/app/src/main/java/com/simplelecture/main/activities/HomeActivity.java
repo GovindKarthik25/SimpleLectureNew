@@ -17,7 +17,7 @@ import android.view.MenuItem;
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
 import com.simplelecture.main.fragments.DashboardFragment;
-import com.simplelecture.main.fragments.DemoFragment;
+import com.simplelecture.main.fragments.SampleVideoFragment;
 import com.simplelecture.main.fragments.ExercisesFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.HomeFragment;
@@ -144,7 +144,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
                 break;
             case 2:
-                fragment = new DemoFragment();
+                fragment = new SampleVideoFragment();
                 setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:

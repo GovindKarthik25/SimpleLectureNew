@@ -46,6 +46,6 @@ public class DemoTutorialTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_DEMOTUTORIALS;
+        return Constants.GET_SAMPLEVIDEOS;
     }
 }
