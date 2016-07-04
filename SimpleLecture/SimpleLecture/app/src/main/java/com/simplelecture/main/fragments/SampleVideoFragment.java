@@ -105,10 +105,11 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
 
         View convertView = inflater.inflate(R.layout.fragment_samplevideo, container, false);
         FloatingActionButton fabSampleVideo = (FloatingActionButton) convertView.findViewById(R.id.fabSampleVideo);
-        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
+//        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
         sampleVideoRecycler_view = (RecyclerView) convertView.findViewById(R.id.sampleVideoRecycler_view);
+        sampleVideoRecycler_view.setHasFixedSize(true);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         sampleVideoRecycler_view.setLayoutManager(gridLayoutManager);
 
         loadRecyclerView();
@@ -159,7 +160,7 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
     private void loadRecyclerView() {
 
 
-        if (demoTutorialAdapter != null && sampleVideoResponseModelLstArray != null) {
+        if (sampleVideoResponseModelLstArray != null) {
             demoTutorialAdapter = new DemoTutorialAdapter(getActivity(), sampleVideoResponseModelLstArray);
             sampleVideoRecycler_view.setAdapter(demoTutorialAdapter);
 

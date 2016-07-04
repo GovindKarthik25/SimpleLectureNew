@@ -7,24 +7,24 @@ import java.io.Serializable;
  */
 public class SampleVideoResponseModel implements Serializable {
 
-    private int svName;
+    private String svName;
     private String svUrl;
     private String svImage;
 
     public SampleVideoResponseModel() {
     }
 
-    public SampleVideoResponseModel(int svName, String svUrl, String svImage) {
+    public SampleVideoResponseModel(int String, String svUrl, String svImage) {
         this.svName = svName;
         this.svUrl = svUrl;
         this.svImage = svImage;
     }
 
-    public int getSvName() {
+    public String getSvName() {
         return svName;
     }
 
-    public void setSvName(int svName) {
+    public void setSvName(String svName) {
         this.svName = svName;
     }
 

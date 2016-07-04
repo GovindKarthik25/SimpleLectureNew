@@ -112,7 +112,7 @@ public class ApiService {
         try {
 
             DemoTutorialTransaction demoTutorialTransaction = new DemoTutorialTransaction(null, mContext);
-            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(demoTutorialTransaction);
         } catch (Exception e) {
             e.printStackTrace();

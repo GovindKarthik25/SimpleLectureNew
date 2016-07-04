@@ -21,9 +21,9 @@
 
     </LinearLayout>
 
-    <include
+<!--    <include
         android:id="@+id/coordinatorLayout"
-        layout="@layout/coordinatelayout"></include>
+        layout="@layout/coordinatelayout"></include>-->
 
 
     <android.support.design.widget.FloatingActionButton
