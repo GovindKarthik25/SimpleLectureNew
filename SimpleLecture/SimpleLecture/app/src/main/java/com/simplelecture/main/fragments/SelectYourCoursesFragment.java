@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -104,6 +105,8 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
         submitButton = (Button) convertView.findViewById(R.id.submitButton);
         linerlayoutCourse.setVisibility(LinearLayout.GONE);
 
+
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         submitButton.setOnClickListener(this);
 
