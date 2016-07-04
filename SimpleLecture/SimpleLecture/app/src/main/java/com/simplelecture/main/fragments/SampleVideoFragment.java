@@ -194,7 +194,6 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
     public void parseResponse(String response) {
         try {
 
-            Log.i("SampleVideo-->", response.toString());
             if (pd.isShowing()) {
                 pd.cancel();
             }
