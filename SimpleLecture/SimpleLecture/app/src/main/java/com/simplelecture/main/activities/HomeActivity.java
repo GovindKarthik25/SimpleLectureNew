@@ -74,6 +74,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+
+        menu.findItem(R.id.action_filter).setVisible(false);
         return true;
     }
 
@@ -137,43 +139,43 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
-                setTitle(getResources().getString(R.string.navigation_Home));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_Home));
                 break;
             case 1:
                 fragment = new CourseCategoriesFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
                 break;
             case 2:
                 fragment = new SampleVideoFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_demo));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:
                 fragment = new DashboardFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
                 break;
             case 4:
                 fragment = new MyCoursesFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_mycourses));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_mycourses));
                 break;
             case 5:
                 fragment = new ExercisesFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_excercies));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_excercies));
                 break;
             case 6:
                 fragment = new ForumFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_forum));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_forum));
                 break;
             case 7:
                 fragment = new DashboardFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_Support));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_Support));
                 break;
             case 8:
                 fragment = new DashboardFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
                 break;
             case 9:
                 fragment = new DashboardFragment();
-                setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
+                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
                 break;
 
         }

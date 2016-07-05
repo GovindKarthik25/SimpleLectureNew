@@ -11,10 +11,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -134,6 +138,8 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             }
 
             callHomeDataService();
+
+            setHasOptionsMenu(true);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -402,5 +408,20 @@ public class HomeFragment extends Fragment implements NetworkLayer {
         param_get_HomeScreenData = false;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
+        inflater.inflate(R.menu.home, menu);
+        menu.findItem(R.id.action_filter).setVisible(true);
+        menu.findItem(R.id.action_filter).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+                Toast.makeText(getActivity(), "Home Fragment", Toast.LENGTH_LONG).show();
+                return true;
+            }
+        });
+
+    }
 }
