@@ -63,7 +63,7 @@ public class HomeComboCoursesAdapter extends RecyclerView.Adapter<HomeComboCours
             holder.subNameText.setText(courseCombosLstArray.get(position).getcName());
             holder.subNameText.setMovementMethod(new ScrollingMovementMethod());
             holder.text_priceCombo.setText("Rs." + String.valueOf(courseCombosLstArray.get(position).getCdPrice()) +"/-");
-            holder.text_desc.setText(courseCombosLstArray.get(position).getCatName());
+            holder.text_desc.setText(courseCombosLstArray.get(position).getCourses());
         } catch (Exception e) {
             e.printStackTrace();
         }
