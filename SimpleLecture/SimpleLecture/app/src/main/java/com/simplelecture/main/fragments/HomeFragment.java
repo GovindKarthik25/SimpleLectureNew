@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -283,7 +284,7 @@ public class HomeFragment extends Fragment implements NetworkLayer {
 
             if (homePageResponseModelobj.getMyCoursesCount() == 0) {
                 cart_stripLinearLayout.setVisibility(View.VISIBLE);
-                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " "+ homePageResponseModelobj.getMyCoursesCount() + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
+                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " " + homePageResponseModelobj.getMyCoursesCount() + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
             } else {
                 cart_stripLinearLayout.setVisibility(View.VISIBLE);
             }
@@ -417,6 +418,10 @@ public class HomeFragment extends Fragment implements NetworkLayer {
         menu.findItem(R.id.action_filter).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
+
+                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                selectYourCoursesFragment.show(fragmentManager, "HomeFragment");
 
                 Toast.makeText(getActivity(), "Home Fragment", Toast.LENGTH_LONG).show();
                 return true;

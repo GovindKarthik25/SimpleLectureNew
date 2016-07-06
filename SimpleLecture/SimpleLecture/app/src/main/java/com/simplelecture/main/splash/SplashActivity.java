@@ -97,7 +97,7 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
         if (v == buttonExplore) {
             SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
-            selectYourCoursesFragment.show(fragmentManager, "");
+            selectYourCoursesFragment.show(fragmentManager, "SplashActivity");
 
         } else if (v == buttonSignin) {
             new ViewManager().gotoSigninView(this);

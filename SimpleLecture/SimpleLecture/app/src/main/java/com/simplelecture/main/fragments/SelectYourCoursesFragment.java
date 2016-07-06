@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
@@ -154,8 +155,8 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
                         courseSelected = true;
 
                         String selectedID = selectMyCourseResponseModelObj.getId();
-                        Log.i("selectedFromList-->", selectedID.toString());
                         Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
+
                         new ViewManager().gotoHomeView(getActivity());
 
                     }
