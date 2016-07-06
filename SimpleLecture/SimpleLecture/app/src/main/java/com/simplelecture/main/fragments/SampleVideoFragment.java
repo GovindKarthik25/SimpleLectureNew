@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,6 +34,7 @@ import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import java.util.ArrayList;
 
@@ -180,16 +182,10 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
         @Override
         public void onItemClick(View view, int position) {
             try {
-                /*myCoursesObj = myCoursesLstArray.get(position);
 
-                if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                    param_get_DemoTutorial = true;
-                    pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                    //My HomeCoursesModel service
-                    ApiService.getApiService().doGetCourseDetails(getActivity(), DemoTutorialFragment.this, myCoursesObj.getcId());
-                } else {
-                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-                }*/
+                String videoURl = sampleVideoResponseModelLstArray.get(position).getSvUrl();
+                new ViewManager().gotoVideoPlayerView(getContext(), "SampleVideoFragment", 0, videoURl);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -248,7 +244,9 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                Toast.makeText(getActivity(), "Sample Videos Fragment", Toast.LENGTH_LONG).show();
+                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                selectYourCoursesFragment.show(fragmentManager, "SampleVideoFragment");
                 return true;
             }
         });

@@ -39,6 +39,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     private boolean videoPause;
     private FloatingActionButton floatingActionBack;
     private CoordinatorLayout floatingCoordinatorLayout;
+    private String displayView;
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -86,7 +87,10 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         try {
             Bundle bundle = getIntent().getExtras();
             ctId = bundle.getInt("ctId1");
-            Log.i("ctId", "ctId" + ctId);
+            displayView = bundle.getString("DisplayView");
+            videoURL = bundle.getString("videoURL");
+
+            Log.i("ctId", "ctId -" + ctId + " - " + displayView + " - " + videoURL);
 
             snack = new SnackBarManagement(VideoPlayerActivity.this);
             coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
@@ -101,13 +105,19 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
                 }
             });
 
-            if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()){
-                param_get_VideoPlayer = true;
-                pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
-                //My HomeCoursesModel service
-                ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, ctId);
-            } else {
-                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+
+            if(displayView.equalsIgnoreCase("CourseIndexFragment")) {
+                if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
+                    param_get_VideoPlayer = true;
+                    pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
+                    //My HomeCoursesModel service
+                    ApiService.getApiService().doGetVimeoVideoURL(VideoPlayerActivity.this, ctId);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }
+            } else if(displayView.equalsIgnoreCase("SampleVideoFragment")){
+
+                OnPrepareVideoPlay(videoURL);
             }
         } catch (Resources.NotFoundException e) {
             e.printStackTrace();

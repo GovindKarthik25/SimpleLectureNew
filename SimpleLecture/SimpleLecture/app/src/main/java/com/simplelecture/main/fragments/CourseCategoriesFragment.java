@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -22,11 +23,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.adapters.DemoTutorialAdapter;
+import com.simplelecture.main.adapters.CourseCategoriesAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
-import com.simplelecture.main.model.viewmodel.SampleVideoResponseModel;
+import com.simplelecture.main.model.viewmodel.CourseCategoriesModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -58,6 +59,8 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
     private AlertMessageManagement alertMessageManagement;
     private boolean param_get_CourseCategoriesTutorial;
     private RecyclerView courseCategoriesRecycler_view;
+    private ArrayList<CourseCategoriesModel> courseCategoriesModelLst;
+    private CourseCategoriesAdapter courseCategoriesAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -147,7 +150,7 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
                 param_get_CourseCategoriesTutorial = true;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
 
-                ApiService.getApiService().doGetVideoSampleTutorial(getActivity(), CourseCategoriesFragment.this);
+                ApiService.getApiService().doGetCourseCategories(getActivity(), CourseCategoriesFragment.this, "0");
             } else {
                 alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
             }
@@ -159,12 +162,12 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
     private void loadRecyclerView() {
 
 
-        /*if (sampleVideoResponseModelLstArray != null) {
-            demoTutorialAdapter = new DemoTutorialAdapter(getActivity(), sampleVideoResponseModelLstArray);
-            sampleVideoRecycler_view.setAdapter(demoTutorialAdapter);
+        if (courseCategoriesModelLst != null) {
+            courseCategoriesAdapter = new CourseCategoriesAdapter(getActivity(), courseCategoriesModelLst);
+            courseCategoriesRecycler_view.setAdapter(courseCategoriesAdapter);
 
-            demoTutorialAdapter.setOnItemClickListener(onItemClickListener);
-        }*/
+            courseCategoriesAdapter.setOnItemClickListener(onItemClickListener);
+        }
     }
 
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
@@ -201,11 +204,11 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
 
                 JsonArray jarray = parser.parse(response).getAsJsonArray();
 
-                /*sampleVideoResponseModelLstArray = new ArrayList<SampleVideoResponseModel>();
+                courseCategoriesModelLst = new ArrayList<CourseCategoriesModel>();
                 for (JsonElement obj : jarray) {
-                    SampleVideoResponseModel sampleVideoResponseModelObj = gson.fromJson(obj, SampleVideoResponseModel.class);
-                    sampleVideoResponseModelLstArray.add(sampleVideoResponseModelObj);
-                }*/
+                    CourseCategoriesModel courseCategoriesModellObj = gson.fromJson(obj, CourseCategoriesModel.class);
+                    courseCategoriesModelLst.add(courseCategoriesModellObj);
+                }
 
                 loadRecyclerView();
             }
@@ -236,7 +239,10 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                Toast.makeText(getActivity(), "Course Fragment", Toast.LENGTH_LONG).show();
+                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                selectYourCoursesFragment.show(fragmentManager, "CourseCategoryFragment");
+
                 return true;
             }
         });

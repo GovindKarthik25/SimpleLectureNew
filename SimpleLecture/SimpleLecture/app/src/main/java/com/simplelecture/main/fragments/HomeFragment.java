@@ -61,7 +61,7 @@ import java.util.List;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment implements NetworkLayer {
+public class HomeFragment extends Fragment implements NetworkLayer, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -101,6 +101,8 @@ public class HomeFragment extends Fragment implements NetworkLayer {
     private LinearLayout cart_stripLinearLayout;
     private TextView cart_CountTextView;
     private HomePageResponseModel homePageResponseModelobj;
+    private TextView viewAllCourse;
+    private TextView viewAllComboCourse;
 
 
     /**
@@ -168,6 +170,9 @@ public class HomeFragment extends Fragment implements NetworkLayer {
         cart_stripLinearLayout = (LinearLayout) convertView.findViewById(R.id.cart_stripLinearLayout);
         cart_stripLinearLayout.setVisibility(View.GONE);
         cart_CountTextView = (TextView) convertView.findViewById(R.id.cart_CountTextView);
+        viewAllCourse = (TextView) convertView.findViewById(R.id.viewAllCourse);
+        viewAllComboCourse = (TextView) convertView.findViewById(R.id.viewAllComboCourse);
+
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
@@ -226,6 +231,10 @@ public class HomeFragment extends Fragment implements NetworkLayer {
             TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
             testimonialsList.setAdapter(testimonialsAdapter);
         }
+
+
+        viewAllCourse.setOnClickListener(HomeFragment.this);
+        viewAllComboCourse.setOnClickListener(HomeFragment.this);
 
         return convertView;
     }
@@ -427,6 +436,28 @@ public class HomeFragment extends Fragment implements NetworkLayer {
                 return true;
             }
         });
+
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+
+        try {
+            if (v == viewAllComboCourse || v == viewAllCourse) {
+                CourseCategoriesFragment courseCategoriesFragment = new CourseCategoriesFragment();
+                this.getFragmentManager().beginTransaction()
+                        .replace(R.id.frame_container, courseCategoriesFragment, "")
+                        .addToBackStack(null)
+                        .commit();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

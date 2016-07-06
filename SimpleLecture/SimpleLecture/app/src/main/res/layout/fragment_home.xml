@@ -95,9 +95,10 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/viewAllComboCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/next"
+                    android:drawableRight="@mipmap/next"
                     android:gravity="center|end"
                     android:text="@string/viewall"
                     android:textColor="@android:color/black"
@@ -133,9 +134,10 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/viewAllCourse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawableRight="@drawable/next"
+                    android:drawableRight="@mipmap/next"
                     android:gravity="center|end"
                     android:text="@string/viewall"
                     android:textColor="@android:color/black"

@@ -138,9 +138,11 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoVideoPlayerView(Context mContext, String videoId) {
-        intent = new Intent(mContext, VideoPlayerActivity.class);
-        intent.putExtra("videoId", videoId);
+    public Intent gotoVideoPlayerView(Context mContext,  String displayView, int getCtId,  String videoURL) {
+        Intent intent = new Intent(mContext, VideoPlayerActivity.class);
+        intent.putExtra("ctId1", getCtId);
+        intent.putExtra("DisplayView", displayView);
+        intent.putExtra("videoURL", videoURL);
         mContext.startActivity(intent);
         return intent;
     }

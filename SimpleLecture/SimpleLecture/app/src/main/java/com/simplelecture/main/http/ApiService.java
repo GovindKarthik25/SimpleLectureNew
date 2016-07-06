@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.transactions.ChaptersTransaction;
+import com.simplelecture.main.transactions.CourseCategoriesTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.DemoTutorialTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
@@ -127,6 +128,19 @@ public class ApiService {
             SelectMyCourseTransaction selectMyCourseTransaction = new SelectMyCourseTransaction(null, mContext);
             TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(selectMyCourseTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void doGetCourseCategories(Context mContext, Fragment fragmentContext, String CId) {
+
+        try {
+
+            CourseCategoriesTransaction courseCategoriesTransaction = new CourseCategoriesTransaction(null, mContext, CId);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(courseCategoriesTransaction);
         } catch (Exception e) {
             e.printStackTrace();
         }
