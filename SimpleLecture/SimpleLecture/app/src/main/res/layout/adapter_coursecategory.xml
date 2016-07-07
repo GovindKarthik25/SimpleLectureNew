@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/itemborder"
+        android:orientation="vertical"
+        android:padding="4dp"
+        android:paddingBottom="10dip">
+
+        <ImageView
+            android:id="@+id/corCatimageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/loading" />
+
+        <TextView
+            android:id="@+id/text_courseName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:text="Mathematics" />
+
+        <TextView
+            android:id="@+id/text_CatgoryDesc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:gravity="left"
+            android:text="New Text"
+            android:textSize="5pt" />
+
+        <TextView
+            android:id="@+id/text_priceCat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:text="dddd"
+            android:textColor="@color/colorAccent"
+            android:textSize="12sp" />
+
+
+    </LinearLayout>
+</LinearLayout>
