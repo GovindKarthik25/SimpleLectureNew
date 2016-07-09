@@ -150,7 +150,11 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
                 param_get_CourseCategoriesTutorial = true;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
 
-                ApiService.getApiService().doGetCourseCategories(getActivity(), CourseCategoriesFragment.this, "0");
+                if (Util.getFromPrefrences(getContext(), "CourseCategoryCategoryID").isEmpty()) {
+                    Util.storeToPrefrences(getActivity(), "CourseCategoryCategoryID", Util.getFromPrefrences(getContext(), "SelectYourCategoryID"));
+                }
+                ApiService.getApiService().doGetCourseCategories(getActivity(), CourseCategoriesFragment.this, Util.getFromPrefrences(getContext(), "CourseCategoryCategoryID"));
+
             } else {
                 alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
             }
@@ -239,7 +243,9 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
+
+                String displayName = "CourseCategoryFragment";
+                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment().newInstance(displayName, "");
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 selectYourCoursesFragment.show(fragmentManager, "CourseCategoryFragment");
 

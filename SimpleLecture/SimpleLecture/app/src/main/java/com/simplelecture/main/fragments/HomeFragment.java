@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
@@ -26,6 +28,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
 import com.simplelecture.main.adapters.HomeComboCoursesAdapter;
 import com.simplelecture.main.adapters.HomeCoursesAdapter;
@@ -35,18 +38,22 @@ import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.HomeBannersModel;
 import com.simplelecture.main.model.viewmodel.HomeCoursesModel;
 import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 import com.simplelecture.main.model.viewmodel.HomePopularCoursesModel;
 import com.simplelecture.main.model.viewmodel.HomeTestimonialsModel;
+import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONObject;
 
@@ -103,6 +110,13 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     private HomePageResponseModel homePageResponseModelobj;
     private TextView viewAllCourse;
     private TextView viewAllComboCourse;
+    private CoordinatorLayout coordinatorLayout;
+    private boolean param_get_MyCoursesDetails;
+    private boolean param_get_Chapters;
+    private CourseDetailsResponseModel courseDetailsResponseModel;
+    private List<courseFeatures> courseFeaturesLstArray;
+    private CourseCombos myCoursesObj;
+    private HomeComboCoursesAdapter homeComboCoursesAdapter;
 
 
     /**
@@ -159,7 +173,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         View convertView = inflater.inflate(R.layout.fragment_home, container, false);
 
         pageIndicator = (ViewPagerIndicator) convertView.findViewById(R.id.page_indicator);
-
+        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
         courses_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.courses_titleLinearLayout);
         courses_titleLinearLayout.setVisibility(View.GONE);
         recomended_titleLinearLayout = (LinearLayout) convertView.findViewById(R.id.recomended_titleLinearLayout);
@@ -176,6 +190,33 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = (ViewPager) convertView.findViewById(R.id.pager);
+
+        //combo courses list
+        coursesList = (RecyclerView) convertView.findViewById(R.id.courses_recycler_view);
+
+        //recomended courses list
+        recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
+
+        //most Popular list
+        mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
+
+        //testimonials list
+        testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
+
+        return convertView;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         if (bannersLstArray != null) {
             mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
             mPager.setPageTransformer(true, new ZoomOutPageTransformer());
@@ -197,34 +238,43 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         });
 
         //combo courses list
-        coursesList = (RecyclerView) convertView.findViewById(R.id.courses_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         coursesList.setLayoutManager(linearLayoutManager);
         if (courseCombosLstArray != null) {
-            HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
             coursesList.setAdapter(homeComboCoursesAdapter);
+
+        }
+        if (homeComboCoursesAdapter != null) {
+            homeComboCoursesAdapter.setOnItemClickListener(onItemClickListener);
         }
 
         //recomended courses list
-        recomendedCoursesView = (RecyclerView) convertView.findViewById(R.id.recomended_recycler_view);
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recomendedCoursesView.setLayoutManager(linearLayoutManager1);
         if (coursesLstArray != null) {
             HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
             recomendedCoursesView.setAdapter(homeCoursesAdapter);
+
+            if (homeCoursesAdapter != null) {
+                homeCoursesAdapter.setOnItemClickListener(onItemClickListener);
+            }
         }
 
         //most Popular list
-        mostViewedList = (RecyclerView) convertView.findViewById(R.id.most_viewed_recycler_view);
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
         if (homePopularCoursesModelLstArray != null) {
             HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
             mostViewedList.setAdapter(homeMostViewedAdapter);
+
+            if (homeMostViewedAdapter != null) {
+                homeMostViewedAdapter.setOnItemClickListener(onItemClickListener);
+            }
+
         }
 
         //testimonials list
-        testimonialsList = (RecyclerView) convertView.findViewById(R.id.testimonials_recycler_view);
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         testimonialsList.setLayoutManager(linearLayoutManager3);
         if (homeTestimonialsModelLstArray != null) {
@@ -235,14 +285,6 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
         viewAllCourse.setOnClickListener(HomeFragment.this);
         viewAllComboCourse.setOnClickListener(HomeFragment.this);
-
-        return convertView;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
 
     }
 
@@ -269,6 +311,30 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         super.onDetach();
         mListener = null;
     }
+
+
+    OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            try {
+
+                Toast.makeText(getActivity(), position, Toast.LENGTH_SHORT).show();
+               /* myCoursesObj = courseCombosLstArray.get(position);
+
+                if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                    param_get_MyCoursesDetails = true;
+                    pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                    ApiService.getApiService().doGetCourseDetails(getActivity(), HomeFragment.this, myCoursesObj.getcId());
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }*/
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    };
 
 
     private void callHomeDataService() {
@@ -400,6 +466,70 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
                 displayAndSetTheItem();
 
+            } else if (param_get_MyCoursesDetails) {
+                courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
+                JSONObject jSONObject = new JSONObject(response);
+
+                String myCoursesContent = jSONObject.getString("courseFeatures");
+                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
+
+                courseFeaturesLstArray = new ArrayList<courseFeatures>();
+                for (JsonElement obj : jarray) {
+                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
+                    courseFeaturesLstArray.add(courseFeaturesObj);
+                }
+
+                String courseCombosContent = jSONObject.getString("courseCombos");
+                //Log.i("courseCombosContent", courseCombosContent.toString());
+                if (courseCombosContent != null && !courseCombosContent.equals("null")) {
+                    JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
+
+                    courseCombosLstArray = new ArrayList<CourseCombos>();
+                    for (JsonElement obj : jarrray) {
+
+                        CourseCombos courseCombosObj = gson.fromJson(obj, CourseCombos.class);
+                        courseCombosLstArray.add(courseCombosObj);
+                    }
+                    courseDetailsResponseModel.setCourseCombos(courseCombosLstArray);
+
+                }
+                courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
+
+                param_get_MyCoursesDetails = false;
+
+                //  Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
+
+
+                if (courseDetailsResponseModel.isCombo()) {
+                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
+                } else {
+
+                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                        param_get_Chapters = true;
+
+                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                        //My HomeCoursesModel service
+                        ApiService.getApiService().doGetChapters(getActivity(), HomeFragment.this, myCoursesObj.getcId());
+                    } else {
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+
+                }
+            } else if (param_get_Chapters) {
+
+                jArray = parser.parse(response).getAsJsonArray();
+
+                ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
+                for (JsonElement obj : jArray) {
+                    ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
+                    chaptersResponseModelLstArray.add(chaptersResponseModelobj);
+                }
+
+                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+
+                param_get_Chapters = false;
+                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+
             }
 
         } catch (Exception e) {
@@ -416,6 +546,8 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         }
 
         param_get_HomeScreenData = false;
+        param_get_MyCoursesDetails = false;
+        param_get_Chapters = false;
     }
 
     @Override
@@ -428,11 +560,11 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment();
+                String displayName = "HomeFragment";
+                SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment().newInstance(displayName, "");
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 selectYourCoursesFragment.show(fragmentManager, "HomeFragment");
 
-                Toast.makeText(getActivity(), "Home Fragment", Toast.LENGTH_LONG).show();
                 return true;
             }
         });

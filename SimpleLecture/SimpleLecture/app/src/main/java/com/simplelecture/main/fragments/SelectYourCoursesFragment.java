@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
@@ -88,6 +88,7 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
                 mParam1 = getArguments().getString(ARG_PARAM1);
                 mParam2 = getArguments().getString(ARG_PARAM2);
             }
+
             loadGetMyCourses();
         } catch (Exception e) {
             e.printStackTrace();
@@ -155,10 +156,39 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
                         courseSelected = true;
 
                         String selectedID = selectMyCourseResponseModelObj.getId();
-                        Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
 
-                        new ViewManager().gotoHomeView(getActivity());
 
+                        Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag(mParam1);
+                        if (prev != null) {
+                            DialogFragment df = (DialogFragment) prev;
+                            df.dismiss();
+                        }
+
+                        Log.i("mParam1-->", mParam1);
+                        if (mParam1.equalsIgnoreCase("SplashActivity")) {
+                            Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
+                            new ViewManager().gotoHomeView(getActivity());
+                        } else if (mParam1.equalsIgnoreCase("HomeFragment")) {
+                            Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
+
+                            HomeFragment nextFrag = new HomeFragment();
+                            this.getFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_container, nextFrag)
+                                    .addToBackStack(null)
+                                    .commit();
+
+                        } else if (mParam1.equalsIgnoreCase("CourseCategoryFragment")) {
+                            Util.storeToPrefrences(getActivity(), "CourseCategoryCategoryID", selectedID.toString());
+
+                            CourseCategoriesFragment nextFrag = new CourseCategoriesFragment();
+                            this.getFragmentManager().beginTransaction()
+                                    .replace(R.id.frame_container, nextFrag)
+                                    .addToBackStack(null)
+                                    .commit();
+
+                        } else if (mParam1.equalsIgnoreCase("SampleVideoFragment")) {
+
+                        }
                     }
                 }
 

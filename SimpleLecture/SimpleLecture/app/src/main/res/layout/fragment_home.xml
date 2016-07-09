@@ -80,9 +80,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/cart_stripLinearLayout"
+                android:layout_marginTop="4dp"
                 android:background="@color/colorAccent"
                 android:orientation="horizontal"
-                android:layout_marginTop="4dp"
                 android:padding="4dp">
 
                 <TextView
@@ -234,4 +234,9 @@
 
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/coordinatorLayout"
+        layout="@layout/coordinatelayout"></include>
 </RelativeLayout>
+
