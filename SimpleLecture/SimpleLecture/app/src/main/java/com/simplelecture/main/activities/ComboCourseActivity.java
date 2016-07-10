@@ -2,17 +2,16 @@ package com.simplelecture.main.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
@@ -63,11 +62,11 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
+        /*LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
         tabStrip.setEnabled(false);
         for (int i = 0; i < tabStrip.getChildCount(); i++) {
             tabStrip.getChildAt(i).setClickable(false);
-        }
+        }*/
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
@@ -80,10 +79,10 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new ComboCoursesFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.comboCourse));
-        adapter.addFrag(new CourseFeatureFragment(), getResources().getString(R.string.courseFeature));
-        adapter.addFrag(new CourseDescriptionFragment(), getResources().getString(R.string.courseDescription));
-        adapter.addFrag(new CourseBenifitsFragment(), getResources().getString(R.string.courseBenifits));
-        adapter.addFrag(new FAQFragment(), getResources().getString(R.string.fAQ));
+        adapter.addFrag(new CourseFeatureFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseFeature));
+        adapter.addFrag(new CourseDescriptionFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseDescription));
+        adapter.addFrag(new CourseBenifitsFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseBenifits));
+        adapter.addFrag(new FAQFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.fAQ));
         adapter.addFrag(new ReviewFragment(), getResources().getString(R.string.review));
 
         viewPager.setAdapter(adapter);

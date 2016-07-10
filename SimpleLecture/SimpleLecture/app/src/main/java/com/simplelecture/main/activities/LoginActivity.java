@@ -399,7 +399,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
                     Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
                     param_get_Login = false;
-                    new ViewManager().gotoDashboardView(this);
+                    new ViewManager().gotoHomeView(this);
                 } else {
                     param_get_Login = false;
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.loginFailed), getResources().getString(R.string.dismiss));

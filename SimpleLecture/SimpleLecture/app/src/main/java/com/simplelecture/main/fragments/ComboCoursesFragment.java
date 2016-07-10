@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
+import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.CourseDetailsController;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
@@ -32,10 +32,6 @@ import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -63,8 +59,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
     CourseDetailsResponseModel courseDetailsResponseModelObj;
     private CourseCombos courseCombosObj;
-    private boolean param_get_MyCoursesDetails = false;
-    private boolean param_get_Details = false;
+    private String param_get_ServiceCallResult = "";
 
     private ProgressDialog pd;
     private CoordinatorLayout coordinatorLayout;
@@ -153,7 +148,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                 courseCombosObj = courseDetailsResponseModelObj.getCourseCombos().get(position);
 
                 if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                    param_get_MyCoursesDetails = true;
+                    param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
                     pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                     //My HomeCoursesModel service
                     ApiService.getApiService().doGetCourseDetails(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
@@ -177,38 +172,9 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
             JsonParser parser = new JsonParser();
             List<courseFeatures> courseFeaturesLstArray;
             List<CourseCombos> courseCombosLstArray;
-            if (param_get_MyCoursesDetails) {
-                courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
-                JSONObject jSONObject = new JSONObject(response);
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
 
-                String myCoursesContent = jSONObject.getString("courseFeatures");
-                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
-
-                courseFeaturesLstArray = new ArrayList<courseFeatures>();
-                for (JsonElement obj : jarray) {
-                    courseFeatures courseFeaturesObj = gson.fromJson(jarray, courseFeatures.class);
-                    courseFeaturesLstArray.add(courseFeaturesObj);
-                }
-
-                String courseCombosContent = jSONObject.getString("courseCombos");
-                Log.i("courseCombosContent", courseCombosContent.toString());
-                if (courseCombosContent != null && !courseCombosContent.equals("null")) {
-                    JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
-
-                    courseCombosLstArray = new ArrayList<CourseCombos>();
-                    for (JsonElement obj : jarrray) {
-
-                        CourseCombos courseCombosObj = gson.fromJson(obj, CourseCombos.class);
-                        courseCombosLstArray.add(courseCombosObj);
-                    }
-                    courseDetailsResponseModel.setCourseCombos(courseCombosLstArray);
-
-                }
-                courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
-
-                param_get_MyCoursesDetails = false;
-
-                Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
+                courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(response);
 
 
                 if (param_IsCombo && courseDetailsResponseModel.isCombo()) {
@@ -219,7 +185,6 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
                     if (courseDetailsResponseModel.isCombo()) {
                         if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                            param_get_MyCoursesDetails = true;
                             param_IsCombo = true;
                             pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                             //My HomeCoursesModel service
@@ -231,8 +196,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                     } else {
 
                         if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                            param_get_Details = true;
-
+                            param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
                             pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                             //My HomeCoursesModel service
                             ApiService.getApiService().doGetChapters(getActivity(), ComboCoursesFragment.this, courseCombosObj.getcId());
@@ -242,25 +206,19 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
                     }
                 }
-            } else if (param_get_Details) {
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
 
-                JsonArray jArray = parser.parse(response).getAsJsonArray();
-
-                ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
-                for (JsonElement obj : jArray) {
-                    ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
-                    chaptersResponseModelLstArray.add(chaptersResponseModelobj);
-                }
+                List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(response);
 
                 courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
 
                 // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
+                Log.i("chaptersResponseMo**1", " * * * * " + courseDetailsResponseModel.getCourseFeature());
 
-                param_get_Details = false;
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
 
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -277,8 +235,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
             }
 
             snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
-            param_get_MyCoursesDetails = false;
-            param_get_Details = false;
+
         } catch (Exception e) {
             e.printStackTrace();
         }

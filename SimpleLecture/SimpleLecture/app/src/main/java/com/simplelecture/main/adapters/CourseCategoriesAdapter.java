@@ -49,7 +49,7 @@ public class CourseCategoriesAdapter extends RecyclerView.Adapter<CourseCategori
 
         try {
 
-            if (!courseCategoriesModelList.get(position).getcIcon().equals("") || courseCategoriesModelList.get(position).getcIcon() != null) {
+            if (!courseCategoriesModelList.get(position).getcIcon().equals("") && courseCategoriesModelList.get(position).getcIcon() != null) {
                 Picasso.with(activity)
                         .load(courseCategoriesModelList.get(position).getcIcon())
                         .placeholder(R.mipmap.loading)   // optional

@@ -39,7 +39,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycle_item_view, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -49,7 +49,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
 
         try {
 
-            if (!myCoursesListArray.get(position).getcIcon().equals("") || myCoursesListArray.get(position).getcIcon() != null) {
+            if (!myCoursesListArray.get(position).getcIcon().equals("") && myCoursesListArray.get(position).getcIcon() != null) {
                 Picasso.with(activity)
                         .load(myCoursesListArray.get(position).getcIcon())
                         .placeholder(R.mipmap.loading)   // optional

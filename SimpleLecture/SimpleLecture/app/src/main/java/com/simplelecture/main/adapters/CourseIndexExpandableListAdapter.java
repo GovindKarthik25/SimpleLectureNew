@@ -1,7 +1,6 @@
 package com.simplelecture.main.adapters;
 
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,15 +18,15 @@ import java.util.List;
 /**
  * Created by M1032185 on 2/15/2016.
  */
-public class ExpandableListAdapter extends BaseExpandableListAdapter {
+public class CourseIndexExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, List<courseTopics>> listDataChild;
 
-    public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<courseTopics>> listChildData) {
+    public CourseIndexExpandableListAdapter(Context context, List<String> listDataHeader,
+                                            HashMap<String, List<courseTopics>> listChildData) {
         this.mContext = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -51,8 +50,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -66,39 +64,32 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            LayoutInflater infalInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.adapter_courseindexlist_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
-        lblListHeader.setTypeface(null, Typeface.BOLD);
+        TextView lblListHeader = (TextView) convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setText(headerTitle);
 
         return convertView;
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
-                             boolean isLastChild, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final courseTopics courseTopics = (com.simplelecture.main.model.viewmodel.courseTopics) getChild(groupPosition, childPosition);
+        final courseTopics courseTopics = (courseTopics) getChild(groupPosition, childPosition);
 
         final String childText = courseTopics.getCtName();
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) mContext
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item, null);
+            LayoutInflater infalInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = infalInflater.inflate(R.layout.adapter_courseindexlist_item, null);
         }
 
-        TextView txtListChild = (TextView) convertView
-                .findViewById(R.id.lblListItem);
+        TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItem);
 
         txtListChild.setText(childText);
 

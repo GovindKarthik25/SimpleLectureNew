@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.adapters.SelectYourCourseAdapter;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
@@ -157,6 +160,7 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
 
                         String selectedID = selectMyCourseResponseModelObj.getId();
 
+                       // getDialog().dismiss();
 
                         Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag(mParam1);
                         if (prev != null) {
@@ -165,30 +169,40 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
                         }
 
                         Log.i("mParam1-->", mParam1);
-                        if (mParam1.equalsIgnoreCase("SplashActivity")) {
-                            Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
-                            new ViewManager().gotoHomeView(getActivity());
-                        } else if (mParam1.equalsIgnoreCase("HomeFragment")) {
-                            Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
 
-                            HomeFragment nextFrag = new HomeFragment();
-                            this.getFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_container, nextFrag)
-                                    .addToBackStack(null)
-                                    .commit();
+                        Fragment fragment = null;
 
-                        } else if (mParam1.equalsIgnoreCase("CourseCategoryFragment")) {
-                            Util.storeToPrefrences(getActivity(), "CourseCategoryCategoryID", selectedID.toString());
+                        switch (mParam1) {
+                            case "SplashActivity":
+                                Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
+                                new ViewManager().gotoHomeView(getActivity());
+                                break;
+                            case "HomeFragment":
+                                Util.storeToPrefrences(getActivity(), "SelectYourCategoryID", selectedID.toString());
 
-                            CourseCategoriesFragment nextFrag = new CourseCategoriesFragment();
-                            this.getFragmentManager().beginTransaction()
-                                    .replace(R.id.frame_container, nextFrag)
-                                    .addToBackStack(null)
-                                    .commit();
+                                fragment = new HomeFragment();
+                                ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_Home));
+                                break;
+                            case "CourseCategoryFragment":
+                                Util.storeToPrefrences(getActivity(), "CourseCategoryCategoryID", selectedID.toString());
 
-                        } else if (mParam1.equalsIgnoreCase("SampleVideoFragment")) {
+                                fragment = new CourseCategoriesFragment();
+                                ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
+                                break;
+                            case "SampleVideoFragment":
+                                fragment = new SampleVideoFragment();
+                                ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_demo));
+                                break;
 
                         }
+
+                        if (!mParam1.equalsIgnoreCase("SplashActivity")) {
+                            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                            fragmentTransaction.replace(R.id.frame_container, fragment);
+                            fragmentTransaction.commit();
+                        }
+
                     }
                 }
 

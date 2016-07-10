@@ -38,7 +38,7 @@ public class ComboCoursesAdapter extends RecyclerView.Adapter<ComboCoursesAdapte
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_recycle_item_view, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -59,7 +59,7 @@ public class ComboCoursesAdapter extends RecyclerView.Adapter<ComboCoursesAdapte
             } else {
                 holder.courseimageView.setImageResource(R.mipmap.app_icon);
             }
-            holder.textView.setText(courseCombosList.get(position).getcName());
+            holder.textView_subject.setText(courseCombosList.get(position).getcName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -77,13 +77,13 @@ public class ComboCoursesAdapter extends RecyclerView.Adapter<ComboCoursesAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView textView;
+        TextView textView_subject;
         ImageView courseimageView;
         LinearLayout itemLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.text_subject);
+            textView_subject = (TextView) itemView.findViewById(R.id.textView_subject);
             courseimageView = (ImageView) itemView.findViewById(R.id.courseimageView);
             itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             itemView.setOnClickListener(this);

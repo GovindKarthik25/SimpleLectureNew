@@ -4,33 +4,14 @@
     android:layout_height="match_parent"
     tools:context="com.simplelecture.main.fragments.ComboCoursesFragment">
 
-   <!-- <RelativeLayout
-        android:id="@+id/viewPagerRelativeLayout"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_above="@+id/bottomRelativeLayout">
-
-        <android.support.v4.view.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-
-        <com.simplelecture.main.util.ViewPagerIndicator
-            android:id="@+id/page_indicator"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20dip"
-            android:gravity="center" />
-
-    </RelativeLayout>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/viewPagerRelativeLayout"
         android:scrollbars="vertical"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
         android:layout_alignParentBottom="true" />
 
 

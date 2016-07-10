@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 
 import com.simplelecture.main.R;
-import com.simplelecture.main.adapters.ExpandableListAdapter;
+import com.simplelecture.main.adapters.CourseIndexExpandableListAdapter;
 import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.courseTopics;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class CourseIndexFragment extends Fragment {
 
-    ExpandableListAdapter listAdapter;
+    CourseIndexExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader;
     HashMap<String, List<courseTopics>> listDataChild;
@@ -80,12 +80,11 @@ public class CourseIndexFragment extends Fragment {
 
         chaptersResponseModel = courseDetailsResponseModelObj.getChaptersResponseModel();
 
-//        Toast.makeText(getActivity(), "" + chaptersResponseModel, Toast.LENGTH_LONG).show();
 
         // preparing list data
         prepareListData();
 
-        listAdapter = new ExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new CourseIndexExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
 
         // setting list adapter
         expListView.setAdapter(listAdapter);

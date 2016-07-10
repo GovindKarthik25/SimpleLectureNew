@@ -6,24 +6,26 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.simplelecture.main.R;
-import com.simplelecture.main.model.viewmodel.SelectMyCourseResponseModel;
+import com.simplelecture.main.model.viewmodel.courseFeatures;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 /**
  * Created by Raos on 6/25/2016.
  */
-public class SelectYourCourseAdapter extends BaseAdapter {
+public class CourseFeatureAdapter extends BaseAdapter {
     private final Activity activity;
-    private final List<SelectMyCourseResponseModel> selectMyCourseLstArray;
+    private final List<courseFeatures> courseFeaturesResponseList;
     private ViewHolder holder;
 
-    public SelectYourCourseAdapter(Activity selectYourCoursesActivity, List<SelectMyCourseResponseModel> selectMyCourseLstAray) {
-        this.activity = selectYourCoursesActivity;
-        this.selectMyCourseLstArray = selectMyCourseLstAray;
+    public CourseFeatureAdapter(Activity activiy, List<courseFeatures> courseFeaturesResponseLst) {
+        this.activity = activiy;
+        this.courseFeaturesResponseList = courseFeaturesResponseLst;
 
     }
 
@@ -34,7 +36,7 @@ public class SelectYourCourseAdapter extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        return this.selectMyCourseLstArray.size();
+        return this.courseFeaturesResponseList.size();
     }
 
     /**
@@ -46,7 +48,7 @@ public class SelectYourCourseAdapter extends BaseAdapter {
      */
     @Override
     public Object getItem(int position) {
-        return selectMyCourseLstArray.get(position);
+        return courseFeaturesResponseList.get(position);
     }
 
     /**
@@ -82,48 +84,46 @@ public class SelectYourCourseAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         holder = new ViewHolder();
 
-        SelectMyCourseResponseModel selectMyCourseResponseModelObj = selectMyCourseLstArray.get(position);
+        courseFeatures courseFeaturesObj = courseFeaturesResponseList.get(position);
 
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.adapter_selectmycourse_listitem, null);
-            holder.chkListItem = (CheckBox) convertView.findViewById(R.id.chkListItem);
+            convertView = infalInflater.inflate(R.layout.adapter_courseindex, null);
+            holder.imageView_index = (ImageView) convertView.findViewById(R.id.imageView_index);
+            holder.textView_courseIndexName = (TextView) convertView.findViewById(R.id.textView_courseIndexName);
 
             convertView.setTag(holder);
-        }else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        try {
+            if (!courseFeaturesObj.getCfIcon().equals("") && courseFeaturesObj.getCfIcon() != null) {
 
-        holder.chkListItem.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View checkboxView) {
-                SelectMyCourseResponseModel addrCB = (SelectMyCourseResponseModel) checkboxView.getTag();
-
-                // Single selection
-                for (int i = 0; i < selectMyCourseLstArray.size(); i++) {
-                    selectMyCourseLstArray.get(i).setSelected(false);
-                }
-                addrCB.setSelected(true);
-
-                notifyDataSetChanged();
+                Picasso.with(activity)
+                        .load(courseFeaturesObj.getCfIcon())
+                        .placeholder(R.mipmap.loading)   // optional
+                        .error(R.mipmap.app_icon)      // optional
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
+                        .into(holder.imageView_index);
+            } else {
+                holder.imageView_index.setImageResource(R.mipmap.loading);
             }
-        });
 
-        holder.chkListItem.setTag(selectMyCourseResponseModelObj);
-        holder.chkListItem.setText(selectMyCourseResponseModelObj.getName());
-
-        holder.chkListItem.setChecked(selectMyCourseResponseModelObj.isSelected());
-
-
+            holder.textView_courseIndexName.setText(courseFeaturesObj.getCfName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         return convertView;
     }
 
 
-    static class ViewHolder{
-        protected CheckBox chkListItem;
+    static class ViewHolder {
+        protected TextView textView_courseIndexName;
+        protected ImageView imageView_index;
+
     }
 }

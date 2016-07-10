@@ -1,11 +1,12 @@
 package com.simplelecture.main.activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -17,16 +18,16 @@ import android.view.MenuItem;
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
 import com.simplelecture.main.fragments.DashboardFragment;
-import com.simplelecture.main.fragments.SampleVideoFragment;
 import com.simplelecture.main.fragments.ExercisesFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.HomeFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
+import com.simplelecture.main.fragments.SampleVideoFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            Intent setIntent = new Intent(Intent.ACTION_MAIN);
+            setIntent.addCategory(Intent.CATEGORY_HOME);
+            setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(setIntent);
+
         }
     }
 
@@ -89,11 +94,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_login) {
             new ViewManager().gotoLoginView(this);
-        } else if(id == R.id.action_myProfile) {
+        } else if (id == R.id.action_myProfile) {
             return true;
-        } else if(id == R.id.action_Signin){
+        } else if (id == R.id.action_Signin) {
             new ViewManager().gotoSigninView(this);
-        } else if(id == R.id.action_logout){
+        } else if (id == R.id.action_logout) {
             return true;
         }
 

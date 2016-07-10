@@ -38,7 +38,7 @@ public class DemoTutorialAdapter extends RecyclerView.Adapter<DemoTutorialAdapte
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_item_view, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_samplevideo_item_view, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -49,21 +49,21 @@ public class DemoTutorialAdapter extends RecyclerView.Adapter<DemoTutorialAdapte
 
         try {
 
-            if (!sampleVideoResponseModelLstArray.get(position).getSvImage().equals("") || sampleVideoResponseModelLstArray.get(position).getSvImage() != null) {
+            if (!sampleVideoResponseModelLstArray.get(position).getSvImage().equals("") && sampleVideoResponseModelLstArray.get(position).getSvImage() != null) {
                 Picasso.with(activity)
                         .load(sampleVideoResponseModelLstArray.get(position).getSvImage())
                         .placeholder(R.mipmap.loading)   // optional
                         .error(R.mipmap.app_icon)      // optional
                         //.resize(250, 200)                        // optional
                         //.rotate(90)                             // optional
-                        .into(holder.samplevideoimageView);
+                        .into(holder.sampleImageView);
             } else {
-                holder.samplevideoimageView.setImageResource(R.mipmap.loading);
+                holder.sampleImageView.setImageResource(R.mipmap.loading);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.text_videoName.setText(sampleVideoResponseModelLstArray.get(position).getSvName());
+        holder.sampleTextView.setText(sampleVideoResponseModelLstArray.get(position).getSvName());
 
     }
 
@@ -78,15 +78,15 @@ public class DemoTutorialAdapter extends RecyclerView.Adapter<DemoTutorialAdapte
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        TextView text_videoName;
-        ImageView samplevideoimageView;
+        TextView sampleTextView;
+        ImageView sampleImageView;
 
         LinearLayout itemLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            text_videoName = (TextView) itemView.findViewById(R.id.text_videoName);
-            samplevideoimageView = (ImageView) itemView.findViewById(R.id.samplevideoimageView);
+            sampleTextView = (TextView) itemView.findViewById(R.id.sampleTextView);
+            sampleImageView = (ImageView) itemView.findViewById(R.id.sampleImageView);
             itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             itemView.setOnClickListener(this);
 

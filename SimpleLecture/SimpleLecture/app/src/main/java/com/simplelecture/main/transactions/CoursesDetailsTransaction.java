@@ -3,6 +3,7 @@ package com.simplelecture.main.transactions;
 import android.content.Context;
 
 import com.simplelecture.main.BuildConfig;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.GetTransaction;
 
 import org.json.JSONObject;
@@ -43,7 +44,7 @@ public class CoursesDetailsTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return "Course/Details/" + mUrlEncoded;
+        return Constants.GET_COURSEDETAILS + mUrlEncoded;
     }
 }
 

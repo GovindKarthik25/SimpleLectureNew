@@ -28,6 +28,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.ComboCoursesAdapter;
 import com.simplelecture.main.adapters.HomeComboCoursesAdapter;
@@ -35,6 +36,8 @@ import com.simplelecture.main.adapters.HomeCoursesAdapter;
 import com.simplelecture.main.adapters.HomeMostViewedAdapter;
 import com.simplelecture.main.adapters.HomePromoSlidePagerAdapter;
 import com.simplelecture.main.adapters.TestimonialsAdapter;
+import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.CourseDetailsController;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
@@ -95,7 +98,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
     ComboCoursesAdapter comboCoursesAdapter;
     private ProgressDialog pd;
-    private boolean param_get_HomeScreenData = false;
+    private String param_get_ServiceCallResult = "";
     private AlertMessageManagement alertMessageManagement;
     private SnackBarManagement snack;
     private ArrayList<HomePageResponseModel> homePageResponseModelLstArray;
@@ -111,12 +114,13 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     private TextView viewAllCourse;
     private TextView viewAllComboCourse;
     private CoordinatorLayout coordinatorLayout;
-    private boolean param_get_MyCoursesDetails;
-    private boolean param_get_Chapters;
     private CourseDetailsResponseModel courseDetailsResponseModel;
     private List<courseFeatures> courseFeaturesLstArray;
     private CourseCombos myCoursesObj;
     private HomeComboCoursesAdapter homeComboCoursesAdapter;
+    private HomeMostViewedAdapter homeMostViewedAdapter;
+    private TestimonialsAdapter testimonialsAdapter;
+    private HomeCoursesAdapter homeCoursesAdapter;
 
 
     /**
@@ -240,48 +244,18 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         //combo courses list
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         coursesList.setLayoutManager(linearLayoutManager);
-        if (courseCombosLstArray != null) {
-            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
-            coursesList.setAdapter(homeComboCoursesAdapter);
-
-        }
-        if (homeComboCoursesAdapter != null) {
-            homeComboCoursesAdapter.setOnItemClickListener(onItemClickListener);
-        }
 
         //recomended courses list
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         recomendedCoursesView.setLayoutManager(linearLayoutManager1);
-        if (coursesLstArray != null) {
-            HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
-            recomendedCoursesView.setAdapter(homeCoursesAdapter);
-
-            if (homeCoursesAdapter != null) {
-                homeCoursesAdapter.setOnItemClickListener(onItemClickListener);
-            }
-        }
 
         //most Popular list
         LinearLayoutManager linearLayoutManager2 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         mostViewedList.setLayoutManager(linearLayoutManager2);
-        if (homePopularCoursesModelLstArray != null) {
-            HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
-            mostViewedList.setAdapter(homeMostViewedAdapter);
-
-            if (homeMostViewedAdapter != null) {
-                homeMostViewedAdapter.setOnItemClickListener(onItemClickListener);
-            }
-
-        }
 
         //testimonials list
         LinearLayoutManager linearLayoutManager3 = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
         testimonialsList.setLayoutManager(linearLayoutManager3);
-        if (homeTestimonialsModelLstArray != null) {
-            TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
-            testimonialsList.setAdapter(testimonialsAdapter);
-        }
-
 
         viewAllCourse.setOnClickListener(HomeFragment.this);
         viewAllComboCourse.setOnClickListener(HomeFragment.this);
@@ -318,16 +292,16 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         public void onItemClick(View view, int position) {
             try {
 
-                Toast.makeText(getActivity(), position, Toast.LENGTH_SHORT).show();
-               /* myCoursesObj = courseCombosLstArray.get(position);
+                Toast.makeText(getActivity(), "text" + position, Toast.LENGTH_SHORT).show();
+                myCoursesObj = courseCombosLstArray.get(position);
 
                 if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                    param_get_MyCoursesDetails = true;
+                    param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
                     pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                     ApiService.getApiService().doGetCourseDetails(getActivity(), HomeFragment.this, myCoursesObj.getcId());
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-                }*/
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -341,7 +315,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
         try {
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                param_get_HomeScreenData = true;
+                param_get_ServiceCallResult = Constants.GET_HOME_PAGE;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
 
                 ApiService.getApiService().doGetHomeScreenData(getActivity(), HomeFragment.this, Util.getFromPrefrences(getContext(), "SelectYourCategoryID"));
@@ -379,16 +353,31 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                 most_view_titleLinearLayout.setVisibility(View.VISIBLE);
             }
 
-            HomeComboCoursesAdapter homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+            //combo courses list
+            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
             coursesList.setAdapter(homeComboCoursesAdapter);
 
-            HomeCoursesAdapter homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+            if (homeComboCoursesAdapter != null) {
+                homeComboCoursesAdapter.setOnItemClickListener(onItemClickListener);
+            }
+
+            //recomended courses list
+            homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
             recomendedCoursesView.setAdapter(homeCoursesAdapter);
 
-            HomeMostViewedAdapter homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+            if (homeCoursesAdapter != null) {
+                homeCoursesAdapter.setOnItemClickListener(onItemClickListener);
+            }
+
+            //most Popular list
+            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
             mostViewedList.setAdapter(homeMostViewedAdapter);
 
-            TestimonialsAdapter testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
+            if (homeMostViewedAdapter != null) {
+                homeMostViewedAdapter.setOnItemClickListener(onItemClickListener);
+            }
+
+            testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
             testimonialsList.setAdapter(testimonialsAdapter);
 
         } catch (Exception e) {
@@ -414,8 +403,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             JsonArray jArray;
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-            if (param_get_HomeScreenData) {
-
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_HOME_PAGE)) {
 
                 homePageResponseModelobj = gson.fromJson(response, HomePageResponseModel.class);
                 JSONObject jSONObject = new JSONObject(response);
@@ -466,46 +454,18 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
                 displayAndSetTheItem();
 
-            } else if (param_get_MyCoursesDetails) {
-                courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
-                JSONObject jSONObject = new JSONObject(response);
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
 
-                String myCoursesContent = jSONObject.getString("courseFeatures");
-                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
+                courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(response);
 
-                courseFeaturesLstArray = new ArrayList<courseFeatures>();
-                for (JsonElement obj : jarray) {
-                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
-                    courseFeaturesLstArray.add(courseFeaturesObj);
-                }
-
-                String courseCombosContent = jSONObject.getString("courseCombos");
-                //Log.i("courseCombosContent", courseCombosContent.toString());
-                if (courseCombosContent != null && !courseCombosContent.equals("null")) {
-                    JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
-
-                    courseCombosLstArray = new ArrayList<CourseCombos>();
-                    for (JsonElement obj : jarrray) {
-
-                        CourseCombos courseCombosObj = gson.fromJson(obj, CourseCombos.class);
-                        courseCombosLstArray.add(courseCombosObj);
-                    }
-                    courseDetailsResponseModel.setCourseCombos(courseCombosLstArray);
-
-                }
-                courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
-
-                param_get_MyCoursesDetails = false;
-
-                //  Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
-
+                // Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
                 if (courseDetailsResponseModel.isCombo()) {
                     new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
 
                     if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                        param_get_Chapters = true;
+                        param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
 
                         pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
                         //My HomeCoursesModel service
@@ -515,19 +475,12 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                     }
 
                 }
-            } else if (param_get_Chapters) {
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
 
-                jArray = parser.parse(response).getAsJsonArray();
-
-                ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
-                for (JsonElement obj : jArray) {
-                    ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
-                    chaptersResponseModelLstArray.add(chaptersResponseModelobj);
-                }
+                List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(response);
 
                 courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
 
-                param_get_Chapters = false;
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
 
             }
@@ -535,7 +488,6 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
     }
 
@@ -545,9 +497,6 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             pd.cancel();
         }
 
-        param_get_HomeScreenData = false;
-        param_get_MyCoursesDetails = false;
-        param_get_Chapters = false;
     }
 
     @Override
@@ -582,6 +531,8 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         try {
             if (v == viewAllComboCourse || v == viewAllCourse) {
                 CourseCategoriesFragment courseCategoriesFragment = new CourseCategoriesFragment();
+                ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
+
                 this.getFragmentManager().beginTransaction()
                         .replace(R.id.frame_container, courseCategoriesFragment, "")
                         .addToBackStack(null)

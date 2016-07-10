@@ -3,6 +3,7 @@ package com.simplelecture.main.transactions;
 import android.content.Context;
 
 import com.simplelecture.main.BuildConfig;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.GetTransaction;
 
 import org.json.JSONObject;
@@ -46,7 +47,7 @@ public class ChaptersTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return "Course/Chapters/" + mUrlEncoded;
+        return Constants.GET_COURSECHAPTERS + mUrlEncoded;
     }
 }
 

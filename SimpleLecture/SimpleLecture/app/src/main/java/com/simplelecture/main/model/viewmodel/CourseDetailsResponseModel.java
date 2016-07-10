@@ -13,26 +13,28 @@ public class CourseDetailsResponseModel implements Serializable {
     private String cDesc;
     private String cBenefits;
     private String cIcon;
-    private String videoId;
+    private String videoUrl;
     private boolean isCombo;
-    private List<courseFeatures> courseFeature;
-    private List<CourseCombos> courseCombos;
     private List<ChaptersResponseModel> chaptersResponseModel;
+    private List<CourseCombos> courseCombos;
+    private List<courseFeatures> courseFeature;
+    private List<CourseFaqs> courseFaqs;
 
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(List<ChaptersResponseModel> chaptersResponseModel, String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoId, boolean isCombo, List<courseFeatures> courseFeature, List<CourseCombos> courseCombos) {
-        this.chaptersResponseModel = chaptersResponseModel;
+    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoUrl, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs) {
         this.cId = cId;
         this.cName = cName;
         this.cDesc = cDesc;
         this.cBenefits = cBenefits;
         this.cIcon = cIcon;
-        this.videoId = videoId;
+        this.videoUrl = videoUrl;
         this.isCombo = isCombo;
-        this.courseFeature = courseFeature;
+        this.chaptersResponseModel = chaptersResponseModel;
         this.courseCombos = courseCombos;
+        this.courseFeature = courseFeature;
+        this.courseFaqs = courseFaqs;
     }
 
     public String getcId() {
@@ -75,36 +77,20 @@ public class CourseDetailsResponseModel implements Serializable {
         this.cIcon = cIcon;
     }
 
-    public String getVideoId() {
-        return videoId;
+    public String getVideoUrl() {
+        return videoUrl;
     }
 
-    public void setVideoId(String videoId) {
-        this.videoId = videoId;
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
     }
 
     public boolean isCombo() {
         return isCombo;
     }
 
-    public void setIsCombo(boolean isCombo) {
-        this.isCombo = isCombo;
-    }
-
-    public List<courseFeatures> getCourseFeature() {
-        return courseFeature;
-    }
-
-    public void setCourseFeature(List<courseFeatures> courseFeature) {
-        this.courseFeature = courseFeature;
-    }
-
-    public List<CourseCombos> getCourseCombos() {
-        return courseCombos;
-    }
-
-    public void setCourseCombos(List<CourseCombos> courseCombos) {
-        this.courseCombos = courseCombos;
+    public void setCombo(boolean combo) {
+        isCombo = combo;
     }
 
     public List<ChaptersResponseModel> getChaptersResponseModel() {
@@ -115,6 +101,30 @@ public class CourseDetailsResponseModel implements Serializable {
         this.chaptersResponseModel = chaptersResponseModel;
     }
 
+    public List<CourseCombos> getCourseCombos() {
+        return courseCombos;
+    }
+
+    public void setCourseCombos(List<CourseCombos> courseCombos) {
+        this.courseCombos = courseCombos;
+    }
+
+    public List<courseFeatures> getCourseFeature() {
+        return courseFeature;
+    }
+
+    public void setCourseFeature(List<courseFeatures> courseFeature) {
+        this.courseFeature = courseFeature;
+    }
+
+    public List<CourseFaqs> getCourseFaqs() {
+        return courseFaqs;
+    }
+
+    public void setCourseFaqs(List<CourseFaqs> courseFaqs) {
+        this.courseFaqs = courseFaqs;
+    }
+
     @Override
     public String toString() {
         return "CourseDetailsResponseModel{" +
@@ -123,11 +133,12 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", cDesc='" + cDesc + '\'' +
                 ", cBenefits='" + cBenefits + '\'' +
                 ", cIcon='" + cIcon + '\'' +
-                ", videoId='" + videoId + '\'' +
+                ", videoUrl='" + videoUrl + '\'' +
                 ", isCombo=" + isCombo +
-                ", courseFeature=" + courseFeature +
-                ", courseCombos=" + courseCombos +
                 ", chaptersResponseModel=" + chaptersResponseModel +
+                ", courseCombos=" + courseCombos +
+                ", courseFeature=" + courseFeature +
+                ", courseFaqs=" + courseFaqs +
                 '}';
     }
 }
