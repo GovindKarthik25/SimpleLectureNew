@@ -26,7 +26,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:gravity="left"
+            android:gravity="left|center"
+            android:layout_gravity="center"
+            android:minLines="2"
+            android:textStyle="bold"
+            android:layout_marginTop="2dip"
             android:text="Mathematics" />
 
         <TextView

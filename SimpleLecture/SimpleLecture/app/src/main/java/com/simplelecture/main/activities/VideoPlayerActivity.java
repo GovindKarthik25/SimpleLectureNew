@@ -106,7 +106,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
             });
 
 
-            if(displayView.equalsIgnoreCase("CourseIndexFragment")) {
+            if(displayView.equalsIgnoreCase("CourseIndexFragment") || displayView.equalsIgnoreCase("CourseDescriptionFragment")) {
                 if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
                     param_get_VideoPlayer = true;
                     pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
