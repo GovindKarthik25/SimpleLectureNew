@@ -6,6 +6,7 @@
     <ExpandableListView
         android:id="@+id/lvExpFAQ"
         android:dividerHeight="1dp"
+        android:layout_marginTop="5dip"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:divider="@color/listTextColor"/>

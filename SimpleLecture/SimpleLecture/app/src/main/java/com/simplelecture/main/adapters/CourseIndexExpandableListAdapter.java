@@ -98,7 +98,7 @@ public class CourseIndexExpandableListAdapter extends BaseExpandableListAdapter 
             public void onClick(View view) {
 
                 Log.i("ctId", "ctId--->" + courseTopics.getCtId());
-                new ViewManager().gotoVideoPlayerView(mContext.getApplicationContext(), "CourseIndexFragment", courseTopics.getCtId(), "");
+                new ViewManager().gotoVideoPlayerView(mContext, "CourseIndexFragment", courseTopics.getCtId(), "");
               /*  Intent intent = new Intent(mContext, VideoPlayerActivity.class);
                 intent.putExtra("ctId1", courseTopics.getCtId());
                 intent.putExtra("DisplayView", "CourseIndexFragment");

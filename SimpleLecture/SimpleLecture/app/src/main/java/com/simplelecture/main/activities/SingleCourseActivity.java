@@ -42,6 +42,13 @@ public class SingleCourseActivity extends AppCompatActivity {
 
     CourseDetailsResponseModel courseDetailsResponseModelObj;
 
+   /* @Override
+    public void onBackPressed() {
+
+        NavUtils.navigateUpFromSameTask(this);
+
+    }*/
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

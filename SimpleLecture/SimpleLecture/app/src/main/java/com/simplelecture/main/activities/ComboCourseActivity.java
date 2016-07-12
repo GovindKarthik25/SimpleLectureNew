@@ -37,6 +37,12 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     Intent intent;
 
     @Override
+    public void onBackPressed() {
+
+        NavUtils.navigateUpFromSameTask(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Util.secureScreenShot(ComboCourseActivity.this);
@@ -61,12 +67,6 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        /*LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-        tabStrip.setEnabled(false);
-        for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setClickable(false);
-        }*/
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 

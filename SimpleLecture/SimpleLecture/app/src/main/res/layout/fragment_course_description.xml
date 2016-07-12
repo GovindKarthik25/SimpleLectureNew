@@ -16,8 +16,7 @@
         <ImageView
             android:id="@+id/imageViewVideoUrl"
             android:layout_width="match_parent"
-            android:layout_height="150dip"
-            android:background="@mipmap/splash2" />
+            android:layout_height="200dip" />
 
         <TextView
             android:id="@+id/textView_Desc"
@@ -25,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dip"
             android:layout_marginTop="5dip"
+            android:scrollbars = "vertical"
             android:text="New Text" />
 
 

@@ -11,6 +11,7 @@ public class CourseFaqs implements Serializable {
     private String cfName;
     private String cfAnswer;
 
+
     public CourseFaqs() {
     }
 

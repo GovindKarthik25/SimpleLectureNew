@@ -47,7 +47,7 @@ public class ComboCoursesAdapter extends RecyclerView.Adapter<ComboCoursesAdapte
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
         try {
-            if (!courseCombosList.get(position).getcIcon().equals("") || courseCombosList.get(position).getcIcon() != null) {
+            if (!courseCombosList.get(position).getcIcon().equals("") && courseCombosList.get(position).getcIcon() != null) {
 
                 Picasso.with(activity)
                         .load(courseCombosList.get(position).getcIcon())

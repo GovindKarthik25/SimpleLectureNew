@@ -13,6 +13,7 @@ public class CourseDetailsResponseModel implements Serializable {
     private String cDesc;
     private String cBenefits;
     private String cIcon;
+    private String videoImage;
     private String videoUrl;
     private boolean isCombo;
     private List<ChaptersResponseModel> chaptersResponseModel;
@@ -23,12 +24,13 @@ public class CourseDetailsResponseModel implements Serializable {
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoUrl, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs) {
+    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs) {
         this.cId = cId;
         this.cName = cName;
         this.cDesc = cDesc;
         this.cBenefits = cBenefits;
         this.cIcon = cIcon;
+        this.videoImage = videoImage;
         this.videoUrl = videoUrl;
         this.isCombo = isCombo;
         this.chaptersResponseModel = chaptersResponseModel;
@@ -75,6 +77,14 @@ public class CourseDetailsResponseModel implements Serializable {
 
     public void setcIcon(String cIcon) {
         this.cIcon = cIcon;
+    }
+
+    public String getVideoImage() {
+        return videoImage;
+    }
+
+    public void setVideoImage(String videoImage) {
+        this.videoImage = videoImage;
     }
 
     public String getVideoUrl() {
@@ -133,6 +143,7 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", cDesc='" + cDesc + '\'' +
                 ", cBenefits='" + cBenefits + '\'' +
                 ", cIcon='" + cIcon + '\'' +
+                ", videoImage='" + videoImage + '\'' +
                 ", videoUrl='" + videoUrl + '\'' +
                 ", isCombo=" + isCombo +
                 ", chaptersResponseModel=" + chaptersResponseModel +
