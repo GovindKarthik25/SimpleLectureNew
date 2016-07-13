@@ -15,14 +15,12 @@ public class Constants {
     public static String USERDETAILS_TABLE_NAME = "UserDetails";
     public static String ADDTOCART_TABLE_NAME = "cart";
 
-    /* Default Api Service*/
-    public static String SERVICE_URL = "http://204.9.137.199/api/";
 
     /*Api Sevices*/
     public static String GET_LOGINSIGNIN = "User/Validate";
-    public static String GET_FORGOTPASSWORD = "login/signIn";
-    public static String GET_CREATEACCOUNT = "login/signIn";
-    public static String GET_CHANGEPASSWORD = "login/signIn";
+    public static String GET_FORGOTPASSWORD = "User/ForgotPassword";
+    public static String GET_CREATEACCOUNT = "User/RegisterUser";
+    public static String GET_CHANGEPASSWORD = "User/ChangePassword";
     public static String GET_SAMPLEVIDEOS = "Home/SampleVideos";
     public static String GET_CATEGORY_ALL = "Category/All";
     public static String GET_HOME_PAGE = "/Home/Page";

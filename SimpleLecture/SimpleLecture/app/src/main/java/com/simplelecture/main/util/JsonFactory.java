@@ -27,15 +27,23 @@ public class JsonFactory {
         return jsonObject;
     }
 
-    public JSONObject getForgotPwdParams(String userEmail, String userHeight, String userWeight, String journeyId, String deviceid) {
+    public JSONObject getForgotPwdParams(String userEmail) {
 
         try {
-            jsonObject.put("journeyid", journeyId);
-            jsonObject.put("emailid", userEmail);
-            jsonObject.put("height", userHeight);
-            jsonObject.put("weight", userWeight);
-            jsonObject.put("deviceid", deviceid);
+            jsonObject.put("Email", userEmail);
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public JSONObject getChangePwdParams(String uId, String oldPassword, String confirmPassword) {
+
+        try {
+            jsonObject.put("uid", uId);
+            jsonObject.put("currentPwd", oldPassword);
+            jsonObject.put("newPwd", confirmPassword);
         } catch (JSONException e) {
             e.printStackTrace();
         }

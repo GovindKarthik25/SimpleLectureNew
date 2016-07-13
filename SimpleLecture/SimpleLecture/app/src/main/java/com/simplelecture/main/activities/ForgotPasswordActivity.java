@@ -1,7 +1,6 @@
 package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
@@ -10,10 +9,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -31,6 +30,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private String[] param_get_ForgotPassword = new String[]{Constants.GET_FORGOTPASSWORD};
     private ProgressDialog pd;
     CoordinatorLayout coordinatorLayout;
+    private String param_get_ServiceCallResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,26 +65,13 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             return;
         }
 
-        if (new ConnectionDetector(this).isConnectingToInternet()) {
 
-            Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
-            pd = new Util().waitingMessage(this, "", getResources().getString(R.string.loading));
+        if (new ConnectionDetector(ForgotPasswordActivity.this).isConnectingToInternet()) {
+            param_get_ServiceCallResult = Constants.GET_FORGOTPASSWORD;
+            pd = new Util().waitingMessage(ForgotPasswordActivity.this, "", getResources().getString(R.string.loading));
 
-            /*if (new ConnectionDetector(ForgotPasswordActivity.this).isConnectingToInternet()) {
-                param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
-                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                //My HomeCoursesModel service
-                ApiService.getApiService().doGetCourseDetails(getActivity(), ForgotPasswordActivity.this, courseCombosObj.getcId());
-            }*/
-
-      /*      JsonFactory jsonFactory = new JsonFactory();
-            JSONObject jsonObject = jsonFactory.getForgotPwdParams("test", "test", "test", "test", "tst");
-            ForgotPasswordTransaction forgotPasswordTransaction = new ForgotPasswordTransaction(jsonObject, this);
-            TransactionProcessor transactionProcessor = new TransactionProcessor(this);
-            transactionProcessor.execute(forgotPasswordTransaction);*/
-
+            ApiService.getApiService().doGetForgotPassword(ForgotPasswordActivity.this, input_emailForgotPassword.getText().toString().trim());
         } else {
-
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
         }
 
@@ -99,72 +86,22 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     @Override
     public void parseResponse(String response) {
-        pd.cancel();
+        if (pd.isShowing()) {
+            pd.cancel();
+        }
 
-        Toast.makeText(getApplicationContext(), "Response" + response, Toast.LENGTH_LONG).show();
+        if(param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_FORGOTPASSWORD)) {
+
+
+        }
 
     }
 
     @Override
     public void showError(String error) {
-        pd.cancel();
-        Toast.makeText(getApplicationContext(), "Response" + error, Toast.LENGTH_LONG).show();
-    }
-
-    private class Connection extends AsyncTask<String, Void, String> {
-
-        String forgotPasswordOutput;
-        String email = input_emailForgotPassword.getText().toString().trim();
-
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
-
-        @Override
-        protected String doInBackground(String... urls) {
-
-            try {
-                if (urls[0].equals(param_get_ForgotPassword[0])) {
-
-                   // forgotPasswordOutput = new ForgotPasswordController().getForgotPassword(email);
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return urls[0];
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            super.onPostExecute(result);
-            try {
-                pd.cancel();
-                if (result.equals(param_get_ForgotPassword[0])) {
-                    /* if(response!=null){
-                       if(response.getStatusCode().equals("200")){
-
-
-
-                        } else {
-                            pd.cancel();
-
-
-                        }
-
-                    }*/
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-
-            }
+        if (pd.isShowing()) {
+            pd.cancel();
         }
     }
+
 }

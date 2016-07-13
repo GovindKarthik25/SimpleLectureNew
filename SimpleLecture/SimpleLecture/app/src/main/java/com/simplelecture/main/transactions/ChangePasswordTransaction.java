@@ -11,15 +11,17 @@ import org.json.JSONObject;
 import java.net.URI;
 
 /**
- * Created by M1032185 on 2/14/2016.
+ * Created by Raos on 2/14/2016.
  */
-public class ForgotPasswordTransaction extends PostTransaction {
+public class ChangePasswordTransaction extends PostTransaction {
 
+    private final String headerVal;
     JSONObject jsonObject;
 
-    public ForgotPasswordTransaction(JSONObject jsonObject, Context context) {
+    public ChangePasswordTransaction(JSONObject jsonObject, Context context, String token) {
         super(jsonObject, context);
         this.jsonObject = jsonObject;
+        this.headerVal = token;
     }
 
     @Override
@@ -39,12 +41,12 @@ public class ForgotPasswordTransaction extends PostTransaction {
 
     @Override
     protected String getHeader() {
-        return null;
+        return headerVal;
     }
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_FORGOTPASSWORD;
+        return Constants.GET_CHANGEPASSWORD;
     }
 
 

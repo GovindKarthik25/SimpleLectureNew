@@ -3,6 +3,7 @@ package com.simplelecture.main.transactions;
 import android.content.Context;
 
 import com.simplelecture.main.BuildConfig;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.PostTransaction;
 
 import org.json.JSONObject;
@@ -44,6 +45,6 @@ public class LoginTransaction extends PostTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return "User/Validate";
+        return Constants.GET_LOGINSIGNIN;
     }
 }

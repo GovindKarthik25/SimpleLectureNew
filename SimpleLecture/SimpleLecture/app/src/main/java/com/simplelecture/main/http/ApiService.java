@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.simplelecture.main.model.LoginModel;
+import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
@@ -156,12 +157,34 @@ public class ApiService {
 
     }
 
-    public void doGetForgotPassword(Context mContext, Fragment fragmentContext, String email) {
+    public void doGetForgotPassword(Context mContext, String email) {
 
         try {
-            ForgotPasswordTransaction forgotPasswordTransaction = new ForgotPasswordTransaction(null, mContext, email);
-            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getForgotPwdParams(email);
+            ForgotPasswordTransaction forgotPasswordTransaction = new ForgotPasswordTransaction(jsonObject, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
             transactionProcessor.execute(forgotPasswordTransaction);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void doGetChangePassword(Context mContext, String oldPassword, String confirmPassword) {
+
+        try {
+
+            String token = Util.getFromPrefrences(mContext, "uToken");
+            String uId = Util.getFromPrefrences(mContext, "uId");
+
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getChangePwdParams(uId, oldPassword, confirmPassword);
+            ChangePasswordTransaction changePasswordTransaction = new ChangePasswordTransaction(jsonObject, mContext, token);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(changePasswordTransaction);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
