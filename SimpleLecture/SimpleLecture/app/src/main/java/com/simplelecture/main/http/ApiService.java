@@ -8,6 +8,7 @@ import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.DemoTutorialTransaction;
+import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
@@ -65,9 +66,13 @@ public class ApiService {
 
     public void doGetCourseDetails(Context mContext, Fragment fragmentContext, String uId) {
 
-        CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
-        transactionProcessor.execute(coursesDetailsTransaction);
+        try {
+            CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(coursesDetailsTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -103,9 +108,13 @@ public class ApiService {
 
     public void doGetHomeScreenData(Context mContext, Fragment fragmentContext, String uId) {
 
-        HomePageDataTransaction homePageDataTransaction = new HomePageDataTransaction(null, mContext, uId);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
-        transactionProcessor.execute(homePageDataTransaction);
+        try {
+            HomePageDataTransaction homePageDataTransaction = new HomePageDataTransaction(null, mContext, uId);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(homePageDataTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void doGetVideoSampleTutorial(Context mContext, Fragment fragmentContext) {
@@ -141,6 +150,18 @@ public class ApiService {
             CourseCategoriesTransaction courseCategoriesTransaction = new CourseCategoriesTransaction(null, mContext, CId);
             TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(courseCategoriesTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void doGetForgotPassword(Context mContext, Fragment fragmentContext, String email) {
+
+        try {
+            ForgotPasswordTransaction forgotPasswordTransaction = new ForgotPasswordTransaction(null, mContext, email);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(forgotPasswordTransaction);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -49,7 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private EditText inputEmail, inputPassword; //inputName
     private TextInputLayout inputLayoutName, inputLayoutEmail, inputLayoutPassword;
     private Button btn_Login;
-    //  private TextView createAccountTextView, forgotPasswordtextView;
+    private TextView createAccountTextView, forgotPasswordtextView;
     private LoginButton facebooklogin_button;
     private CallbackManager callbackManager;
 
@@ -117,8 +118,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         inputEmail.setText(Util.getFromPrefrences(LoginActivity.this, "email"));
 
 
-        // createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
-        // forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
+        createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
+        forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
         // facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
         //signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
@@ -128,8 +129,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_Login.setOnClickListener(this);
         // signInButton.setOnClickListener(googleClientListenr);
 
-        //createAccountTextView.setOnClickListener(this);
-        //forgotPasswordtextView.setOnClickListener(this);
+        createAccountTextView.setOnClickListener(this);
+        forgotPasswordtextView.setOnClickListener(this);
 
        /* mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
@@ -241,11 +242,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             Util.hideKeyboard(LoginActivity.this, v);
             if (v == btn_Login) {
                 submitForm();
-            } /*else if (v == createAccountTextView) {
-                new ViewManager().gotoCreateAccountView(this);
+            } else if (v == createAccountTextView) {
+                new ViewManager().gotoSigninView(this);
             } else if (v == forgotPasswordtextView) {
                 new ViewManager().gotoForgotPasswordView(this);
-            }*/
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

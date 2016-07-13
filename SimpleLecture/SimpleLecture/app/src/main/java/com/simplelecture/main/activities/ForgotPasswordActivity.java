@@ -2,10 +2,10 @@ package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -14,17 +14,11 @@ import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
-import com.simplelecture.main.controller.ForgotPasswordController;
 import com.simplelecture.main.http.NetworkLayer;
-import com.simplelecture.main.http.TransactionProcessor;
-import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.util.ConnectionDetector;
-import com.simplelecture.main.util.JsonFactory;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
-
-import org.json.JSONObject;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener, NetworkLayer {
 
@@ -76,15 +70,19 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
             Toast.makeText(getApplicationContext(), "Thank You!", Toast.LENGTH_SHORT).show();
             pd = new Util().waitingMessage(this, "", getResources().getString(R.string.loading));
 
-            JsonFactory jsonFactory = new JsonFactory();
+            /*if (new ConnectionDetector(ForgotPasswordActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
+                pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                //My HomeCoursesModel service
+                ApiService.getApiService().doGetCourseDetails(getActivity(), ForgotPasswordActivity.this, courseCombosObj.getcId());
+            }*/
+
+      /*      JsonFactory jsonFactory = new JsonFactory();
             JSONObject jsonObject = jsonFactory.getForgotPwdParams("test", "test", "test", "test", "tst");
             ForgotPasswordTransaction forgotPasswordTransaction = new ForgotPasswordTransaction(jsonObject, this);
             TransactionProcessor transactionProcessor = new TransactionProcessor(this);
-            transactionProcessor.execute(forgotPasswordTransaction);
+            transactionProcessor.execute(forgotPasswordTransaction);*/
 
-//            new Connection().execute(param_get_ForgotPassword);
-
-//            new Connection().execute(param_get_ForgotPassword);
         } else {
 
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));

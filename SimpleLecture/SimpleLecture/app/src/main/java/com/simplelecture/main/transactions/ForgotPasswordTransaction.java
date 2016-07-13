@@ -3,6 +3,7 @@ package com.simplelecture.main.transactions;
 import android.content.Context;
 
 import com.simplelecture.main.BuildConfig;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.PostTransaction;
 
 import org.json.JSONObject;
@@ -16,7 +17,7 @@ public class ForgotPasswordTransaction extends PostTransaction {
 
     JSONObject jsonObject;
 
-    public ForgotPasswordTransaction(JSONObject jsonObject,Context context) {
+    public ForgotPasswordTransaction(JSONObject jsonObject,Context context, String email) {
         super(jsonObject,context);
         this.jsonObject = jsonObject;
     }
@@ -24,11 +25,6 @@ public class ForgotPasswordTransaction extends PostTransaction {
     @Override
     protected JSONObject setupRequestBody() {
         return jsonObject;
-    }
-
-    @Override
-    protected String getUrlPrefix() {
-        return "authorizedriver";
     }
 
     @Override
@@ -45,6 +41,12 @@ public class ForgotPasswordTransaction extends PostTransaction {
     protected String getHeader() {
         return null;
     }
+
+    @Override
+    protected String getUrlPrefix() {
+        return Constants.GET_COURSECHAPTERS;
+    }
+
 
 
 }
