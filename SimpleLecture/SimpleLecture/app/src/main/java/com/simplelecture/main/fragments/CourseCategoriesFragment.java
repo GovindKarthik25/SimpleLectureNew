@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,7 +16,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -24,16 +24,22 @@ import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.CourseCategoriesAdapter;
+import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.CourseDetailsController;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCategoriesModel;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,10 +63,14 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
     private ProgressDialog pd;
     private SnackBarManagement snack;
     private AlertMessageManagement alertMessageManagement;
-    private boolean param_get_CourseCategoriesTutorial;
     private RecyclerView courseCategoriesRecycler_view;
     private ArrayList<CourseCategoriesModel> courseCategoriesModelLst;
     private CourseCategoriesAdapter courseCategoriesAdapter;
+    private String param_get_ServiceCallResult = "";
+    private CoordinatorLayout coordinatorLayout;
+    private CourseDetailsResponseModel courseDetailsResponseModel;
+    private String cID;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -111,6 +121,7 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View convertView = inflater.inflate(R.layout.fragment_course_categories, container, false);
         FloatingActionButton fabCourseCategories = (FloatingActionButton) convertView.findViewById(R.id.fabCourseCategories);
+        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
         courseCategoriesRecycler_view = (RecyclerView) convertView.findViewById(R.id.courseCategoriesRecycler_view);
         courseCategoriesRecycler_view.setHasFixedSize(true);
 
@@ -147,7 +158,7 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
     private void loadGetCourseCategoriesTutorial() {
         try {
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                param_get_CourseCategoriesTutorial = true;
+                param_get_ServiceCallResult = Constants.GET_COURSECATEGORIES;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
 
                 if (Util.getFromPrefrences(getContext(), "CourseCategoryCategoryID").isEmpty()) {
@@ -165,7 +176,6 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
 
     private void loadRecyclerView() {
 
-
         if (courseCategoriesModelLst != null) {
             courseCategoriesAdapter = new CourseCategoriesAdapter(getActivity(), courseCategoriesModelLst);
             courseCategoriesRecycler_view.setAdapter(courseCategoriesAdapter);
@@ -174,20 +184,20 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
         }
     }
 
+    private CourseCategoriesModel myCoursesObj;
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             try {
-                /*myCoursesObj = myCoursesLstArray.get(position);
-
+                myCoursesObj = courseCategoriesModelLst.get(position);
+                cID = String.valueOf(myCoursesObj.getcId());
                 if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                    param_get_DemoTutorial = true;
+                    param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
                     pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                    //My HomeCoursesModel service
-                    ApiService.getApiService().doGetCourseDetails(getActivity(), DemoTutorialFragment.this, myCoursesObj.getcId());
+                    ApiService.getApiService().doGetCourseDetails(getActivity(), CourseCategoriesFragment.this, cID);
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-                }*/
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -204,7 +214,7 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
 
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-            if (param_get_CourseCategoriesTutorial) {
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECATEGORIES)) {
 
                 JsonArray jarray = parser.parse(response).getAsJsonArray();
 
@@ -215,6 +225,33 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
                 }
 
                 loadRecyclerView();
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
+
+                courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(response);
+
+                if (courseDetailsResponseModel.isCombo()) {
+                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
+                } else {
+
+                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                        param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
+
+                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                        //My HomeCoursesModel service
+                        ApiService.getApiService().doGetChapters(getActivity(), CourseCategoriesFragment.this, cID);
+                    } else {
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+
+                }
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
+
+                List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(response);
+
+                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+
+                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+
             }
 
 
@@ -231,7 +268,6 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
             pd.cancel();
         }
 
-        param_get_CourseCategoriesTutorial = false;
     }
 
     @Override

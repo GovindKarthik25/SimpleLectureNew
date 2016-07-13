@@ -39,7 +39,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     @Override
     public void onBackPressed() {
 
-        NavUtils.navigateUpFromSameTask(this);
+        super.onBackPressed();
     }
 
     @Override

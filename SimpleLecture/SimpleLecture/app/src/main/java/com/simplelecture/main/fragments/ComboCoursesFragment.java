@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonParser;
@@ -66,6 +68,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     private SnackBarManagement snack;
     private CourseDetailsResponseModel courseDetailsResponseModel;
     private boolean param_IsCombo;
+    private TextView textView_headerUpdateDetails;
 
     /**
      * Use this factory method to create a new instance of
@@ -103,9 +106,8 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
         View convertView = inflater.inflate(R.layout.fragment_combo_courses, container, false);
         coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
-
+        textView_headerUpdateDetails  = (TextView) convertView.findViewById(R.id.textView_headerUpdateDetails);
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
         recyclerView.setLayoutManager(gridLayoutManager);
         comboCoursesAdapter = new ComboCoursesAdapter(getActivity(), courseDetailsResponseModelObj.getCourseCombos());
@@ -122,6 +124,15 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+
+        String headingUpdate = courseDetailsResponseModelObj.getcName() + " (" + courseDetailsResponseModelObj.getcComboName() + ")";
+        textView_headerUpdateDetails.setText(headingUpdate);
     }
 
     @Override

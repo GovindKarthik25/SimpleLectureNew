@@ -101,12 +101,6 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     private String param_get_ServiceCallResult = "";
     private AlertMessageManagement alertMessageManagement;
     private SnackBarManagement snack;
-    private ArrayList<HomePageResponseModel> homePageResponseModelLstArray;
-    private List<HomeBannersModel> bannersLstArray;
-    private List<CourseCombos> courseCombosLstArray;
-    private List<HomeCoursesModel> coursesLstArray;
-    private List<HomePopularCoursesModel> homePopularCoursesModelLstArray;
-    private List<HomeTestimonialsModel> homeTestimonialsModelLstArray;
     private LinearLayout courses_titleLinearLayout, recomended_titleLinearLayout, most_view_titleLinearLayout, testimonials_titleLinearLayout;
     private LinearLayout cart_stripLinearLayout;
     private TextView cart_CountTextView;
@@ -170,8 +164,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View convertView = inflater.inflate(R.layout.fragment_home, container, false);
@@ -221,8 +214,8 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (bannersLstArray != null) {
-            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
+        if (homePageResponseModelobj !=null && homePageResponseModelobj.getBannersLst() != null) {
+            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), homePageResponseModelobj.getBannersLst());
             mPager.setPageTransformer(true, new ZoomOutPageTransformer());
             mPager.setAdapter(mPagerAdapter);
             pageIndicator.setViewPager(mPager);
@@ -289,14 +282,17 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     }
 
     private String cID;
+    private String cComboName;
     OnItemClickListener onItemClickListenerCourseCombos = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             try {
 
-                CourseCombos myCoursesObj = courseCombosLstArray.get(position);
+                CourseCombos myCoursesObj = homePageResponseModelobj.getCourseCombosLst().get(position);
 
                 cID = myCoursesObj.getcId();
+                cComboName = myCoursesObj.getCourses();
+
                 getCourseDetails();
 
             } catch (Exception e) {
@@ -310,7 +306,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         public void onItemClick(View view, int position) {
             try {
 
-                HomeCoursesModel coursesObj = coursesLstArray.get(position);
+                HomeCoursesModel coursesObj = homePageResponseModelobj.getCoursesLst().get(position);
                 cID = String.valueOf(coursesObj.getcId());
                 getCourseDetails();
 
@@ -325,8 +321,9 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         public void onItemClick(View view, int position) {
             try {
 
-                HomePopularCoursesModel popularCoursesObj = homePopularCoursesModelLstArray.get(position);
+                HomePopularCoursesModel popularCoursesObj = homePageResponseModelobj.getPopularCoursesLst().get(position);
                 cID = String.valueOf(popularCoursesObj.getcId());
+                cComboName = popularCoursesObj.getCatName();
                 getCourseDetails();
 
             } catch (Exception e) {
@@ -366,20 +363,20 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     private void updateDisplayAndSetTheItem() {
         //combo courses list
 
-        if (courseCombosLstArray != null) {
-            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+        if (homePageResponseModelobj != null && homePageResponseModelobj.getCourseCombosLst() != null) {
+            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), homePageResponseModelobj.getCourseCombosLst());
             coursesList.setAdapter(homeComboCoursesAdapter);
         }
 
         //recomended courses list
-        if (coursesLstArray != null) {
-            homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+        if (homePageResponseModelobj != null && homePageResponseModelobj.getCoursesLst() != null) {
+            homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), homePageResponseModelobj.getCoursesLst());
             recomendedCoursesView.setAdapter(homeCoursesAdapter);
         }
 
         //most Popular list
-        if (homePopularCoursesModelLstArray != null) {
-            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+        if (homePageResponseModelobj != null && homePageResponseModelobj.getPopularCoursesLst() != null) {
+            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePageResponseModelobj.getPopularCoursesLst());
             mostViewedList.setAdapter(homeMostViewedAdapter);
         }
 
@@ -396,23 +393,23 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                 cart_stripLinearLayout.setVisibility(View.VISIBLE);
             }
 
-            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), bannersLstArray);
+            mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), homePageResponseModelobj.getBannersLst());
             mPager.setPageTransformer(true, new ZoomOutPageTransformer());
             mPager.setAdapter(mPagerAdapter);
             pageIndicator.setViewPager(mPager);
 
-            if (courseCombosLstArray.size() > 0) {
+            if (homePageResponseModelobj.getCourseCombosLst().size() > 0) {
                 courses_titleLinearLayout.setVisibility(View.VISIBLE);
             }
-            if (coursesLstArray.size() > 0) {
+            if (homePageResponseModelobj.getCoursesLst().size() > 0) {
                 recomended_titleLinearLayout.setVisibility(View.VISIBLE);
             }
-            if (homePopularCoursesModelLstArray.size() > 0) {
+            if (homePageResponseModelobj.getPopularCoursesLst().size() > 0) {
                 most_view_titleLinearLayout.setVisibility(View.VISIBLE);
             }
 
             //combo courses list
-            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), courseCombosLstArray);
+            homeComboCoursesAdapter = new HomeComboCoursesAdapter(getActivity(), homePageResponseModelobj.getCourseCombosLst());
             coursesList.setAdapter(homeComboCoursesAdapter);
 
             if (homeComboCoursesAdapter != null) {
@@ -420,7 +417,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             }
 
             //recomended courses list
-            homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), coursesLstArray);
+            homeCoursesAdapter = new HomeCoursesAdapter(getActivity(), homePageResponseModelobj.getCoursesLst());
             recomendedCoursesView.setAdapter(homeCoursesAdapter);
 
             if (homeCoursesAdapter != null) {
@@ -428,14 +425,14 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             }
 
             //most Popular list
-            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePopularCoursesModelLstArray);
+            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePageResponseModelobj.getPopularCoursesLst());
             mostViewedList.setAdapter(homeMostViewedAdapter);
 
             if (homeMostViewedAdapter != null) {
                 homeMostViewedAdapter.setOnItemClickListener(onItemClickListenerMostPopular);
             }
 
-            testimonialsAdapter = new TestimonialsAdapter(getActivity(), homeTestimonialsModelLstArray);
+            testimonialsAdapter = new TestimonialsAdapter(getActivity(), homePageResponseModelobj.getHomeTestimonialsModelLst());
             testimonialsList.setAdapter(testimonialsAdapter);
 
         } catch (Exception e) {
@@ -451,12 +448,13 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             if (pd.isShowing()) {
                 pd.cancel();
             }
-            homePageResponseModelLstArray = new ArrayList<HomePageResponseModel>();
-            bannersLstArray = new ArrayList<HomeBannersModel>();
-            coursesLstArray = new ArrayList<HomeCoursesModel>();
-            courseCombosLstArray = new ArrayList<CourseCombos>();
-            homePopularCoursesModelLstArray = new ArrayList<HomePopularCoursesModel>();
-            homeTestimonialsModelLstArray = new ArrayList<HomeTestimonialsModel>();
+
+
+            List<HomeBannersModel> bannersLstArray = new ArrayList<HomeBannersModel>();
+            List<HomeCoursesModel> coursesLstArray = new ArrayList<HomeCoursesModel>();
+            List<CourseCombos> courseCombosLstArray = new ArrayList<CourseCombos>();
+            List<HomePopularCoursesModel> homePopularCoursesModelLstArray = new ArrayList<HomePopularCoursesModel>();
+            List<HomeTestimonialsModel> homeTestimonialsModelLstArray = new ArrayList<HomeTestimonialsModel>();
 
             JsonArray jArray;
             Gson gson = new Gson();
@@ -519,6 +517,8 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                 // Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
                 if (courseDetailsResponseModel.isCombo()) {
+                    courseDetailsResponseModel.setcComboName(cComboName);
+
                     new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
 

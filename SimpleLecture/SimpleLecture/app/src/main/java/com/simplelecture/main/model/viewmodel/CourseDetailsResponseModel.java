@@ -15,6 +15,7 @@ public class CourseDetailsResponseModel implements Serializable {
     private String cIcon;
     private String videoImage;
     private String videoUrl;
+    private String cComboName;
     private boolean isCombo;
     private List<ChaptersResponseModel> chaptersResponseModel;
     private List<CourseCombos> courseCombos;
@@ -24,7 +25,7 @@ public class CourseDetailsResponseModel implements Serializable {
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs) {
+    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs) {
         this.cId = cId;
         this.cName = cName;
         this.cDesc = cDesc;
@@ -32,6 +33,7 @@ public class CourseDetailsResponseModel implements Serializable {
         this.cIcon = cIcon;
         this.videoImage = videoImage;
         this.videoUrl = videoUrl;
+        this.cComboName = cComboName;
         this.isCombo = isCombo;
         this.chaptersResponseModel = chaptersResponseModel;
         this.courseCombos = courseCombos;
@@ -95,6 +97,14 @@ public class CourseDetailsResponseModel implements Serializable {
         this.videoUrl = videoUrl;
     }
 
+    public String getcComboName() {
+        return cComboName;
+    }
+
+    public void setcComboName(String cComboName) {
+        this.cComboName = cComboName;
+    }
+
     public boolean isCombo() {
         return isCombo;
     }
@@ -145,6 +155,7 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", cIcon='" + cIcon + '\'' +
                 ", videoImage='" + videoImage + '\'' +
                 ", videoUrl='" + videoUrl + '\'' +
+                ", cComboName='" + cComboName + '\'' +
                 ", isCombo=" + isCombo +
                 ", chaptersResponseModel=" + chaptersResponseModel +
                 ", courseCombos=" + courseCombos +
