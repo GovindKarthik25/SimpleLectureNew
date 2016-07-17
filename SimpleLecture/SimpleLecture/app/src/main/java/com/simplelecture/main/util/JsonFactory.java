@@ -1,5 +1,7 @@
 package com.simplelecture.main.util;
 
+import com.simplelecture.main.model.SignInModel;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,4 +51,21 @@ public class JsonFactory {
         }
         return jsonObject;
     }
+
+    public JSONObject getSignInParams(SignInModel signInModel) {
+
+        try {
+            jsonObject.put("Name", signInModel.getName());
+            jsonObject.put("Email", signInModel.getEmail());
+            jsonObject.put("Mobile", signInModel.getMobile());
+            jsonObject.put("Password", signInModel.getPassword());
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+
 }

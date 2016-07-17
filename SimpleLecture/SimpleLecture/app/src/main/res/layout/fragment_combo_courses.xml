@@ -9,9 +9,9 @@
         android:id="@+id/headingRelativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dip"
         android:layout_above="@+id/bottomRelativeLayout"
-        android:background="@color/common_action_bar_splitter">
+        android:background="@color/common_action_bar_splitter"
+        android:padding="5dip">
 
         <TextView
             android:id="@+id/textView_headerUpdateDetails"
@@ -28,41 +28,20 @@
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
+        android:layout_above="@+id/bottom_BarLayout"
         android:layout_below="@+id/headingRelativeLayout"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:scrollbars="vertical" />
 
 
-    <!--<LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark">
+    <include
+        android:id="@+id/bottom_BarLayout"
+        layout="@layout/bottom_bar"></include>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:text="Filter"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="15dp"
-            android:text="Sort"
-            android:textColor="@android:color/white"
-            android:textSize="20sp" />
-
-    </LinearLayout>-->
-    <!-- <include
-         android:id="@+id/coordinatorLayout"
-         layout="@layout/coordinatelayout"></include>-->
+    <include
+        android:id="@+id/coordinatorLayout"
+        layout="@layout/coordinatelayout"></include>
 
 
 </RelativeLayout>

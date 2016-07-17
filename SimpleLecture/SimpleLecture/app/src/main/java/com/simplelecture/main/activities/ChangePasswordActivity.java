@@ -9,11 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
@@ -31,6 +35,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     private ProgressDialog pd;
     private String param_get_ServiceCallResult;
     private SnackBarManagement snack;
+    private OutputResponseModel outputResponseModel;
+    private AlertMessageManagement alertMessageManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +45,7 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_changepassword);
 
         snack = new SnackBarManagement(getApplicationContext());
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -115,10 +122,16 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
             pd.cancel();
         }
 
+        Gson gson = new Gson();
         if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CHANGEPASSWORD)) {
+            outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+            if (outputResponseModel.isSuccess()) {
+                Toast.makeText(ChangePasswordActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                new ViewManager().gotoLoginView(ChangePasswordActivity.this);
+            } else {
+                alertMessageManagement.alertDialogActivation(ChangePasswordActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
+            }
 
-            finish();
-            new ViewManager().gotoLoginView(this);
         }
     }
 

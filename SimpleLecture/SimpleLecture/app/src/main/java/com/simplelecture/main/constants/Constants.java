@@ -17,7 +17,7 @@ public class Constants {
 
 
     /*Api Sevices*/
-    public static String GET_LOGINSIGNIN = "User/Validate";
+    public static String GET_LOGIN = "User/Validate";
     public static String GET_FORGOTPASSWORD = "User/ForgotPassword";
     public static String GET_CREATEACCOUNT = "User/RegisterUser";
     public static String GET_CHANGEPASSWORD = "User/ChangePassword";

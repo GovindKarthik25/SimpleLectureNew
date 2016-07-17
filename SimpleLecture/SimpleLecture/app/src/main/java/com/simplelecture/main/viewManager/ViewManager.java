@@ -43,7 +43,7 @@ public class ViewManager {
     public Intent gotoLoginView(Activity activity) {
         intent = new Intent(activity, LoginActivity.class);
         setDisplay(activity, intent);
-        //activity.finish();
+        activity.finish();
         return intent;
     }
 

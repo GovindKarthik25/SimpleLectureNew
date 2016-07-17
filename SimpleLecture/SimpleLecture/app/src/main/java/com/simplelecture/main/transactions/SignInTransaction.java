@@ -11,16 +11,15 @@ import org.json.JSONObject;
 import java.net.URI;
 
 /**
- * Created by M1032185 on 2/16/2016.
+ * Created by Raos on 2/14/2016.
  */
-public class LoginTransaction extends PostTransaction {
+public class SignInTransaction extends PostTransaction {
 
     JSONObject jsonObject;
 
-    public LoginTransaction(JSONObject jsonObject, Context context) {
+    public SignInTransaction(JSONObject jsonObject, Context context) {
         super(jsonObject, context);
         this.jsonObject = jsonObject;
-
     }
 
     @Override
@@ -45,6 +44,8 @@ public class LoginTransaction extends PostTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_LOGIN;
+        return Constants.GET_CREATEACCOUNT;
     }
+
+
 }

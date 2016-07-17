@@ -9,15 +9,20 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
+import com.simplelecture.main.viewManager.ViewManager;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener, NetworkLayer {
 
@@ -31,6 +36,8 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
     private ProgressDialog pd;
     CoordinatorLayout coordinatorLayout;
     private String param_get_ServiceCallResult;
+    private OutputResponseModel outputResponseModel;
+    private AlertMessageManagement alertMessageManagement;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_forgotpassword);
 
         snack = new SnackBarManagement(getApplicationContext());
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -50,10 +58,11 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
         input_emailForgotPassword = (EditText) findViewById(R.id.input_emailForgotPassword);
         btn_ForgotPassword = (Button) findViewById(R.id.btn_ForgotPassword);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
 
         btn_ForgotPassword.setOnClickListener(this);
 
-        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
     }
 
     /**
@@ -89,9 +98,16 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         if (pd.isShowing()) {
             pd.cancel();
         }
+        Gson gson = new Gson();
+        if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_FORGOTPASSWORD)) {
 
-        if(param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_FORGOTPASSWORD)) {
-
+            outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+            if (outputResponseModel.isSuccess()) {
+                Toast.makeText(ForgotPasswordActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                new ViewManager().gotoLoginView(ForgotPasswordActivity.this);
+            } else {
+                alertMessageManagement.alertDialogActivation(ForgotPasswordActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
+            }
 
         }
 

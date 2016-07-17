@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.simplelecture.main.model.LoginModel;
+import com.simplelecture.main.model.SignInModel;
 import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
@@ -14,6 +15,7 @@ import com.simplelecture.main.transactions.HomePageDataTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
 import com.simplelecture.main.transactions.SelectMyCourseTransaction;
+import com.simplelecture.main.transactions.SignInTransaction;
 import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.util.JsonFactory;
 import com.simplelecture.main.util.Util;
@@ -184,6 +186,22 @@ public class ApiService {
             ChangePasswordTransaction changePasswordTransaction = new ChangePasswordTransaction(jsonObject, mContext, token);
             TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
             transactionProcessor.execute(changePasswordTransaction);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void doGetSignIn(Context mContext, SignInModel signInModel) {
+
+        try {
+
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getSignInParams(signInModel);
+            SignInTransaction signInTransaction = new SignInTransaction(jsonObject, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(signInTransaction);
 
         } catch (Exception e) {
             e.printStackTrace();
