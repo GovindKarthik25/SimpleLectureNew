@@ -19,6 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -90,11 +94,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
-        //FacebookSdk.sdkInitialize(getApplicationContext());
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
 
         //facebook callbackManager
-        //  callbackManager = CallbackManager.Factory.create();
+          callbackManager = CallbackManager.Factory.create();
 
         snack = new SnackBarManagement(LoginActivity.this);
         final SessionManager sessionManager = SessionManager.getInstance();
@@ -120,23 +124,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
-        // facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
-        //signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+         facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
+        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
 
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         btn_Login.setOnClickListener(this);
-        // signInButton.setOnClickListener(googleClientListenr);
+         signInButton.setOnClickListener(googleClientListenr);
 
         createAccountTextView.setOnClickListener(this);
         forgotPasswordtextView.setOnClickListener(this);
 
-       /* mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN).addScope(Plus.SCOPE_PLUS_PROFILE).build();*/
+                .addScope(Plus.SCOPE_PLUS_LOGIN).addScope(Plus.SCOPE_PLUS_PROFILE).build();
 
-        /*facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.v("onSuccess", "onSuccess");
@@ -156,14 +160,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onError(FacebookException e) {
 
             }
-        });*/
+        });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
 
-//        mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
 
     }
 

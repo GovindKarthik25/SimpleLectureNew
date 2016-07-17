@@ -70,8 +70,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="5dip"
-            android:layout_marginTop="15dip">
+            android:layout_marginTop="15dip"
+            android:padding="5dip">
 
             <TextView
                 android:id="@+id/createAccountTextView"
@@ -94,29 +94,21 @@
 
         </LinearLayout>
 
-        <!-- <LinearLayout
-             android:layout_width="match_parent"
-             android:layout_height="40dip"
-             android:weightSum="1"
-             android:orientation="horizontal"
-             android:layout_marginTop="5dp">
+        <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp">
 
-             <com.facebook.login.widget.LoginButton
-                 android:id="@+id/login_button"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_gravity="center" />
-
-             <com.google.android.gms.common.SignInButton
-                 android:id="@+id/sign_in_button"
-                 android:layout_width="match_parent"
-                 android:layout_gravity="center"
-                 android:layout_height="wrap_content">
-
-             </com.google.android.gms.common.SignInButton>
-
-         </LinearLayout>-->
+        </com.google.android.gms.common.SignInButton>
     </LinearLayout>
 
     <include
