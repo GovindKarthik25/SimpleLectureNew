@@ -106,14 +106,8 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
         View convertView = inflater.inflate(R.layout.fragment_combo_courses, container, false);
         coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
-        textView_headerUpdateDetails  = (TextView) convertView.findViewById(R.id.textView_headerUpdateDetails);
+        textView_headerUpdateDetails = (TextView) convertView.findViewById(R.id.textView_headerUpdateDetails);
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        comboCoursesAdapter = new ComboCoursesAdapter(getActivity(), courseDetailsResponseModelObj.getCourseCombos());
-        recyclerView.setAdapter(comboCoursesAdapter);
-
-        comboCoursesAdapter.setOnItemClickListener(onItemClickListener);
 
 
         return convertView;
@@ -129,6 +123,13 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        comboCoursesAdapter = new ComboCoursesAdapter(getActivity(), courseDetailsResponseModelObj.getCourseCombos());
+        recyclerView.setAdapter(comboCoursesAdapter);
+
+        comboCoursesAdapter.setOnItemClickListener(onItemClickListener);
 
 
         String headingUpdate = courseDetailsResponseModelObj.getcName() + " (" + courseDetailsResponseModelObj.getcComboName() + ")";
@@ -222,9 +223,6 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                 List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(response);
 
                 courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
-
-                // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
-                Log.i("chaptersResponseMo**1", " * * * * " + courseDetailsResponseModel.getCourseFeature());
 
                 new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
 

@@ -8,6 +8,8 @@ import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseFaqs;
+import com.simplelecture.main.model.viewmodel.CourseMaterials;
+import com.simplelecture.main.model.viewmodel.CourseMonths;
 import com.simplelecture.main.model.viewmodel.courseFeatures;
 
 import org.json.JSONObject;
@@ -28,6 +30,8 @@ public class CourseDetailsController {
 
     private Gson gson = new Gson();
     private JsonParser parser = new JsonParser();
+    private ArrayList<CourseMaterials> courseMaterialsLstArray;
+    private ArrayList<CourseMonths> courseMonthsLstArray;
 
 
     public CourseDetailsController() {
@@ -76,6 +80,28 @@ public class CourseDetailsController {
 
             courseDetailsResponseModel.setCourseFaqs(courseFaqsLstArray);
 
+            String courseMaterialsContent = jSONObject.getString("CourseMaterials");
+            jarray = parser.parse(courseMaterialsContent).getAsJsonArray();
+
+            courseMaterialsLstArray = new ArrayList<CourseMaterials>();
+            for (JsonElement obj : jarray) {
+                CourseMaterials courseMaterialsObj = gson.fromJson(obj, CourseMaterials.class);
+                courseMaterialsLstArray.add(courseMaterialsObj);
+            }
+
+            courseDetailsResponseModel.setCourseMaterials(courseMaterialsLstArray);
+
+            String monthsContent = jSONObject.getString("Months");
+            jarray = parser.parse(monthsContent).getAsJsonArray();
+
+            courseMonthsLstArray = new ArrayList<CourseMonths>();
+            for (JsonElement obj : jarray) {
+                CourseMonths courseMonthsObj = gson.fromJson(obj, CourseMonths.class);
+                courseMonthsLstArray.add(courseMonthsObj);
+            }
+
+            courseDetailsResponseModel.setCourseMonths(courseMonthsLstArray);
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +118,7 @@ public class CourseDetailsController {
 
             jarray = parser.parse(response).getAsJsonArray();
 
-           chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
+            chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
             for (JsonElement obj : jarray) {
                 ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
                 chaptersResponseModelLstArray.add(chaptersResponseModelobj);

@@ -21,11 +21,13 @@ public class CourseDetailsResponseModel implements Serializable {
     private List<CourseCombos> courseCombos;
     private List<courseFeatures> courseFeature;
     private List<CourseFaqs> courseFaqs;
+    private List<CourseMaterials> courseMaterials;
+    private List<CourseMonths> courseMonths;
 
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs) {
+    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths) {
         this.cId = cId;
         this.cName = cName;
         this.cDesc = cDesc;
@@ -39,6 +41,8 @@ public class CourseDetailsResponseModel implements Serializable {
         this.courseCombos = courseCombos;
         this.courseFeature = courseFeature;
         this.courseFaqs = courseFaqs;
+        this.courseMaterials = courseMaterials;
+        this.courseMonths = courseMonths;
     }
 
     public String getcId() {
@@ -145,6 +149,22 @@ public class CourseDetailsResponseModel implements Serializable {
         this.courseFaqs = courseFaqs;
     }
 
+    public List<CourseMaterials> getCourseMaterials() {
+        return courseMaterials;
+    }
+
+    public void setCourseMaterials(List<CourseMaterials> courseMaterials) {
+        this.courseMaterials = courseMaterials;
+    }
+
+    public List<CourseMonths> getCourseMonths() {
+        return courseMonths;
+    }
+
+    public void setCourseMonths(List<CourseMonths> courseMonths) {
+        this.courseMonths = courseMonths;
+    }
+
     @Override
     public String toString() {
         return "CourseDetailsResponseModel{" +
@@ -161,6 +181,8 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", courseCombos=" + courseCombos +
                 ", courseFeature=" + courseFeature +
                 ", courseFaqs=" + courseFaqs +
+                ", courseMaterials=" + courseMaterials +
+                ", courseMonths=" + courseMonths +
                 '}';
     }
 }
