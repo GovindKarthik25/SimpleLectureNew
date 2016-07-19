@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     GoogleApiClient mGoogleApiClient;
 
-    SignInButton signInButton;
+    SignInButton gmailSign_in_button;
 
     private ConnectionResult mConnectionResult;
 
@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
 
         //facebook callbackManager
-          callbackManager = CallbackManager.Factory.create();
+        callbackManager = CallbackManager.Factory.create();
 
         snack = new SnackBarManagement(LoginActivity.this);
         final SessionManager sessionManager = SessionManager.getInstance();
@@ -124,14 +124,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
-         facebooklogin_button = (LoginButton) findViewById(R.id.login_button);
-        signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+        facebooklogin_button = (LoginButton) findViewById(R.id.facebooklogin_button);
+        gmailSign_in_button = (SignInButton) findViewById(R.id.gmailSign_in_button);
 
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
 
         btn_Login.setOnClickListener(this);
-         signInButton.setOnClickListener(googleClientListenr);
+        gmailSign_in_button.setOnClickListener(googleClientListenr);
 
         createAccountTextView.setOnClickListener(this);
         forgotPasswordtextView.setOnClickListener(this);
