@@ -10,11 +10,11 @@
     <!-- keytool -exportcert -alias androiddebugkey -keystore %HOMEPATH%\.android\debug.keystore | openssl sha1 -binary | openssl -->
     <!-- base64 -->
     <application
+        android:name="android.support.multidex.MultiDexApplication"
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:name="android.support.multidex.MultiDexApplication"
         android:theme="@style/AppTheme">
         <activity
             android:name=".splash.SplashActivity"
@@ -57,6 +57,11 @@
             android:label="Dashboard"
             android:screenOrientation="portrait" />
 
+        <activity android:name=".activities.OTPcodeActivity" />
+
+        <activity android:name=".activities.CartActivity" />
+        <activity android:name=".activities.OrderSummaryActivity"></activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -66,7 +71,8 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".activities.OTPcodeActivity" />
+
+
         <!--
      ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -75,8 +81,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.CartActivity" />
-        <activity android:name=".activities.OrderSummaryActivity"></activity>
+
     </application>
 
 </manifest>
