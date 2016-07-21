@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean mIntentInProgress;
 
     private static final int RC_SIGN_IN = 0;
+    private static final int FB_SIGN_IN = 1;
     // Logcat tag
     private static final String TAG = "MainActivity";
 
@@ -95,9 +96,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Util.secureScreenShot(LoginActivity.this);
 
+
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
         FacebookSdk.sdkInitialize(getApplicationContext());
+
         setContentView(R.layout.activity_login);
 
         //facebook callbackManager
@@ -143,6 +146,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .addOnConnectionFailedListener(this).addApi(Plus.API)
                 .addScope(Plus.SCOPE_PLUS_LOGIN).addScope(Plus.SCOPE_PLUS_PROFILE).build();
 
+
         facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -150,17 +154,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // If Facebook login is true Go to Homeview
                 sessionManager.setLoginStatus(true);
 
+                Toast.makeText(LoginActivity.this, "FB Success", Toast.LENGTH_SHORT).show();
+
                 new ViewManager().gotoHomeView(LoginActivity.this);
 
             }
 
             @Override
             public void onCancel() {
+                Toast.makeText(LoginActivity.this, "onCancel", Toast.LENGTH_SHORT).show();
 
             }
 
             @Override
             public void onError(FacebookException e) {
+                Toast.makeText(LoginActivity.this, "onError", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
 
             }
         });
@@ -302,30 +311,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mSignInClicked = false;
         Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_otp, null);
-        builder.setView(dialogView);
-
-        EditText editText = (EditText) dialogView.findViewById(R.id.edit_mobile);
-
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-
-            }
-        });
-
-        builder.setPositiveButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
 
 
         // Get user's information
@@ -371,6 +356,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (!mGoogleApiClient.isConnecting()) {
                 mGoogleApiClient.connect();
             }
+        } else  { //if (responseCode == FB_SIGN_IN)
+            callbackManager.onActivityResult(requestCode, responseCode, intent);
         }
     }
 

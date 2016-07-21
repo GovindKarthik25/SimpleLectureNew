@@ -224,11 +224,11 @@ public class Util {
         return pd;
     }
 
-    public String keyHashgenrate(Activity activity) {
+    public static String keyHashgenrate(Activity activity) {
         String keyHash = null;
         try {
-
-            PackageInfo info = activity.getPackageManager().getPackageInfo("com.simplelecture.main", PackageManager.GET_SIGNATURES);
+            Log.i("keyHashgenrate", activity.getPackageName());
+            PackageInfo info = activity.getPackageManager().getPackageInfo(activity.getPackageName(), PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
                 MessageDigest md = MessageDigest.getInstance("SHA");
                 md.update(signature.toByteArray());
@@ -241,6 +241,7 @@ public class Util {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+
         return keyHash;
     }
 
