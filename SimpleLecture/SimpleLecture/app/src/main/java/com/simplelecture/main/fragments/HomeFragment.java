@@ -561,7 +561,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        inflater.inflate(R.menu.home, menu);
+        inflater.inflate(R.menu.home_fragment_menu, menu);
         menu.findItem(R.id.action_filter).setVisible(true);
         menu.findItem(R.id.action_filter).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
