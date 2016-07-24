@@ -28,16 +28,15 @@
         android:id="@+id/my_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_BarLayout"
         android:layout_below="@+id/headingRelativeLayout"
         android:layout_marginLeft="10dip"
         android:layout_marginRight="10dip"
         android:scrollbars="vertical" />
 
 
-    <include
+    <!--<include
         android:id="@+id/bottom_BarLayout"
-        layout="@layout/bottom_bar"></include>
+        layout="@layout/bottom_bar"></include>-->
 
     <include
         android:id="@+id/coordinatorLayout"

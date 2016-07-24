@@ -7,7 +7,7 @@
 
 
     <LinearLayout
-        android:layout_width="280dp"
+        android:layout_width="295dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryDark"
         android:orientation="vertical"
@@ -36,20 +36,16 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="4dip"
                 android:textSize="12sp"
-                android:text="New Text" />
+                android:text="Price x " />
 
 
-            <TextView
-                android:id="@+id/textViewCourseMonth"
+            <Spinner
+                android:id="@+id/spinner_months"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="5dip"
-                android:background="@drawable/itemborder"
-                android:padding="3dip"
-                android:text="New Text"
-                android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:background="@android:drawable/btn_dropdown"
+                android:layout_height="40dp">
+
+            </Spinner>
 
 
         </LinearLayout>
@@ -72,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Include :"
+                android:text="Include"
                 android:textColor="@color/white"
                 android:textSize="12sp" />
 
@@ -85,9 +81,9 @@
                 android:background="@drawable/itemborder"
                 android:padding="3dip"
                 android:scrollbars="vertical"
-                android:text="cd/dvd,usb, sdcard, printed maerial"
                 android:textColor="@color/white"
-                android:textSize="4pt" />
+                android:visibility="gone"
+                android:textSize="10sp" />
 
         </LinearLayout>
     </LinearLayout>

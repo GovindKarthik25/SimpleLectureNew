@@ -100,4 +100,11 @@
     <string name="title_activity_select_your_courses">SelectYourCoursesActivity</string>
 
 
+    <string-array name="months">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
 </resources>

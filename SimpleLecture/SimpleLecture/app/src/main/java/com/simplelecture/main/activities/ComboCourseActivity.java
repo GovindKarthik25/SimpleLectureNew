@@ -1,17 +1,29 @@
 package com.simplelecture.main.activities;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
@@ -23,7 +35,12 @@ import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.CourseMonths;
 import com.simplelecture.main.util.Util;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener {
@@ -35,6 +52,13 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private CourseDetailsResponseModel courseDetailsResponseModelObj;
 
     Intent intent;
+
+    Spinner spinnerMonths;
+    TextView textViewCourseAmount;
+    CustomSpinnerAdapter customSpinnerAdapter;
+    ArrayList<CharSequence> courseMaterials = new ArrayList<>();
+    CheckBox chekInclude;
+    TextView textViewLabelMaterial;
 
     @Override
     public void onBackPressed() {
@@ -53,6 +77,8 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
         }
 
+        courseMaterials = Util.convertToStringArray(courseDetailsResponseModelObj.getCourseMaterials());
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
@@ -65,8 +91,17 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
+
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        spinnerMonths = (Spinner) findViewById(R.id.spinner_months);
+        customSpinnerAdapter = new CustomSpinnerAdapter(this, courseDetailsResponseModelObj.getCourseMonths());
+        spinnerMonths.setAdapter(customSpinnerAdapter);
+        textViewCourseAmount = (TextView) findViewById(R.id.textViewCourseAmount);
+        textViewCourseAmount.setText(courseDetailsResponseModelObj.getCoursePrice() + " X ");
+        chekInclude = (CheckBox) findViewById(R.id.checkBox);
+        chekInclude.setOnCheckedChangeListener(onCheckedChangeListener);
+        textViewLabelMaterial = (TextView) findViewById(R.id.textView_labelMaterial);
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
@@ -75,6 +110,16 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
             }
         });
     }
+
+    private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            if (isChecked) {
+                showMaterialsDialog();
+            }
+        }
+    };
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -134,4 +179,91 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
             return mFragmentTitleList.get(position);
         }
     }*/
+
+    private void showMaterialsDialog() {
+        final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Item");
+        int count = dialogList.length;
+        boolean[] is_checked = new boolean[count];
+        builder.setMultiChoiceItems(dialogList, is_checked, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+            }
+        });
+
+        // Set the positive/yes button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click positive button
+
+                ListView list = ((AlertDialog) dialog).getListView();
+                // make selected item in the comma seprated string
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < list.getCount(); i++) {
+                    boolean checked = list.isItemChecked(i);
+
+                    if (checked) {
+                        if (stringBuilder.length() > 0) stringBuilder.append(",");
+                        stringBuilder.append(list.getItemAtPosition(i));
+                        textViewLabelMaterial.setVisibility(View.VISIBLE);
+                        textViewLabelMaterial.setText(stringBuilder.toString());
+
+                    }
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click the negative button
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+
+    }
+
+    private class CustomSpinnerAdapter extends BaseAdapter {
+
+        private List<CourseMonths> data;
+        private Context mContext;
+        private LayoutInflater layoutInflater;
+
+        public CustomSpinnerAdapter(Context context, List<CourseMonths> courseMonths) {
+            data = courseMonths;
+            mContext = context;
+            layoutInflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+
+        }
+
+        @Override
+        public int getCount() {
+            return data.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return data.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View row = layoutInflater.inflate(R.layout.spinner_layout, parent, false);
+            TextView listItem = (TextView) row.findViewById(R.id.textview);
+            listItem.setText(data.get(position).getName());
+            return row;
+        }
+    }
 }

@@ -20,6 +20,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.model.viewmodel.CourseMaterials;
+import com.simplelecture.main.model.viewmodel.CourseMonths;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,7 +34,9 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -292,6 +296,17 @@ public class Util {
 
     public static void secureScreenShot(Activity activity) {
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+    }
+
+    public static ArrayList<CharSequence> convertToStringArray(List<CourseMaterials> courseMaterials){
+
+        ArrayList<CharSequence> coStringArrayList = new ArrayList<>();
+        for(CourseMaterials materials: courseMaterials){
+            coStringArrayList.add(materials.getName());
+        }
+
+        return coStringArrayList;
+
     }
 
 

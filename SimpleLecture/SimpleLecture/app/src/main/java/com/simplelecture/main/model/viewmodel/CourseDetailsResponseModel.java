@@ -9,6 +9,7 @@ import java.util.List;
 public class CourseDetailsResponseModel implements Serializable {
 
     private String cId;
+    private String CoursePrice;
     private String cName;
     private String cDesc;
     private String cBenefits;
@@ -184,5 +185,13 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", courseMaterials=" + courseMaterials +
                 ", courseMonths=" + courseMonths +
                 '}';
+    }
+
+    public String getCoursePrice() {
+        return CoursePrice;
+    }
+
+    public void setCoursePrice(String coursePrice) {
+        CoursePrice = coursePrice;
     }
 }
