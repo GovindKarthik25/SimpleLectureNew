@@ -28,8 +28,11 @@ public class Constants {
     public static String GET_COURSEDETAILS = "Course/Details/";
     public static String GET_COURSECHAPTERS = "Course/Chapters/";
 
-
-
+    /*Cart*/
+    public static String GET_CART_ALL = "Cart/All/";
+    public static String GET_CART_ADD = "cart/Add";
+    public static String GET_CART_REMOVE = "Cart/Remove/";
+    public static String GET_CART_CHANGEMONTH = "Cart/ChangeMonth";
 
 
 }
