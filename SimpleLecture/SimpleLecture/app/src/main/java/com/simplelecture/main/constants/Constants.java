@@ -27,6 +27,8 @@ public class Constants {
     public static String GET_COURSECATEGORIES = "Course/Search/";
     public static String GET_COURSEDETAILS = "Course/Details/";
     public static String GET_COURSECHAPTERS = "Course/Chapters/";
+    public static String GET_COURSEPOSTREVIEW = "Course/PostReview";
+
 
     /*Cart*/
     public static String GET_CART_ALL = "Cart/All/";

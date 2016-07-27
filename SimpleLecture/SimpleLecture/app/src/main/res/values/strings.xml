@@ -24,6 +24,8 @@
     <string name="btn_Submit">Submit</string>
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_verify">Verify</string>
+    <string name="btn_PostReviews">Post Reviews</string>
+
 
 
     <string name="txt_resendOTP">Resend OTP</string>
@@ -44,6 +46,7 @@
     <string name="err_msg_notMatchConfirmPassword">New Password must match Confirm Password</string>
     <string name="noInternetConnection">No internet connection!</string>
     <string name="loginFailed">Invalid Login</string>
+    <string name="entertheReview">Enter the Reviews Field</string>
 
 
     <string name="title_activity_home">HomeActivity</string>
@@ -93,6 +96,7 @@
     <string name="Poweredby">Powered by Simplelecture.com © 2015</string>
     <string name="Youhave">You have </string>
     <string name="coursesinyouraccountchecknow"> courses in your account check now</string>
+    <string name="WriteYourReviewshere">Write Your Reviews here</string>
 
 
     <!--Facebook_app_id-->

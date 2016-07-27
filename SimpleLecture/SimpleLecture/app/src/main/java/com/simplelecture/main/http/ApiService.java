@@ -8,6 +8,7 @@ import com.simplelecture.main.model.SignInModel;
 import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
+import com.simplelecture.main.transactions.CoursePostReviewTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.DemoTutorialTransaction;
 import com.simplelecture.main.transactions.ForgotPasswordTransaction;
@@ -202,6 +203,25 @@ public class ApiService {
             SignInTransaction signInTransaction = new SignInTransaction(jsonObject, mContext);
             TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
             transactionProcessor.execute(signInTransaction);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void doGetCoursePostReview(Context mContext, Fragment fragmentContext, String cid, String reviewText) {
+
+        try {
+
+            String token = Util.getFromPrefrences(mContext, "uToken");
+            String uId = Util.getFromPrefrences(mContext, "uId");
+
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getCoursePostReview(uId, cid, reviewText);
+            CoursePostReviewTransaction coursePostReviewTransaction = new CoursePostReviewTransaction(jsonObject, mContext, token);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(coursePostReviewTransaction);
 
         } catch (Exception e) {
             e.printStackTrace();

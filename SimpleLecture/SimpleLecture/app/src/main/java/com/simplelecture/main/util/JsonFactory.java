@@ -67,5 +67,17 @@ public class JsonFactory {
         return jsonObject;
     }
 
+    public JSONObject getCoursePostReview(String uId, String cid, String reviewText) {
+
+        try {
+            jsonObject.put("uid", uId);
+            jsonObject.put("cid ", cid);
+            jsonObject.put("review", reviewText);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
 
 }
