@@ -44,6 +44,10 @@ public class RestMethod implements IRestMethod {
             connection.setDoOutput(true);
             connection.setChunkedStreamingMode(0);
 
+            if(!ApiService.headerToken.equalsIgnoreCase("")){
+                connection.setRequestProperty("token", ApiService.headerToken);
+            }
+
             OutputStream outputStream = new BufferedOutputStream(connection.getOutputStream());
             outputStream.write(body.getBytes("UTF-8"));
             outputStream.close();

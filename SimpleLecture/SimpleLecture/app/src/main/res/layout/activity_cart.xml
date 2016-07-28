@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.simplelecture.main.activities.CartActivity">
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"></include>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/cart_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:scrollbars="vertical" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/lbl_total"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="60dp"
+            android:background="#E9E9E9"
+            android:gravity="right|center_vertical"
+            android:text="Total : Rs 1600 " />
+
+        <RelativeLayout
+            android:id="@+id/layout_checkout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+            <Button
+                android:id="@+id/btn_continue_shopping"
+                android:layout_width="150dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="20dp"
+                android:background="#FF4300"
+                android:text="Continue Shopping"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+
+            <Button
+                android:id="@+id/btn_check_out"
+                android:layout_width="120dp"
+                android:layout_height="45dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:background="#FF4300"
+                android:text="Check out"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>

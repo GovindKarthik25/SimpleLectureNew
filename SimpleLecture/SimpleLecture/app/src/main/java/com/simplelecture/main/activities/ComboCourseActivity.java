@@ -1,5 +1,6 @@
 package com.simplelecture.main.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,13 +12,16 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -27,6 +31,7 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.fragments.ComboCoursesFragment;
 import com.simplelecture.main.fragments.CourseBenifitsFragment;
 import com.simplelecture.main.fragments.CourseDescriptionFragment;
@@ -34,16 +39,24 @@ import com.simplelecture.main.fragments.CourseFeatureFragment;
 import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseMonths;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.Util;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 
-public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener {
+public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener,NetworkLayer {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -59,6 +72,14 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     ArrayList<CharSequence> courseMaterials = new ArrayList<>();
     CheckBox chekInclude;
     TextView textViewLabelMaterial;
+    private String param_get_ServiceCallResult = "";
+    private ProgressDialog pd;
+
+    private Button btnBuy;
+
+    private AlertMessageManagement alertMessageManagement;
+
+    private int selectedMonthId;
 
     @Override
     public void onBackPressed() {
@@ -91,12 +112,14 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-
+        btnBuy = (Button) findViewById(R.id.btn_buy);
+        btnBuy.setOnClickListener(onClickListener);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         spinnerMonths = (Spinner) findViewById(R.id.spinner_months);
         customSpinnerAdapter = new CustomSpinnerAdapter(this, courseDetailsResponseModelObj.getCourseMonths());
         spinnerMonths.setAdapter(customSpinnerAdapter);
+        spinnerMonths.setOnItemSelectedListener(onItemSelectedListener);
         textViewCourseAmount = (TextView) findViewById(R.id.textViewCourseAmount);
         textViewCourseAmount.setText(courseDetailsResponseModelObj.getCoursePrice() + " X ");
         chekInclude = (CheckBox) findViewById(R.id.checkBox);
@@ -111,6 +134,20 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         });
     }
 
+    private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            List<CourseMonths> courseMonths = courseDetailsResponseModelObj.getCourseMonths();
+            selectedMonthId = position + 1;
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
+        }
+    };
+
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -118,6 +155,36 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
             if (isChecked) {
                 showMaterialsDialog();
             }
+        }
+    };
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+            try {
+                if (new ConnectionDetector(ComboCourseActivity.this).isConnectingToInternet()) {
+                    param_get_ServiceCallResult = Constants.GET_CART_ADD;
+//                    pd = new Util().waitingMessage(ComboCourseActivity.this, "", getResources().getString(R.string.loading));
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("UserID", Util.getFromPrefrences(ComboCourseActivity.this, "uId"));
+                    jsonObject.put("CourseID", courseDetailsResponseModelObj.getcId());
+                    jsonObject.put("Months", selectedMonthId);
+                    jsonObject.put("CourseMaterial",jsonArray);
+
+                    Log.d("","" + jsonObject);
+
+                    ApiService.getApiService().doAddToCart(ComboCourseActivity.this,jsonObject);
+
+                    startActivity(new Intent(getApplicationContext(),CartActivity.class));
+
+                } else {
+                    alertMessageManagement.alertDialogActivation(ComboCourseActivity.this, 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
     };
 
@@ -179,6 +246,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
             return mFragmentTitleList.get(position);
         }
     }*/
+   JSONArray jsonArray;
 
     private void showMaterialsDialog() {
         final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);
@@ -197,22 +265,32 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         // Set the positive/yes button click listener
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, final int which) {
                 // Do something when click positive button
 
                 ListView list = ((AlertDialog) dialog).getListView();
                 // make selected item in the comma seprated string
                 StringBuilder stringBuilder = new StringBuilder();
+                try {
+                    jsonArray = new JSONArray();
+
                 for (int i = 0; i < list.getCount(); i++) {
                     boolean checked = list.isItemChecked(i);
 
                     if (checked) {
                         if (stringBuilder.length() > 0) stringBuilder.append(",");
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("Id",1);
+                        jsonArray.put(jsonObject);
                         stringBuilder.append(list.getItemAtPosition(i));
                         textViewLabelMaterial.setVisibility(View.VISIBLE);
                         textViewLabelMaterial.setText(stringBuilder.toString());
 
                     }
+                }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -228,6 +306,18 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
         dialog.show();
 
+    }
+
+    @Override
+    public void parseResponse(String response) {
+
+        Log.d("Sucess Resposne",response);
+
+    }
+
+    @Override
+    public void showError(String error) {
+        Log.d("Failure Resposne",error);
     }
 
     private class CustomSpinnerAdapter extends BaseAdapter {

@@ -5,6 +5,9 @@ import android.support.v4.app.Fragment;
 
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.SignInModel;
+import com.simplelecture.main.transactions.CartAddTransaction;
+import com.simplelecture.main.transactions.CartDetailsTransaction;
+import com.simplelecture.main.transactions.CartRemoveTransaction;
 import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
@@ -33,6 +36,8 @@ public class ApiService {
     private ApiService() {
 
     }
+
+    public static  String headerToken = "";
 
     public static ApiService getApiService() {
         return apiService;
@@ -91,7 +96,39 @@ public class ApiService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
 
+
+    public void doAddToCart(Context mContext,JSONObject jsonObject) {
+
+        headerToken = Util.getFromPrefrences(mContext, "uToken");
+
+
+        CartAddTransaction cartAddTransaction = new CartAddTransaction(jsonObject, mContext);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(cartAddTransaction);
+
+    }
+
+    public void doGetCartDetails(Context mContext) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+        String token = Util.getFromPrefrences(mContext, "uToken");
+
+        CartDetailsTransaction cartDetailsTransaction = new CartDetailsTransaction(null, mContext, userId, token);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(cartDetailsTransaction);
+
+    }
+
+    public void doRemoveFromCart(Context mContext,String courseId){
+
+        String token = Util.getFromPrefrences(mContext, "uToken");
+        String userId = Util.getFromPrefrences(mContext, "uId");
+
+        CartRemoveTransaction cartRemoveTransaction = new CartRemoveTransaction(null,mContext,userId +"/"+courseId,token);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(cartRemoveTransaction);
     }
 
     //Vimeo Video

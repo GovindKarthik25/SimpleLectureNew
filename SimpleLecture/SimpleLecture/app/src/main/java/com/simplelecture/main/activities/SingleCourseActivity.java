@@ -1,5 +1,6 @@
 package com.simplelecture.main.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,15 +9,22 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.adapters.CustomSpinnerAdapter;
 import com.simplelecture.main.fragments.CourseBenifitsFragment;
 import com.simplelecture.main.fragments.CourseDescriptionFragment;
 import com.simplelecture.main.fragments.CourseFeatureFragment;
@@ -42,6 +50,13 @@ public class SingleCourseActivity extends AppCompatActivity {
 
     CourseDetailsResponseModel courseDetailsResponseModelObj;
 
+    Spinner spinnerMonths;
+    TextView textViewCourseAmount;
+    CustomSpinnerAdapter customSpinnerAdapter;
+    ArrayList<CharSequence> courseMaterials = new ArrayList<>();
+    CheckBox chekInclude;
+    TextView textViewLabelMaterial;
+
     @Override
     public void onBackPressed() {
 
@@ -62,6 +77,8 @@ public class SingleCourseActivity extends AppCompatActivity {
             Log.i("courseDetails***", courseDetailsResponseModelObj.toString());
         }
 
+        courseMaterials = Util.convertToStringArray(courseDetailsResponseModelObj.getCourseMaterials());
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(courseDetailsResponseModelObj.getcName());
@@ -79,6 +96,15 @@ public class SingleCourseActivity extends AppCompatActivity {
         TabLayout.Tab tab = tabLayout.getTabAt(2);
         tab.select();
 
+        spinnerMonths = (Spinner) findViewById(R.id.spinner_months);
+        customSpinnerAdapter = new CustomSpinnerAdapter(this, courseDetailsResponseModelObj.getCourseMonths());
+        spinnerMonths.setAdapter(customSpinnerAdapter);
+        textViewCourseAmount = (TextView) findViewById(R.id.textViewCourseAmount);
+        textViewCourseAmount.setText(courseDetailsResponseModelObj.getCoursePrice() + " X ");
+        chekInclude = (CheckBox) findViewById(R.id.checkBox);
+        chekInclude.setOnCheckedChangeListener(onCheckedChangeListener);
+        textViewLabelMaterial = (TextView) findViewById(R.id.textView_labelMaterial);
+
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View arg0, MotionEvent arg1) {
@@ -92,6 +118,67 @@ public class SingleCourseActivity extends AppCompatActivity {
             tabStrip.getChildAt(i).setClickable(false);
         }*/
     }
+
+    private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+            if (isChecked) {
+                showMaterialsDialog();
+            }
+        }
+    };
+
+    private void showMaterialsDialog() {
+        final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select Item");
+        int count = dialogList.length;
+        boolean[] is_checked = new boolean[count];
+        builder.setMultiChoiceItems(dialogList, is_checked, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+            }
+        });
+
+        // Set the positive/yes button click listener
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click positive button
+
+                ListView list = ((AlertDialog) dialog).getListView();
+                // make selected item in the comma seprated string
+                StringBuilder stringBuilder = new StringBuilder();
+                for (int i = 0; i < list.getCount(); i++) {
+                    boolean checked = list.isItemChecked(i);
+
+                    if (checked) {
+                        if (stringBuilder.length() > 0) stringBuilder.append(",");
+                        stringBuilder.append(list.getItemAtPosition(i));
+                        textViewLabelMaterial.setVisibility(View.VISIBLE);
+                        textViewLabelMaterial.setText(stringBuilder.toString());
+
+                    }
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Do something when click the negative button
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+
+        dialog.show();
+
+    }
+
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
