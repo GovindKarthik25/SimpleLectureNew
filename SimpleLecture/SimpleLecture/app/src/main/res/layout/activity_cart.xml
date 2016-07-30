@@ -54,6 +54,7 @@
                 android:layout_marginRight="10dp"
                 android:background="#FF4300"
                 android:text="Check out"
+                android:onClick="doCheckout"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white" />
         </RelativeLayout>

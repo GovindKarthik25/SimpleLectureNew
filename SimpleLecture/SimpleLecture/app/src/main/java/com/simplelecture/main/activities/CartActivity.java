@@ -1,5 +1,6 @@
 package com.simplelecture.main.activities;
 
+import android.content.Intent;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -63,7 +64,21 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        readFileFromAssets();
+//        loadCartDetails(); //uncomment this for service call
+
+        readFileFromAssets(); // remove this method once the service unauthorozed issue resolves.
+
+    }
+
+    public void doCheckout(View view) {
+
+        startActivity(new Intent(getApplicationContext(), OrderSummaryActivity.class));
+    }
+
+    private void loadCartDetails() {
+
+        param_get_ServiceCallResult = Constants.GET_CART_ALL;
+        ApiService.getApiService().doGetCartDetails(getApplicationContext());
 
     }
 
@@ -138,23 +153,21 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     public void onItemClick(View view, int position) {
 
-        if(position == -1){
+        if (position == -1) {
 
 
-
-        }else{
+        } else {
             String courseId = cartDetailsResponseModels.get(position).getCourseId();
 
             ApiService.getApiService().doRemoveFromCart(getApplicationContext(), courseId);
         }
-
-
-
     }
 
     @Override
     public void parseResponse(String response) {
         if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ALL)) {
+
+            parseResponse(response);
 
         } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
 

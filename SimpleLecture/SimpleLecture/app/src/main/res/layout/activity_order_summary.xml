@@ -6,21 +6,27 @@
     android:background="@android:color/white"
     tools:context="com.simplelecture.main.activities.OrderSummaryActivity">
 
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"></include>
+
     <TextView
         android:id="@+id/lbl_subjects"
         android:layout_width="match_parent"
-        android:layout_height="25dp"
+        android:layout_height="23dp"
+        android:layout_marginLeft="5dp"
+        android:layout_below="@+id/tool_bar"
         android:gravity="center_vertical"
         android:text="List of Subjects"
         android:textSize="12sp" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/courses_recycler_view"
+        android:id="@+id/orders_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/lbl_subjects"
+        android:layout_marginBottom="240dp"
         android:paddingTop="5dp"
-        android:layout_marginBottom="160dp"
         android:scrollbars="vertical" />
 
     <RelativeLayout

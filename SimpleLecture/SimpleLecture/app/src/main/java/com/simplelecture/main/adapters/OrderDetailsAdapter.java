@@ -5,15 +5,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.model.viewmodel.CartDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -21,16 +19,16 @@ import java.util.ArrayList;
 /**
  * Created by M1032185 on 7/28/2016.
  */
-public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.MyViewHolder> {
+public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapter.MyViewHolder> {
 
 
     Context mContext;
 
-    ArrayList<CartDetailsResponseModel> cartDetailsResponseModels;
+    ArrayList<OrderSummaryModel> cartDetailsResponseModels;
 
     OnItemClickListener onItemClickListener;
 
-    public CartDetailsAdapter(Context mContext, ArrayList<CartDetailsResponseModel> cartDetailsResponseModels, OnItemClickListener onItemClickListener) {
+    public OrderDetailsAdapter(Context mContext, ArrayList<OrderSummaryModel> cartDetailsResponseModels, OnItemClickListener onItemClickListener) {
 
         this.mContext = mContext;
         this.cartDetailsResponseModels = cartDetailsResponseModels;
@@ -51,7 +49,7 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        CartDetailsResponseModel cartDetailsResponseModel = cartDetailsResponseModels.get(position);
+        OrderSummaryModel cartDetailsResponseModel = cartDetailsResponseModels.get(position);
 
         holder.textCourseName.setText(cartDetailsResponseModel.getCourseName());
         holder.textCoursePrice.setText(cartDetailsResponseModel.getPrice());

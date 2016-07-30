@@ -37,7 +37,7 @@ public class ApiService {
 
     }
 
-    public static  String headerToken = "";
+    public static String headerToken = "";
 
     public static ApiService getApiService() {
         return apiService;
@@ -99,7 +99,7 @@ public class ApiService {
     }
 
 
-    public void doAddToCart(Context mContext,JSONObject jsonObject) {
+    public void doAddToCart(Context mContext, JSONObject jsonObject) {
 
         headerToken = Util.getFromPrefrences(mContext, "uToken");
 
@@ -115,18 +115,18 @@ public class ApiService {
         String userId = Util.getFromPrefrences(mContext, "uId");
         String token = Util.getFromPrefrences(mContext, "uToken");
 
-        CartDetailsTransaction cartDetailsTransaction = new CartDetailsTransaction(null, mContext, userId, token);
+        CartDetailsTransaction cartDetailsTransaction = new CartDetailsTransaction(null, mContext, "927", token);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(cartDetailsTransaction);
 
     }
 
-    public void doRemoveFromCart(Context mContext,String courseId){
+    public void doRemoveFromCart(Context mContext, String courseId) {
 
         String token = Util.getFromPrefrences(mContext, "uToken");
         String userId = Util.getFromPrefrences(mContext, "uId");
 
-        CartRemoveTransaction cartRemoveTransaction = new CartRemoveTransaction(null,mContext,userId +"/"+courseId,token);
+        CartRemoveTransaction cartRemoveTransaction = new CartRemoveTransaction(null, mContext, userId + "/" + courseId, token);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(cartRemoveTransaction);
     }
