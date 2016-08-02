@@ -254,6 +254,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
         viewAllCourse.setOnClickListener(HomeFragment.this);
         viewAllComboCourse.setOnClickListener(HomeFragment.this);
+        cart_stripLinearLayout.setOnClickListener(HomeFragment.this);
 
         updateDisplayAndSetTheItem();
 
@@ -399,12 +400,11 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
     private void displayAndSetTheItem() {
         try {
-
-            if (homePageResponseModelobj.getMyCoursesCount() == 0) {
+            if (homePageResponseModelobj.getMyCoursesCount() != 0) {
                 cart_stripLinearLayout.setVisibility(View.VISIBLE);
-                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " " + homePageResponseModelobj.getMyCoursesCount() + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
+                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " " + String.valueOf(homePageResponseModelobj.getMyCoursesCount()) + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
             } else {
-                cart_stripLinearLayout.setVisibility(View.VISIBLE);
+                cart_stripLinearLayout.setVisibility(View.GONE);
             }
 
             mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), homePageResponseModelobj.getBannersLst());
@@ -601,8 +601,9 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     public void onClick(View v) {
 
         try {
-            if (v == viewAllComboCourse || v == viewAllCourse) {
-                if (sessionManager.isLoginStatus()) {
+            if (sessionManager.isLoginStatus()) {
+                if (v == viewAllComboCourse || v == viewAllCourse) {
+
                     CourseCategoriesFragment courseCategoriesFragment = new CourseCategoriesFragment();
                     ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
 
@@ -611,9 +612,13 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                             .addToBackStack(null)
                             .commit();
 
-                } else {
-                    alertMessageManagement.alertDialogActivation(getActivity(), 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
+                } else if (v == cart_stripLinearLayout) {
+
+                    new ViewManager().gotoCartActivity(getActivity());
                 }
+
+            } else {
+                alertMessageManagement.alertDialogActivation(getActivity(), 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
             }
         } catch (Exception e) {
             e.printStackTrace();

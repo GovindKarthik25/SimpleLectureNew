@@ -3,6 +3,7 @@ package com.simplelecture.main.transactions;
 import android.content.Context;
 
 import com.simplelecture.main.BuildConfig;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.GetTransaction;
 
 import org.json.JSONObject;
@@ -15,10 +16,12 @@ import java.net.URI;
 public class HomePageDataTransaction extends GetTransaction {
 
     private String mUrlEncoded;
+    private String userID;
 
-    public HomePageDataTransaction(JSONObject jsonObject, Context context, String urlEncoded) {
+    public HomePageDataTransaction(JSONObject jsonObject, Context context, String urlEncoded, String userId) {
         super(jsonObject, context);
         mUrlEncoded = urlEncoded;
+        userID = userId;
     }
 
     @Override
@@ -43,6 +46,7 @@ public class HomePageDataTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return "Home/Page/" + mUrlEncoded;
+        return Constants.GET_HOME_PAGE + mUrlEncoded + userID;
+       // "Home/Page/" + mUrlEncoded; userId
     }
 }

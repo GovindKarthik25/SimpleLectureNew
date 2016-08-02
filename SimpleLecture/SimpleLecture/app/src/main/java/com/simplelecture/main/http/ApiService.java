@@ -24,6 +24,7 @@ import com.simplelecture.main.transactions.SignInTransaction;
 import com.simplelecture.main.transactions.SummaryDetailsTransaction;
 import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.util.JsonFactory;
+import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
 
 import org.json.JSONObject;
@@ -162,7 +163,15 @@ public class ApiService {
     public void doGetHomeScreenData(Context mContext, Fragment fragmentContext, String uId) {
 
         try {
-            HomePageDataTransaction homePageDataTransaction = new HomePageDataTransaction(null, mContext, uId);
+            String userId = Util.getFromPrefrences(mContext, "uId");
+
+            if(SessionManager.getInstance().isLoginStatus() && !userId.equals("")) {
+                userId = "/" + userId;
+            } else {
+                userId = "";
+            }
+
+            HomePageDataTransaction homePageDataTransaction = new HomePageDataTransaction(null, mContext, uId, userId);
             TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(homePageDataTransaction);
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import android.widget.Button;
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ScreenSlidePagerAdapter;
 import com.simplelecture.main.fragments.SelectYourCoursesFragment;
+import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
 import com.simplelecture.main.util.ZoomOutPageTransformer;
@@ -96,6 +97,14 @@ public class SplashActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v == buttonExplore) {
             String displayName = "SplashActivity";
+
+            SessionManager sessionManager = SessionManager.getInstance();
+
+            sessionManager.setLoginStatus(Util.getFromPrefrencesBoolean(this, "loginStatus"));
+            sessionManager.setLoginFBStatus(Util.getFromPrefrencesBoolean(this, "FBStatus"));
+            sessionManager.setLoginGmailStatus(Util.getFromPrefrencesBoolean(this, "GmailStatus"));
+            sessionManager.setLoginSLStatus(Util.getFromPrefrencesBoolean(this, "SLStatus"));
+
             SelectYourCoursesFragment selectYourCoursesFragment = new SelectYourCoursesFragment().newInstance(displayName, "");
             FragmentManager fragmentManager = getSupportFragmentManager();
             selectYourCoursesFragment.show(fragmentManager, "SplashActivity");

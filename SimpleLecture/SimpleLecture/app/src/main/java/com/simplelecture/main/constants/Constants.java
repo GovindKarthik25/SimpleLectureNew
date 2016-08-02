@@ -23,7 +23,7 @@ public class Constants {
     public static String GET_CHANGEPASSWORD = "User/ChangePassword";
     public static String GET_SAMPLEVIDEOS = "Home/SampleVideos";
     public static String GET_CATEGORY_ALL = "Category/All";
-    public static String GET_HOME_PAGE = "/Home/Page";
+    public static String GET_HOME_PAGE = "/Home/Page/";
     public static String GET_COURSECATEGORIES = "Course/Search/";
     public static String GET_COURSEDETAILS = "Course/Details/";
     public static String GET_COURSECHAPTERS = "Course/Chapters/";

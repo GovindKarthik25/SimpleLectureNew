@@ -21,7 +21,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.model.viewmodel.CourseMaterials;
-import com.simplelecture.main.model.viewmodel.CourseMonths;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -268,6 +267,26 @@ public class Util {
         reader.close();
         return builder.toString();
     }
+
+    //Storing vals to shared preferences for future usage
+    public static void storeToPrefrencesBoolean(Context context, String type, Boolean vid) {
+
+        try {
+            SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(type, true);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //Gets stored data from prefrences
+    public static Boolean getFromPrefrencesBoolean(Context context, String type) {
+        SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
+        return preferences.getBoolean(type, false);
+    }
+
 
     //Storing vals to shared preferences for future usage
     public static void storeToPrefrences(Context context, String type, String vid) {

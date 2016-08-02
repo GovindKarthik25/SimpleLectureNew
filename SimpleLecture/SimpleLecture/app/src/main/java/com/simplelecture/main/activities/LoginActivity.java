@@ -89,6 +89,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }*/
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (sessionManager != null) {
+            Util.storeToPrefrencesBoolean(LoginActivity.this, "loginStatus", sessionManager.isLoginStatus());
+            Util.storeToPrefrencesBoolean(LoginActivity.this, "FBStatus", sessionManager.isLoginFBStatus());
+            Util.storeToPrefrencesBoolean(LoginActivity.this, "GmailStatus", sessionManager.isLoginGmailStatus());
+            Util.storeToPrefrencesBoolean(LoginActivity.this, "SLStatus", sessionManager.isLoginSLStatus());
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -311,7 +323,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
 
-
         // Get user's information
         getProfileInformation();
     }
@@ -355,7 +366,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (!mGoogleApiClient.isConnecting()) {
                 mGoogleApiClient.connect();
             }
-        } else  { //if (responseCode == FB_SIGN_IN)
+        } else { //if (responseCode == FB_SIGN_IN)
             callbackManager.onActivityResult(requestCode, responseCode, intent);
         }
     }
