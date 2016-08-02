@@ -1,7 +1,9 @@
 package com.simplelecture.main.activities;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -16,46 +18,65 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.CustomSpinnerAdapter;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.fragments.CourseBenifitsFragment;
 import com.simplelecture.main.fragments.CourseDescriptionFragment;
 import com.simplelecture.main.fragments.CourseFeatureFragment;
 import com.simplelecture.main.fragments.CourseIndexFragment;
 import com.simplelecture.main.fragments.FAQFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
+import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.CourseMonths;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SingleCourseActivity extends AppCompatActivity {
+public class SingleCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener, NetworkLayer {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private EditText searchEditText;
-
     Intent intent;
-
     String cId;
-
+    private String param_get_ServiceCallResult;
     CourseDetailsResponseModel courseDetailsResponseModelObj;
-
     Spinner spinnerMonths;
     TextView textViewCourseAmount;
     CustomSpinnerAdapter customSpinnerAdapter;
     ArrayList<CharSequence> courseMaterials = new ArrayList<>();
     CheckBox chekInclude;
     TextView textViewLabelMaterial;
+    private Button btnBuy;
+    private CartModel cartModel;
+    public ProgressDialog pd;
+    private SnackBarManagement snack;
+    private AlertMessageManagement alertMessageManagement;
+    private int selectedMonthId;
+    private OutputResponseModel outputResponseModel;
 
     @Override
     public void onBackPressed() {
@@ -70,11 +91,12 @@ public class SingleCourseActivity extends AppCompatActivity {
         Util.secureScreenShot(SingleCourseActivity.this);
         setContentView(R.layout.activity_single_course);
 
+        snack = new SnackBarManagement(getApplicationContext());
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
+
         intent = getIntent();
         if (intent.hasExtra("courseDetails")) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
-
-            Log.i("courseDetails***", courseDetailsResponseModelObj.toString());
         }
 
         courseMaterials = Util.convertToStringArray(courseDetailsResponseModelObj.getCourseMaterials());
@@ -104,6 +126,10 @@ public class SingleCourseActivity extends AppCompatActivity {
         chekInclude = (CheckBox) findViewById(R.id.checkBox);
         chekInclude.setOnCheckedChangeListener(onCheckedChangeListener);
         textViewLabelMaterial = (TextView) findViewById(R.id.textView_labelMaterial);
+        btnBuy = (Button) findViewById(R.id.btn_buy);
+        btnBuy.setOnClickListener(onClickListener);
+
+        cartModel = new CartModel();
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
@@ -119,6 +145,35 @@ public class SingleCourseActivity extends AppCompatActivity {
         }*/
     }
 
+
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+
+
+        @Override
+        public void onClick(View v) {
+
+            try {
+                if (new ConnectionDetector(SingleCourseActivity.this).isConnectingToInternet()) {
+                    param_get_ServiceCallResult = Constants.GET_CART_ADD;
+                    pd = new Util().waitingMessage(SingleCourseActivity.this, "", getResources().getString(R.string.loading));
+
+                    cartModel.setCourseID(courseDetailsResponseModelObj.getcId());
+                    cartModel.setMonths(String.valueOf(selectedMonthId));
+                    cartModel.setCourseMaterials("1,2"); // jsonArray
+                    Log.d("cartModel-->", "" + cartModel);
+
+                    ApiService.getApiService().doAddToCart(SingleCourseActivity.this, cartModel);
+
+                } else {
+                    alertMessageManagement.alertDialogActivation(SingleCourseActivity.this, 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+    };
+
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -126,6 +181,20 @@ public class SingleCourseActivity extends AppCompatActivity {
             if (isChecked) {
                 showMaterialsDialog();
             }
+        }
+    };
+
+    private AdapterView.OnItemSelectedListener onItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+            List<CourseMonths> courseMonths = courseDetailsResponseModelObj.getCourseMonths();
+            selectedMonthId = position + 1;
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+
         }
     };
 
@@ -187,7 +256,7 @@ public class SingleCourseActivity extends AppCompatActivity {
         adapter.addFrag(new CourseIndexFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseIndex));
         adapter.addFrag(new CourseBenifitsFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseBenifits));
         adapter.addFrag(new FAQFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.fAQ));
-        adapter.addFrag(new ReviewFragment(), getResources().getString(R.string.review));
+        adapter.addFrag(new ReviewFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.review));
 
         viewPager.setAdapter(adapter);
     }
@@ -200,6 +269,44 @@ public class SingleCourseActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void parseResponse(String response) {
+        try {
+
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            Gson gson = new Gson();
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ADD)) {
+
+                outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+                if (outputResponseModel.isSuccess()) {
+                    Toast.makeText(SingleCourseActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    new ViewManager().gotoCartActivity(SingleCourseActivity.this);
+
+                } else {
+                    alertMessageManagement.alertDialogActivation(SingleCourseActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void showError(String error) {
+        if (pd.isShowing()) {
+            pd.cancel();
+        }
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 
 

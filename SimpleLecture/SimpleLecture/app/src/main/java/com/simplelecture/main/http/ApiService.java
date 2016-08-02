@@ -3,6 +3,7 @@ package com.simplelecture.main.http;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 
+import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.SignInModel;
 import com.simplelecture.main.transactions.CartAddTransaction;
@@ -20,6 +21,7 @@ import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
 import com.simplelecture.main.transactions.SelectMyCourseTransaction;
 import com.simplelecture.main.transactions.SignInTransaction;
+import com.simplelecture.main.transactions.SummaryDetailsTransaction;
 import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.util.JsonFactory;
 import com.simplelecture.main.util.Util;
@@ -99,14 +101,24 @@ public class ApiService {
     }
 
 
-    public void doAddToCart(Context mContext, JSONObject jsonObject) {
+    public void doAddToCart(Context mContext, CartModel cartModel) {
 
-        headerToken = Util.getFromPrefrences(mContext, "uToken");
+        try {
+            headerToken = Util.getFromPrefrences(mContext, "uToken");
 
+            String userID = Util.getFromPrefrences(mContext, "uId");
+            String courseID = cartModel.getCourseID();
+            String months = cartModel.getMonths();
+            String courseMaterial = cartModel.getCourseMaterials();
 
-        CartAddTransaction cartAddTransaction = new CartAddTransaction(jsonObject, mContext);
-        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
-        transactionProcessor.execute(cartAddTransaction);
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getCartAdd(userID, courseID, months, courseMaterial);
+            CartAddTransaction cartAddTransaction = new CartAddTransaction(jsonObject, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(cartAddTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -115,7 +127,7 @@ public class ApiService {
         String userId = Util.getFromPrefrences(mContext, "uId");
         String token = Util.getFromPrefrences(mContext, "uToken");
 
-        CartDetailsTransaction cartDetailsTransaction = new CartDetailsTransaction(null, mContext, "927", token);
+        CartDetailsTransaction cartDetailsTransaction = new CartDetailsTransaction(null, mContext, userId, token);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(cartDetailsTransaction);
 
@@ -263,6 +275,17 @@ public class ApiService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void doGetSummaryDetails(Context mContext) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+        String token = Util.getFromPrefrences(mContext, "uToken");
+
+        SummaryDetailsTransaction summaryDetailsTransaction = new SummaryDetailsTransaction(null, mContext, userId, token);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(summaryDetailsTransaction);
 
     }
 

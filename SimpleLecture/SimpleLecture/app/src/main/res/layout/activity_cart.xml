@@ -1,49 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1"
     tools:context="com.simplelecture.main.activities.CartActivity">
 
     <include
         android:id="@+id/tool_bar"
         layout="@layout/toolbar"></include>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/cart_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tool_bar"
-        android:scrollbars="vertical" />
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/linearLayoutMiddle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="398dp"
+        android:layout_weight="1.06"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/cart_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.07"
+            android:scrollbars="vertical" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/relativelayoutbottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/border_top"
+        android:gravity="bottom"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/lbl_total"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="60dp"
-            android:background="#E9E9E9"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
             android:gravity="right|center_vertical"
-            android:text="Total : Rs 1600 " />
+            android:paddingRight="10dip"
+            android:text="kkk"
+            android:textColor="#FF3D0C" />
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/layout_checkout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dip"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/btn_continue_shopping"
                 android:layout_width="150dp"
                 android:layout_height="45dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:background="#FF4300"
                 android:text="Continue Shopping"
                 android:textAllCaps="false"
+                android:onClick="doContinueShopping"
                 android:textColor="@android:color/white" />
 
             <Button
@@ -51,12 +75,18 @@
                 android:layout_width="120dp"
                 android:layout_height="45dp"
                 android:layout_alignParentRight="true"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:background="#FF4300"
-                android:text="Check out"
                 android:onClick="doCheckout"
+                android:text="Check out"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white" />
-        </RelativeLayout>
-    </RelativeLayout>
-</RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- <include
+         android:id="@+id/coordinatorLayout"
+         layout="@layout/coordinatelayout"></include>-->
+</LinearLayout>

@@ -19,7 +19,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -28,7 +27,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
 import com.simplelecture.main.constants.Constants;
@@ -41,22 +42,25 @@ import com.simplelecture.main.fragments.ReviewFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseMonths;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 
-public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener,NetworkLayer {
+public class ComboCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener, NetworkLayer {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -80,6 +84,9 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private AlertMessageManagement alertMessageManagement;
 
     private int selectedMonthId;
+    private OutputResponseModel outputResponseModel;
+    private CartModel cartModel;
+    private SnackBarManagement snack;
 
     @Override
     public void onBackPressed() {
@@ -92,6 +99,9 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         super.onCreate(savedInstanceState);
         Util.secureScreenShot(ComboCourseActivity.this);
         setContentView(R.layout.activity_combo_course);
+
+        snack = new SnackBarManagement(getApplicationContext());
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
 
         intent = getIntent();
         if (intent.hasExtra("courseDetails")) {
@@ -125,6 +135,8 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         chekInclude = (CheckBox) findViewById(R.id.checkBox);
         chekInclude.setOnCheckedChangeListener(onCheckedChangeListener);
         textViewLabelMaterial = (TextView) findViewById(R.id.textView_labelMaterial);
+
+        cartModel = new CartModel();
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
@@ -165,18 +177,14 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
             try {
                 if (new ConnectionDetector(ComboCourseActivity.this).isConnectingToInternet()) {
                     param_get_ServiceCallResult = Constants.GET_CART_ADD;
-//                    pd = new Util().waitingMessage(ComboCourseActivity.this, "", getResources().getString(R.string.loading));
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("UserID", Util.getFromPrefrences(ComboCourseActivity.this, "uId"));
-                    jsonObject.put("CourseID", courseDetailsResponseModelObj.getcId());
-                    jsonObject.put("Months", selectedMonthId);
-                    jsonObject.put("CourseMaterial",jsonArray);
+                    pd = new Util().waitingMessage(ComboCourseActivity.this, "", getResources().getString(R.string.loading));
 
-                    Log.d("","" + jsonObject);
+                    cartModel.setCourseID(courseDetailsResponseModelObj.getcId());
+                    cartModel.setMonths(String.valueOf(selectedMonthId));
+                    cartModel.setCourseMaterials("1,2"); // jsonArray
+                    Log.d("cartModel-->", "" + cartModel);
 
-                    ApiService.getApiService().doAddToCart(ComboCourseActivity.this,jsonObject);
-
-                    startActivity(new Intent(getApplicationContext(),CartActivity.class));
+                    ApiService.getApiService().doAddToCart(ComboCourseActivity.this, cartModel);
 
                 } else {
                     alertMessageManagement.alertDialogActivation(ComboCourseActivity.this, 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
@@ -195,7 +203,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         adapter.addFrag(new CourseDescriptionFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseDescription));
         adapter.addFrag(new CourseBenifitsFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseBenifits));
         adapter.addFrag(new FAQFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.fAQ));
-        adapter.addFrag(new ReviewFragment(), getResources().getString(R.string.review));
+        adapter.addFrag(new ReviewFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.review));
 
         viewPager.setAdapter(adapter);
     }
@@ -217,36 +225,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         return super.onOptionsItemSelected(item);
     }
 
-
-   /* class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
-    }*/
-   JSONArray jsonArray;
+    JSONArray jsonArray;
 
     private void showMaterialsDialog() {
         final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);
@@ -274,20 +253,20 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
                 try {
                     jsonArray = new JSONArray();
 
-                for (int i = 0; i < list.getCount(); i++) {
-                    boolean checked = list.isItemChecked(i);
+                    for (int i = 0; i < list.getCount(); i++) {
+                        boolean checked = list.isItemChecked(i);
 
-                    if (checked) {
-                        if (stringBuilder.length() > 0) stringBuilder.append(",");
-                        JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("Id",1);
-                        jsonArray.put(jsonObject);
-                        stringBuilder.append(list.getItemAtPosition(i));
-                        textViewLabelMaterial.setVisibility(View.VISIBLE);
-                        textViewLabelMaterial.setText(stringBuilder.toString());
+                        if (checked) {
+                            if (stringBuilder.length() > 0) stringBuilder.append(",");
+                            JSONObject jsonObject = new JSONObject();
+                            jsonObject.put("Id", 1);
+                            jsonArray.put(jsonObject);
+                            stringBuilder.append(list.getItemAtPosition(i));
+                            textViewLabelMaterial.setVisibility(View.VISIBLE);
+                            textViewLabelMaterial.setText(stringBuilder.toString());
 
+                        }
                     }
-                }
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -311,13 +290,39 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     @Override
     public void parseResponse(String response) {
 
-        Log.d("Sucess Resposne",response);
+        try {
+
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            Gson gson = new Gson();
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ADD)) {
+
+                outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+                if (outputResponseModel.isSuccess()) {
+                    Toast.makeText(ComboCourseActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    new ViewManager().gotoCartActivity(ComboCourseActivity.this);
+
+                } else {
+                    alertMessageManagement.alertDialogActivation(ComboCourseActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
+                }
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
 
     }
 
     @Override
     public void showError(String error) {
-        Log.d("Failure Resposne",error);
+        Log.d("Failure Resposne", error);
+
+        if (pd.isShowing()) {
+            pd.cancel();
+        }
     }
 
     private class CustomSpinnerAdapter extends BaseAdapter {

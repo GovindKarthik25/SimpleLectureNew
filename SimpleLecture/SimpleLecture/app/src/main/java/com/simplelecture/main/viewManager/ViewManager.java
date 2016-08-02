@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.simplelecture.main.activities.CartActivity;
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
@@ -12,6 +13,7 @@ import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.OTPcodeActivity;
+import com.simplelecture.main.activities.OrderSummaryActivity;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
@@ -149,16 +151,28 @@ public class ViewManager {
 
 
     /**
-     * Description: go to Video Player View
+     * Description: go to gotoCartActivity
      *
      * @return
      */
-    /*public Intent gotoSelectedCourse(Context mContext) {
+    public Intent gotoCartActivity(Context mContext) {
 
-        intent = new Intent(mContext, SelectYourCoursesFragment.class);
+        intent = new Intent(mContext, CartActivity.class);
         mContext.startActivity(intent);
         return intent;
-    }*/
+    }
+
+    /**
+     * Description: go to gotoOrderSummaryActivity
+     *
+     * @return
+     */
+    public Intent gotoOrderSummaryActivity(Context mContext) {
+
+        intent = new Intent(mContext, OrderSummaryActivity.class);
+        mContext.startActivity(intent);
+        return intent;
+    }
 
 
 }

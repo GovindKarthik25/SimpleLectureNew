@@ -1,53 +1,47 @@
 package com.simplelecture.main.activities;
 
-import android.content.Intent;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.CartDetailsAdapter;
 import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.CartController;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.CartDetailsResponseModel;
-import com.simplelecture.main.model.viewmodel.CourseMaterials;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 public class CartActivity extends AppCompatActivity implements OnItemClickListener, NetworkLayer {
 
-
     RecyclerView recyclerView;
-
     LinearLayoutManager linearLayoutManager;
-
     CartDetailsAdapter cartDetailsAdapter;
-
     Toolbar toolbar;
-
-    ArrayList<CartDetailsResponseModel> cartDetailsResponseModels;
-
     private String param_get_ServiceCallResult = "";
+    private ProgressDialog pd;
+    private SnackBarManagement snack;
+    private AlertMessageManagement alertMessageManagement;
+    private CoordinatorLayout coordinatorLayout;
+    private CartDetailsResponseModel cartDetailsResponseModels;
+    private OutputResponseModel outputResponseModel;
+    private TextView lbl_total;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,25 +54,42 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         getSupportActionBar().setTitle("Cart");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        snack = new SnackBarManagement(getApplicationContext());
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+
+        lbl_total = (TextView) findViewById(R.id.lbl_total);
         recyclerView = (RecyclerView) findViewById(R.id.cart_recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//        loadCartDetails(); //uncomment this for service call
-
-        readFileFromAssets(); // remove this method once the service unauthorozed issue resolves.
+        loadCartDetails();
 
     }
 
-    public void doCheckout(View view) {
+    public void doContinueShopping(View view) {
+        finish();
+        new ViewManager().gotoHomeView(this);
+    }
 
-        startActivity(new Intent(getApplicationContext(), OrderSummaryActivity.class));
+    public void doCheckout(View view) {
+        new ViewManager().gotoOrderSummaryActivity(this);
     }
 
     private void loadCartDetails() {
 
-        param_get_ServiceCallResult = Constants.GET_CART_ALL;
-        ApiService.getApiService().doGetCartDetails(getApplicationContext());
+        try {
+            if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_CART_ALL;
+                pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
+
+                ApiService.getApiService().doGetCartDetails(CartActivity.this);
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -94,100 +105,75 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         return super.onOptionsItemSelected(item);
     }
 
-    private void readFileFromAssets() {
-
-        try {
-            StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open("Response.json"), "UTF-8"));
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-
-            parseResponse1(stringBuilder.toString());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private ArrayList<CourseMaterials> courseMaterialsLstArray;
-    private JsonParser parser = new JsonParser();
-    private JsonArray jarray;
-
-    private void parseResponse1(String response) {
-
-        Gson gson = new Gson();
-        cartDetailsResponseModels = new ArrayList<>();
-
-        try {
-            JSONArray jsonArray = new JSONArray(response);
-            for (int i = 0; i < jsonArray.length(); i++) {
-
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                CartDetailsResponseModel cartDetailsResponseModel = gson.fromJson(jsonObject.toString(), CartDetailsResponseModel.class);
-
-                courseMaterialsLstArray = new ArrayList<CourseMaterials>();
-                String courseMaterialsContent = jsonObject.getString("CourseMaterials");
-                jarray = parser.parse(courseMaterialsContent).getAsJsonArray();
-
-                for (JsonElement obj : jarray) {
-                    CourseMaterials courseMaterialsObj = gson.fromJson(obj, CourseMaterials.class);
-                    courseMaterialsLstArray.add(courseMaterialsObj);
-                    cartDetailsResponseModel.setCourseMaterials(courseMaterialsLstArray);
-                }
-
-                cartDetailsResponseModels.add(cartDetailsResponseModel);
-            }
-
-            cartDetailsAdapter = new CartDetailsAdapter(getApplicationContext(), cartDetailsResponseModels, this);
-            recyclerView.setAdapter(cartDetailsAdapter);
-
-            Log.d("", "" + cartDetailsResponseModels);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void onItemClick(View view, int position) {
 
-        if (position == -1) {
+        try {
+            if (position == -1) {
 
 
-        } else {
-            String courseId = cartDetailsResponseModels.get(position).getCourseId();
+            } else {
+                String courseId = cartDetailsResponseModels.getCourseCartList().get(position).getCourseId();
 
-            ApiService.getApiService().doRemoveFromCart(getApplicationContext(), courseId);
+                if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
+                    param_get_ServiceCallResult = Constants.GET_CART_REMOVE;
+                    pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
+                    ApiService.getApiService().doRemoveFromCart(CartActivity.this, courseId);
+
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void parseResponse(String response) {
-        if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ALL)) {
 
-            parseResponse(response);
-
-        } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
-
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("isSuccess")) {
-                    Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Try again later.", Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
             }
-        } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_CHANGEMONTH)) {
 
+            Gson gson = new Gson();
+
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ALL)) {
+
+                cartDetailsResponseModels = new CartController().getCartDetails(response);
+
+                lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
+
+                cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this);
+                recyclerView.setAdapter(cartDetailsAdapter);
+
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
+
+                outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+                if (outputResponseModel.isSuccess()) {
+                    Toast.makeText(CartActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    loadCartDetails();
+                } else {
+                    alertMessageManagement.alertDialogActivation(CartActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
+                }
+
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_CHANGEMONTH)) {
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void showError(String error) {
+
+        if (pd.isShowing()) {
+            pd.cancel();
+        }
 
     }
 }

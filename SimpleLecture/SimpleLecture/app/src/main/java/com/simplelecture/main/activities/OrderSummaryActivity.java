@@ -1,37 +1,27 @@
 package com.simplelecture.main.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.adapters.CartDetailsAdapter;
 import com.simplelecture.main.adapters.OrderDetailsAdapter;
 import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.SummaryController;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
-import com.simplelecture.main.model.viewmodel.CartDetailsResponseModel;
-import com.simplelecture.main.model.viewmodel.CourseMaterials;
 import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
 
 public class OrderSummaryActivity extends AppCompatActivity implements NetworkLayer, OnItemClickListener {
 
@@ -43,9 +33,17 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
     Toolbar toolbar;
 
-    ArrayList<OrderSummaryModel> cartDetailsResponseModels;
 
     private String param_get_ServiceCallResult = "";
+    private ProgressDialog pd;
+    private SnackBarManagement snack;
+    private AlertMessageManagement alertMessageManagement;
+    private CoordinatorLayout coordinatorLayout;
+    private OrderSummaryModel orderSummaryModel;
+    private TextView subTotal_TextView;
+    private TextView discount_TextView;
+    private TextView tax_TextView;
+    private TextView total_TextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,103 +53,74 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Cart");
+        getSupportActionBar().setTitle("Order Summary");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        snack = new SnackBarManagement(getApplicationContext());
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinatorLayout);
+        subTotal_TextView = (TextView) findViewById(R.id.subTotal_TextView);
+        discount_TextView = (TextView) findViewById(R.id.discount_TextView);
+        tax_TextView = (TextView) findViewById(R.id.tax_TextView);
+        total_TextView = (TextView) findViewById(R.id.total_TextView);
 
         recyclerView = (RecyclerView) findViewById(R.id.orders_recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        readFileFromAssets();
+        showSummary();
 
     }
 
-    private void readFileFromAssets() {
+    private void showSummary() {
 
         try {
-            StringBuilder stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getAssets().open("Order.json"), "UTF-8"));
-            String line;
+            if (new ConnectionDetector(OrderSummaryActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_ORDER_SUMMARY;
+                pd = new Util().waitingMessage(OrderSummaryActivity.this, "", getResources().getString(R.string.loading));
 
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
+                ApiService.getApiService().doGetSummaryDetails(OrderSummaryActivity.this);
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
             }
-
-            parseResponse1(stringBuilder.toString());
-
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private ArrayList<CourseMaterials> courseMaterialsLstArray;
-    private JsonParser parser = new JsonParser();
-    private JsonArray jarray;
 
-    private void parseResponse1(String response) {
+    // OrderSummaryModel
 
-        Gson gson = new Gson();
-        cartDetailsResponseModels = new ArrayList<>();
-
-
-        try {
-            JSONObject jSONObject = new JSONObject(response);
-            String bannersLstResponse = jSONObject.getString("CourseList");
-            jarray = parser.parse(bannersLstResponse).getAsJsonArray();
-
-            for(JsonElement obj : jarray){
-                JSONObject jsonObject = new JSONObject(obj.toString());
-                OrderSummaryModel cartDetailsResponseModel = gson.fromJson(obj.toString(), OrderSummaryModel.class);
-                String courseMaterialsContent = jsonObject.getString("CourseMaterials");
-                jarray = parser.parse(courseMaterialsContent).getAsJsonArray();
-                courseMaterialsLstArray = new ArrayList<CourseMaterials>();
-
-
-                for (JsonElement obj1 : jarray) {
-                    CourseMaterials courseMaterialsObj = gson.fromJson(obj1, CourseMaterials.class);
-                    courseMaterialsLstArray.add(courseMaterialsObj);
-                    cartDetailsResponseModel.setCourseMaterials(courseMaterialsLstArray);
-                }
-
-                cartDetailsResponseModels.add(cartDetailsResponseModel);
-
-            }
-
-            cartDetailsAdapter = new OrderDetailsAdapter(getApplicationContext(), cartDetailsResponseModels, this);
-            recyclerView.setAdapter(cartDetailsAdapter);
-
-            Log.d("", "" + cartDetailsResponseModels);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void parseResponse(String response) {
-        if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ALL)) {
-
-            parseResponse(response);
-
-        } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
-
-            try {
-                JSONObject jsonObject = new JSONObject(response);
-                if (jsonObject.getBoolean("isSuccess")) {
-                    Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Try again later.", Toast.LENGTH_LONG).show();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
             }
-        } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_CHANGEMONTH)) {
 
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_ORDER_SUMMARY)) {
+                orderSummaryModel = new SummaryController().getSummaryDetails(response);
+
+                cartDetailsAdapter = new OrderDetailsAdapter(getApplicationContext(), orderSummaryModel.getOrderSummaryListModel(), this);
+                recyclerView.setAdapter(cartDetailsAdapter);
+
+                subTotal_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getSubTotalPrice())).toString());
+                discount_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getPromocodeDiscountPrice())).toString());
+                tax_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTaxPrice())).toString());
+                total_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTotalPrice())));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     @Override
     public void showError(String error) {
+        if (pd.isShowing()) {
+            pd.cancel();
+        }
 
     }
 

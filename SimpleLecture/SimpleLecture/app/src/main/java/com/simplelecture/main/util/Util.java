@@ -119,7 +119,7 @@ public class Util {
     public static String appendZero(int value) {
         String val = value + "";
         if (val.length() == 1) {
-            val = "0" + val;
+            val = "00" + val;
         }
         return val;
     }

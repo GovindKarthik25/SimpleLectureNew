@@ -1,18 +1,15 @@
 package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -83,6 +80,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SnackBarManagement snack;
     private ProgressDialog pd;
     private LoginModel loginModel;
+    private SessionManager sessionManager;
 
 
     /*@Override
@@ -96,7 +94,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Util.secureScreenShot(LoginActivity.this);
 
-
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
         FacebookSdk.sdkInitialize(getApplicationContext());
@@ -107,7 +104,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         callbackManager = CallbackManager.Factory.create();
 
         snack = new SnackBarManagement(LoginActivity.this);
-        final SessionManager sessionManager = SessionManager.getInstance();
+        sessionManager = SessionManager.getInstance();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
@@ -153,6 +150,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.v("onSuccess", "onSuccess");
                 // If Facebook login is true Go to Homeview
                 sessionManager.setLoginStatus(true);
+                sessionManager.setLoginFBStatus(true);
 
                 Toast.makeText(LoginActivity.this, "FB Success", Toast.LENGTH_SHORT).show();
 
@@ -170,7 +168,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onError(FacebookException e) {
                 Toast.makeText(LoginActivity.this, "onError", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-
+                sessionManager.setLoginStatus(false);
+                sessionManager.setLoginFBStatus(false);
             }
         });
     }
@@ -411,6 +410,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 boolean isSuccess = jSONObject.getBoolean("isSuccess");
 
                 if (isSuccess) {
+                    sessionManager.setLoginStatus(true);
+                    sessionManager.setLoginSLStatus(true);
+
                     String dataResponse = jSONObject.getString("data");
 
                     LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);

@@ -1,8 +1,10 @@
 package com.simplelecture.main.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
@@ -24,10 +27,16 @@ import com.simplelecture.main.fragments.HomeFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.SampleVideoFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+
+    private AlertMessageManagement alertMessageManagement;
+    private SessionManager sessionManager;
+    private int alertID = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +45,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        sessionManager = SessionManager.getInstance();
 
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        alertMessageManagement = new AlertMessageManagement(HomeActivity.this, new AlertDialogClick());
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
 //        fab.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -67,13 +80,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Intent setIntent = new Intent(Intent.ACTION_MAIN);
-            setIntent.addCategory(Intent.CATEGORY_HOME);
-            setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(setIntent);
+            alertID = 1;
+            alertMessageManagement.alertDialogActivation(HomeActivity.this, 2, getResources().getString(R.string.alert), getResources().getString(R.string.AreyousurewanttocloseApp), getResources().getString(R.string.no), getResources().getString(R.string.yes));
 
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,15 +125,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.nav_home) {
             displayView(0);
         } else if (id == R.id.nav_course) {
-            displayView(1);
+            onDisplayViewMethod(1);
         } else if (id == R.id.nav_SampleVideos) {
             displayView(2);
         } else if (id == R.id.nav_dashboard) {
-            displayView(3);
+            onDisplayViewMethod(3);
         } else if (id == R.id.nav_my_courses) {
-            displayView(4);
+            onDisplayViewMethod(4);
         } else if (id == R.id.nav_excercises) {
-            displayView(5);
+            onDisplayViewMethod(5);
         } else if (id == R.id.nav_forum) {
             displayView(6);
         } else if (id == R.id.nav_Support) {
@@ -138,6 +150,15 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return true;
     }
 
+    private void onDisplayViewMethod(int tag) {
+
+        if (sessionManager.isLoginStatus()) {
+            displayView(tag);
+        } else {
+            onShowAlert();
+        }
+    }
+
     private void displayView(int position) {
         Fragment fragment = null;
 
@@ -147,6 +168,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_Home));
                 break;
             case 1:
+
                 fragment = new CourseCategoriesFragment();
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
                 break;
@@ -192,8 +214,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void onShowAlert() {
+        alertMessageManagement.alertDialogActivation(HomeActivity.this, 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
+
+    }
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+
+    private void onCloseApp() {
+        Intent setIntent = new Intent(Intent.ACTION_MAIN);
+        setIntent.addCategory(Intent.CATEGORY_HOME);
+        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(setIntent);
+    }
+
+    private class AlertDialogClick implements AlertMessageManagement.onCustomAlertDialogListener {
+        @Override
+        public void onClickResult(DialogInterface dialog, int whichButton) {
+            if (whichButton == -2) { // negative Button 2
+                dialog.cancel();
+
+            } else if (whichButton == -1) { //Postive -1
+                if (alertID == 1) {
+
+                    onCloseApp();
+                    alertID = 0;
+                } else {
+                    new ViewManager().gotoLoginView(HomeActivity.this);
+                }
+
+            }
+        }
     }
 }

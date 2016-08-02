@@ -11,7 +11,7 @@ import android.text.Html;
  */
 public class AlertMessageManagement {
 
-    private CustomAlertDialogListener customAlertDialogListner;
+    private onCustomAlertDialogListener customAlertDialogListner;
     private  Context context;
     public AlertDialog alert;
     private int alertTagOne = 1;
@@ -27,7 +27,7 @@ public class AlertMessageManagement {
         this.context = contxt;
     }
 
-    public AlertMessageManagement(Context context, CustomAlertDialogListener customAlertDialogListener){
+    public AlertMessageManagement(Context context, onCustomAlertDialogListener customAlertDialogListener){
         this.context = context;
         this.customAlertDialogListner = customAlertDialogListener;
     }
@@ -53,21 +53,21 @@ public class AlertMessageManagement {
             dialogBuilder.setNegativeButton(negativeButon, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {  // whichButton == 2
                     if(customAlertDialogListner != null)
-                    customAlertDialogListner.alertResult(dialog, whichButton);
+                    customAlertDialogListner.onClickResult(dialog, whichButton);
                 }
             });
         } else if(alertTag == alertTagTwo) { // 2
             dialogBuilder.setNegativeButton(negativeButon, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {   // whichButton == 2
                     if(customAlertDialogListner != null)
-                        customAlertDialogListner.alertResult(dialog, whichButton);
+                        customAlertDialogListner.onClickResult(dialog, whichButton);
                 }
             });
 
             dialogBuilder.setPositiveButton(positiveButon, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {  // whichButton == 1
                     if(customAlertDialogListner != null)
-                        customAlertDialogListner.alertResult(dialog, whichButton);
+                        customAlertDialogListner.onClickResult(dialog, whichButton);
                 }
             });
         }
@@ -78,8 +78,8 @@ public class AlertMessageManagement {
     }
 
 
-    public interface CustomAlertDialogListener {
-        void alertResult(DialogInterface dialog, int whichButton);
+    public interface onCustomAlertDialogListener {
+        public void onClickResult(DialogInterface dialog, int whichButton);
 
     }
 }

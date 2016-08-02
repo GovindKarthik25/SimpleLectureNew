@@ -36,5 +36,8 @@ public class Constants {
     public static String GET_CART_REMOVE = "Cart/Remove/";
     public static String GET_CART_CHANGEMONTH = "Cart/ChangeMonth";
 
+    /*Summary*/
+    public static String GET_ORDER_SUMMARY = "Order/Summary/";
+
 
 }

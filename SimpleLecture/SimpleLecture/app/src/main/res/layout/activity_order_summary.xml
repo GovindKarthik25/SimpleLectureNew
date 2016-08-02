@@ -14,9 +14,9 @@
         android:id="@+id/lbl_subjects"
         android:layout_width="match_parent"
         android:layout_height="23dp"
-        android:layout_marginLeft="5dp"
         android:layout_below="@+id/tool_bar"
         android:gravity="center_vertical"
+        android:paddingLeft="5dp"
         android:text="List of Subjects"
         android:textSize="12sp" />
 
@@ -37,24 +37,38 @@
             android:id="@+id/test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="190dp"
+            android:layout_above="@+id/linearLayout"
+            android:layout_alignParentStart="true"
+            android:background="@drawable/border_top"
             android:orientation="horizontal"
             android:padding="5dp">
 
-            <EditText
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_layout_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Promo Code" />
+            </android.support.design.widget.TextInputLayout>
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:layout_marginRight="10dp"
                 android:layout_weight="3"
-                android:text="Apply" />
+                android:background="#FF4300"
+                android:text="Apply"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -69,16 +83,17 @@
                 android:gravity="center_vertical|end"
                 android:text="Sub Total :"
                 android:textColor="#FF3D0C"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/subTotal_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
                 android:text="Rs. 1600"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -97,16 +112,17 @@
                 android:gravity="center_vertical|end"
                 android:text="Discount :"
                 android:textColor="#FF3D0C"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/discount_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
                 android:text="Rs. 1600"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -125,16 +141,17 @@
                 android:gravity="center_vertical|end"
                 android:text="Tax :"
                 android:textColor="#FF3D0C"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/tax_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
                 android:text="Rs. 1600"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -151,18 +168,19 @@
                 android:layout_height="25dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical|end"
-                android:text="Sub Total:"
+                android:text="Total:"
                 android:textColor="#FF3D0C"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
+                android:id="@+id/total_TextView"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
                 android:text="Rs. 1600"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
 
@@ -205,12 +223,12 @@
 
         <Button
             android:id="@+id/btn_continue_shopping"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="110dp"
-            android:layout_marginRight="110dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginBottom="5dip"
             android:background="#FF4300"
             android:text="Pay Now"
             android:textAllCaps="false"

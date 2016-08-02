@@ -3,82 +3,57 @@ package com.simplelecture.main.model.viewmodel;
 import java.io.Serializable;
 import java.util.List;
 
+
 /**
- * Created by M1032185 on 7/28/2016.
+ * Created by Raos on 7/31/2016.
  */
 public class CartDetailsResponseModel implements Serializable {
 
-    public String getCourseId() {
-        return CourseId;
+    private List<CourseMonths> CourseMonths;
+    private List<CourseListCartModel> courseCartList;
+    private String TotalPrice;
+
+    public CartDetailsResponseModel() {
     }
 
-    public void setCourseId(String courseId) {
-        CourseId = courseId;
+    public CartDetailsResponseModel(List<com.simplelecture.main.model.viewmodel.CourseMonths> courseMonths, List<CourseListCartModel> courseCartList, String totalPrice) {
+        CourseMonths = courseMonths;
+        this.courseCartList = courseCartList;
+        TotalPrice = totalPrice;
     }
 
-    public String getCourseName() {
-        return CourseName;
+    public List<CourseListCartModel> getCourseCartList() {
+        return courseCartList;
     }
 
-    public void setCourseName(String courseName) {
-        CourseName = courseName;
+    public void setCourseCartList(List<CourseListCartModel> courseCartList) {
+        this.courseCartList = courseCartList;
     }
 
-    public String getPrice() {
-        return Price;
+    public String getTotalPrice() {
+        return TotalPrice;
     }
 
-    public void setPrice(String price) {
-        Price = price;
+    public void setTotalPrice(String totalPrice) {
+        TotalPrice = totalPrice;
     }
 
-    public String getIcon() {
-        return Icon;
+    public List<com.simplelecture.main.model.viewmodel.CourseMonths> getCourseMonths() {
+        return CourseMonths;
     }
 
-    public void setIcon(String icon) {
-        Icon = icon;
+    public void setCourseMonths(List<com.simplelecture.main.model.viewmodel.CourseMonths> courseMonths) {
+        CourseMonths = courseMonths;
     }
 
-    public String getMonths() {
-        return Months;
-    }
-
-    public void setMonths(String months) {
-        Months = months;
-    }
-
-    public String getSubTotal() {
-        return SubTotal;
-    }
-
-    public void setSubTotal(String subTotal) {
-        SubTotal = subTotal;
-    }
-
-    public List<CourseMaterials> getCourseMaterials() {
-        return courseMaterials;
-    }
-
-    public void setCourseMaterials(List<CourseMaterials> courseMaterials) {
-        this.courseMaterials = courseMaterials;
-    }
-
-    private String CourseId;
-    private String CourseName;
-    private String Price;
-    private String Icon;
-    private String Months;
-    private String SubTotal;
-    private List<CourseMaterials> courseMaterials;
-
-
-    public CartDetailsResponseModel(String CourseId,String CourseName,String Price,String Icon,String Months,String SubTotal){
-        this.CourseId = CourseId;
-        this.CourseName = CourseName;
-        this.Price = Price;
-        this.Icon = Icon;
-        this.Months = Months;
-        this.SubTotal = SubTotal;
+    @Override
+    public String toString() {
+        return "CartDetailsResponseModel{" +
+                "CourseMonths=" + CourseMonths +
+                ", courseCartList=" + courseCartList +
+                ", TotalPrice='" + TotalPrice + '\'' +
+                '}';
     }
 }
+
+

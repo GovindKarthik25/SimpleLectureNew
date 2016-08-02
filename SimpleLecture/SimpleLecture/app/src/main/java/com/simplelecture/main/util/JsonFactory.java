@@ -79,5 +79,18 @@ public class JsonFactory {
         return jsonObject;
     }
 
+    public JSONObject getCartAdd(String userID, String courseID, String months, String courseMaterial) {
+
+        try {
+
+            jsonObject.put("UserID", userID);
+            jsonObject.put("CourseID", courseID);
+            jsonObject.put("Months", months);
+            jsonObject.put("CourseMaterial", courseMaterial);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
 
 }

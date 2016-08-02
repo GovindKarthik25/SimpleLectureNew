@@ -2,6 +2,7 @@ package com.simplelecture.main.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -52,6 +52,7 @@ import com.simplelecture.main.model.viewmodel.HomeTestimonialsModel;
 import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.ViewPagerIndicator;
@@ -115,6 +116,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     private HomeMostViewedAdapter homeMostViewedAdapter;
     private TestimonialsAdapter testimonialsAdapter;
     private HomeCoursesAdapter homeCoursesAdapter;
+    private SessionManager sessionManager;
 
 
     /**
@@ -145,8 +147,8 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         try {
 
             snack = new SnackBarManagement(getContext());
-            alertMessageManagement = new AlertMessageManagement(getContext());
-
+            alertMessageManagement = new AlertMessageManagement(getContext(), new AlertDialogClick());
+            sessionManager = SessionManager.getInstance();
             if (getArguments() != null) {
                 mParam1 = getArguments().getString(ARG_PARAM1);
                 mParam2 = getArguments().getString(ARG_PARAM2);
@@ -214,7 +216,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        if (homePageResponseModelobj !=null && homePageResponseModelobj.getBannersLst() != null) {
+        if (homePageResponseModelobj != null && homePageResponseModelobj.getBannersLst() != null) {
             mPagerAdapter = new HomePromoSlidePagerAdapter(getFragmentManager(), homePageResponseModelobj.getBannersLst());
             mPager.setPageTransformer(true, new ZoomOutPageTransformer());
             mPager.setAdapter(mPagerAdapter);
@@ -287,14 +289,17 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         @Override
         public void onItemClick(View view, int position) {
             try {
+                if (sessionManager.isLoginStatus()) {
 
-                CourseCombos myCoursesObj = homePageResponseModelobj.getCourseCombosLst().get(position);
+                    CourseCombos myCoursesObj = homePageResponseModelobj.getCourseCombosLst().get(position);
 
-                cID = myCoursesObj.getcId();
-                cComboName = myCoursesObj.getCourses();
+                    cID = myCoursesObj.getcId();
+                    cComboName = myCoursesObj.getCourses();
 
-                getCourseDetails();
-
+                    getCourseDetails();
+                } else {
+                    alertMessageManagement.alertDialogActivation(getActivity(), 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -305,10 +310,16 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         @Override
         public void onItemClick(View view, int position) {
             try {
+                if (sessionManager.isLoginStatus()) {
 
-                HomeCoursesModel coursesObj = homePageResponseModelobj.getCoursesLst().get(position);
-                cID = String.valueOf(coursesObj.getcId());
-                getCourseDetails();
+                    HomeCoursesModel coursesObj = homePageResponseModelobj.getCoursesLst().get(position);
+                    cID = String.valueOf(coursesObj.getcId());
+
+                    getCourseDetails();
+
+                } else {
+                    alertMessageManagement.alertDialogActivation(getActivity(), 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -320,12 +331,14 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         @Override
         public void onItemClick(View view, int position) {
             try {
-
-                HomePopularCoursesModel popularCoursesObj = homePageResponseModelobj.getPopularCoursesLst().get(position);
-                cID = String.valueOf(popularCoursesObj.getcId());
-                cComboName = popularCoursesObj.getCatName();
-                getCourseDetails();
-
+                if (sessionManager.isLoginStatus()) {
+                    HomePopularCoursesModel popularCoursesObj = homePageResponseModelobj.getPopularCoursesLst().get(position);
+                    cID = String.valueOf(popularCoursesObj.getcId());
+                    cComboName = popularCoursesObj.getCatName();
+                    getCourseDetails();
+                } else {
+                    alertMessageManagement.alertDialogActivation(getActivity(), 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -333,6 +346,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     };
 
     private void getCourseDetails() {
+
         if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
             param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
             pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
@@ -588,17 +602,35 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
         try {
             if (v == viewAllComboCourse || v == viewAllCourse) {
-                CourseCategoriesFragment courseCategoriesFragment = new CourseCategoriesFragment();
-                ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
+                if (sessionManager.isLoginStatus()) {
+                    CourseCategoriesFragment courseCategoriesFragment = new CourseCategoriesFragment();
+                    ((HomeActivity) getActivity()).getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_courseCategories));
 
-                this.getFragmentManager().beginTransaction()
-                        .replace(R.id.frame_container, courseCategoriesFragment, "")
-                        .addToBackStack(null)
-                        .commit();
+                    this.getFragmentManager().beginTransaction()
+                            .replace(R.id.frame_container, courseCategoriesFragment, "")
+                            .addToBackStack(null)
+                            .commit();
+
+                } else {
+                    alertMessageManagement.alertDialogActivation(getActivity(), 2, getResources().getString(R.string.alert), getResources().getString(R.string.pleaseLogin), getResources().getString(R.string.no), getResources().getString(R.string.yes));
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
+
+
+    private class AlertDialogClick implements AlertMessageManagement.onCustomAlertDialogListener {
+        @Override
+        public void onClickResult(DialogInterface dialog, int whichButton) {
+            if (whichButton == -2) { // negative Button 2
+                dialog.cancel();
+
+            } else if (whichButton == -1) { //Postive -1
+                new ViewManager().gotoLoginView(getActivity());
+            }
+        }
     }
 }

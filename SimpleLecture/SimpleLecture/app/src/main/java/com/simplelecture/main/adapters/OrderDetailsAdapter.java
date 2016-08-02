@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.CartDetailsResponseModel;
-import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
+import com.simplelecture.main.model.viewmodel.OrderSummaryListModel;
+import com.simplelecture.main.util.Util;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by M1032185 on 7/28/2016.
@@ -24,18 +24,17 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     Context mContext;
 
-    ArrayList<OrderSummaryModel> cartDetailsResponseModels;
+    List<OrderSummaryListModel> orderSummaryListModelArray;
 
     OnItemClickListener onItemClickListener;
 
-    public OrderDetailsAdapter(Context mContext, ArrayList<OrderSummaryModel> cartDetailsResponseModels, OnItemClickListener onItemClickListener) {
+    public OrderDetailsAdapter(Context mContext, List<OrderSummaryListModel> orderSummaryListModel, OnItemClickListener onItemClickListener) {
 
         this.mContext = mContext;
-        this.cartDetailsResponseModels = cartDetailsResponseModels;
+        this.orderSummaryListModelArray = orderSummaryListModel;
         this.onItemClickListener = onItemClickListener;
 
     }
-
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -49,14 +48,21 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        OrderSummaryModel cartDetailsResponseModel = cartDetailsResponseModels.get(position);
+        OrderSummaryListModel orderSummaryListModel = orderSummaryListModelArray.get(position);
 
-        holder.textCourseName.setText(cartDetailsResponseModel.getCourseName());
-        holder.textCoursePrice.setText(cartDetailsResponseModel.getPrice());
-        holder.subTotal.setText(cartDetailsResponseModel.getSubTotal());
+        holder.textCourseName.setText(orderSummaryListModel.getCourseName());
+        holder.textCoursePrice.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getPrice())));
+        holder.subTotal.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getSubTotalPrice())));
+        holder.textMonths.setText(orderSummaryListModel.getMonths() + " Month(s)");
+        holder.printedMatPrice.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getCourseMaterialPrices())));
 
-//        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, mContext.getResources().getStringArray(R.array.months));
-//        holder.spinnerMonths.setAdapter(stringArrayAdapter);
+        if (!orderSummaryListModel.getCourseMaterialNames().equals("")) {
+            holder.textViewMaterialName.setVisibility(View.VISIBLE);
+            holder.textViewMaterialName.setText("(" + orderSummaryListModel.getCourseMaterialNames() + ")");
+        } else {
+            holder.textViewMaterialName.setVisibility(View.GONE);
+        }
+
 
         holder.textMonths.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,12 +72,18 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             }
         });
 
-        Picasso.with(mContext).load(cartDetailsResponseModel.getIcon())
-                .placeholder(R.mipmap.loading)   // optional
-                .error(R.mipmap.app_icon)      // optional
-                //.resize(250, 200)                        // optional
-                //.rotate(90)                             // optional
-                .into(holder.imageIcon);
+        if (!orderSummaryListModel.getIcon().equals("") && orderSummaryListModel.getIcon() != null) {
+
+            Picasso.with(mContext)
+                    .load(orderSummaryListModel.getIcon())
+                    .placeholder(R.mipmap.loading)   // optional
+                    .error(R.mipmap.app_icon)      // optional
+                    //.resize(250, 200)                        // optional
+                    //.rotate(90)                             // optional
+                    .into(holder.imageIcon);
+        } else {
+            holder.imageIcon.setImageResource(R.mipmap.app_icon);
+        }
 
         holder.imageClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,11 +95,12 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
     @Override
     public int getItemCount() {
-        return cartDetailsResponseModels.size();
+        return orderSummaryListModelArray.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
+        private TextView textViewMaterialName;
         private TextView textCourseName;
         private TextView textCoursePrice;
         private ImageView imageIcon;
@@ -95,7 +108,6 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
         private TextView printedMatPrice;
         private TextView subTotal;
         private TextView textMonths;
-//        private Spinner spinnerMonths;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -106,8 +118,9 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
             printedMatPrice = (TextView) itemView.findViewById(R.id.text_course_printed);
             subTotal = (TextView) itemView.findViewById(R.id.txt_sub_total);
             imageClose = (ImageView) itemView.findViewById(R.id.close_icon);
+            imageClose.setVisibility(View.GONE);
             textMonths = (TextView) itemView.findViewById(R.id.text_months);
-//            spinnerMonths = (Spinner) itemView.findViewById(R.id.spinner_months);
+            textViewMaterialName = (TextView) itemView.findViewById(R.id.textViewMaterialName);
 
         }
     }
