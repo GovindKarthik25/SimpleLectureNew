@@ -2,6 +2,7 @@ package com.simplelecture.main.http;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.LoginModel;
@@ -9,6 +10,7 @@ import com.simplelecture.main.model.SignInModel;
 import com.simplelecture.main.transactions.CartAddTransaction;
 import com.simplelecture.main.transactions.CartDetailsTransaction;
 import com.simplelecture.main.transactions.CartRemoveTransaction;
+import com.simplelecture.main.transactions.ChangeMonthTransaction;
 import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
@@ -144,6 +146,21 @@ public class ApiService {
         transactionProcessor.execute(cartRemoveTransaction);
     }
 
+    public void doChangeMonthFromCart(Context mContext, String courseId, String month) {
+
+        String token = Util.getFromPrefrences(mContext, "uToken");
+        String userId = Util.getFromPrefrences(mContext, "uId");
+
+        String courseID = courseId;
+        String months = month;
+
+        JsonFactory jsonFactory = new JsonFactory();
+        JSONObject jsonObject = jsonFactory.getChangeMonth(userId, courseID, months);
+        ChangeMonthTransaction changeMonthTransaction = new ChangeMonthTransaction(jsonObject, mContext, token);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(changeMonthTransaction);
+    }
+
     //Vimeo Video
     public void doGetVimeoVideoURL(Context mContext, int videoId) {
 
@@ -165,7 +182,7 @@ public class ApiService {
         try {
             String userId = Util.getFromPrefrences(mContext, "uId");
 
-            if(SessionManager.getInstance().isLoginStatus() && !userId.equals("")) {
+            if (SessionManager.getInstance().isLoginStatus() && !userId.equals("")) {
                 userId = "/" + userId;
             } else {
                 userId = "";
@@ -274,7 +291,7 @@ public class ApiService {
 
             String token = Util.getFromPrefrences(mContext, "uToken");
             String uId = Util.getFromPrefrences(mContext, "uId");
-
+            Log.i("token---->", token);
             JsonFactory jsonFactory = new JsonFactory();
             JSONObject jsonObject = jsonFactory.getCoursePostReview(uId, cid, reviewText);
             CoursePostReviewTransaction coursePostReviewTransaction = new CoursePostReviewTransaction(jsonObject, mContext, token);

@@ -71,7 +71,7 @@ public class JsonFactory {
 
         try {
             jsonObject.put("uid", uId);
-            jsonObject.put("cid ", cid);
+            jsonObject.put("cid", cid);
             jsonObject.put("review", reviewText);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -83,10 +83,23 @@ public class JsonFactory {
 
         try {
 
-            jsonObject.put("UserID", userID);
-            jsonObject.put("CourseID", courseID);
+            jsonObject.put("UserId", userID);
+            jsonObject.put("CourseId", courseID);
             jsonObject.put("Months", months);
-            jsonObject.put("CourseMaterial", courseMaterial);
+            jsonObject.put("CourseMaterials", courseMaterial);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public JSONObject getChangeMonth(String userID, String courseID, String months) {
+
+        try {
+
+            jsonObject.put("UserID", userID);
+            jsonObject.put("CourseId", courseID);
+            jsonObject.put("Months", months);
         } catch (JSONException e) {
             e.printStackTrace();
         }

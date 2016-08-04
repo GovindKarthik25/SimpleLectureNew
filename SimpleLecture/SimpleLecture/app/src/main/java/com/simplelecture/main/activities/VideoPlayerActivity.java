@@ -13,9 +13,11 @@ import android.view.View;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
@@ -61,7 +63,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     protected void onPause() {
         super.onPause();
 
-        if(videoView.isPlaying()){
+        if (videoView.isPlaying()) {
             videoPause = true;
             videoView.pause();
         }
@@ -71,7 +73,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
     @Override
     protected void onResume() {
         super.onResume();
-        if(videoPause) {
+        if (videoPause) {
             videoPause = false;
             videoView.resume();
         }
@@ -106,7 +108,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
             });
 
 
-            if(displayView.equalsIgnoreCase("CourseIndexFragment") || displayView.equalsIgnoreCase("CourseDescriptionFragment")) {
+            if (displayView.equalsIgnoreCase("CourseIndexFragment") || displayView.equalsIgnoreCase("CourseDescriptionFragment")) {
                 if (new ConnectionDetector(VideoPlayerActivity.this).isConnectingToInternet()) {
                     param_get_VideoPlayer = true;
                     pd = new Util().waitingMessage(VideoPlayerActivity.this, "", getResources().getString(R.string.loading));
@@ -115,7 +117,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
                 }
-            } else if(displayView.equalsIgnoreCase("SampleVideoFragment")){
+            } else if (displayView.equalsIgnoreCase("SampleVideoFragment")) {
 
                 OnPrepareVideoPlay(videoURL);
             }
@@ -128,7 +130,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
             public void onPrepared(MediaPlayer mediaPlayer) {
-              //  Log.i("TAG", "Duration = " + videoView.getDuration());
+                //  Log.i("TAG", "Duration = " + videoView.getDuration());
                 try {
                     // close the progress bar and play the video
                     pd.dismiss();
@@ -193,12 +195,27 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
                 pd.dismiss();
             }
             Log.i("videoURL", "*******************" + response);
+            Gson gson = new Gson();
+            OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-            JSONObject jSONObject = new JSONObject(response);
-            videoURL = jSONObject.getString("Url");
+            if (outputResponseModel.isSuccess()) {
 
-            OnPrepareVideoPlay(videoURL);
+                JSONObject jSONObject1 = new JSONObject(response);
 
+                String dataContent = jSONObject1.getString("data");
+
+                JSONObject jSONObject = new JSONObject(dataContent);
+                videoURL = jSONObject.getString("Url");
+
+                if(!videoURL.equals("") && videoURL != null) {
+                    OnPrepareVideoPlay(videoURL);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, "No Data Found", getResources().getString(R.string.dismiss));
+                }
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -213,7 +230,7 @@ public class VideoPlayerActivity extends AppCompatActivity implements NetworkLay
                 pd.dismiss();
             }
 
-            if(error.isEmpty()){
+            if (error.isEmpty()) {
                 error = "Error in Video";
             }
 

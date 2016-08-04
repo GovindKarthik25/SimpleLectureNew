@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.OrderDetailsAdapter;
@@ -18,10 +19,13 @@ import com.simplelecture.main.controller.SummaryController;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+
+import org.json.JSONObject;
 
 public class OrderSummaryActivity extends AppCompatActivity implements NetworkLayer, OnItemClickListener {
 
@@ -98,18 +102,29 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
             if (pd.isShowing()) {
                 pd.cancel();
             }
-
+            Gson gson = new Gson();
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_ORDER_SUMMARY)) {
-                orderSummaryModel = new SummaryController().getSummaryDetails(response);
 
-                cartDetailsAdapter = new OrderDetailsAdapter(getApplicationContext(), orderSummaryModel.getOrderSummaryListModel(), this);
-                recyclerView.setAdapter(cartDetailsAdapter);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                subTotal_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getSubTotalPrice())).toString());
-                discount_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getPromocodeDiscountPrice())).toString());
-                tax_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTaxPrice())).toString());
-                total_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTotalPrice())));
+                if (outputResponseModel.isSuccess()) {
 
+                    JSONObject jSONObject1 = new JSONObject(response);
+
+                    String dataContent = jSONObject1.getString("data");
+                    orderSummaryModel = new SummaryController().getSummaryDetails(dataContent);
+
+                    cartDetailsAdapter = new OrderDetailsAdapter(getApplicationContext(), orderSummaryModel.getOrderSummaryListModel(), this);
+                    recyclerView.setAdapter(cartDetailsAdapter);
+
+                    subTotal_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getSubTotalPrice())).toString());
+                    discount_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getPromocodeDiscountPrice())).toString());
+                    tax_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTaxPrice())).toString());
+                    total_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTotalPrice())));
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

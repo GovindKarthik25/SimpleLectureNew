@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -122,6 +123,7 @@ public class ReviewFragment extends Fragment implements View.OnClickListener, Ne
     @Override
     public void parseResponse(String response) {
         try {
+            Log.i("parseResponse", response);
             if (pd.isShowing()) {
                 pd.cancel();
             }

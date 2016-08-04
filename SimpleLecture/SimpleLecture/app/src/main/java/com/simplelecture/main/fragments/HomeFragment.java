@@ -49,6 +49,7 @@ import com.simplelecture.main.model.viewmodel.HomeCoursesModel;
 import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 import com.simplelecture.main.model.viewmodel.HomePopularCoursesModel;
 import com.simplelecture.main.model.viewmodel.HomeTestimonialsModel;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
@@ -473,88 +474,124 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             JsonArray jArray;
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
+
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_HOME_PAGE)) {
 
-                homePageResponseModelobj = gson.fromJson(response, HomePageResponseModel.class);
-                JSONObject jSONObject = new JSONObject(response);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                String bannersLstResponse = jSONObject.getString("Banners");
-                jArray = parser.parse(bannersLstResponse).getAsJsonArray();
-                for (JsonElement obj : jArray) {
-                    HomeBannersModel bannersobj = gson.fromJson(obj, HomeBannersModel.class);
-                    bannersLstArray.add(bannersobj);
-                }
+                if (outputResponseModel.isSuccess()) {
 
-                String coursesLstResponse = jSONObject.getString("Courses");
+                    JSONObject jSONObject1 = new JSONObject(response);
 
-                if (coursesLstResponse != null && !coursesLstResponse.equals("null")) {
-                    jArray = parser.parse(coursesLstResponse).getAsJsonArray();
+                    String dataContent = jSONObject1.getString("data");
+
+                    homePageResponseModelobj = gson.fromJson(dataContent, HomePageResponseModel.class);
+
+                    JSONObject jSONObject = new JSONObject(dataContent);
+                    String bannersLstResponse = jSONObject.getString("Banners");
+                    jArray = parser.parse(bannersLstResponse).getAsJsonArray();
                     for (JsonElement obj : jArray) {
-                        HomeCoursesModel homeCoursesModelobj = gson.fromJson(obj, HomeCoursesModel.class);
-                        coursesLstArray.add(homeCoursesModelobj);
+                        HomeBannersModel bannersobj = gson.fromJson(obj, HomeBannersModel.class);
+                        bannersLstArray.add(bannersobj);
                     }
+
+                    String coursesLstResponse = jSONObject.getString("Courses");
+
+                    if (coursesLstResponse != null && !coursesLstResponse.equals("null")) {
+                        jArray = parser.parse(coursesLstResponse).getAsJsonArray();
+                        for (JsonElement obj : jArray) {
+                            HomeCoursesModel homeCoursesModelobj = gson.fromJson(obj, HomeCoursesModel.class);
+                            coursesLstArray.add(homeCoursesModelobj);
+                        }
+                    }
+
+                    String comboCoursesLstResponse = jSONObject.getString("ComboCourses");
+                    jArray = parser.parse(comboCoursesLstResponse).getAsJsonArray();
+                    for (JsonElement obj : jArray) {
+                        CourseCombos courseCombosModelobj = gson.fromJson(obj, CourseCombos.class);
+                        courseCombosLstArray.add(courseCombosModelobj);
+                    }
+
+                    String popularCoursesModelLstResponse = jSONObject.getString("PopularCourses");
+                    jArray = parser.parse(popularCoursesModelLstResponse).getAsJsonArray();
+                    for (JsonElement obj : jArray) {
+                        HomePopularCoursesModel homePopularCoursesModelobj = gson.fromJson(obj, HomePopularCoursesModel.class);
+                        homePopularCoursesModelLstArray.add(homePopularCoursesModelobj);
+                    }
+
+                    String homeTestimonialsModelLstResponse = jSONObject.getString("Testimonials");
+                    jArray = parser.parse(homeTestimonialsModelLstResponse).getAsJsonArray();
+                    for (JsonElement obj : jArray) {
+                        HomeTestimonialsModel homeTestimonialsModelobj = gson.fromJson(obj, HomeTestimonialsModel.class);
+                        homeTestimonialsModelLstArray.add(homeTestimonialsModelobj);
+                    }
+
+                    homePageResponseModelobj.setBannersLst(bannersLstArray);
+                    homePageResponseModelobj.setCoursesLst(coursesLstArray);
+                    homePageResponseModelobj.setCourseCombosLst(courseCombosLstArray);
+                    homePageResponseModelobj.setPopularCoursesLst(homePopularCoursesModelLstArray);
+                    homePageResponseModelobj.setHomeTestimonialsModelLst(homeTestimonialsModelLstArray);
+
+                    displayAndSetTheItem();
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
                 }
-
-                String comboCoursesLstResponse = jSONObject.getString("ComboCourses");
-                jArray = parser.parse(comboCoursesLstResponse).getAsJsonArray();
-                for (JsonElement obj : jArray) {
-                    CourseCombos courseCombosModelobj = gson.fromJson(obj, CourseCombos.class);
-                    courseCombosLstArray.add(courseCombosModelobj);
-                }
-
-                String popularCoursesModelLstResponse = jSONObject.getString("PopularCourses");
-                jArray = parser.parse(popularCoursesModelLstResponse).getAsJsonArray();
-                for (JsonElement obj : jArray) {
-                    HomePopularCoursesModel homePopularCoursesModelobj = gson.fromJson(obj, HomePopularCoursesModel.class);
-                    homePopularCoursesModelLstArray.add(homePopularCoursesModelobj);
-                }
-
-                String homeTestimonialsModelLstResponse = jSONObject.getString("Testimonials");
-                jArray = parser.parse(homeTestimonialsModelLstResponse).getAsJsonArray();
-                for (JsonElement obj : jArray) {
-                    HomeTestimonialsModel homeTestimonialsModelobj = gson.fromJson(obj, HomeTestimonialsModel.class);
-                    homeTestimonialsModelLstArray.add(homeTestimonialsModelobj);
-                }
-
-                homePageResponseModelobj.setBannersLst(bannersLstArray);
-                homePageResponseModelobj.setCoursesLst(coursesLstArray);
-                homePageResponseModelobj.setCourseCombosLst(courseCombosLstArray);
-                homePageResponseModelobj.setPopularCoursesLst(homePopularCoursesModelLstArray);
-                homePageResponseModelobj.setHomeTestimonialsModelLst(homeTestimonialsModelLstArray);
-
-                displayAndSetTheItem();
 
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
 
-                courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(response);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                // Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
+                if (outputResponseModel.isSuccess()) {
 
-                if (courseDetailsResponseModel.isCombo()) {
-                    courseDetailsResponseModel.setcComboName(cComboName);
+                    JSONObject jSONObject1 = new JSONObject(response);
+                    String dataContent = jSONObject1.getString("data");
 
-                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
-                } else {
+                    courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
 
-                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                        param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
+                    // Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
-                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                        //My HomeCoursesModel service
-                        ApiService.getApiService().doGetChapters(getActivity(), HomeFragment.this, cID);
+                    if (courseDetailsResponseModel.isCombo()) {
+                        courseDetailsResponseModel.setcComboName(cComboName);
+
+                        new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                     } else {
-                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+
+                        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                            param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
+
+                            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                            //My HomeCoursesModel service
+                            ApiService.getApiService().doGetChapters(getActivity(), HomeFragment.this, cID);
+                        } else {
+                            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                        }
+
                     }
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
 
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
 
-                List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(response);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+                if (outputResponseModel.isSuccess()) {
 
-                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+                    JSONObject jSONObject = new JSONObject(response);
 
+                    String dataContent = jSONObject.getString("data");
+
+
+                    List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(dataContent);
+
+                    courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+
+                    new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
+                }
             }
 
         } catch (Exception e) {

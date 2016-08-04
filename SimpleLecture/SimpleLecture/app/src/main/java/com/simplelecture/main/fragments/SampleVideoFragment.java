@@ -29,12 +29,15 @@ import com.simplelecture.main.adapters.DemoTutorialAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.model.viewmodel.SampleVideoResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -205,15 +208,28 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
             JsonParser parser = new JsonParser();
             if (param_get_SampleVideoTutorial) {
 
-                JsonArray jarray = parser.parse(response).getAsJsonArray();
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                sampleVideoResponseModelLstArray = new ArrayList<SampleVideoResponseModel>();
-                for (JsonElement obj : jarray) {
-                    SampleVideoResponseModel sampleVideoResponseModelObj = gson.fromJson(obj, SampleVideoResponseModel.class);
-                    sampleVideoResponseModelLstArray.add(sampleVideoResponseModelObj);
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject1 = new JSONObject(response);
+
+                    String dataContent = jSONObject1.getString("data");
+
+                    JsonArray jarray = parser.parse(dataContent).getAsJsonArray();
+
+                    sampleVideoResponseModelLstArray = new ArrayList<SampleVideoResponseModel>();
+                    for (JsonElement obj : jarray) {
+                        SampleVideoResponseModel sampleVideoResponseModelObj = gson.fromJson(obj, SampleVideoResponseModel.class);
+                        sampleVideoResponseModelLstArray.add(sampleVideoResponseModelObj);
+                    }
+
+                    loadRecyclerView();
+
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
                 }
-
-                loadRecyclerView();
             }
 
 

@@ -27,12 +27,16 @@ import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.adapters.SelectYourCourseAdapter;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.model.viewmodel.SelectMyCourseResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -160,7 +164,7 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
 
                         String selectedID = selectMyCourseResponseModelObj.getId();
 
-                       // getDialog().dismiss();
+                        // getDialog().dismiss();
 
                         Fragment prev = getActivity().getSupportFragmentManager().findFragmentByTag(mParam1);
                         if (prev != null) {
@@ -222,24 +226,42 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
     @Override
     public void parseResponse(String response) {
 
-        pd.cancel();
-        Gson gson = new Gson();
-        JsonParser parser = new JsonParser();
-
-        if (param_get_selectCourses) {
-
-            JsonArray jarray = parser.parse(response).getAsJsonArray();
-
-            selectMyCourseLstArray = new ArrayList<SelectMyCourseResponseModel>();
-            for (JsonElement obj : jarray) {
-                SelectMyCourseResponseModel selectMyCourseResponseModelObj = gson.fromJson(obj, SelectMyCourseResponseModel.class);
-                selectMyCourseLstArray.add(selectMyCourseResponseModelObj);
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
             }
 
-            linerlayoutCourse.setVisibility(LinearLayout.VISIBLE);
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
 
-            listcourseAdapter = new SelectYourCourseAdapter(getActivity(), selectMyCourseLstArray);
-            myCourseListView.setAdapter(listcourseAdapter);
+            if (param_get_selectCourses) {
+
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject = new JSONObject(response);
+
+                    String dataContent = jSONObject.getString("data");
+                    JsonArray jarray = parser.parse(dataContent).getAsJsonArray();
+
+                    selectMyCourseLstArray = new ArrayList<SelectMyCourseResponseModel>();
+                    for (JsonElement obj : jarray) {
+                        SelectMyCourseResponseModel selectMyCourseResponseModelObj = gson.fromJson(obj, SelectMyCourseResponseModel.class);
+                        selectMyCourseLstArray.add(selectMyCourseResponseModelObj);
+                    }
+
+                    linerlayoutCourse.setVisibility(LinearLayout.VISIBLE);
+
+                    listcourseAdapter = new SelectYourCourseAdapter(getActivity(), selectMyCourseLstArray);
+                    myCourseListView.setAdapter(listcourseAdapter);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
     }

@@ -28,6 +28,8 @@ import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
+import org.json.JSONObject;
+
 public class CartActivity extends AppCompatActivity implements OnItemClickListener, NetworkLayer {
 
     RecyclerView recyclerView;
@@ -64,6 +66,16 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         recyclerView.setLayoutManager(linearLayoutManager);
 
         loadCartDetails();
+
+        // Put this where onclick of Spinner
+          /*  if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
+        param_get_ServiceCallResult = Constants.GET_CART_CHANGEMONTH;
+        pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
+        ApiService.getApiService().doChangeMonthFromCart(CartActivity.this, courseId, months);
+
+    } else {
+        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+    }*/
 
     }
 
@@ -105,6 +117,7 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         return super.onOptionsItemSelected(item);
     }
 
+
     @Override
     public void onItemClick(View view, int position) {
 
@@ -141,13 +154,24 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
 
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ALL)) {
 
-                cartDetailsResponseModels = new CartController().getCartDetails(response);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
+                if (outputResponseModel.isSuccess()) {
 
-                cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this);
-                recyclerView.setAdapter(cartDetailsAdapter);
+                    JSONObject jSONObject1 = new JSONObject(response);
 
+                    String dataContent = jSONObject1.getString("data");
+
+                    cartDetailsResponseModels = new CartController().getCartDetails(dataContent);
+
+                    lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
+
+                    cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this);
+                    recyclerView.setAdapter(cartDetailsAdapter);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
+                }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
 
                 outputResponseModel = gson.fromJson(response, OutputResponseModel.class);

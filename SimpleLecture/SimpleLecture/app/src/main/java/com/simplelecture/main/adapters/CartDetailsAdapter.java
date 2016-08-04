@@ -55,7 +55,7 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
         holder.textCoursePrice.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getPrice())));
         holder.subTotal.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getSubTotalPrice())));
         holder.text_course_printed.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getCourseMaterialPrices())));
-
+        holder.textMonths.setText(courseListCartModel.getMonths() + "Month(s)");
 //        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, mContext.getResources().getStringArray(R.array.months));
 //        holder.spinnerMonths.setAdapter(stringArrayAdapter);
 

@@ -32,11 +32,14 @@ import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCategoriesModel;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -216,42 +219,71 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
             JsonParser parser = new JsonParser();
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECATEGORIES)) {
 
-                JsonArray jarray = parser.parse(response).getAsJsonArray();
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                courseCategoriesModelLst = new ArrayList<CourseCategoriesModel>();
-                for (JsonElement obj : jarray) {
-                    CourseCategoriesModel courseCategoriesModellObj = gson.fromJson(obj, CourseCategoriesModel.class);
-                    courseCategoriesModelLst.add(courseCategoriesModellObj);
-                }
+                if (outputResponseModel.isSuccess()) {
 
-                loadRecyclerView();
-            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
+                    JSONObject jSONObject = new JSONObject(response);
 
-                courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(response);
+                    String dataContent = jSONObject.getString("data");
 
-                if (courseDetailsResponseModel.isCombo()) {
-                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
-                } else {
+                    JsonArray jarray = parser.parse(dataContent).getAsJsonArray();
 
-                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                        param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
-
-                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                        //My HomeCoursesModel service
-                        ApiService.getApiService().doGetChapters(getActivity(), CourseCategoriesFragment.this, cID);
-                    } else {
-                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    courseCategoriesModelLst = new ArrayList<CourseCategoriesModel>();
+                    for (JsonElement obj : jarray) {
+                        CourseCategoriesModel courseCategoriesModellObj = gson.fromJson(obj, CourseCategoriesModel.class);
+                        courseCategoriesModelLst.add(courseCategoriesModellObj);
                     }
 
+                    loadRecyclerView();
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+                }
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject = new JSONObject(response);
+                    String dataContent = jSONObject.getString("data");
+
+                    courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
+
+                    if (courseDetailsResponseModel.isCombo()) {
+                        new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
+                    } else {
+
+                        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                            param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
+
+                            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                            //My HomeCoursesModel service
+                            ApiService.getApiService().doGetChapters(getActivity(), CourseCategoriesFragment.this, cID);
+                        } else {
+                            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                        }
+
+                    }
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
 
-                List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(response);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+                if (outputResponseModel.isSuccess()) {
 
-                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+                    JSONObject jSONObject = new JSONObject(response);
+                    String dataContent = jSONObject.getString("data");
 
+                    List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(dataContent);
+
+                    courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+
+                    new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+                }
             }
 
 
@@ -267,6 +299,7 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
         if (pd.isShowing()) {
             pd.cancel();
         }
+        snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
 
     }
 

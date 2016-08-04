@@ -36,6 +36,7 @@ public class RestMethod implements IRestMethod {
         try {
             URL url = new URL(uri.toString());
             Log.v("url-->", url.toString());
+            Log.v("token-->", ApiService.headerToken);
             Log.v("body-->", body.toString());
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.addRequestProperty("content-type", "application/json");
