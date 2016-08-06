@@ -4,9 +4,11 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.SignInModel;
+import com.simplelecture.main.transactions.BillingAddressTransaction;
 import com.simplelecture.main.transactions.CartAddTransaction;
 import com.simplelecture.main.transactions.CartDetailsTransaction;
 import com.simplelecture.main.transactions.CartRemoveTransaction;
@@ -312,6 +314,21 @@ public class ApiService {
         SummaryDetailsTransaction summaryDetailsTransaction = new SummaryDetailsTransaction(null, mContext, userId, token);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(summaryDetailsTransaction);
+
+    }
+
+    public void doBillingAddress(Context context, BillingAddressModel billingAddressModel) {
+        try {
+
+            String userId = Util.getFromPrefrences(context, "uId");
+            JsonFactory jsonFactory = new JsonFactory();
+            JSONObject jsonObject = jsonFactory.getBillingAddress(billingAddressModel);
+            BillingAddressTransaction billingAddressTransaction = new BillingAddressTransaction(jsonObject, context);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(context);
+            transactionProcessor.execute(billingAddressTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

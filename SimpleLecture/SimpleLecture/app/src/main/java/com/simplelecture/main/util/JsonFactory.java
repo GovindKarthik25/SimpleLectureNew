@@ -1,5 +1,6 @@
 package com.simplelecture.main.util;
 
+import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.SignInModel;
 
 import org.json.JSONException;
@@ -100,6 +101,24 @@ public class JsonFactory {
             jsonObject.put("UserID", userID);
             jsonObject.put("CourseId", courseID);
             jsonObject.put("Months", months);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public JSONObject getBillingAddress(BillingAddressModel billingAddressModel) {
+
+        try {
+
+            jsonObject.put("UserId", billingAddressModel.getUserID());
+            jsonObject.put("FullName", billingAddressModel.getFullName());
+            jsonObject.put("Address", billingAddressModel.getAddress());
+            jsonObject.put("City", billingAddressModel.getCity());
+            jsonObject.put("State", billingAddressModel.getState());
+            jsonObject.put("Pincode", billingAddressModel.getPinCode());
+            jsonObject.put("Mobile", billingAddressModel.getMobile());
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

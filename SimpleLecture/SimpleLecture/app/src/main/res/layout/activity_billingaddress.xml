@@ -77,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_Pincode"
+                android:maxLength="6"
                 android:inputType="number" />
         </android.support.design.widget.TextInputLayout>
 
@@ -90,6 +91,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_mobile"
+                android:maxLength="10"
                 android:inputType="phone" />
         </android.support.design.widget.TextInputLayout>
 

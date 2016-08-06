@@ -39,5 +39,9 @@ public class Constants {
     /*Summary*/
     public static String GET_ORDER_SUMMARY = "Order/Summary/";
 
+    /*Profile*/
+    public static String GET_BILLINGADDRESSGET = "BillingAddress/Get/";
+    public static String GET_BILLINGADDRESSSAVE  = "BillingAddress/Save";
+
 
 }

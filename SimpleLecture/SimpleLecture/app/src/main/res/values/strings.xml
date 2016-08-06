@@ -58,7 +58,9 @@
     <string name="yes">Yes</string>
     <string name="pleaseLogin">Please Login for more Details</string>
     <string name="AreyousurewanttocloseApp">Are you sure want to close the App? or Use Menu</string>
-
+    <string name="err_msg_shippingAddess">Enter your Shipping Address</string>
+    <string name="err_msg_pincode">Enter your PinCode</string>
+    <string name="err_msg_State">Enter your State</string>
 
     <string name="title_activity_home">HomeActivity</string>
 
