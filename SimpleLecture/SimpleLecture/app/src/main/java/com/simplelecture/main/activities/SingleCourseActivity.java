@@ -134,7 +134,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View arg0, MotionEvent arg1) {
-                return true;
+                return false;
             }
         });
 

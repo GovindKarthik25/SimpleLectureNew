@@ -60,8 +60,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
@@ -128,7 +127,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             onDisplayViewMethod(1);
         } else if (id == R.id.nav_SampleVideos) {
             displayView(2);
-        }/* else if (id == R.id.nav_dashboard) {
+        } /*else if (id == R.id.nav_dashboard) {
             onDisplayViewMethod(3);
         } else if (id == R.id.nav_my_courses) {
             onDisplayViewMethod(4);

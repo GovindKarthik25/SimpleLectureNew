@@ -141,7 +141,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View arg0, MotionEvent arg1) {
-                return true;
+                return false;
             }
         });
     }

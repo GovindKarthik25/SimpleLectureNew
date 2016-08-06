@@ -2,10 +2,11 @@
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/textview"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="30dip"
+    android:gravity="left|center"
     android:padding="2dp"
+    android:paddingLeft="10dp"
     android:text="sfsdfsdf"
-    android:paddingRight="10dp"
     android:textColor="@android:color/black"
+    android:background="@drawable/divder_spinner"
     android:textSize="13sp"></TextView>
-

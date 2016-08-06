@@ -17,6 +17,12 @@
     <string name="hint_Name">Name</string>
     <string name="hint_OTPNo">Enter OTP number</string>
 
+    <string name="hint_FullName">Full Name</string>
+    <string name="hint_ShippingAddress">Shipping Address</string>
+    <string name="hint_State">State</string>
+    <string name="hint_Pincode">Pincode</string>
+
+
     <string name="loading">Loading&#8230;</string>
 
     <string name="btn_LogIn">Login</string>
@@ -25,7 +31,8 @@
     <string name="btn_sign_up">Sign up</string>
     <string name="btn_verify">Verify</string>
     <string name="btn_PostReviews">Post Reviews</string>
-
+    <string name="btn_Save">Save</string>
+    <string name="billingAddress">Billing Address</string>
 
     <string name="txt_resendOTP">Resend OTP</string>
 

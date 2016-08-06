@@ -19,7 +19,7 @@
             android:title="@string/navigation_drawer_demo" />
     </group>
 
-    <group android:checkableBehavior="single">
+    <!--<group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_dashboard"
             android:title="@string/navigation_drawer_dashboard" />
@@ -41,7 +41,7 @@
         <item
             android:id="@+id/nav_forum"
             android:title="@string/navigation_drawer_forum" />
-    </group>
+    </group>-->
 
     <group android:checkableBehavior="single">
         <item
