@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.CartActivity;
+import com.simplelecture.main.activities.interfaces.MonthSelectionListener;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.model.viewmodel.CourseListCartModel;
 import com.simplelecture.main.util.Util;
@@ -28,9 +30,12 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
 
     OnItemClickListener onItemClickListener;
 
-    public CartDetailsAdapter(Context mContext, List<CourseListCartModel> courseListCartModel, OnItemClickListener onItemClickListener) {
+    MonthSelectionListener monthSelectionListener;
+
+    public CartDetailsAdapter(Context mContext, List<CourseListCartModel> courseListCartModel, CartActivity itemClickListener, OnItemClickListener onItemClickListener) {
 
         this.mContext = mContext;
+        monthSelectionListener = itemClickListener;
         this.courseListCartModelArray = courseListCartModel;
         this.onItemClickListener = onItemClickListener;
 
@@ -49,15 +54,13 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        CourseListCartModel courseListCartModel = courseListCartModelArray.get(position);
+        final CourseListCartModel courseListCartModel = courseListCartModelArray.get(position);
 
         holder.textCourseName.setText(courseListCartModel.getCourseName());
         holder.textCoursePrice.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getPrice())));
         holder.subTotal.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getSubTotalPrice())));
         holder.text_course_printed.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getCourseMaterialPrices())));
         holder.textMonths.setText(courseListCartModel.getMonths() + "Month(s)");
-//        ArrayAdapter<String> stringArrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_dropdown_item_1line, mContext.getResources().getStringArray(R.array.months));
-//        holder.spinnerMonths.setAdapter(stringArrayAdapter);
 
         if (!courseListCartModel.getCourseMaterialNames().equals("")) {
             holder.textViewMaterialName.setVisibility(View.VISIBLE);
@@ -70,7 +73,8 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
             @Override
             public void onClick(View v) {
 
-                onItemClickListener.onItemClick(null, -1);
+                monthSelectionListener.onMonthChanged(position);
+
             }
         });
 

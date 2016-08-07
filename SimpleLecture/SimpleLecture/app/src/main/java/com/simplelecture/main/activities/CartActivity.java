@@ -1,5 +1,6 @@
 package com.simplelecture.main.activities;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -9,11 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.interfaces.MonthSelectionListener;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.CartDetailsAdapter;
 import com.simplelecture.main.constants.Constants;
@@ -30,7 +36,7 @@ import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONObject;
 
-public class CartActivity extends AppCompatActivity implements OnItemClickListener, NetworkLayer {
+public class CartActivity extends AppCompatActivity implements OnItemClickListener, NetworkLayer, MonthSelectionListener {
 
     RecyclerView recyclerView;
     LinearLayoutManager linearLayoutManager;
@@ -44,6 +50,8 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
     private CartDetailsResponseModel cartDetailsResponseModels;
     private OutputResponseModel outputResponseModel;
     private TextView lbl_total;
+
+    public static int coursesId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +85,34 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
     }*/
 
+    }
+
+    public void doChangeMonths(final String courseId) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog);
+        ListView listView = (ListView) dialog.findViewById(R.id.list);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.months));
+        listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
+                    param_get_ServiceCallResult = Constants.GET_CART_CHANGEMONTH;
+                    pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
+                    dialog.cancel();
+                    ApiService.getApiService().doChangeMonthFromCart(CartActivity.this, courseId, String.valueOf(position + 1));
+
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }
+
+            }
+        });
+
+        dialog.show();
     }
 
     public void doContinueShopping(View view) {
@@ -120,23 +156,22 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(View view, int position) {
-
+        String courseId = cartDetailsResponseModels.getCourseCartList().get(position).getCourseId();
         try {
-            if (position == -1) {
+//            if (position == -1) {
+//                doChangeMonths(courseId);
+//            } else {
 
+
+            if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_CART_REMOVE;
+                pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
+                ApiService.getApiService().doRemoveFromCart(CartActivity.this, courseId);
 
             } else {
-                String courseId = cartDetailsResponseModels.getCourseCartList().get(position).getCourseId();
-
-                if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
-                    param_get_ServiceCallResult = Constants.GET_CART_REMOVE;
-                    pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
-                    ApiService.getApiService().doRemoveFromCart(CartActivity.this, courseId);
-
-                } else {
-                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-                }
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
             }
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -166,7 +201,7 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
 
                     lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
 
-                    cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this);
+                    cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this, this);
                     recyclerView.setAdapter(cartDetailsAdapter);
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
@@ -200,4 +235,13 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         }
 
     }
+
+    @Override
+    public void onMonthChanged(int position) {
+        String courseId = cartDetailsResponseModels.getCourseCartList().get(position).getCourseId();
+
+        doChangeMonths(courseId);
+    }
 }
+
+

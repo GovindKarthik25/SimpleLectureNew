@@ -35,8 +35,11 @@ import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -148,9 +151,9 @@ public class Util {
         Rect r = new Rect();
         rootView.getWindowVisibleDisplayFrame(r);
         DisplayMetrics dm = rootView.getResources().getDisplayMetrics();
-		/* heightDiff = rootView height - status bar height (r.top) - visible frame height (r.bottom - r.top) */
+        /* heightDiff = rootView height - status bar height (r.top) - visible frame height (r.bottom - r.top) */
         int heightDiff = rootView.getBottom() - r.bottom;
-		/* Threshold size: dp to pixels, multiply with display density */
+        /* Threshold size: dp to pixels, multiply with display density */
         boolean isKeyboardShown = heightDiff > SOFT_KEYBOARD_HEIGHT_DP_THRESHOLD * dm.density;
 
         //Log.d("TAG", "isKeyboardShown ? " + isKeyboardShown + ", heightDiff:" + heightDiff + ", density:" + dm.density
@@ -307,7 +310,7 @@ public class Util {
         return preferences.getString(type, "");
     }
 
-    public static Spannable setActionBarText(String actionBarText){
+    public static Spannable setActionBarText(String actionBarText) {
         Spannable text = new SpannableString(actionBarText);
         text.setSpan(new ForegroundColorSpan(Color.WHITE), 0, text.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         return text;
@@ -317,10 +320,10 @@ public class Util {
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
     }
 
-    public static ArrayList<CharSequence> convertToStringArray(List<CourseMaterials> courseMaterials){
+    public static ArrayList<CharSequence> convertToStringArray(List<CourseMaterials> courseMaterials) {
 
         ArrayList<CharSequence> coStringArrayList = new ArrayList<>();
-        for(CourseMaterials materials: courseMaterials){
+        for (CourseMaterials materials : courseMaterials) {
             coStringArrayList.add(materials.getName());
         }
 
@@ -328,6 +331,29 @@ public class Util {
 
     }
 
+    public static HashMap<String, String> prepareMap(List<CourseMaterials> courseMaterials) {
+
+        HashMap<String, String> courseHashMap = new HashMap<>();
+        for (CourseMaterials materials : courseMaterials) {
+            courseHashMap.put(materials.getId(), materials.getName());
+        }
+
+        return courseHashMap;
+
+    }
+
+    public static String getMaterialData(HashMap<String, String> stringHashMap, String value) {
+        Iterator<Map.Entry<String, String>> iter = stringHashMap.entrySet().iterator();
+        String key_you_look_for = "";
+        while (iter.hasNext()) {
+            Map.Entry<String, String> entry = iter.next();
+            if (entry.getValue().equals(value)) {
+                key_you_look_for = entry.getKey();
+            }
+        }
+
+        return key_you_look_for;
+    }
 
 
 }

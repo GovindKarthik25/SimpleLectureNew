@@ -57,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -88,6 +89,8 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private CartModel cartModel;
     private SnackBarManagement snack;
 
+    HashMap<String, String> courseHashMap;
+
     @Override
     public void onBackPressed() {
 
@@ -107,6 +110,9 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         if (intent.hasExtra("courseDetails")) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
         }
+
+        courseHashMap = new HashMap<>();
+        courseHashMap = Util.prepareMap(courseDetailsResponseModelObj.getCourseMaterials());
 
         courseMaterials = Util.convertToStringArray(courseDetailsResponseModelObj.getCourseMaterials());
 
@@ -166,6 +172,9 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
             if (isChecked) {
                 showMaterialsDialog();
+            } else {
+                textViewLabelMaterial.setText("");
+                textViewLabelMaterial.setVisibility(View.GONE);
             }
         }
     };
@@ -181,7 +190,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
                     cartModel.setCourseID(courseDetailsResponseModelObj.getcId());
                     cartModel.setMonths(String.valueOf(selectedMonthId));
-                    cartModel.setCourseMaterials("1,2"); // jsonArray
+                    cartModel.setCourseMaterials(courseMaterialBuilder.toString()); // jsonArray
                     Log.d("cartModel-->", "" + cartModel);
 
                     ApiService.getApiService().doAddToCart(ComboCourseActivity.this, cartModel);
@@ -226,6 +235,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     }
 
     JSONArray jsonArray;
+    StringBuilder courseMaterialBuilder = new StringBuilder();
 
     private void showMaterialsDialog() {
         final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);
@@ -258,9 +268,13 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
                         if (checked) {
                             if (stringBuilder.length() > 0) stringBuilder.append(",");
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("Id", 1);
-                            jsonArray.put(jsonObject);
+//                            JSONObject jsonObject = new JSONObject();
+//                            jsonObject.put("Id", Util.getMaterialData(courseHashMap,String.valueOf(list.getItemAtPosition(i))));
+//                            jsonArray.put(jsonObject);
+                            if (courseMaterialBuilder.length() > 0)
+                                courseMaterialBuilder.append(",");
+                            courseMaterialBuilder.append(Util.getMaterialData(courseHashMap, String.valueOf(list.getItemAtPosition(i))));
+
                             stringBuilder.append(list.getItemAtPosition(i));
                             textViewLabelMaterial.setVisibility(View.VISIBLE);
                             textViewLabelMaterial.setText(stringBuilder.toString());
@@ -268,7 +282,9 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
                         }
                     }
 
-                } catch (JSONException e) {
+                    Log.d("JSON", "" + jsonArray);
+
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
