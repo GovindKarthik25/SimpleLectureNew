@@ -34,6 +34,7 @@ import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CartActivity extends AppCompatActivity implements OnItemClickListener, NetworkLayer, MonthSelectionListener {
@@ -189,24 +190,26 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
 
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_ALL)) {
 
-                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+                updateCartData(response);
 
-                if (outputResponseModel.isSuccess()) {
-
-                    JSONObject jSONObject1 = new JSONObject(response);
-
-                    String dataContent = jSONObject1.getString("data");
-
-                    cartDetailsResponseModels = new CartController().getCartDetails(dataContent);
-
-                    lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
-
-                    cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this, this);
-                    recyclerView.setAdapter(cartDetailsAdapter);
-                } else {
-                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
-
-                }
+//                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+//
+//                if (outputResponseModel.isSuccess()) {
+//
+//                    JSONObject jSONObject1 = new JSONObject(response);
+//
+//                    String dataContent = jSONObject1.getString("data");
+//
+//                    cartDetailsResponseModels = new CartController().getCartDetails(dataContent);
+//
+//                    lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
+//
+//                    cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this, this);
+//                    recyclerView.setAdapter(cartDetailsAdapter);
+//                } else {
+//                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+//
+//                }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
 
                 outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
@@ -219,12 +222,42 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
                 }
 
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_CHANGEMONTH)) {
-
-
+                    updateCartData(response);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+
+    private void updateCartData(String response){
+        Gson gson = new Gson();
+
+        OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
+        try{
+            if (outputResponseModel.isSuccess()) {
+
+                JSONObject jSONObject1 = new JSONObject(response);
+
+                String dataContent = jSONObject1.getString("data");
+
+                cartDetailsResponseModels = new CartController().getCartDetails(dataContent);
+
+                lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
+
+                cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this, this);
+                recyclerView.setAdapter(cartDetailsAdapter);
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+
+            }
+
+
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override

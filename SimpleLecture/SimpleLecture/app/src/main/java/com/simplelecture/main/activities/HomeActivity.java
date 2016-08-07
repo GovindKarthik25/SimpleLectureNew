@@ -111,6 +111,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             new ViewManager().gotoSigninView(this);
         } else if (id == R.id.action_logout) {
             return true;
+        } else if(id == R.id.action_cart){
+            startActivity(new Intent(getApplicationContext(),CartActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
