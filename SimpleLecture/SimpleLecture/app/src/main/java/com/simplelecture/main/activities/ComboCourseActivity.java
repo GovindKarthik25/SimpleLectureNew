@@ -172,6 +172,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
             if (isChecked) {
                 showMaterialsDialog();
+                courseMaterialBuilder = new StringBuilder();
             } else {
                 textViewLabelMaterial.setText("");
                 textViewLabelMaterial.setVisibility(View.GONE);
@@ -235,7 +236,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     }
 
     JSONArray jsonArray;
-    StringBuilder courseMaterialBuilder = new StringBuilder();
+    StringBuilder courseMaterialBuilder;
 
     private void showMaterialsDialog() {
         final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);

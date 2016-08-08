@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "369965636323",
+    "project_id": "plasma-respect-121711"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369965636323:android:407a2c4a2559cbc2",
+        "android_client_info": {
+          "package_name": "com.simplelecture.mainapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "369965636323-2mbgdd48fdmb0o5b8p3vcguoojjb7b5f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simplelecture.mainapp",
+            "certificate_hash": "53C5BA330C539F57365B6A7E127A03ADAEFB4FFA"
+          }
+        },
+        {
+          "client_id": "369965636323-91dbkqiehrf3ott6q4b0j44564017tkc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDLWDXcTDlNtM6qvpGhNkhxMI5f9RwKH0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -37,9 +37,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -353,6 +355,23 @@ public class Util {
         }
 
         return key_you_look_for;
+    }
+
+    public static StringBuilder removeDuplicate(String temp) {
+
+        char[] chars = temp.toCharArray();
+        Set<Character> charSet = new LinkedHashSet<Character>();
+        for (char c : chars) {
+            charSet.add(c);
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (Character character : charSet) {
+            sb.append(character);
+        }
+
+        return sb;
+
     }
 
 

@@ -10,14 +10,36 @@ public class SignInModel {
     private String Mobile;
     private String Password;
 
+    public String getLoginType() {
+        return LoginType;
+    }
+
+    public void setLoginType(String loginType) {
+        LoginType = loginType;
+    }
+
+    private String LoginType;
+
+    public String getMobileOSType() {
+        return MobileOSType;
+    }
+
+    public void setMobileOSType(String mobileOSType) {
+        MobileOSType = mobileOSType;
+    }
+
+    private String MobileOSType;
+
     public SignInModel() {
     }
 
-    public SignInModel(String name, String email, String mobile, String password) {
+    public SignInModel(String name, String email, String mobile, String password,String loginType,String mobileOsType) {
         Name = name;
         Email = email;
         Mobile = mobile;
         Password = password;
+        LoginType = loginType;
+        MobileOSType = mobileOsType;
     }
 
     public String getName() {
