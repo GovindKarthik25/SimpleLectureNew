@@ -117,7 +117,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
                 mParam2 = getArguments().getString(ARG_PARAM2);
             }
 
-            loadGetMyCourses();
+//            loadGetMyCourses();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -128,13 +128,20 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View convertView = inflater.inflate(R.layout.fragment_dashboard, container, false);
-        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
-        floatingCoordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.floatingActionButton);
-        floatingAction = (FloatingActionButton) floatingCoordinatorLayout.findViewById(R.id.floatingAction);
+//        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
+//        floatingCoordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.floatingActionButton);
+//        floatingAction = (FloatingActionButton) floatingCoordinatorLayout.findViewById(R.id.floatingAction);
 
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
 
         return convertView;
+    }
+
+
+    private void loadTempData(){
+
+
+
     }
 
     @Override

@@ -13,7 +13,6 @@ import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.model.viewmodel.myCourses;
 import com.squareup.picasso.Picasso;
-//import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
@@ -21,17 +20,19 @@ import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
 
+//import com.squareup.picasso.Picasso;
+
 /**
  * Created by M1032185 on 1/31/2016.
  */
-public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyViewHolder> {
+public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.MyViewHolder> {
 
     List<myCourses> myCoursesListArray;
     Activity activity;
 
     OnItemClickListener mItemClickListener;
 
-    public DashboardAdapter(Activity activty, List<myCourses> myCoursesLstArray) {
+    public MyCoursesAdapter(Activity activty, List<myCourses> myCoursesLstArray) {
         this.activity = activty;
         this.myCoursesListArray = myCoursesLstArray;
 
@@ -41,7 +42,7 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.dashboard_row_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.mycourse_row_item, parent, false);
         MyViewHolder myViewHolder = new MyViewHolder(view);
         return myViewHolder;
     }
@@ -56,8 +57,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
                         .load(myCoursesListArray.get(position).getcIcon())
                         .placeholder(R.mipmap.loading)   // optional
                         .error(R.mipmap.app_icon)      // optional
-                                //.resize(250, 200)                        // optional
-                                //.rotate(90)                             // optional
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
                         .into(holder.courseimageView);
             } else {
                 holder.courseimageView.setImageResource(R.mipmap.app_icon);
@@ -81,17 +82,16 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textView;
-        TextView textSubTitle;
+        TextView textNoOfChapters;
+        TextView textExeCovered;
         ImageView courseimageView;
-
-        LinearLayout itemLayout;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text_name);
-            textSubTitle = (TextView) itemView.findViewById(R.id.text_no_chapters);
             courseimageView = (ImageView) itemView.findViewById(R.id.courseimageView);
-            itemLayout = (LinearLayout) itemView.findViewById(item_layout);
+            textNoOfChapters = (TextView) itemView.findViewById(R.id.text_no_chapters);
+            textExeCovered = (TextView) itemView.findViewById(R.id.text_exer_covered);
             itemView.setOnClickListener(this);
 
         }

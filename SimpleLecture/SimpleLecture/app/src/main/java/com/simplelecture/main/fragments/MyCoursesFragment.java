@@ -3,13 +3,18 @@ package com.simplelecture.main.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.adapters.MyCoursesAdapter;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.NetworkLayer;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,7 +24,7 @@ import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener
  * Use the {@link MyCoursesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyCoursesFragment extends Fragment {
+public class MyCoursesFragment extends Fragment implements NetworkLayer{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -30,6 +35,10 @@ public class MyCoursesFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView recyclerView;
+    private CoordinatorLayout coordinatorLayout;
+    private MyCoursesAdapter myCoursesAdapter;
 
     /**
      * Use this factory method to create a new instance of
@@ -66,7 +75,11 @@ public class MyCoursesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_courses, container, false);
+        View convertView = inflater.inflate(R.layout.fragment_my_courses, container, false);
+        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
+        recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
+
+        return convertView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -94,4 +107,13 @@ public class MyCoursesFragment extends Fragment {
     }
 
 
+    @Override
+    public void parseResponse(String response) {
+
+    }
+
+    @Override
+    public void showError(String error) {
+
+    }
 }

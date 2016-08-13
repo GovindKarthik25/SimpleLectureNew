@@ -129,9 +129,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             onDisplayViewMethod(1);
         } else if (id == R.id.nav_SampleVideos) {
             displayView(2);
-        } /*else if (id == R.id.nav_dashboard) {
+        } else if (id == R.id.nav_dashboard) {
             onDisplayViewMethod(3);
-        } else if (id == R.id.nav_my_courses) {
+        } /*else if (id == R.id.nav_my_courses) {
             onDisplayViewMethod(4);
         } else if (id == R.id.nav_excercises) {
             onDisplayViewMethod(5);
@@ -178,8 +178,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:
-                fragment = new DashboardFragment();
-                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
+                startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
+//                fragment = new DashboardFragment();
+//                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
                 break;
             case 4:
                 fragment = new MyCoursesFragment();
@@ -208,11 +209,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_container, fragment);
-        fragmentTransaction.commit();
-
+        if(fragment != null){
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.frame_container, fragment);
+            fragmentTransaction.commit();
+        }
     }
 
     private void onShowAlert() {
