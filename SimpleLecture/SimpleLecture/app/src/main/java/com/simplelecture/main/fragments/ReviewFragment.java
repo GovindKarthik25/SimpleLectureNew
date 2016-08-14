@@ -25,7 +25,6 @@ import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
-import com.simplelecture.main.viewManager.ViewManager;
 
 /**
  * Created by Raos on 2/14/2016.
@@ -132,7 +131,6 @@ public class ReviewFragment extends Fragment implements View.OnClickListener, Ne
                 outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
                 if (outputResponseModel.isSuccess()) {
                     Toast.makeText(getActivity(), outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
-                    new ViewManager().gotoLoginView(getActivity());
                 } else {
                     alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
                 }

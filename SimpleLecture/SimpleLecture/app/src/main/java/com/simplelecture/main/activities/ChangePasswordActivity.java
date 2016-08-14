@@ -52,6 +52,8 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         searchEditText.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(Util.setActionBarText("Change Password"));
+
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         input_layout_OldPassword = (TextInputLayout) findViewById(R.id.input_layout_OldPassword);

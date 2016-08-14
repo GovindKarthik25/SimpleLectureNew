@@ -7,6 +7,12 @@ package com.simplelecture.main.constants;
 public class Constants {
 
     public static String VERSION = "1.0";
+    public static String android = "Android";
+    public static String loginTypeSL = "SL";
+    public static String loginTypeFB = "FB";
+    public static String loginTypeG = "G";
+    //“SL” or “FB” or “G”
+
 
     /*Database Name*/
     public static String DATABASE_NAME = "SimpleLecture.db";
@@ -38,10 +44,16 @@ public class Constants {
 
     /*Summary*/
     public static String GET_ORDER_SUMMARY = "Order/Summary/";
+    public static String GET_Promocode = "User/VerifyOTP/";
+
 
     /*Profile*/
     public static String GET_BILLINGADDRESSGET = "BillingAddress/Get/";
     public static String GET_BILLINGADDRESSSAVE  = "BillingAddress/Save";
+
+    /*OTP*/
+    public static String GET_USER_RESENDOTP = "User/ResendOTP/";
+    public static String GET_USER_VERIFYOTP = "User/VerifyOTP/";
 
 
 }

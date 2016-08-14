@@ -10,20 +10,20 @@ public class BillingAddressModel {
     private String Address;
     private String City;
     private String State;
-    private String PinCode;
+    private String Pincode;
     private String Mobile;
     private String Email;
 
     public BillingAddressModel() {
     }
 
-    public BillingAddressModel(String userID, String fullName, String address, String city, String state, String pinCode, String mobile, String email) {
+    public BillingAddressModel(String userID, String fullName, String address, String city, String state, String pincode, String mobile, String email) {
         UserID = userID;
         FullName = fullName;
         Address = address;
         City = city;
         State = state;
-        PinCode = pinCode;
+        Pincode = pincode;
         Mobile = mobile;
         Email = email;
     }
@@ -68,12 +68,12 @@ public class BillingAddressModel {
         State = state;
     }
 
-    public String getPinCode() {
-        return PinCode;
+    public String getPincode() {
+        return Pincode;
     }
 
-    public void setPinCode(String pinCode) {
-        PinCode = pinCode;
+    public void setPincode(String pincode) {
+        Pincode = pincode;
     }
 
     public String getMobile() {
@@ -100,7 +100,7 @@ public class BillingAddressModel {
                 ", Address='" + Address + '\'' +
                 ", City='" + City + '\'' +
                 ", State='" + State + '\'' +
-                ", PinCode='" + PinCode + '\'' +
+                ", Pincode='" + Pincode + '\'' +
                 ", Mobile='" + Mobile + '\'' +
                 ", Email='" + Email + '\'' +
                 '}';

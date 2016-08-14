@@ -60,7 +60,9 @@ public class CartDetailsAdapter extends RecyclerView.Adapter<CartDetailsAdapter.
         holder.textCoursePrice.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getPrice())));
         holder.subTotal.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getSubTotalPrice())));
         holder.text_course_printed.setText("Rs." + Util.decFormat(Float.valueOf(courseListCartModel.getCourseMaterialPrices())));
-        holder.textMonths.setText(courseListCartModel.getMonths() + "Month(s)");
+        holder.textMonths.setText(courseListCartModel.getMonths() + " Month(s)");
+        holder.textMonths.setPadding(5,0,0,0);
+        holder.textMonths.setBackground(mContext.getResources().getDrawable(R.drawable.itemborder));
 
         if (!courseListCartModel.getCourseMaterialNames().equals("")) {
             holder.textViewMaterialName.setVisibility(View.VISIBLE);

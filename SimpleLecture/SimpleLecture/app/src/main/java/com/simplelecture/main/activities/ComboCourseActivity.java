@@ -53,8 +53,6 @@ import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -180,6 +178,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         }
     };
 
+    private String courseMaterialSelected;
     private View.OnClickListener onClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -191,7 +190,12 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
                     cartModel.setCourseID(courseDetailsResponseModelObj.getcId());
                     cartModel.setMonths(String.valueOf(selectedMonthId));
-                    cartModel.setCourseMaterials(courseMaterialBuilder.toString()); // jsonArray
+                    if (courseMaterialBuilder != null && courseMaterialBuilder.length() > 0) {
+                        courseMaterialSelected = courseMaterialBuilder.toString();
+                    } else {
+                        courseMaterialSelected = "";
+                    }
+                    cartModel.setCourseMaterials(courseMaterialSelected); // jsonArray
                     Log.d("cartModel-->", "" + cartModel);
 
                     ApiService.getApiService().doAddToCart(ComboCourseActivity.this, cartModel);
@@ -275,6 +279,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
                             if (courseMaterialBuilder.length() > 0)
                                 courseMaterialBuilder.append(",");
                             courseMaterialBuilder.append(Util.getMaterialData(courseHashMap, String.valueOf(list.getItemAtPosition(i))));
+
 
                             stringBuilder.append(list.getItemAtPosition(i));
                             textViewLabelMaterial.setVisibility(View.VISIBLE);

@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
@@ -37,6 +38,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private AlertMessageManagement alertMessageManagement;
     private SessionManager sessionManager;
     private int alertID = 0;
+    private TextView textView_EmailId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sessionManager = SessionManager.getInstance();
-
+      //  String userId = Util.getFromPrefrences(mContext, "email");
         alertMessageManagement = new AlertMessageManagement(HomeActivity.this, new AlertDialogClick());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -60,13 +62,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText("Home"));
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.drawerHeader_view);
+        textView_EmailId = (TextView) findViewById(R.id.textView_EmailId);
+        textView_EmailId.setText("dhhhd");
+
         navigationView.setNavigationItemSelectedListener(this);
 
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -106,13 +113,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_login) {
             new ViewManager().gotoLoginView(this);
         } else if (id == R.id.action_myProfile) {
-            return true;
+            new ViewManager().gotoBillingAddressActivityView(this, false);
         } else if (id == R.id.action_Signin) {
             new ViewManager().gotoSigninView(this);
         } else if (id == R.id.action_logout) {
             return true;
         } else if(id == R.id.action_cart){
-            startActivity(new Intent(getApplicationContext(),CartActivity.class));
+            new ViewManager().gotoCartActivity(this);
         }
 
         return super.onOptionsItemSelected(item);
@@ -147,6 +154,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+
+      //  textView_EmailId
+
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

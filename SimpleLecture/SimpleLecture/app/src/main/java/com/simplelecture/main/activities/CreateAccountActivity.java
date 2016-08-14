@@ -3,21 +3,15 @@ package com.simplelecture.main.activities;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.facebook.CallbackManager;
@@ -31,7 +25,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
@@ -113,7 +106,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Changing the action bar color
-        getSupportActionBar().setTitle(Util.setActionBarText("SignIn"));
+        getSupportActionBar().setTitle(Util.setActionBarText("Signup"));
 
         inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
@@ -290,6 +283,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
             outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
             if (outputResponseModel.isSuccess()) {
+                Util.storeToPrefrences(this, "mobile", input_Mobile.getText().toString().trim());
                 Toast.makeText(CreateAccountActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
                 new ViewManager().gotoOTPcodeView(CreateAccountActivity.this);
             } else {

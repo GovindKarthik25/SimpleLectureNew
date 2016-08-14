@@ -13,16 +13,16 @@ import java.net.URI;
 /**
  * Created by Raos on 7/27/2016.
  */
-public class SummaryDetailsTransaction extends GetTransaction {
+public class ResendOTPTransaction extends GetTransaction {
 
+    private final String userID;
+    private final String phoneNo;
     private String mUrlEncoded;
 
-    private String mHeaderVal;
-
-    public SummaryDetailsTransaction(JSONObject jsonObject, Context context, String urlEncoded, String headerVal) {
+    public ResendOTPTransaction(JSONObject jsonObject, Context context, String userId, String phoneNO) {
         super(jsonObject, context);
-        mUrlEncoded = urlEncoded;
-        mHeaderVal = headerVal;
+        this.userID = userId;
+        this.phoneNo = phoneNO;
     }
 
     @Override
@@ -42,12 +42,12 @@ public class SummaryDetailsTransaction extends GetTransaction {
 
     @Override
     protected String getHeader() {
-        return mHeaderVal;
+        return null;
     }
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_ORDER_SUMMARY + mUrlEncoded;
+        return Constants.GET_USER_RESENDOTP + userID +"/"+phoneNo;
     }
 
 }

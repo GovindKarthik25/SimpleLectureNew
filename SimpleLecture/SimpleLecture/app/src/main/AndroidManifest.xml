@@ -61,6 +61,7 @@
 
         <activity android:name=".activities.CartActivity" />
         <activity android:name=".activities.OrderSummaryActivity"></activity>
+        <activity android:name=".activities.BillingAddressActivity"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

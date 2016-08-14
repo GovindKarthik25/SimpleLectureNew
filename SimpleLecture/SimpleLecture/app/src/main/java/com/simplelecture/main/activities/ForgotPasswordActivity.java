@@ -53,7 +53,7 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         searchEditText.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
         //Changing the action bar color
-        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
+        getSupportActionBar().setTitle(Util.setActionBarText("Forgot Password"));
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
         input_emailForgotPassword = (EditText) findViewById(R.id.input_emailForgotPassword);

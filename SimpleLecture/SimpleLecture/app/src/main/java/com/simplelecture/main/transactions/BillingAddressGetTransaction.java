@@ -11,18 +11,16 @@ import org.json.JSONObject;
 import java.net.URI;
 
 /**
- * Created by Raos on 7/27/2016.
+ * Created by M1032185 on 7/27/2016.
  */
-public class SummaryDetailsTransaction extends GetTransaction {
+public class BillingAddressGetTransaction extends GetTransaction {
 
+    private final String userID;
     private String mUrlEncoded;
 
-    private String mHeaderVal;
-
-    public SummaryDetailsTransaction(JSONObject jsonObject, Context context, String urlEncoded, String headerVal) {
+    public BillingAddressGetTransaction(JSONObject jsonObject, Context context, String userId) {
         super(jsonObject, context);
-        mUrlEncoded = urlEncoded;
-        mHeaderVal = headerVal;
+        this.userID = userId;
     }
 
     @Override
@@ -42,12 +40,12 @@ public class SummaryDetailsTransaction extends GetTransaction {
 
     @Override
     protected String getHeader() {
-        return mHeaderVal;
+        return null;
     }
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_ORDER_SUMMARY + mUrlEncoded;
+        return Constants.GET_BILLINGADDRESSGET + userID;
     }
 
 }

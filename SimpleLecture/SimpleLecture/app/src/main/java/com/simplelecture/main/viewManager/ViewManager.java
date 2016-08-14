@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.simplelecture.main.activities.BillingAddressActivity;
 import com.simplelecture.main.activities.CartActivity;
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
@@ -171,6 +172,18 @@ public class ViewManager {
 
         intent = new Intent(mContext, OrderSummaryActivity.class);
         mContext.startActivity(intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Create Account View
+     *
+     * @return
+     */
+    public Intent gotoBillingAddressActivityView(Activity activity, boolean containsCourseMaterial) {
+        intent = new Intent(activity, BillingAddressActivity.class);
+        intent.putExtra("containsCourseMaterial", containsCourseMaterial);
+        setDisplay(activity, intent);
         return intent;
     }
 

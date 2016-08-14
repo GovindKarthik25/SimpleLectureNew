@@ -21,6 +21,7 @@
     <string name="hint_ShippingAddress">Shipping Address</string>
     <string name="hint_State">State</string>
     <string name="hint_Pincode">Pincode</string>
+    <string name="hint_City">City</string>
 
 
     <string name="loading">Loading&#8230;</string>
@@ -61,6 +62,8 @@
     <string name="err_msg_shippingAddess">Enter your Shipping Address</string>
     <string name="err_msg_pincode">Enter your PinCode</string>
     <string name="err_msg_State">Enter your State</string>
+    <string name="err_msg_Promocode">Enter your Promocode</string>
+    <string name="err_msg_City">Enter your City</string>
 
     <string name="title_activity_home">HomeActivity</string>
 
@@ -118,18 +121,18 @@
 
 
     <string-array name="months">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-        <item>11</item>
-        <item>12</item>
+        <item>1 Months</item>
+        <item>2 Months</item>
+        <item>3 Months</item>
+        <item>4 Months</item>
+        <item>5 Months</item>
+        <item>6 Months</item>
+        <item>7 Months</item>
+        <item>8 Months</item>
+        <item>9 Months</item>
+        <item>10 Months</item>
+        <item>11 Months</item>
+        <item>12 Months</item>
     </string-array>
 
     <string-array name="test">

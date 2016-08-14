@@ -181,7 +181,9 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
     public void parseResponse(String response) {
 
         try {
-            pd.cancel();
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
             List<courseFeatures> courseFeaturesLstArray;

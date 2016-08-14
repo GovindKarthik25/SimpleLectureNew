@@ -116,7 +116,7 @@ public class JsonFactory {
             jsonObject.put("Address", billingAddressModel.getAddress());
             jsonObject.put("City", billingAddressModel.getCity());
             jsonObject.put("State", billingAddressModel.getState());
-            jsonObject.put("Pincode", billingAddressModel.getPinCode());
+            jsonObject.put("Pincode", billingAddressModel.getPincode());
             jsonObject.put("Mobile", billingAddressModel.getMobile());
 
         } catch (JSONException e) {

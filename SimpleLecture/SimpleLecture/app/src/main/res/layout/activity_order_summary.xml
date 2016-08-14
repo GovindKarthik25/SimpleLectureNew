@@ -44,18 +44,20 @@
             android:padding="5dp">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_email"
+                android:id="@+id/input_layout_Promocode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1">
 
                 <EditText
+                    android:id="@+id/editText_PromoCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Promo Code" />
             </android.support.design.widget.TextInputLayout>
 
             <Button
+                android:id="@+id/button_Apply"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"
@@ -201,6 +203,7 @@
             android:orientation="horizontal">
 
             <CheckBox
+                android:id="@+id/chk_TermOfUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -211,6 +214,7 @@
                 android:textSize="12sp" />
 
             <CheckBox
+                android:id="@+id/chk_PrivacyPlicy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -235,4 +239,8 @@
             android:textColor="@android:color/white" />
 
     </RelativeLayout>
+
+    <include
+        android:id="@+id/coordinatorLayout"
+        layout="@layout/coordinatelayout"></include>
 </RelativeLayout>

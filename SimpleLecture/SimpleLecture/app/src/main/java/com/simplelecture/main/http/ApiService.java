@@ -8,6 +8,7 @@ import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.SignInModel;
+import com.simplelecture.main.transactions.BillingAddressGetTransaction;
 import com.simplelecture.main.transactions.BillingAddressTransaction;
 import com.simplelecture.main.transactions.CartAddTransaction;
 import com.simplelecture.main.transactions.CartDetailsTransaction;
@@ -23,9 +24,12 @@ import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
+import com.simplelecture.main.transactions.PromoCodeTransaction;
+import com.simplelecture.main.transactions.ResendOTPTransaction;
 import com.simplelecture.main.transactions.SelectMyCourseTransaction;
 import com.simplelecture.main.transactions.SignInTransaction;
 import com.simplelecture.main.transactions.SummaryDetailsTransaction;
+import com.simplelecture.main.transactions.VerifyOTPTransaction;
 import com.simplelecture.main.transactions.VimeoVideoTransaction;
 import com.simplelecture.main.util.JsonFactory;
 import com.simplelecture.main.util.SessionManager;
@@ -317,10 +321,21 @@ public class ApiService {
 
     }
 
+    public void doGetPromoCode(Context mContext, String code) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+
+        PromoCodeTransaction promoCodeTransaction = new PromoCodeTransaction(null, mContext, userId, code);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(promoCodeTransaction);
+
+    }
+
     public void doBillingAddress(Context context, BillingAddressModel billingAddressModel) {
         try {
 
             String userId = Util.getFromPrefrences(context, "uId");
+            billingAddressModel.setUserID(userId);
             JsonFactory jsonFactory = new JsonFactory();
             JSONObject jsonObject = jsonFactory.getBillingAddress(billingAddressModel);
             BillingAddressTransaction billingAddressTransaction = new BillingAddressTransaction(jsonObject, context);
@@ -329,6 +344,33 @@ public class ApiService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void doGetBillingAddress(Context mContext) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+
+        BillingAddressGetTransaction billingAddressGetTransaction = new BillingAddressGetTransaction(null, mContext, userId);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(billingAddressGetTransaction);
+
+    }
+
+    public void doGetVerify(Context mContext, String code) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+        VerifyOTPTransaction verifyOTPTransaction = new VerifyOTPTransaction(null, mContext, userId, code);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(verifyOTPTransaction);
+
+    }
+
+    public void doGetResendOTP(Context mContext,String mobile) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+        ResendOTPTransaction resendOTPTransaction = new ResendOTPTransaction(null, mContext, userId, mobile);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(resendOTPTransaction);
 
     }
 

@@ -62,7 +62,7 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("Cart");
+        getSupportActionBar().setTitle(Util.setActionBarText("Cart"));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         snack = new SnackBarManagement(getApplicationContext());
@@ -75,16 +75,6 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         recyclerView.setLayoutManager(linearLayoutManager);
 
         loadCartDetails();
-
-        // Put this where onclick of Spinner
-          /*  if (new ConnectionDetector(CartActivity.this).isConnectingToInternet()) {
-        param_get_ServiceCallResult = Constants.GET_CART_CHANGEMONTH;
-        pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
-        ApiService.getApiService().doChangeMonthFromCart(CartActivity.this, courseId, months);
-
-    } else {
-        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-    }*/
 
     }
 
@@ -104,6 +94,7 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
                     param_get_ServiceCallResult = Constants.GET_CART_CHANGEMONTH;
                     pd = new Util().waitingMessage(CartActivity.this, "", getResources().getString(R.string.loading));
                     dialog.cancel();
+
                     ApiService.getApiService().doChangeMonthFromCart(CartActivity.this, courseId, String.valueOf(position + 1));
 
                 } else {
@@ -172,7 +163,7 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
             } else {
                 snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
             }
-//            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -192,24 +183,6 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
 
                 updateCartData(response);
 
-//                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
-//
-//                if (outputResponseModel.isSuccess()) {
-//
-//                    JSONObject jSONObject1 = new JSONObject(response);
-//
-//                    String dataContent = jSONObject1.getString("data");
-//
-//                    cartDetailsResponseModels = new CartController().getCartDetails(dataContent);
-//
-//                    lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
-//
-//                    cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this, this);
-//                    recyclerView.setAdapter(cartDetailsAdapter);
-//                } else {
-//                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
-//
-//                }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_CART_REMOVE)) {
 
                 outputResponseModel = gson.fromJson(response, OutputResponseModel.class);

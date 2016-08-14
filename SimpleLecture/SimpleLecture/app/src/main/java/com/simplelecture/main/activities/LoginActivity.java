@@ -2,7 +2,6 @@ package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -22,6 +21,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -29,11 +29,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.gson.Gson;
 import com.simplelecture.main.R;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.LoginModel;
@@ -72,17 +72,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private static final int RC_SIGN_IN = 0;
     private static final int FB_SIGN_IN = 1;
-    // Logcat tag
-    private static final String TAG = "MainActivity";
 
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 400;
-    private boolean param_get_Login = false;
     private CoordinatorLayout coordinatorLayout;
     private SnackBarManagement snack;
     private ProgressDialog pd;
     private LoginModel loginModel;
     private SessionManager sessionManager;
+    private String param_get_ServiceCallResult = "";
 
 
     /*@Override
@@ -111,6 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
         FacebookSdk.sdkInitialize(getApplicationContext());
+      //  AppEventsLogger.activateApp(this);
 
         setContentView(R.layout.activity_login);
 
@@ -119,12 +118,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
-// options specified by gso.
+         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-
+      //  Util.keyHashgenrate(this);
         //facebook callbackManager
         callbackManager = CallbackManager.Factory.create();
 
@@ -137,7 +136,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Changing the action bar color
-        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
+        getSupportActionBar().setTitle(Util.setActionBarText("Login"));
 
         //inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
         inputLayoutEmail = (TextInputLayout) findViewById(R.id.input_layout_email);
@@ -152,6 +151,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
         facebooklogin_button = (LoginButton) findViewById(R.id.facebooklogin_button);
+       // facebooklogin_button.setReadPermissions("public_profile");
         gmailSign_in_button = (SignInButton) findViewById(R.id.gmailSign_in_button);
 
 
@@ -171,10 +171,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 // If Facebook login is true Go to Homeview
                 sessionManager.setLoginStatus(true);
                 sessionManager.setLoginFBStatus(true);
+                Profile profile = Profile.getCurrentProfile();
+                String firstName = profile.getFirstName();
 
-                Toast.makeText(LoginActivity.this, "FB Success", Toast.LENGTH_SHORT).show();
+             //   doFBLogin(loginResult.);
+                Log.i("FB Success", firstName);
+                Toast.makeText(LoginActivity.this, "FB Success" + firstName, Toast.LENGTH_SHORT).show();
 
-                new ViewManager().gotoHomeView(LoginActivity.this);
+               // new ViewManager().gotoHomeView(LoginActivity.this);
 
             }
 
@@ -207,10 +211,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
      */
     private void submitForm() {
         try {
-        /*if (!Validator.validateName(this, inputName, inputLayoutName, getString(R.string.err_msg_name))) {
-            return;
-        }*/
-
 
             if (!Validator.validateEmail(LoginActivity.this, inputEmail, inputLayoutEmail, getString(R.string.err_msg_email))) {
                 return;
@@ -226,20 +226,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             loginModel.setUe(inputEmail.getText().toString().trim());
             loginModel.setUp(inputPassword.getText().toString().trim());
+            loginModel.setLoginType(Constants.loginTypeSL);
+            loginModel.setMobileOSType(Constants.android);
 
-            if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
-                param_get_Login = true;
-                pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
-                //Login Service
-                ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
-            } else {
-                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-            }
+            callServiceLogin(loginModel);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+    }
 
+    private void doFBLogin(String email) {
+
+
+        loginModel = new LoginModel();
+        loginModel.setUe(email);
+        loginModel.setUp("");
+        loginModel.setLoginType(Constants.loginTypeFB);
+        loginModel.setMobileOSType(Constants.android);
+
+        callServiceLogin(loginModel);
+
+    }
+
+    private void doGmailLogin(String email) {
+
+
+        loginModel = new LoginModel();
+        loginModel.setUe(email);
+        loginModel.setUp("");
+        loginModel.setLoginType(Constants.loginTypeG);
+        loginModel.setMobileOSType(Constants.android);
+
+        callServiceLogin(loginModel);
+
+    }
+
+    private void callServiceLogin(LoginModel loginModels) {
+
+        if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
+            param_get_ServiceCallResult = Constants.GET_LOGIN;
+            pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
+            //Login Service
+            ApiService.getApiService().doLogin(loginModels, LoginActivity.this);
+        } else {
+            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+        }
     }
 
 
@@ -276,27 +309,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    private void doGmailLogin(String email) {
-
-
-        loginModel = new LoginModel();
-        /*loginModel.setUe("karthikrao19@gmail.com");
-        loginModel.setUp("simple");*/
-
-        loginModel.setUe(email);
-        loginModel.setUp("");
-        loginModel.setLoginType("G");
-        loginModel.setLoginType("Android");
-
-        if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
-            param_get_Login = true;
-            pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
-            //Login Service
-            ApiService.getApiService().doLogin(loginModel, LoginActivity.this);
-        } else {
-            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -345,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (id == R.id.action_settings) {
             return true;
         } else if (id == R.id.action_changePassword) {
-            new ViewManager().gotoChangePasswordView(this);
+          //  new ViewManager().gotoChangePasswordView(this);
         }
 
 
@@ -355,11 +367,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void parseResponse(String response) {
-        Log.i("response", "response");
-        Log.i(TAG, response);
+        Log.i("Loginresponse-->", response);
         try {
             pd.cancel();
-            if (param_get_Login) {
+            if (param_get_ServiceCallResult.equals(Constants.GET_LOGIN)) {
                 Gson gson = new Gson();
                 JSONObject jSONObject = new JSONObject(response);
                 boolean isSuccess = jSONObject.getBoolean("isSuccess");
@@ -376,18 +387,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Util.storeToPrefrences(LoginActivity.this, "email", loginModel.getUe());
                     Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
                     Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
-                    param_get_Login = false;
                     new ViewManager().gotoHomeView(this);
                 } else {
-                    param_get_Login = false;
+                    param_get_ServiceCallResult = "";
                     snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.loginFailed), getResources().getString(R.string.dismiss));
                 }
             } else {
-                param_get_Login = false;
+                param_get_ServiceCallResult = "";
             }
-
-
-//            new ViewManager().gotoDashboardView(this);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -397,7 +404,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void showError(String error) {
-        Log.v("error", "error");
         try {
             pd.cancel();
             if (error.isEmpty()) {
