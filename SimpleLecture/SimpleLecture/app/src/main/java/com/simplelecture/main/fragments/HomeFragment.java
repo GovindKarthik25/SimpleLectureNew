@@ -13,6 +13,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -333,7 +334,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         public void onItemClick(View view, int position) {
             try {
                 if (sessionManager.isLoginStatus()) {
-                    HomePopularCoursesModel popularCoursesObj = homePageResponseModelobj.getPopularCoursesLst().get(position);
+                    HomePopularCoursesModel popularCoursesObj = homePageResponseModelobj.getHomePopularCoursesModelLst().get(position);
                     cID = String.valueOf(popularCoursesObj.getcId());
                     cComboName = popularCoursesObj.getCatName();
                     getCourseDetails();
@@ -390,8 +391,8 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         }
 
         //most Popular list
-        if (homePageResponseModelobj != null && homePageResponseModelobj.getPopularCoursesLst() != null) {
-            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePageResponseModelobj.getPopularCoursesLst());
+        if (homePageResponseModelobj != null && homePageResponseModelobj.getHomePopularCoursesModelLst() != null) {
+            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePageResponseModelobj.getHomePopularCoursesModelLst());
             mostViewedList.setAdapter(homeMostViewedAdapter);
         }
 
@@ -418,7 +419,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             if (homePageResponseModelobj.getCoursesLst().size() > 0) {
                 recomended_titleLinearLayout.setVisibility(View.VISIBLE);
             }
-            if (homePageResponseModelobj.getPopularCoursesLst().size() > 0) {
+            if (homePageResponseModelobj.getHomePopularCoursesModelLst().size() > 0) {
                 most_view_titleLinearLayout.setVisibility(View.VISIBLE);
             }
 
@@ -439,7 +440,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             }
 
             //most Popular list
-            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePageResponseModelobj.getPopularCoursesLst());
+            homeMostViewedAdapter = new HomeMostViewedAdapter(getActivity(), homePageResponseModelobj.getHomePopularCoursesModelLst());
             mostViewedList.setAdapter(homeMostViewedAdapter);
 
             if (homeMostViewedAdapter != null) {
@@ -528,8 +529,17 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                     homePageResponseModelobj.setBannersLst(bannersLstArray);
                     homePageResponseModelobj.setCoursesLst(coursesLstArray);
                     homePageResponseModelobj.setCourseCombosLst(courseCombosLstArray);
-                    homePageResponseModelobj.setPopularCoursesLst(homePopularCoursesModelLstArray);
+                    homePageResponseModelobj.setHomePopularCoursesModelLst(homePopularCoursesModelLstArray);
                     homePageResponseModelobj.setHomeTestimonialsModelLst(homeTestimonialsModelLstArray);
+
+                    Fragment fragment = new Fragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("homePageResponseModel", homePageResponseModelobj);
+                    fragment.setArguments(bundle);
+
+                    if (homePageResponseModelobj != null) {
+                        Log.i("homePageActivity444", homePageResponseModelobj.getPageUrlAboutUs());
+                    }
 
                     displayAndSetTheItem();
                 } else {

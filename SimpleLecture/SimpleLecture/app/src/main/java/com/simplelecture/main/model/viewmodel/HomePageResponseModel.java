@@ -15,27 +15,35 @@ public class HomePageResponseModel implements Serializable {
     private List<HomeCoursesModel> coursesLst;
     private List<HomePopularCoursesModel> homePopularCoursesModelLst;
     private List<HomeTestimonialsModel> homeTestimonialsModelLst;
+    private String PageUrlSupport;
+    private String PageUrlAboutUs;
+    private String PageUrlTermsAndConditions;
+    private String PageUrlDisclaimer;
+    private String PageUrlPrivacyPolicy;
+    private String PageUrlCancellationAndRefundPolicy;
+    private String PageUrlShippingAndDeliveryPolicy;
+    private boolean IsMobileVerified;
 
 
 
     public HomePageResponseModel() {
     }
 
-    public HomePageResponseModel(int myCoursesCount, List<HomeBannersModel> bannersLst, List<CourseCombos> courseCombosLst, List<HomeCoursesModel> coursesLst, List<HomePopularCoursesModel> homePopularCoursesModelLst, List<HomeTestimonialsModel> homeTestimonialsModelLst) {
+    public HomePageResponseModel(int myCoursesCount, List<HomeBannersModel> bannersLst, List<CourseCombos> courseCombosLst, List<HomeCoursesModel> coursesLst, List<HomePopularCoursesModel> homePopularCoursesModelLst, List<HomeTestimonialsModel> homeTestimonialsModelLst, String pageUrlSupport, String pageUrlAboutUs, String pageUrlTermsAndConditions, String pageUrlDisclaimer, String pageUrlPrivacyPolicy, String pageUrlCancellationAndRefundPolicy, String pageUrlShippingAndDeliveryPolicy, boolean isMobileVerified) {
         MyCoursesCount = myCoursesCount;
         this.bannersLst = bannersLst;
         this.courseCombosLst = courseCombosLst;
         this.coursesLst = coursesLst;
         this.homePopularCoursesModelLst = homePopularCoursesModelLst;
         this.homeTestimonialsModelLst = homeTestimonialsModelLst;
-    }
-
-    public List<HomeBannersModel> getBannersLst() {
-        return bannersLst;
-    }
-
-    public void setBannersLst(List<HomeBannersModel> bannersLst) {
-        this.bannersLst = bannersLst;
+        PageUrlSupport = pageUrlSupport;
+        PageUrlAboutUs = pageUrlAboutUs;
+        PageUrlTermsAndConditions = pageUrlTermsAndConditions;
+        PageUrlDisclaimer = pageUrlDisclaimer;
+        PageUrlPrivacyPolicy = pageUrlPrivacyPolicy;
+        PageUrlCancellationAndRefundPolicy = pageUrlCancellationAndRefundPolicy;
+        PageUrlShippingAndDeliveryPolicy = pageUrlShippingAndDeliveryPolicy;
+        IsMobileVerified = isMobileVerified;
     }
 
     public int getMyCoursesCount() {
@@ -44,6 +52,14 @@ public class HomePageResponseModel implements Serializable {
 
     public void setMyCoursesCount(int myCoursesCount) {
         MyCoursesCount = myCoursesCount;
+    }
+
+    public List<HomeBannersModel> getBannersLst() {
+        return bannersLst;
+    }
+
+    public void setBannersLst(List<HomeBannersModel> bannersLst) {
+        this.bannersLst = bannersLst;
     }
 
     public List<CourseCombos> getCourseCombosLst() {
@@ -62,11 +78,11 @@ public class HomePageResponseModel implements Serializable {
         this.coursesLst = coursesLst;
     }
 
-    public List<HomePopularCoursesModel> getPopularCoursesLst() {
+    public List<HomePopularCoursesModel> getHomePopularCoursesModelLst() {
         return homePopularCoursesModelLst;
     }
 
-    public void setPopularCoursesLst(List<HomePopularCoursesModel> homePopularCoursesModelLst) {
+    public void setHomePopularCoursesModelLst(List<HomePopularCoursesModel> homePopularCoursesModelLst) {
         this.homePopularCoursesModelLst = homePopularCoursesModelLst;
     }
 
@@ -78,6 +94,70 @@ public class HomePageResponseModel implements Serializable {
         this.homeTestimonialsModelLst = homeTestimonialsModelLst;
     }
 
+    public String getPageUrlSupport() {
+        return PageUrlSupport;
+    }
+
+    public void setPageUrlSupport(String pageUrlSupport) {
+        PageUrlSupport = pageUrlSupport;
+    }
+
+    public String getPageUrlAboutUs() {
+        return PageUrlAboutUs;
+    }
+
+    public void setPageUrlAboutUs(String pageUrlAboutUs) {
+        PageUrlAboutUs = pageUrlAboutUs;
+    }
+
+    public String getPageUrlTermsAndConditions() {
+        return PageUrlTermsAndConditions;
+    }
+
+    public void setPageUrlTermsAndConditions(String pageUrlTermsAndConditions) {
+        PageUrlTermsAndConditions = pageUrlTermsAndConditions;
+    }
+
+    public String getPageUrlDisclaimer() {
+        return PageUrlDisclaimer;
+    }
+
+    public void setPageUrlDisclaimer(String pageUrlDisclaimer) {
+        PageUrlDisclaimer = pageUrlDisclaimer;
+    }
+
+    public String getPageUrlPrivacyPolicy() {
+        return PageUrlPrivacyPolicy;
+    }
+
+    public void setPageUrlPrivacyPolicy(String pageUrlPrivacyPolicy) {
+        PageUrlPrivacyPolicy = pageUrlPrivacyPolicy;
+    }
+
+    public String getPageUrlCancellationAndRefundPolicy() {
+        return PageUrlCancellationAndRefundPolicy;
+    }
+
+    public void setPageUrlCancellationAndRefundPolicy(String pageUrlCancellationAndRefundPolicy) {
+        PageUrlCancellationAndRefundPolicy = pageUrlCancellationAndRefundPolicy;
+    }
+
+    public String getPageUrlShippingAndDeliveryPolicy() {
+        return PageUrlShippingAndDeliveryPolicy;
+    }
+
+    public void setPageUrlShippingAndDeliveryPolicy(String pageUrlShippingAndDeliveryPolicy) {
+        PageUrlShippingAndDeliveryPolicy = pageUrlShippingAndDeliveryPolicy;
+    }
+
+    public boolean isMobileVerified() {
+        return IsMobileVerified;
+    }
+
+    public void setMobileVerified(boolean mobileVerified) {
+        IsMobileVerified = mobileVerified;
+    }
+
     @Override
     public String toString() {
         return "HomePageResponseModel{" +
@@ -87,6 +167,14 @@ public class HomePageResponseModel implements Serializable {
                 ", coursesLst=" + coursesLst +
                 ", homePopularCoursesModelLst=" + homePopularCoursesModelLst +
                 ", homeTestimonialsModelLst=" + homeTestimonialsModelLst +
+                ", PageUrlSupport='" + PageUrlSupport + '\'' +
+                ", PageUrlAboutUs='" + PageUrlAboutUs + '\'' +
+                ", PageUrlTermsAndConditions='" + PageUrlTermsAndConditions + '\'' +
+                ", PageUrlDisclaimer='" + PageUrlDisclaimer + '\'' +
+                ", PageUrlPrivacyPolicy='" + PageUrlPrivacyPolicy + '\'' +
+                ", PageUrlCancellationAndRefundPolicy='" + PageUrlCancellationAndRefundPolicy + '\'' +
+                ", PageUrlShippingAndDeliveryPolicy='" + PageUrlShippingAndDeliveryPolicy + '\'' +
+                ", IsMobileVerified=" + IsMobileVerified +
                 '}';
     }
 }

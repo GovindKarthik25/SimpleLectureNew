@@ -15,6 +15,7 @@ import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.OTPcodeActivity;
 import com.simplelecture.main.activities.OrderSummaryActivity;
+import com.simplelecture.main.activities.PolicyWebview;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
@@ -183,6 +184,17 @@ public class ViewManager {
     public Intent gotoBillingAddressActivityView(Activity activity, boolean containsCourseMaterial) {
         intent = new Intent(activity, BillingAddressActivity.class);
         intent.putExtra("containsCourseMaterial", containsCourseMaterial);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Policy Webview
+     *
+     * @return
+     */
+    public Intent gotoPolicyWebview(Activity activity) {
+        intent = new Intent(activity, PolicyWebview.class);
         setDisplay(activity, intent);
         return intent;
     }

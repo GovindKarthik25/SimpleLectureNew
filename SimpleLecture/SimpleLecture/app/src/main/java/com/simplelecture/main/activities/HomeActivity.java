@@ -21,13 +21,15 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
-import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.fragments.ExercisesFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.HomeFragment;
+import com.simplelecture.main.fragments.LegalFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.SampleVideoFragment;
+import com.simplelecture.main.fragments.SupportFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
@@ -39,6 +41,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SessionManager sessionManager;
     private int alertID = 0;
     private TextView textView_EmailId;
+    private HomePageResponseModel homePageResponseModelobj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sessionManager = SessionManager.getInstance();
-      //  String userId = Util.getFromPrefrences(mContext, "email");
+        //  String userId = Util.getFromPrefrences(mContext, "email");
         alertMessageManagement = new AlertMessageManagement(HomeActivity.this, new AlertDialogClick());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -72,7 +75,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawerHeader_view);
         //textView_EmailId = (TextView) findViewById(R.id.textView_EmailId);
-      //  textView_EmailId.setText("dhhhd");
+        //  textView_EmailId.setText("dhhhd");
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -118,7 +121,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             new ViewManager().gotoSigninView(this);
         } else if (id == R.id.action_logout) {
             return true;
-        } else if(id == R.id.action_cart){
+        } else if (id == R.id.action_cart) {
             new ViewManager().gotoCartActivity(this);
         }
 
@@ -156,7 +159,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
 
-      //  textView_EmailId
+        //  textView_EmailId
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -174,6 +177,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void displayView(int position) {
         Fragment fragment = null;
 
+//        homePageResponseModelobj = (HomePageResponseModel) getIntent().getSerializableExtra("homePageResponseModel");
+
+
         switch (position) {
             case 0:
                 fragment = new HomeFragment();
@@ -189,7 +195,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:
-                startActivity(new Intent(getApplicationContext(),DashboardActivity.class));
+                startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
 //                fragment = new DashboardFragment();
 //                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
                 break;
@@ -206,21 +212,22 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_forum));
                 break;
             case 7:
-                fragment = new DashboardFragment();
+
+                fragment = new SupportFragment();
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_Support));
                 break;
             case 8:
-                fragment = new DashboardFragment();
+                fragment = new LegalFragment();
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
                 break;
             case 9:
-                fragment = new DashboardFragment();
+                fragment = new SupportFragment();
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
                 break;
 
         }
 
-        if(fragment != null){
+        if (fragment != null) {
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.frame_container, fragment);

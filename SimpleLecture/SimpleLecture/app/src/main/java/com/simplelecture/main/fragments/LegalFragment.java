@@ -19,12 +19,12 @@ import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SupportFragment.OnFragmentInteractionListener} interface
+ * {@link LegalFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SupportFragment#newInstance} factory method to
+ * Use the {@link LegalFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SupportFragment extends Fragment {
+public class LegalFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -47,8 +47,8 @@ public class SupportFragment extends Fragment {
      * @return A new instance of fragment SupportFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SupportFragment newInstance(String param1, String param2) {
-        SupportFragment fragment = new SupportFragment();
+    public static LegalFragment newInstance(String param1, String param2) {
+        LegalFragment fragment = new LegalFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -56,7 +56,7 @@ public class SupportFragment extends Fragment {
         return fragment;
     }
 
-    public SupportFragment() {
+    public LegalFragment() {
         // Required empty public constructor
     }
 
@@ -71,8 +71,7 @@ public class SupportFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View convertView = inflater.inflate(R.layout.fragment_support, container, false);
-        webView = (WebView) convertView.findViewById(R.id.webView);
+        View convertView = inflater.inflate(R.layout.fragment_legalpolicy, container, false);
 
         return convertView;
     }
@@ -81,16 +80,7 @@ public class SupportFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String url = "https://www.google.co.in/";
-        pd = new ProgressDialog(getActivity());
 
-        webView.getSettings().setLoadsImagesAutomatically(true);
-        webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setBuiltInZoomControls(false);
-        webView.getSettings().setSupportZoom(false);
-        webView.setWebViewClient(new myWebClient());
-        webView.loadUrl(url);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -116,38 +106,6 @@ public class SupportFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
-
-    /**
-     * Description: To disable default back button.
-     */
-    public class myWebClient extends WebViewClient {
-        @Override
-        public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            pd.setMessage(getResources().getString(R.string.loading));
-            pd.setIndeterminate(true);
-            pd.setCanceledOnTouchOutside(false);
-            pd.setCancelable(true);
-            if (!getActivity().isFinishing()) {
-                pd.show();
-            }
-            super.onPageStarted(view, url, favicon);
-        }
-
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }
-
-        // Here the page loading will stop so dismiss the ProgressDialog
-        public void onPageFinished(WebView view, String url) {
-            // this is what we should do
-            pd.dismiss();
-        }
-    }
-
 
 
 }
