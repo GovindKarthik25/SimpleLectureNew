@@ -71,8 +71,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(Util.setActionBarText("Home"));
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawerHeader_view);
-        textView_EmailId = (TextView) findViewById(R.id.textView_EmailId);
-        textView_EmailId.setText("dhhhd");
+        //textView_EmailId = (TextView) findViewById(R.id.textView_EmailId);
+      //  textView_EmailId.setText("dhhhd");
 
         navigationView.setNavigationItemSelectedListener(this);
 
