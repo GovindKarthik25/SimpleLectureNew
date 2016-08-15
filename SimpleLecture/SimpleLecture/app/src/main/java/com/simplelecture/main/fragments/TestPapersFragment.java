@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +32,8 @@ public class TestPapersFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    private RecyclerView recyclerView;
 
     /**
      * Use this factory method to create a new instance of
@@ -66,7 +70,14 @@ public class TestPapersFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_test_papers, container, false);
+        View convertView = inflater.inflate(R.layout.fragment_test_papers, container, false);
+//        recyclerView = (RecyclerView) convertView.findViewById(R.id.testPapersRecycler_view);
+//        recyclerView.setHasFixedSize(true);
+//
+//        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+//        recyclerView.setLayoutManager(gridLayoutManager);
+
+        return convertView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

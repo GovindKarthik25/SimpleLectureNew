@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         sessionManager = SessionManager.getInstance();
-        //  String userId = Util.getFromPrefrences(mContext, "email");
+        String email = Util.getFromPrefrences(getApplicationContext(), "email");
         alertMessageManagement = new AlertMessageManagement(HomeActivity.this, new AlertDialogClick());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -76,8 +76,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(Util.setActionBarText("Home"));
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.drawerHeader_view);
-        //textView_EmailId = (TextView) findViewById(R.id.textView_EmailId);
-        //  textView_EmailId.setText("dhhhd");
+        View header = navigationView.getHeaderView(0);
+        textView_EmailId = (TextView) header.findViewById(R.id.text_email);
+        textView_EmailId.setText(email.isEmpty() ? "Guest" : email);
 
         navigationView.setNavigationItemSelectedListener(this);
 

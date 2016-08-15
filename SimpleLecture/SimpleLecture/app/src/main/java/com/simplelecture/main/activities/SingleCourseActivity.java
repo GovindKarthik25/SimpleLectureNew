@@ -51,7 +51,10 @@ import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class SingleCourseActivity extends AppCompatActivity implements OnFragmentInteractionListener, NetworkLayer {
@@ -78,6 +81,9 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
     private int selectedMonthId;
     private OutputResponseModel outputResponseModel;
 
+    HashMap<String, String> courseHashMap;
+
+
     @Override
     public void onBackPressed() {
 
@@ -98,6 +104,9 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         if (intent.hasExtra("courseDetails")) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
         }
+
+        courseHashMap = new HashMap<>();
+        courseHashMap = Util.prepareMap(courseDetailsResponseModelObj.getCourseMaterials());
 
         courseMaterials = Util.convertToStringArray(courseDetailsResponseModelObj.getCourseMaterials());
 
@@ -144,6 +153,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
             tabStrip.getChildAt(i).setClickable(false);
         }*/
     }
+    private String courseMaterialSelected;
 
 
     private View.OnClickListener onClickListener = new View.OnClickListener() {
@@ -159,7 +169,12 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
 
                     cartModel.setCourseID(courseDetailsResponseModelObj.getcId());
                     cartModel.setMonths(String.valueOf(selectedMonthId));
-                    cartModel.setCourseMaterials("1,2"); // jsonArray
+                    if (courseMaterialBuilder != null && courseMaterialBuilder.length() > 0) {
+                        courseMaterialSelected = courseMaterialBuilder.toString();
+                    } else {
+                        courseMaterialSelected = "";
+                    }
+                    cartModel.setCourseMaterials(courseMaterialSelected); // jsonArray
                     Log.d("cartModel-->", "" + cartModel);
 
                     ApiService.getApiService().doAddToCart(SingleCourseActivity.this, cartModel);
@@ -180,6 +195,10 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
 
             if (isChecked) {
                 showMaterialsDialog();
+                courseMaterialBuilder = new StringBuilder();
+            } else {
+                textViewLabelMaterial.setText("");
+                textViewLabelMaterial.setVisibility(View.GONE);
             }
         }
     };
@@ -198,6 +217,9 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         }
     };
 
+    JSONArray jsonArray;
+    StringBuilder courseMaterialBuilder;
+
     private void showMaterialsDialog() {
         final CharSequence[] dialogList = courseMaterials.toArray(new CharSequence[courseMaterials.size()]);
 
@@ -215,22 +237,39 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         // Set the positive/yes button click listener
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(DialogInterface dialog, final int which) {
                 // Do something when click positive button
 
                 ListView list = ((AlertDialog) dialog).getListView();
                 // make selected item in the comma seprated string
                 StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < list.getCount(); i++) {
-                    boolean checked = list.isItemChecked(i);
+                try {
+                    jsonArray = new JSONArray();
 
-                    if (checked) {
-                        if (stringBuilder.length() > 0) stringBuilder.append(",");
-                        stringBuilder.append(list.getItemAtPosition(i));
-                        textViewLabelMaterial.setVisibility(View.VISIBLE);
-                        textViewLabelMaterial.setText(stringBuilder.toString());
+                    for (int i = 0; i < list.getCount(); i++) {
+                        boolean checked = list.isItemChecked(i);
 
+                        if (checked) {
+                            if (stringBuilder.length() > 0) stringBuilder.append(",");
+//                            JSONObject jsonObject = new JSONObject();
+//                            jsonObject.put("Id", Util.getMaterialData(courseHashMap,String.valueOf(list.getItemAtPosition(i))));
+//                            jsonArray.put(jsonObject);
+                            if (courseMaterialBuilder.length() > 0)
+                                courseMaterialBuilder.append(",");
+                            courseMaterialBuilder.append(Util.getMaterialData(courseHashMap, String.valueOf(list.getItemAtPosition(i))));
+
+
+                            stringBuilder.append(list.getItemAtPosition(i));
+                            textViewLabelMaterial.setVisibility(View.VISIBLE);
+                            textViewLabelMaterial.setText(stringBuilder.toString());
+
+                        }
                     }
+
+                    Log.d("JSON", "" + jsonArray);
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -247,6 +286,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         dialog.show();
 
     }
+
 
 
     private void setupViewPager(ViewPager viewPager) {
