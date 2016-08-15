@@ -38,6 +38,7 @@ import com.simplelecture.main.adapters.HomePromoSlidePagerAdapter;
 import com.simplelecture.main.adapters.TestimonialsAdapter;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.controller.CourseDetailsController;
+import com.simplelecture.main.fragments.interfaces.MainObjectReceiver;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
@@ -84,6 +85,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private MainObjectReceiver mainObjectReceiver;
 
     RecyclerView coursesList;
     RecyclerView recomendedCoursesView;
@@ -273,6 +275,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            mainObjectReceiver = (MainObjectReceiver) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -539,6 +542,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
                     if (homePageResponseModelobj != null) {
                         Log.i("homePageActivity444", homePageResponseModelobj.getPageUrlAboutUs());
+                        mainObjectReceiver.onObjectReceived(homePageResponseModelobj);
                     }
 
                     displayAndSetTheItem();

@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
@@ -28,6 +29,7 @@ import com.simplelecture.main.fragments.LegalFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.SampleVideoFragment;
 import com.simplelecture.main.fragments.SupportFragment;
+import com.simplelecture.main.fragments.interfaces.MainObjectReceiver;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
@@ -35,7 +37,7 @@ import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, MainObjectReceiver {
 
     private AlertMessageManagement alertMessageManagement;
     private SessionManager sessionManager;
@@ -253,6 +255,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         startActivity(setIntent);
     }
 
+    @Override
+    public void onObjectReceived(HomePageResponseModel homePageResponseModel) {
+
+        Toast.makeText(getApplicationContext(), homePageResponseModel.getPageUrlAboutUs(), Toast.LENGTH_LONG).show();
+
+    }
+
     private class AlertDialogClick implements AlertMessageManagement.onCustomAlertDialogListener {
         @Override
         public void onClickResult(DialogInterface dialog, int whichButton) {
@@ -271,4 +280,5 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
+
 }
