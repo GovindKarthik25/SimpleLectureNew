@@ -81,7 +81,7 @@ public class SupportFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String url = "https://www.google.co.in/";
+        String url = mParam1;
         pd = new ProgressDialog(getActivity());
 
         webView.getSettings().setLoadsImagesAutomatically(true);
@@ -116,8 +116,6 @@ public class SupportFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
-
 
     /**
      * Description: To disable default back button.

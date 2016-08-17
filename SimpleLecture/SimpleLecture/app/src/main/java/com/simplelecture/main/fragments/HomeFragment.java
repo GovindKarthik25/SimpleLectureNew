@@ -541,7 +541,6 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                     fragment.setArguments(bundle);
 
                     if (homePageResponseModelobj != null) {
-                        Log.i("homePageActivity444", homePageResponseModelobj.getPageUrlAboutUs());
                         mainObjectReceiver.onObjectReceived(homePageResponseModelobj);
                     }
 

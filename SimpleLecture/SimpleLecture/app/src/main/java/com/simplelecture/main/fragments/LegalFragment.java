@@ -1,8 +1,6 @@
 package com.simplelecture.main.fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,11 +8,14 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,8 +36,7 @@ public class LegalFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private WebView webView;
-    private ProgressDialog pd;
+    private ListView listView;
 
     /**
      * Use this factory method to create a new instance of
@@ -47,10 +47,10 @@ public class LegalFragment extends Fragment {
      * @return A new instance of fragment SupportFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static LegalFragment newInstance(String param1, String param2) {
+    public static LegalFragment newInstance(HomePageResponseModel homePageResponseModelObj, String param2) {
         LegalFragment fragment = new LegalFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM1, homePageResponseModelObj);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -73,12 +73,25 @@ public class LegalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View convertView = inflater.inflate(R.layout.fragment_legalpolicy, container, false);
 
+
+        listView = (ListView) convertView.findViewById(R.id.listViewLegal);
+
+
         return convertView;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        String[] mobileArray = {"Term & Condition","Disclaimer","Privacy Policy","Cancellation & Refund Policy","Shipping & Delivery Policy"};
+
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.adapter_legalrow, mobileArray);
+
+        listView.setAdapter(adapter);
+        //listView.setOnItemClickListener(itemClickListene);
+
+
 
 
     }

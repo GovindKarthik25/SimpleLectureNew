@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private SessionManager sessionManager;
     private int alertID = 0;
     private TextView textView_EmailId;
-    private HomePageResponseModel homePageResponseModelobj;
+    private HomePageResponseModel homePageResponseModelObj;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,8 +180,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private void displayView(int position) {
         Fragment fragment = null;
 
-//        homePageResponseModelobj = (HomePageResponseModel) getIntent().getSerializableExtra("homePageResponseModel");
-
 
         switch (position) {
             case 0:
@@ -215,17 +213,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_forum));
                 break;
             case 7:
+                if (homePageResponseModelObj != null && homePageResponseModelObj.getPageUrlSupport() != null) {
+                    fragment = new SupportFragment().newInstance(homePageResponseModelObj.getPageUrlSupport(), "");
+                    getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_Support));
+                } else {
+                    Toast.makeText(this, "Try again after some time", Toast.LENGTH_SHORT).show();
+                }
 
-                fragment = new SupportFragment();
-                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_Support));
                 break;
             case 8:
-                fragment = new LegalFragment();
-                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
+                if (homePageResponseModelObj != null) {
+                    fragment = new LegalFragment().newInstance(homePageResponseModelObj, "");
+                    getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
+                } else {
+                    Toast.makeText(this, "Try again after some time", Toast.LENGTH_SHORT).show();
+                }
                 break;
             case 9:
-                fragment = new SupportFragment();
-                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
+                if (homePageResponseModelObj != null && homePageResponseModelObj.getPageUrlAboutUs() != null) {
+                    fragment = new SupportFragment().newInstance(homePageResponseModelObj.getPageUrlAboutUs(), "");
+                    getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
+                } else {
+                    Toast.makeText(this, "Try again after some time", Toast.LENGTH_SHORT).show();
+                }
                 break;
 
         }
@@ -259,7 +269,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onObjectReceived(HomePageResponseModel homePageResponseModel) {
 
-        Toast.makeText(getApplicationContext(), homePageResponseModel.getPageUrlAboutUs(), Toast.LENGTH_LONG).show();
+        homePageResponseModelObj = homePageResponseModel;
 
     }
 
