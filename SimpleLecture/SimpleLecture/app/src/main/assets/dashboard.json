@@ -1,0 +1,70 @@
+{
+  "isSuccess":true,
+  "message":"",
+  "data":{
+    "MyCourses":[
+      {
+        "CourseId":7,
+        "CategoryId":1,
+        "CourseName":"PCMB + E + JEE-AIPMT",
+        "CourseIcon":"http://demo.simplelecture.com/Files/Course/7_fcIcon.jpg",
+        "CompletePer":1,
+        "PendingDays":224
+      },
+      {  }
+    ],
+    "ForumTopics":[
+      {
+        "Id":1,
+        "Name":"Biology Forum"
+      },
+      {
+        "Id":2,
+        "Name":"Mathematics Forum"
+      },
+      {
+        "Id":4,
+        "Name":"English Forum"
+      },
+      {
+        "Id":5,
+        "Name":"Electronics Forum"
+      },
+      {
+        "Id":7,
+        "Name":"Chemistry Forum"
+      }
+    ],
+    "RelatedCourses":[
+      {
+        "cId":7,
+        "cName":"PCMB + E + JEE-AIPMT",
+        "cIcon":"http://demo.simplelecture.com/Files/Course/7_fcIcon.jpg"
+      },
+      {
+        "cId":15,
+        "cName":"PCME + E",
+        "cIcon":"http://demo.simplelecture.com/Files/Course/15_fcIcon.jpg"
+      },
+      {
+        "cId":16,
+        "cName":"MEBA + E",
+        "cIcon":"http://demo.simplelecture.com/Files/Course/16_fcIcon.jpg"
+      },
+      {
+        "cId":17,
+        "cName":"HEBA + E",
+        "cIcon":"http://demo.simplelecture.com/Files/Course/17_fcIcon.jpg"
+      },
+      {
+        "cId":18,
+        "cName":"ABMS + E",
+        "cIcon":"http://demo.simplelecture.com/Files/Course/18_fcIcon.jpg"
+      }
+    ],
+    "QuizAttended":5,
+    "QuizPending":89,
+    "ExerciseDownloaded":55,
+    "ExercisePending":138
+  }
+}

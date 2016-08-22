@@ -86,9 +86,9 @@ public class LegalFragment extends Fragment {
 
         String[] mobileArray = {"Term & Condition","Disclaimer","Privacy Policy","Cancellation & Refund Policy","Shipping & Delivery Policy"};
 
-        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.adapter_legalrow, mobileArray);
-
-        listView.setAdapter(adapter);
+//        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.adapter_legalrow, mobileArray);
+//
+//        listView.setAdapter(adapter);
         //listView.setOnItemClickListener(itemClickListene);
 
 

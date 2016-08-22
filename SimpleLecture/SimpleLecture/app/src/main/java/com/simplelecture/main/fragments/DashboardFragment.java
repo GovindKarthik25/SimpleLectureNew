@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -21,12 +22,15 @@ import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.DashboardAdapter;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.DashboardResponseModel;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
@@ -39,6 +43,9 @@ import com.simplelecture.main.viewManager.ViewManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -124,17 +131,91 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
     }
 
+    TextView textViewDownloaded;
+    TextView textReadyDownload;
+    TextView textPending;
+    TextView textAtended;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View convertView = inflater.inflate(R.layout.fragment_dashboard, container, false);
+
+        textViewDownloaded = (TextView) convertView.findViewById(R.id.tv_downloaded);
+        textReadyDownload = (TextView) convertView.findViewById(R.id.tv_ready_download);
+        textPending = (TextView) convertView.findViewById(R.id.tv_pending);
+        textAtended = (TextView) convertView.findViewById(R.id.tv_attended);
+
+
 //        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
 //        floatingCoordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.floatingActionButton);
 //        floatingAction = (FloatingActionButton) floatingCoordinatorLayout.findViewById(R.id.floatingAction);
 
         recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
 
+        readFileFromAssets("dashboard.json");
+
+
         return convertView;
+    }
+
+    private String readFileFromAssets(String fileName) {
+        StringBuilder stringBuilder = null;
+        try {
+            stringBuilder = new StringBuilder();
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open(fileName), "UTF-8"));
+            String line;
+
+            while ((line = bufferedReader.readLine()) != null) {
+                stringBuilder.append(line);
+            }
+
+            parseData(stringBuilder.toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private void parseData(String response) {
+
+        try {
+            JsonArray jArray;
+            Gson gson = new Gson();
+            JsonParser parser = new JsonParser();
+
+//            JSONObject jsonObject = new JSONObject(response);
+//            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
+
+            OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
+            if (outputResponseModel.isSuccess()) {
+                JSONObject jSONObject1 = new JSONObject(response);
+                String dataContent = jSONObject1.getString("data");
+                DashboardResponseModel dashboardResponseModel = gson.fromJson(dataContent, DashboardResponseModel.class);
+
+                Log.d("Response", "" + dashboardResponseModel);
+
+
+                textViewDownloaded.setText(dashboardResponseModel.getExerciseDownloaded());
+                textReadyDownload.setText(dashboardResponseModel.getExercisePending());
+                textPending.setText(dashboardResponseModel.getQuizPending());
+                textAtended.setText(dashboardResponseModel.getQuizAttended());
+
+            } else {
+
+            }
+
+//            JSONObject jsonObject = new JSONObject(data);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
 
