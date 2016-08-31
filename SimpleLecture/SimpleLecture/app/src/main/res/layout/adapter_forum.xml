@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:layout_width="130dp"
+        android:layout_height="130dip"
+        android:background="@drawable/itemborder"
+        android:orientation="horizontal"
+        android:padding="4dp"
+        android:paddingBottom="10dip">
+
+        <TextView
+            android:id="@+id/text_Forumtopic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:text="kokdockdok"
+            android:textSize="13sp" />
+
+
+    </LinearLayout>
+
+</LinearLayout>

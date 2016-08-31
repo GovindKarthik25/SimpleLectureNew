@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/listItemHeader">
+
+    <RelativeLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:gravity="center"
+        android:layout_marginLeft="10dp">
+
+        <ImageView
+            android:id="@+id/exceriseImageView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:src="@mipmap/loading" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="200dip"
+        android:layout_height="60dp"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@+id/linearLayout2">
+
+        <TextView
+            android:id="@+id/text_ChapterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Biology"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text_DownloadCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/text_ChapterName"
+            android:text="100"
+            android:textColor="@color/cardview_dark_background"
+            android:textSize="12sp" />
+
+    </RelativeLayout>
+
+
+    <Button
+        android:id="@+id/viewCourse_button"
+        android:layout_width="60dip"
+        android:layout_height="50dip"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:background="@color/colorPrimary"
+        android:focusable="false"
+        android:layout_marginRight="10dip"
+        android:text="View Course"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

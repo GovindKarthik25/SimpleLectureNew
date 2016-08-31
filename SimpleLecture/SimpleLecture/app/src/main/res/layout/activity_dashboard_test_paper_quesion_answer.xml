@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.simplelecture.main.activities.DashboardTestPaperQuesionAnswerActivity">
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutLessonHeader"
+        android:layout_width="match_parent"
+        android:layout_height="45dip"
+        android:layout_alignParentTop="true"
+        android:background="@color/colorPrimary">
+
+
+        <TextView
+            android:id="@+id/textViewLessonHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:layout_margin="5dip"
+            android:text="biology"
+            android:textColor="@color/white"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutTimeCalculation"
+        android:layout_width="match_parent"
+        android:layout_height="70dip"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/relativeLayoutLessonHeader"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutLeftTime"
+            android:layout_width="75dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dip">
+
+            <TextView
+                android:id="@+id/textViewLesson"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="3dip"
+                android:gravity="center"
+                android:text="Total Question"
+                android:textColor="@color/cardview_dark_background" />
+
+
+            <TextView
+                android:id="@+id/textViewtotalQuestion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/textViewLesson"
+                android:layout_marginTop="5dip"
+                android:gravity="center"
+                android:text="10"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutRightTime"
+            android:layout_width="75dip"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="10dip">
+
+            <TextView
+                android:id="@+id/textViewReponse"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="3dip"
+                android:gravity="center"
+                android:text="Duration"
+                android:textColor="@color/cardview_dark_background" />
+
+            <TextView
+                android:id="@+id/textViewLessonTimeRight"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/textViewReponse"
+                android:layout_marginTop="1dip"
+                android:gravity="center"
+                android:text="Time Left"
+                android:textColor="@color/cardview_dark_background" />
+
+            <TextView
+                android:id="@+id/textViewResponseTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/textViewLessonTimeRight"
+                android:layout_marginTop="5dip"
+                android:gravity="center"
+                android:text="00:00"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/relativeLayoutMiddleTime"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/relativeLayoutRightTime"
+            android:layout_toRightOf="@+id/relativeLayoutLeftTime"
+            android:paddingBottom="2dip">
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="100dip"
+                android:layout_height="40dip"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="3dip"
+                android:background="@drawable/common_buttoncurve"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutQuestionAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/relativeLayoutTimeCalculation"
+        android:layout_marginTop="5dp">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_QuestionAnswer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:scrollbars="horizontal" />
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/coordinatorLayout"
+        layout="@layout/coordinatelayout"></include>
+</RelativeLayout>
