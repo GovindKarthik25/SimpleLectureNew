@@ -298,6 +298,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
                     CourseCombos myCoursesObj = homePageResponseModelobj.getCourseCombosLst().get(position);
 
+                    Log.i("onItemClickCourseCombos", myCoursesObj.toString());
                     cID = myCoursesObj.getcId();
                     cComboName = myCoursesObj.getCourses();
 

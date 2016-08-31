@@ -49,11 +49,24 @@ public class Constants {
 
     /*Profile*/
     public static String GET_BILLINGADDRESSGET = "BillingAddress/Get/";
-    public static String GET_BILLINGADDRESSSAVE  = "BillingAddress/Save";
+    public static String GET_BILLINGADDRESSSAVE = "BillingAddress/Save";
 
     /*OTP*/
     public static String GET_USER_RESENDOTP = "User/ResendOTP/";
     public static String GET_USER_VERIFYOTP = "User/VerifyOTP/";
+
+    /* Dashboard*/
+    public static String GET_USER_DASHBOARD = "User/Dashboard/";
+    public static String GET_USER_MYCOURSES = "User/MyCourses/";
+    public static String GET_USER_MYEXERCISES = "User/MyExercises/";
+    public static String GET_USER_COURSE_CHAPTERFILE = "course/chapterfile/";
+
+    public static String GET_USER_QUIZ_COURSES = "Quiz/Courses/";
+    public static String GET_USER_QUIZ_CHAPTERS = "Quiz/Chapters/";
+    public static String GET_USER_QUIZ_QUESTIONS = "Quiz/Questions/";
+    public static String GET_USER_QUIZ_RESULT = "Quiz/Result/";
+    public static String GET_USER_QUIZ_SUBMITANSWERS = "Quiz/SubmitAnswers/";
+
 
 
 }

@@ -6,10 +6,11 @@ package com.simplelecture.main.model.viewmodel;
 public class RelatedCourses {
 
     private String cId;
-
     private String cName;
-
     private String cIcon;
+
+    public RelatedCourses() {
+    }
 
     public void RelatedCourses(String cId, String cName, String cIcon) {
         this.cId = cId;
@@ -25,14 +26,6 @@ public class RelatedCourses {
         this.cId = cId;
     }
 
-    public String getcName() {
-        return cName;
-    }
-
-    public void setcName(String cName) {
-        this.cName = cName;
-    }
-
     public String getcIcon() {
         return cIcon;
     }
@@ -41,5 +34,20 @@ public class RelatedCourses {
         this.cIcon = cIcon;
     }
 
+    public String getcName() {
+        return cName;
+    }
 
+    public void setcName(String cName) {
+        this.cName = cName;
+    }
+
+    @Override
+    public String toString() {
+        return "RelatedCourses{" +
+                "cId='" + cId + '\'' +
+                ", cName='" + cName + '\'' +
+                ", cIcon='" + cIcon + '\'' +
+                '}';
+    }
 }

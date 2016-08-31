@@ -6,12 +6,13 @@ package com.simplelecture.main.model.viewmodel;
 public class ForumTopics {
 
     private String Id;
+    private String Name;
 
-    public String getName() {
-        return Name;
+    public ForumTopics() {
     }
 
-    public void setName(String name) {
+    public ForumTopics(String id, String name) {
+        Id = id;
         Name = name;
     }
 
@@ -23,12 +24,19 @@ public class ForumTopics {
         Id = id;
     }
 
-    private String Name;
+    public String getName() {
+        return Name;
+    }
 
-    public void ForumTopics(String Id, String Name){
+    public void setName(String name) {
+        Name = name;
+    }
 
-        this.Id = Id;
-        this.Name = Name;
-
+    @Override
+    public String toString() {
+        return "ForumTopics{" +
+                "Id='" + Id + '\'' +
+                ", Name='" + Name + '\'' +
+                '}';
     }
 }

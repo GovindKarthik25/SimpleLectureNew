@@ -4,16 +4,14 @@
     <color name="colorPrimaryDark">#E64A19</color>
     <color name="colorAccent">#ff4400</color>
     <color name="colorDrawer">#C62828</color>
-    <color name="listItemHeader">#eeeeee</color> // #eeeeee ffe4cf
+    <color name="listItemHeader">#eeeeee</color>// #eeeeee ffe4cf
     <color name="listItemChild">#F5F5F5</color>
     <color name="listTextColor">#FF9648</color>
     <color name="white">#FFFFFF</color>
     <color name="transperent">#00FFFFFF</color>
-
-
-
-
-
+    <color name="lightYellow">#fbe59a</color>
+    <color name="lightPink">#FFF1CC</color>
+    <color name="green">#66C359</color>
 
 
 

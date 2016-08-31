@@ -118,7 +118,6 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
-        searchEditText.setVisibility(View.GONE);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -130,6 +129,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         spinnerMonths = (Spinner) findViewById(R.id.spinner_months);
         customSpinnerAdapter = new CustomSpinnerAdapter(this, courseDetailsResponseModelObj.getCourseMonths());
         spinnerMonths.setAdapter(customSpinnerAdapter);
+        spinnerMonths.setOnItemSelectedListener(onItemSelectedListener);
         textViewCourseAmount = (TextView) findViewById(R.id.textViewCourseAmount);
         textViewCourseAmount.setText(courseDetailsResponseModelObj.getCoursePrice() + " X ");
         chekInclude = (CheckBox) findViewById(R.id.checkBox);
@@ -147,11 +147,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
             }
         });
 
-        /*LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-        tabStrip.setEnabled(false);
-        for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setClickable(false);
-        }*/
+
     }
     private String courseMaterialSelected;
 

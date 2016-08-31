@@ -7,15 +7,33 @@ import java.util.List;
  */
 public class DashboardResponseModel {
 
-//    private String isSuccess;
-//    private String message;
+    private List<MyCoursesResponseModel> myCoursesResponseModel;
+    private List<ForumTopics> ForumTopics;
+    private List<RelatedCourses> RelatedCourses;
+    private String QuizAttended;
+    private String QuizPending;
+    private String ExerciseDownloaded;
+    private String ExercisePending;
 
-    public List<myCourses> getMyCourses() {
-        return MyCourses;
+    public DashboardResponseModel() {
     }
 
-    public void setMyCourses(List<myCourses> myCourses) {
-        MyCourses = myCourses;
+    public DashboardResponseModel(List<MyCoursesResponseModel> myCoursesResponseModel, List<com.simplelecture.main.model.viewmodel.ForumTopics> forumTopics, List<com.simplelecture.main.model.viewmodel.RelatedCourses> relatedCourses, String quizAttended, String quizPending, String exerciseDownloaded, String exercisePending) {
+        this.myCoursesResponseModel = myCoursesResponseModel;
+        ForumTopics = forumTopics;
+        RelatedCourses = relatedCourses;
+        QuizAttended = quizAttended;
+        QuizPending = quizPending;
+        ExerciseDownloaded = exerciseDownloaded;
+        ExercisePending = exercisePending;
+    }
+
+    public List<MyCoursesResponseModel> getMyCoursesResponseModel() {
+        return myCoursesResponseModel;
+    }
+
+    public void setMyCoursesResponseModel(List<MyCoursesResponseModel> myCoursesResponseModel) {
+        this.myCoursesResponseModel = myCoursesResponseModel;
     }
 
     public List<com.simplelecture.main.model.viewmodel.ForumTopics> getForumTopics() {
@@ -66,32 +84,16 @@ public class DashboardResponseModel {
         ExercisePending = exercisePending;
     }
 
-    private List<myCourses> MyCourses;
-
-    private List<ForumTopics> ForumTopics;
-
-    private List<RelatedCourses> RelatedCourses;
-
-    private String QuizAttended;
-
-    private String QuizPending;
-
-    private String ExerciseDownloaded;
-
-    private String ExercisePending;
-
-    public void DashboardResponseModel(List<myCourses> MyCourses,List<ForumTopics> ForumTopics,
-                                       List<RelatedCourses> RelatedCourses,String QuizAttended,String QuizPending,String ExerciseDownloaded,String ExercisePending){
-
-        this.MyCourses = MyCourses;
-        this.ForumTopics = ForumTopics;
-        this.RelatedCourses = RelatedCourses;
-        this.QuizAttended = QuizAttended;
-        this.QuizPending = QuizPending;
-        this.ExerciseDownloaded = ExerciseDownloaded;
-        this.ExercisePending = ExercisePending;
-
+    @Override
+    public String toString() {
+        return "DashboardResponseModel{" +
+                "myCoursesResponseModel=" + myCoursesResponseModel +
+                ", ForumTopics=" + ForumTopics +
+                ", RelatedCourses=" + RelatedCourses +
+                ", QuizAttended='" + QuizAttended + '\'' +
+                ", QuizPending='" + QuizPending + '\'' +
+                ", ExerciseDownloaded='" + ExerciseDownloaded + '\'' +
+                ", ExercisePending='" + ExercisePending + '\'' +
+                '}';
     }
-
-
 }

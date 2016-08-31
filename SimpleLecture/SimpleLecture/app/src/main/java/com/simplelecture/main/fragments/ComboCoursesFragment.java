@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,6 +136,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
 
 
         String headingUpdate = courseDetailsResponseModelObj.getcName() + " (" + courseDetailsResponseModelObj.getcComboName() + ")";
+
         textView_headerUpdateDetails.setText(headingUpdate);
     }
 

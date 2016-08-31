@@ -119,10 +119,9 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
 
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
-        getSupportActionBar().setTitle(courseDetailsResponseModelObj.getcName());
+        getSupportActionBar().setTitle(Util.setActionBarText(courseDetailsResponseModelObj.getcName()));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Changing the action bar color
-        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 

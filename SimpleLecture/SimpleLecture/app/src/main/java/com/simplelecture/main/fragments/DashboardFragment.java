@@ -7,13 +7,17 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -22,7 +26,10 @@ import com.google.gson.JsonParser;
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.DashboardAdapter;
+import com.simplelecture.main.adapters.ForumAdapter;
+import com.simplelecture.main.adapters.RelatedCourseAdapter;
 import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.CourseDetailsController;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
@@ -30,10 +37,10 @@ import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardResponseModel;
-import com.simplelecture.main.model.viewmodel.OutputResponseModel;
-import com.simplelecture.main.model.viewmodel.courseFeatures;
-import com.simplelecture.main.model.viewmodel.myCourses;
 import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.model.viewmodel.RelatedCourses;
+import com.simplelecture.main.model.viewmodel.courseFeatures;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -43,9 +50,6 @@ import com.simplelecture.main.viewManager.ViewManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +61,7 @@ import java.util.List;
  * Use the {@link DashboardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DashboardFragment extends Fragment implements NetworkLayer {
+public class DashboardFragment extends Fragment implements NetworkLayer, View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -69,25 +73,31 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
 
     private OnFragmentInteractionListener mListener;
 
-    RecyclerView recyclerView;
+    RecyclerView dashbord_recycler_view;
 
     DashboardAdapter dashboardAdapter;
     Activity activity = getActivity();
     private CoordinatorLayout coordinatorLayout, floatingCoordinatorLayout;
     private SnackBarManagement snack;
-    private List<myCourses> myCoursesLstArray;
-    private MyCoursesResponseModel myCoursesResponseModelObj;
-    private boolean param_get_MyCourses = false;
-    private boolean param_get_MyCoursesDetails = false;
-    private boolean param_get_Chapters = false;
+    private String param_get_ServiceCallResult = "";
 
     private ProgressDialog pd;
     private List<courseFeatures> courseFeaturesLstArray;
     private List<CourseCombos> courseCombosLstArray;
     private CourseDetailsResponseModel courseDetailsResponseModel;
-    private myCourses myCoursesObj;
+    private MyCoursesResponseModel myCoursesObj;
     private AlertMessageManagement alertMessageManagement;
     private FloatingActionButton floatingAction;
+    private RecyclerView forum_recycler_view;
+    private DashboardResponseModel dashboardResponseModelObj;
+    private ForumAdapter forumAdapter;
+    private RecyclerView relatedCourse_recycler_view;
+    private RelatedCourseAdapter relatedCourseAdapter;
+    private ImageView dashboardDetails_ImageView;
+    private ImageView dashboardExercise_ImageView, dashboardQuizSummary_ImageView;
+    private TextView viewallVF_TextView;
+    private ViewPager viewPager;
+    private String cID;
 
     /**
      * Use this factory method to create a new instance of
@@ -146,82 +156,26 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         textPending = (TextView) convertView.findViewById(R.id.tv_pending);
         textAtended = (TextView) convertView.findViewById(R.id.tv_attended);
 
+        dashboardDetails_ImageView = (ImageView) convertView.findViewById(R.id.dashboardDetails_ImageView);
+        dashboardExercise_ImageView = (ImageView) convertView.findViewById(R.id.dashboardExercise_ImageView);
+        dashboardQuizSummary_ImageView = (ImageView) convertView.findViewById(R.id.dashboardQuizSummary_ImageView);
+        viewallVF_TextView = (TextView) convertView.findViewById(R.id.viewallVF_TextView);
+        viewPager = (ViewPager) getActivity().findViewById(R.id.pager);
 
-//        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
+        dashboardDetails_ImageView.setOnClickListener(this);
+        dashboardExercise_ImageView.setOnClickListener(this);
+        dashboardQuizSummary_ImageView.setOnClickListener(this);
+        viewallVF_TextView.setOnClickListener(this);
+
+        coordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.coordinatorLayout);
 //        floatingCoordinatorLayout = (CoordinatorLayout) convertView.findViewById(R.id.floatingActionButton);
 //        floatingAction = (FloatingActionButton) floatingCoordinatorLayout.findViewById(R.id.floatingAction);
 
-        recyclerView = (RecyclerView) convertView.findViewById(R.id.my_recycler_view);
-
-        readFileFromAssets("dashboard.json");
-
+        dashbord_recycler_view = (RecyclerView) convertView.findViewById(R.id.dashbord_recycler_view);
+        forum_recycler_view = (RecyclerView) convertView.findViewById(R.id.forum_recycler_view);
+        relatedCourse_recycler_view = (RecyclerView) convertView.findViewById(R.id.relatedCourse_recycler_view);
 
         return convertView;
-    }
-
-    private String readFileFromAssets(String fileName) {
-        StringBuilder stringBuilder = null;
-        try {
-            stringBuilder = new StringBuilder();
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(getActivity().getAssets().open(fileName), "UTF-8"));
-            String line;
-
-            while ((line = bufferedReader.readLine()) != null) {
-                stringBuilder.append(line);
-            }
-
-            parseData(stringBuilder.toString());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return stringBuilder.toString();
-    }
-
-    private void parseData(String response) {
-
-        try {
-            JsonArray jArray;
-            Gson gson = new Gson();
-            JsonParser parser = new JsonParser();
-
-//            JSONObject jsonObject = new JSONObject(response);
-//            JSONObject jsonObject1 = (JSONObject) jsonObject.get("data");
-
-            OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
-
-            if (outputResponseModel.isSuccess()) {
-                JSONObject jSONObject1 = new JSONObject(response);
-                String dataContent = jSONObject1.getString("data");
-                DashboardResponseModel dashboardResponseModel = gson.fromJson(dataContent, DashboardResponseModel.class);
-
-                Log.d("Response", "" + dashboardResponseModel);
-
-
-                textViewDownloaded.setText(dashboardResponseModel.getExerciseDownloaded());
-                textReadyDownload.setText(dashboardResponseModel.getExercisePending());
-                textPending.setText(dashboardResponseModel.getQuizPending());
-                textAtended.setText(dashboardResponseModel.getQuizAttended());
-
-            } else {
-
-            }
-
-//            JSONObject jsonObject = new JSONObject(data);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
-    }
-
-
-    private void loadTempData() {
-
-
     }
 
     @Override
@@ -229,37 +183,78 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         super.onActivityCreated(savedInstanceState);
 
         try {
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-            recyclerView.setLayoutManager(gridLayoutManager);
+
+            loadGetDashboard();
+
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3, GridLayoutManager.HORIZONTAL, false);
+            dashbord_recycler_view.setLayoutManager(gridLayoutManager);
+
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            forum_recycler_view.setLayoutManager(linearLayoutManager);
+
+            LinearLayoutManager linearLayoutManagr = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+            relatedCourse_recycler_view.setLayoutManager(linearLayoutManagr);
+
 
             if (dashboardAdapter != null) {
-                dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
-                recyclerView.setAdapter(dashboardAdapter);
+                dashboardAdapter = new DashboardAdapter(getActivity(), dashboardResponseModelObj.getMyCoursesResponseModel());
+                dashbord_recycler_view.setAdapter(dashboardAdapter);
 
                 dashboardAdapter.setOnItemClickListener(onItemClickListener);
             }
 
-            floatingAction.setOnClickListener(new View.OnClickListener() {
+            if (forumAdapter != null) {
+                forumAdapter = new ForumAdapter(getActivity(), dashboardResponseModelObj.getForumTopics());
+                forum_recycler_view.setAdapter(forumAdapter);
+            }
+
+            if (relatedCourseAdapter != null) {
+                relatedCourseAdapter = new RelatedCourseAdapter(getActivity(), dashboardResponseModelObj.getRelatedCourses());
+                relatedCourse_recycler_view.setAdapter(relatedCourseAdapter);
+
+                relatedCourseAdapter.setOnItemClickListener(relatedCourseOnItemClickListener);
+            }
+
+
+
+           /* floatingAction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     loadGetMyCourses();
                 }
-            });
+            });*/
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    private void loadGetMyCourses() {
+    private void loadGetDashboard() {
         try {
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                param_get_MyCourses = true;
+                param_get_ServiceCallResult = Constants.GET_USER_DASHBOARD;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                //My HomeCoursesModel service
-                ApiService.getApiService().doGetMyCourses(getActivity(), Util.getFromPrefrences(getActivity(), "uId"), DashboardFragment.this);
+
+                ApiService.getApiService().doGetDashboardDetails(getActivity(), DashboardFragment.this);
             } else {
                 alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadGetCourse(String courseId) {
+        try {
+            try {
+                if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                    param_get_ServiceCallResult = Constants.GET_COURSEDETAILS;
+                    pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+                    ApiService.getApiService().doGetCourseDetails(getActivity(), DashboardFragment.this, courseId);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -278,21 +273,25 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
         @Override
         public void onItemClick(View view, int position) {
             try {
-                myCoursesObj = myCoursesLstArray.get(position);
-
-                if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                    param_get_MyCoursesDetails = true;
-                    pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                    //My HomeCoursesModel service
-                    ApiService.getApiService().doGetCourseDetails(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
-                } else {
-                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
-                }
+                myCoursesObj = dashboardResponseModelObj.getMyCoursesResponseModel().get(position);
+                cID = myCoursesObj.getCourseId();
+                loadGetCourse(cID);
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    };
 
-
+    OnItemClickListener relatedCourseOnItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            try {
+                RelatedCourses relatedCoursesObj = dashboardResponseModelObj.getRelatedCourses().get(position);
+                cID = relatedCoursesObj.getcId();
+                loadGetCourse(cID);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     };
 
@@ -317,103 +316,105 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
     @Override
     public void parseResponse(String response) {
         try {
-            pd.cancel();
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            List<MyCoursesResponseModel> myCoursesResponseModelLstArray = new ArrayList<MyCoursesResponseModel>();
+
             Gson gson = new Gson();
+            JsonArray jArray;
             JsonParser parser = new JsonParser();
-            // Log.i("response*******", "response**"+response.toString());
-            if (param_get_MyCourses) {
-                JSONObject jSONObject = new JSONObject(response);
-                String myCoursesContent = jSONObject.getString("myCourses");
-                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
 
-                myCoursesLstArray = new ArrayList<myCourses>();
-                for (JsonElement obj : jarray) {
-                    myCourses myCoursesObj = gson.fromJson(obj, myCourses.class);
-                    myCoursesLstArray.add(myCoursesObj);
-                }
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_DASHBOARD)) {
 
-            /*Setting data to main arraylist*/
-                myCoursesResponseModelObj = new MyCoursesResponseModel();
-                myCoursesResponseModelObj.setMycourses(myCoursesLstArray);
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                dashboardAdapter = new DashboardAdapter(getActivity(), myCoursesLstArray);
-                recyclerView.setAdapter(dashboardAdapter);
-                dashboardAdapter.setOnItemClickListener(onItemClickListener);
+                if (outputResponseModel.isSuccess()) {
 
-                dashboardAdapter.notifyDataSetChanged();
+                    JSONObject jSONObject1 = new JSONObject(response);
+                    String dataContent = jSONObject1.getString("data");
 
-                // Log.i("myCoursesResponse**->", myCoursesResponseModelObj.toString() + "");
-                param_get_MyCourses = false;
-            } else if (param_get_MyCoursesDetails) {
-                courseDetailsResponseModel = gson.fromJson(response, CourseDetailsResponseModel.class);
-                JSONObject jSONObject = new JSONObject(response);
+                    dashboardResponseModelObj = gson.fromJson(dataContent, DashboardResponseModel.class);
 
-                String myCoursesContent = jSONObject.getString("courseFeatures");
-                JsonArray jarray = parser.parse(myCoursesContent).getAsJsonArray();
-
-                courseFeaturesLstArray = new ArrayList<courseFeatures>();
-                for (JsonElement obj : jarray) {
-                    courseFeatures courseFeaturesObj = gson.fromJson(obj, courseFeatures.class);
-                    courseFeaturesLstArray.add(courseFeaturesObj);
-                }
-
-                String courseCombosContent = jSONObject.getString("courseCombos");
-                //Log.i("courseCombosContent", courseCombosContent.toString());
-                if (courseCombosContent != null && !courseCombosContent.equals("null")) {
-                    JsonArray jarrray = parser.parse(courseCombosContent).getAsJsonArray();
-
-                    courseCombosLstArray = new ArrayList<CourseCombos>();
-                    for (JsonElement obj : jarrray) {
-
-                        CourseCombos courseCombosObj = gson.fromJson(obj, CourseCombos.class);
-                        courseCombosLstArray.add(courseCombosObj);
+                    JSONObject jSONObject = new JSONObject(dataContent);
+                    String myCoursesResponse = jSONObject.getString("MyCourses");
+                    jArray = parser.parse(myCoursesResponse).getAsJsonArray();
+                    for (JsonElement obj : jArray) {
+                        MyCoursesResponseModel myCoursesResponseModelObj = gson.fromJson(obj, MyCoursesResponseModel.class);
+                        myCoursesResponseModelLstArray.add(myCoursesResponseModelObj);
                     }
-                    courseDetailsResponseModel.setCourseCombos(courseCombosLstArray);
 
+                    dashboardResponseModelObj.setMyCoursesResponseModel(myCoursesResponseModelLstArray);
+
+                    dashboardAdapter = new DashboardAdapter(getActivity(), dashboardResponseModelObj.getMyCoursesResponseModel());
+                    dashbord_recycler_view.setAdapter(dashboardAdapter);
+
+                    dashboardAdapter.setOnItemClickListener(onItemClickListener);
+
+                    forumAdapter = new ForumAdapter(getActivity(), dashboardResponseModelObj.getForumTopics());
+                    forum_recycler_view.setAdapter(forumAdapter);
+
+                    relatedCourseAdapter = new RelatedCourseAdapter(getActivity(), dashboardResponseModelObj.getRelatedCourses());
+                    relatedCourse_recycler_view.setAdapter(relatedCourseAdapter);
+
+                    relatedCourseAdapter.setOnItemClickListener(relatedCourseOnItemClickListener);
+
+
+                    textViewDownloaded.setText(dashboardResponseModelObj.getExerciseDownloaded());
+                    textReadyDownload.setText(dashboardResponseModelObj.getExercisePending());
+                    textPending.setText(dashboardResponseModelObj.getQuizPending());
+                    textAtended.setText(dashboardResponseModelObj.getQuizAttended());
                 }
-                courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                param_get_MyCoursesDetails = false;
+                if (outputResponseModel.isSuccess()) {
 
-                //  Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
+                    JSONObject jSONObject = new JSONObject(response);
+                    String dataContent = jSONObject.getString("data");
 
+                    courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
 
-                if (courseDetailsResponseModel.isCombo()) {
-                    new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
-                } else {
-
-                    if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
-                        param_get_Chapters = true;
-
-                        pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
-                        //My HomeCoursesModel service
-                        ApiService.getApiService().doGetChapters(getActivity(), DashboardFragment.this, myCoursesObj.getcId());
+                    if (courseDetailsResponseModel.isCombo()) {
+                        new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                     } else {
-                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+
+                        if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                            param_get_ServiceCallResult = Constants.GET_COURSECHAPTERS;
+
+                            pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+
+                            ApiService.getApiService().doGetChapters(getActivity(), DashboardFragment.this, cID);
+                        } else {
+                            snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                        }
+
                     }
-
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
                 }
-            } else if (param_get_Chapters) {
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
 
-                JsonArray jArray = parser.parse(response).getAsJsonArray();
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
-                ArrayList<ChaptersResponseModel> chaptersResponseModelLstArray = new ArrayList<ChaptersResponseModel>();
-                for (JsonElement obj : jArray) {
-                    ChaptersResponseModel chaptersResponseModelobj = gson.fromJson(obj, ChaptersResponseModel.class);
-                    chaptersResponseModelLstArray.add(chaptersResponseModelobj);
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject = new JSONObject(response);
+                    String dataContent = jSONObject.getString("data");
+
+                    List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(dataContent);
+
+                    courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+
+                    new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
                 }
-
-                courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
-
-                // Log.i("chaptersResponseMo**", " * * * * " + courseDetailsResponseModel.toString());
-
-                param_get_Chapters = false;
-                new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
-
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
     }
 
@@ -428,12 +429,36 @@ public class DashboardFragment extends Fragment implements NetworkLayer {
             }
 
             snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
-            Log.v("myCoursesLstArray", "error");
-            param_get_MyCourses = false;
-            param_get_MyCoursesDetails = false;
-            param_get_Chapters = false;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Called when a view has been clicked.
+     *
+     * @param v The view that was clicked.
+     */
+    @Override
+    public void onClick(View v) {
+
+        if (v == dashboardDetails_ImageView) {
+            getActivity().finish();
+            new ViewManager().gotoHomeView(getActivity());
+        } else if (v == dashboardExercise_ImageView) {
+
+            getActivity().finish();
+            new ViewManager().gotoDashboardView(getActivity(), 3);
+
+        } else if (v == dashboardQuizSummary_ImageView) {
+            getActivity().finish();
+            new ViewManager().gotoDashboardView(getActivity(), 2);
+
+        } else if (v == viewallVF_TextView) {
+
+        }
+
+
     }
 }

@@ -1,10 +1,13 @@
 package com.simplelecture.main.util;
 
+import com.simplelecture.main.model.Answers;
 import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.SignInModel;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 /**
  * Created by M1032185 on 2/14/2016.
@@ -118,6 +121,18 @@ public class JsonFactory {
             jsonObject.put("State", billingAddressModel.getState());
             jsonObject.put("Pincode", billingAddressModel.getPincode());
             jsonObject.put("Mobile", billingAddressModel.getMobile());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
+    public JSONObject getSubmitQuizAnswer(List<Answers> answerslst) {
+
+        try {
+
+            jsonObject.put("Answers", answerslst);
 
         } catch (JSONException e) {
             e.printStackTrace();

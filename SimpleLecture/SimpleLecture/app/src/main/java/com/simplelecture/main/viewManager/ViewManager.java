@@ -9,16 +9,23 @@ import com.simplelecture.main.activities.CartActivity;
 import com.simplelecture.main.activities.ChangePasswordActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
+import com.simplelecture.main.activities.DasboardTestPaperStartQuizActivity;
 import com.simplelecture.main.activities.DashboardActivity;
+import com.simplelecture.main.activities.DashboardTestPaperChapterActivity;
+import com.simplelecture.main.activities.DashboardTestPaperQuesionAnswerActivity;
 import com.simplelecture.main.activities.ForgotPasswordActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.OTPcodeActivity;
 import com.simplelecture.main.activities.OrderSummaryActivity;
 import com.simplelecture.main.activities.PolicyWebview;
+import com.simplelecture.main.activities.ResultScreenActivity;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
+import com.simplelecture.main.model.viewmodel.DashboardQuizQuestionsResponseModel;
+import com.simplelecture.main.model.viewmodel.DashboardQuizResult;
+import com.simplelecture.main.model.viewmodel.myCourses;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -107,11 +114,13 @@ public class ViewManager {
     }
 
 
-    public Intent gotoDashboardView(Activity activity) {
+    public Intent gotoDashboardView(Activity activity, int tabSelect) {
         intent = new Intent(activity, DashboardActivity.class);
+        intent.putExtra("tabSelect", tabSelect);
         setDisplay(activity, intent);
         return intent;
     }
+
 
     /**
      * Description: go to Combo Course View
@@ -200,4 +209,51 @@ public class ViewManager {
     }
 
 
+    /**
+     * Description: go to TestPaper Chapter Activity
+     *
+     * @return
+     */
+    public Intent gotoTestPaperChapterActivity(Activity activity, myCourses myCoursesObj) {
+        intent = new Intent(activity, DashboardTestPaperChapterActivity.class);
+        intent.putExtra("myCoursesObj", myCoursesObj);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to TestPaper Start Quiz
+     *
+     * @return
+     */
+    public Intent gotoTestPaperStartQuizActivity(Activity activity, DashboardQuizQuestionsResponseModel dashboardQuizQuestionsResponseModelObj) {
+        intent = new Intent(activity, DasboardTestPaperStartQuizActivity.class);
+        intent.putExtra("dashboardQuizQuestionsResponseModelObj", dashboardQuizQuestionsResponseModelObj);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to TestPaper Quesion Answer
+     *
+     * @return
+     */
+    public Intent gotoTestPaperQuesionAnswerActivity(Activity activity, DashboardQuizQuestionsResponseModel dashboardQuizQuestionsResponseModelObj) {
+        intent = new Intent(activity, DashboardTestPaperQuesionAnswerActivity.class);
+        intent.putExtra("dashboardQuizQuestionsResponseModelObj", dashboardQuizQuestionsResponseModelObj);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to TestPaper Quesion Answer
+     *
+     * @return
+     */
+    public Intent gotoTestPaperResultScreenActivity(Activity activity, DashboardQuizResult dashboardQuizResultObj) {
+        intent = new Intent(activity, ResultScreenActivity.class);
+        intent.putExtra("dashboardQuizResultObj", dashboardQuizResultObj);
+        setDisplay(activity, intent);
+        return intent;
+    }
 }

@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dip"
         android:orientation="horizontal">
 
         <ImageView
@@ -14,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_gravity="center"
             android:layout_weight="2"
             android:src="@mipmap/loading" />
 
@@ -31,8 +33,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:text="Biology"
+                android:textStyle="bold"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="20sp" />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/text_no_chapters"
@@ -40,23 +43,22 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
                 android:text="No. of chapters : 19"
-                android:textSize="15sp" />
+                android:textSize="13sp" />
 
             <TextView
-                android:id="@+id/text_exer_covered"
+                android:id="@+id/text_exer_completed"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:text="5% completed"
-                android:textSize="15sp" />
+                android:textSize="12sp" />
 
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/colorPrimary"
-        ></LinearLayout>
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"></LinearLayout>
 
 </LinearLayout>

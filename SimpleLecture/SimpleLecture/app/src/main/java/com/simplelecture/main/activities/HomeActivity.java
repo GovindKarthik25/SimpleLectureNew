@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
-import com.simplelecture.main.fragments.ExercisesFragment;
+import com.simplelecture.main.fragments.ExerciseFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.HomeFragment;
 import com.simplelecture.main.fragments.LegalFragment;
@@ -205,7 +205,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_mycourses));
                 break;
             case 5:
-                fragment = new ExercisesFragment();
+                fragment = new ExerciseFragment();
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_excercies));
                 break;
             case 6:

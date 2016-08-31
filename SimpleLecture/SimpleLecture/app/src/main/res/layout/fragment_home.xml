@@ -53,8 +53,8 @@
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:src="@mipmap/ic_launcher" />
+                    android:layout_marginLeft="10dp"
+                    android:src="@drawable/book" />
 
                 <TextView
                     android:id="@+id/cart_CountTextView"

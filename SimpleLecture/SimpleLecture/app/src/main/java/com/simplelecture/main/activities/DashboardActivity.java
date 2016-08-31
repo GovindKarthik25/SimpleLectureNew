@@ -1,24 +1,21 @@
 package com.simplelecture.main.activities;
 
-import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
 import com.simplelecture.main.fragments.DashboardFragment;
-import com.simplelecture.main.fragments.ExercisesFragment;
+import com.simplelecture.main.fragments.ExerciseFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.MyCoursesFragment;
-import com.simplelecture.main.fragments.SupportFragment;
 import com.simplelecture.main.fragments.TestPapersFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.util.Util;
@@ -47,22 +44,26 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
 
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
-        searchEditText.setVisibility(View.GONE);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        LinearLayout tabStrip = ((LinearLayout) tabLayout.getChildAt(0));
-        tabStrip.setEnabled(false);
-        for (int i = 0; i < tabStrip.getChildCount(); i++) {
-            tabStrip.getChildAt(i).setClickable(false);
+
+        Bundle bundle = getIntent().getExtras();
+
+        if (bundle != null) {
+            int tabSelect = bundle.getInt("tabSelect");
+            //     Log.i("tabSelect", String.valueOf(tabSelect));
+            TabLayout.Tab tab = tabLayout.getTabAt(tabSelect);
+            tab.select();
         }
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
@@ -79,9 +80,9 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
         adapter.addFrag(new DashboardFragment(), getResources().getString(R.string.dashboard));
         adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
         adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
-        adapter.addFrag(new ExercisesFragment(), getResources().getString(R.string.excercise));
+        adapter.addFrag(new ExerciseFragment(), getResources().getString(R.string.excercise));
         adapter.addFrag(new ForumFragment(), getResources().getString(R.string.forum));
-        adapter.addFrag(new SupportFragment(), getResources().getString(R.string.review));
+       // adapter.addFrag(new SupportFragment(), getResources().getString(R.string.support));
 
         viewPager.setAdapter(adapter);
     }

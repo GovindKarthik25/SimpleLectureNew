@@ -1,9 +1,11 @@
 package com.simplelecture.main.model.viewmodel;
 
+import java.io.Serializable;
+
 /**
  * Created by Raos on 2/16/2016.
  */
-public class myCourses {
+public class myCourses implements Serializable{
 
     private String cId;
     private String cName;

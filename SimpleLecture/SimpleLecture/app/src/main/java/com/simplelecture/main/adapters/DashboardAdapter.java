@@ -11,27 +11,26 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.viewmodel.myCourses;
+import com.simplelecture.main.model.viewmodel.MyCoursesResponseModel;
 import com.squareup.picasso.Picasso;
-//import com.squareup.picasso.Picasso;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import static com.simplelecture.main.R.id.item_layout;
+
+//import com.squareup.picasso.Picasso;
 
 /**
  * Created by M1032185 on 1/31/2016.
  */
 public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyViewHolder> {
 
-    List<myCourses> myCoursesListArray;
+    List<MyCoursesResponseModel> myCoursesListArray;
     Activity activity;
 
     OnItemClickListener mItemClickListener;
 
-    public DashboardAdapter(Activity activty, List<myCourses> myCoursesLstArray) {
+    public DashboardAdapter(Activity activty, List<MyCoursesResponseModel> myCoursesLstArray) {
         this.activity = activty;
         this.myCoursesListArray = myCoursesLstArray;
 
@@ -51,13 +50,13 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
 
         try {
 
-            if (!myCoursesListArray.get(position).getcIcon().equals("") && myCoursesListArray.get(position).getcIcon() != null) {
+            if (!myCoursesListArray.get(position).getCourseIcon().equals("") && myCoursesListArray.get(position).getCourseIcon() != null) {
                 Picasso.with(activity)
-                        .load(myCoursesListArray.get(position).getcIcon())
+                        .load(myCoursesListArray.get(position).getCourseIcon())
                         .placeholder(R.mipmap.loading)   // optional
                         .error(R.mipmap.app_icon)      // optional
-                                //.resize(250, 200)                        // optional
-                                //.rotate(90)                             // optional
+                        //.resize(250, 200)                        // optional
+                        //.rotate(90)                             // optional
                         .into(holder.courseimageView);
             } else {
                 holder.courseimageView.setImageResource(R.mipmap.app_icon);
@@ -65,7 +64,9 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
         } catch (Exception e) {
             e.printStackTrace();
         }
-        holder.textView.setText(myCoursesListArray.get(position).getcName());
+        holder.textView.setText(myCoursesListArray.get(position).getCourseName());
+        holder.text_no_chapters.setText("This Course will Expire in " + myCoursesListArray.get(position).getPendingDays() + "Days");
+        holder.text_exer_completed.setText(myCoursesListArray.get(position).getCompletePer()+" % Complete");
 
     }
 
@@ -81,7 +82,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textView;
-        TextView textSubTitle;
+        TextView text_no_chapters;
+        TextView text_exer_completed;
         ImageView courseimageView;
 
         LinearLayout itemLayout;
@@ -89,7 +91,8 @@ public class DashboardAdapter extends RecyclerView.Adapter<DashboardAdapter.MyVi
         public MyViewHolder(View itemView) {
             super(itemView);
             textView = (TextView) itemView.findViewById(R.id.text_name);
-            textSubTitle = (TextView) itemView.findViewById(R.id.text_no_chapters);
+            text_exer_completed = (TextView) itemView.findViewById(R.id.text_exer_completed);
+            text_no_chapters = (TextView) itemView.findViewById(R.id.text_no_chapters);
             courseimageView = (ImageView) itemView.findViewById(R.id.courseimageView);
             itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             itemView.setOnClickListener(this);

@@ -142,5 +142,7 @@
         <item>4</item>
 
     </string-array>
+    <string name="title_activity_dashboard_test_paper_chapter">DashboardTestPaperChapterActivity
+    </string>
 
 </resources>

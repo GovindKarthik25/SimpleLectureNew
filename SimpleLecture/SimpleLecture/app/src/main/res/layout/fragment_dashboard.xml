@@ -23,6 +23,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="start|center"
                     android:text="Dashboard Details"
@@ -30,26 +31,27 @@
                     android:textSize="15sp" />
 
                 <ImageView
-                    android:id="@+id/viewAllComboCourse"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:id="@+id/dashboardDetails_ImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
                     android:gravity="center|end"
-                    android:src="@mipmap/next"></ImageView>
+                    android:src="@drawable/fav"></ImageView>
 
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
-                android:id="@+id/my_recycler_view"
+                android:id="@+id/dashbord_recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="230dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/courses_titleLinearLayout"
-                android:scrollbars="vertical" />
+                android:scrollbars="horizontal" />
 
             <LinearLayout
                 android:id="@+id/strip1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/my_recycler_view"
+                android:layout_below="@+id/dashbord_recycler_view"
                 android:background="@color/colorAccent"
                 android:orientation="horizontal"
                 android:padding="4dp">
@@ -57,17 +59,20 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="start|center"
-                    android:text="Excersise"
+                    android:text="Exercise"
                     android:textColor="@color/white"
                     android:textSize="15sp" />
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:id="@+id/dashboardExercise_ImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
                     android:gravity="center|end"
-                    android:src="@mipmap/next"></ImageView>
+                    android:src="@drawable/excerisedownload"></ImageView>
             </LinearLayout>
 
             <LinearLayout
@@ -128,10 +133,38 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/strip5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/details1"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:text="Quiz Summary"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <ImageView
+                    android:id="@+id/dashboardQuizSummary_ImageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dip"
+                    android:gravity="center|end"
+                    android:src="@drawable/quizsummary"></ImageView>
+            </LinearLayout>
+
+
+            <LinearLayout
                 android:id="@+id/details2"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:layout_below="@+id/details1"
+                android:layout_below="@+id/strip5"
                 android:background="@drawable/itemborder"
                 android:orientation="horizontal">
 
@@ -222,10 +255,11 @@
                 android:paddingTop="5dp"
                 android:scrollbars="vertical" />
 
+
             <LinearLayout
                 android:id="@+id/strip3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_below="@+id/details2"
                 android:background="@color/colorAccent"
                 android:orientation="horizontal"
@@ -234,6 +268,47 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.5"
+                    android:gravity="center|start"
+                    android:text="Related Course"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
+                <!--<TextView
+                    android:id="@+id/viewallRC_TextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableRight="@mipmap/next"
+                    android:gravity="center|end"
+                    android:text="@string/viewall"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />-->
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/relatedCourse_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/strip3"
+                android:paddingTop="5dp"
+                android:scrollbars="vertical" />
+
+            <LinearLayout
+                android:id="@+id/strip4"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/relatedCourse_recycler_view"
+                android:background="@color/colorAccent"
+                android:orientation="horizontal"
+                android:padding="4dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="0.5"
                     android:gravity="start|center"
                     android:text="Forum"
@@ -241,12 +316,14 @@
                     android:textSize="15sp" />
 
                 <TextView
+                    android:id="@+id/viewallVF_TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:drawableRight="@mipmap/next"
                     android:gravity="center|end"
-                    android:text="@string/viewall"
-                    android:textColor="@android:color/black"
+                    android:text="View Forum"
+                    android:textColor="@color/white"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -255,20 +332,19 @@
                 android:id="@+id/forum_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/strip3"
+                android:layout_below="@id/strip4"
                 android:paddingTop="5dp"
                 android:scrollbars="vertical" />
 
 
-<!--
-             <include
-                 android:id="@+id/coordinatorLayout"
-                 layout="@layout/coordinatelayout"></include>
-
-             <include
-                 android:id="@+id/floatingActionButton"
-                 layout="@layout/floating_actionbutton"></include>
--->
+            <include
+                android:id="@+id/coordinatorLayout"
+                layout="@layout/coordinatelayout"></include>
+            <!--
+                                     <include
+                                         android:id="@+id/floatingActionButton"
+                                         layout="@layout/floating_actionbutton"></include>
+                        -->
 
 
         </RelativeLayout>
