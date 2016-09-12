@@ -9,7 +9,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -92,6 +91,18 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Util.secureScreenShot(SingleCourseActivity.this);
@@ -149,6 +160,8 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
 
 
     }
+
+
     private String courseMaterialSelected;
 
 
@@ -284,7 +297,6 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
     }
 
 
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new CourseFeatureFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseFeature));
@@ -295,16 +307,6 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         adapter.addFrag(new ReviewFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.review));
 
         viewPager.setAdapter(adapter);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

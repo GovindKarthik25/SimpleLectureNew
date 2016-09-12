@@ -1,15 +1,20 @@
 package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -190,13 +195,14 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
             }
 
             Gson gson = new Gson();
+            OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
             if (param_get_ServiceCallResult.equals(Constants.GET_BILLINGADDRESSSAVE)) {
-                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
                     if (containsCourseMaterial) {
-                            // To Payment Gate Way
+                        // To Payment Gate Way
+                        Toast.makeText(BillingAddressActivity.this, "Payment Gate Way", Toast.LENGTH_SHORT).show();
 
                     } else {
                         Toast.makeText(BillingAddressActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -209,9 +215,6 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
 
 
             } else if (param_get_ServiceCallResult.equals(Constants.GET_BILLINGADDRESSGET)) {
-
-                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
-
                 if (outputResponseModel.isSuccess()) {
 
                     JSONObject jSONObject1 = new JSONObject(response);
@@ -253,5 +256,17 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+}
+
+class DoneOnEditorActionListener implements TextView.OnEditorActionListener {
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            return true;
+        }
+        return false;
     }
 }

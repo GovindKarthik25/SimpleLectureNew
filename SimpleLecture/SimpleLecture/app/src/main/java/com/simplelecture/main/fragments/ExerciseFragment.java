@@ -2,6 +2,7 @@ package com.simplelecture.main.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -40,6 +41,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -378,4 +387,5 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
         Toast.makeText(getActivity(), (position + " - " + courseId), Toast.LENGTH_SHORT).show();
 
     }
+
 }

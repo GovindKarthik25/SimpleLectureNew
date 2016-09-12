@@ -6,6 +6,8 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -30,10 +32,18 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent setIntent = new Intent(Intent.ACTION_MAIN);
-//        setIntent.addCategory(Intent.CATEGORY_HOME);
-//        setIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        startActivity(setIntent);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -61,7 +71,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         if (bundle != null) {
             int tabSelect = bundle.getInt("tabSelect");
-            //     Log.i("tabSelect", String.valueOf(tabSelect));
+            Log.i("tabSelect", String.valueOf(tabSelect));
             TabLayout.Tab tab = tabLayout.getTabAt(tabSelect);
             tab.select();
         }
@@ -75,6 +85,8 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
     }
 
+
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new DashboardFragment(), getResources().getString(R.string.dashboard));
@@ -82,7 +94,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
         adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
         adapter.addFrag(new ExerciseFragment(), getResources().getString(R.string.excercise));
         adapter.addFrag(new ForumFragment(), getResources().getString(R.string.forum));
-       // adapter.addFrag(new SupportFragment(), getResources().getString(R.string.support));
+        // adapter.addFrag(new SupportFragment(), getResources().getString(R.string.support));
 
         viewPager.setAdapter(adapter);
     }

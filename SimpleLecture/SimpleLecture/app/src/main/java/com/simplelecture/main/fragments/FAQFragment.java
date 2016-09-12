@@ -3,6 +3,7 @@ package com.simplelecture.main.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +68,8 @@ public class FAQFragment extends Fragment {
 
         courseFaqsResponselist = courseDetailsResponseModelObj.getCourseFaqs();
 
+        Log.i("courseFaqsResponselist", courseFaqsResponselist.toString());
+
         // preparing list data
         prepareListData();
 
@@ -108,9 +111,9 @@ public class FAQFragment extends Fragment {
             listDataChild = new HashMap<String, List<String>>();
 
             for (CourseFaqs courseFaqsResponse : courseFaqsResponselist) {
-                listDataHeader.add(courseFaqsResponse.getCfName());
-                listChildData.add(courseFaqsResponse.getCfAnswer());
-                listDataChild.put(courseFaqsResponse.getCfName(), listChildData);
+                listDataHeader.add(courseFaqsResponse.getName());
+                listChildData.add(courseFaqsResponse.getName());
+                listDataChild.put(courseFaqsResponse.getName(), listChildData);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -10,6 +10,7 @@ public class DashboardMyCoursesResponseModel implements Serializable {
     private String CourseId;
     private String CourseName;
     private String CourseIcon;
+    private String CourseDesc;
     private String CourseRating;
     private String TotalChapters;
     private String TotalExercises;
@@ -18,10 +19,11 @@ public class DashboardMyCoursesResponseModel implements Serializable {
     public DashboardMyCoursesResponseModel() {
     }
 
-    public DashboardMyCoursesResponseModel(String courseId, String courseName, String courseIcon, String courseRating, String totalChapters, String totalExercises, String exerciseDownloaded) {
+    public DashboardMyCoursesResponseModel(String courseId, String courseName, String courseIcon, String courseDesc, String courseRating, String totalChapters, String totalExercises, String exerciseDownloaded) {
         CourseId = courseId;
         CourseName = courseName;
         CourseIcon = courseIcon;
+        CourseDesc = courseDesc;
         CourseRating = courseRating;
         TotalChapters = totalChapters;
         TotalExercises = totalExercises;
@@ -50,6 +52,14 @@ public class DashboardMyCoursesResponseModel implements Serializable {
 
     public void setCourseIcon(String courseIcon) {
         CourseIcon = courseIcon;
+    }
+
+    public String getCourseDesc() {
+        return CourseDesc;
+    }
+
+    public void setCourseDesc(String courseDesc) {
+        CourseDesc = courseDesc;
     }
 
     public String getCourseRating() {
@@ -90,6 +100,7 @@ public class DashboardMyCoursesResponseModel implements Serializable {
                 "CourseId='" + CourseId + '\'' +
                 ", CourseName='" + CourseName + '\'' +
                 ", CourseIcon='" + CourseIcon + '\'' +
+                ", CourseDesc='" + CourseDesc + '\'' +
                 ", CourseRating='" + CourseRating + '\'' +
                 ", TotalChapters='" + TotalChapters + '\'' +
                 ", TotalExercises='" + TotalExercises + '\'' +

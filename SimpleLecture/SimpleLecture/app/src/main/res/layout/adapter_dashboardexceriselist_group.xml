@@ -8,8 +8,8 @@
         android:id="@+id/linearLayout2"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
-        android:gravity="center"
-        android:layout_marginLeft="10dp">
+        android:layout_marginLeft="10dp"
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/exceriseImageView"
@@ -52,15 +52,16 @@
     <Button
         android:id="@+id/viewCourse_button"
         android:layout_width="60dip"
-        android:layout_height="50dip"
+        android:layout_height="40dip"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_gravity="center_vertical"
+        android:layout_marginRight="10dip"
         android:background="@color/colorPrimary"
         android:focusable="false"
-        android:layout_marginRight="10dip"
         android:text="View Course"
         android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="12dp" />
 
 </RelativeLayout>

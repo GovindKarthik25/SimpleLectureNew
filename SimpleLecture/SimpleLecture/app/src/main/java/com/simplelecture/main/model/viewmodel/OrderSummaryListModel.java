@@ -10,28 +10,22 @@ public class OrderSummaryListModel implements Serializable {
     private String CourseId;
     private String CourseName;
     private String Price;
-    private String PromocodeDiscountPrice;
-    private String TaxInclusive;
-    private String TaxPrice;
     private String Icon;
     private String Months;
-    private String SubTotalPrice;
+    private String TotalCoursePrice;
     private String CourseMaterialNames;
     private String CourseMaterialPrices;
 
     public OrderSummaryListModel() {
     }
 
-    public OrderSummaryListModel(String courseId, String courseName, String price, String promocodeDiscountPrice, String taxInclusive, String taxPrice, String icon, String months, String subTotalPrice, String courseMaterialNames, String courseMaterialPrices) {
+    public OrderSummaryListModel(String courseId, String courseName, String price, String icon, String months, String totalCoursePrice, String courseMaterialNames, String courseMaterialPrices) {
         CourseId = courseId;
         CourseName = courseName;
         Price = price;
-        PromocodeDiscountPrice = promocodeDiscountPrice;
-        TaxInclusive = taxInclusive;
-        TaxPrice = taxPrice;
         Icon = icon;
         Months = months;
-        SubTotalPrice = subTotalPrice;
+        TotalCoursePrice = totalCoursePrice;
         CourseMaterialNames = courseMaterialNames;
         CourseMaterialPrices = courseMaterialPrices;
     }
@@ -60,30 +54,6 @@ public class OrderSummaryListModel implements Serializable {
         Price = price;
     }
 
-    public String getPromocodeDiscountPrice() {
-        return PromocodeDiscountPrice;
-    }
-
-    public void setPromocodeDiscountPrice(String promocodeDiscountPrice) {
-        PromocodeDiscountPrice = promocodeDiscountPrice;
-    }
-
-    public String getTaxInclusive() {
-        return TaxInclusive;
-    }
-
-    public void setTaxInclusive(String taxInclusive) {
-        TaxInclusive = taxInclusive;
-    }
-
-    public String getTaxPrice() {
-        return TaxPrice;
-    }
-
-    public void setTaxPrice(String taxPrice) {
-        TaxPrice = taxPrice;
-    }
-
     public String getIcon() {
         return Icon;
     }
@@ -100,12 +70,12 @@ public class OrderSummaryListModel implements Serializable {
         Months = months;
     }
 
-    public String getSubTotalPrice() {
-        return SubTotalPrice;
+    public String getTotalCoursePrice() {
+        return TotalCoursePrice;
     }
 
-    public void setSubTotalPrice(String subTotalPrice) {
-        SubTotalPrice = subTotalPrice;
+    public void setTotalCoursePrice(String totalCoursePrice) {
+        TotalCoursePrice = totalCoursePrice;
     }
 
     public String getCourseMaterialNames() {
@@ -130,12 +100,9 @@ public class OrderSummaryListModel implements Serializable {
                 "CourseId='" + CourseId + '\'' +
                 ", CourseName='" + CourseName + '\'' +
                 ", Price='" + Price + '\'' +
-                ", PromocodeDiscountPrice='" + PromocodeDiscountPrice + '\'' +
-                ", TaxInclusive='" + TaxInclusive + '\'' +
-                ", TaxPrice='" + TaxPrice + '\'' +
                 ", Icon='" + Icon + '\'' +
                 ", Months='" + Months + '\'' +
-                ", SubTotalPrice='" + SubTotalPrice + '\'' +
+                ", TotalCoursePrice='" + TotalCoursePrice + '\'' +
                 ", CourseMaterialNames='" + CourseMaterialNames + '\'' +
                 ", CourseMaterialPrices='" + CourseMaterialPrices + '\'' +
                 '}';

@@ -22,7 +22,7 @@ public class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
     /**
      * The number of pages (wizard steps) to show in this demo.
      */
-    private static final int NUM_PAGES = 4;
+    private static final int NUM_PAGES = 3;
     private final List<HomeBannersModel> bannersLstArray;
 
     public ScreenSlidePagerAdapter(FragmentManager fm, List<HomeBannersModel> bannersLstAray) {

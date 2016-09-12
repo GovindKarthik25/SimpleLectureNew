@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private int alertID = 0;
     private TextView textView_EmailId;
     private HomePageResponseModel homePageResponseModelObj;
+    private Button buttonProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         View header = navigationView.getHeaderView(0);
         textView_EmailId = (TextView) header.findViewById(R.id.text_email);
         textView_EmailId.setText(email.isEmpty() ? "Guest" : email);
+
+        buttonProfile = (Button) header.findViewById(R.id.buttonProfile);
+        buttonProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new ViewManager().gotoBillingAddressActivityView(HomeActivity.this, false);
+            }
+        });
 
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -196,6 +206,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:
+
                 startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
 //                fragment = new DashboardFragment();
 //                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_dashboard));

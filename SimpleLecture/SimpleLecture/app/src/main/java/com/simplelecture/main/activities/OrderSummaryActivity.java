@@ -84,6 +84,8 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
         button_Apply = (Button) findViewById(R.id.button_Apply);
         input_layout_Promocode = (TextInputLayout) findViewById(R.id.input_layout_Promocode);
         editText_PromoCode = (EditText) findViewById(R.id.editText_PromoCode);
+        editText_PromoCode.setOnEditorActionListener(new DoneOnEditorActionListener());
+
         recyclerView = (RecyclerView) findViewById(R.id.orders_recycler_view);
         chk_TermOfUse = (CheckBox) findViewById(R.id.chk_TermOfUse);
         chk_PrivacyPlicy = (CheckBox) findViewById(R.id.chk_PrivacyPlicy);
@@ -117,7 +119,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
         try {
             if (new ConnectionDetector(OrderSummaryActivity.this).isConnectingToInternet()) {
-                param_get_ServiceCallResult = Constants.GET_Promocode;
+                param_get_ServiceCallResult = Constants.GET_PROMOCODE;
                 pd = new Util().waitingMessage(OrderSummaryActivity.this, "", getResources().getString(R.string.loading));
 
                 ApiService.getApiService().doGetPromoCode(OrderSummaryActivity.this, editText_PromoCode.getText().toString().trim());
@@ -133,7 +135,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
     @Override
     public void parseResponse(String response) {
 
-     //   Log.i("parseResponse", response);
+        //   Log.i("parseResponse", response);
         try {
             if (pd.isShowing()) {
                 pd.cancel();
@@ -143,7 +145,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
                 doResponseRefresh(response);
 
-            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_Promocode)) {
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_PROMOCODE)) {
 
                 doResponseRefresh(response);
             }
@@ -168,13 +170,13 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
                 recyclerView.setAdapter(cartDetailsAdapter);
 
                 subTotal_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getSubTotalPrice())).toString());
-                discount_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getPromocodeDiscountPrice())).toString());
+                discount_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getPromoDetails().getPromoDiscountPrice())).toString());
                 tax_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTaxPrice())).toString());
-                total_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTotalPrice())));
+                total_TextView.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryModel.getTotalOrderPrice())));
             } else {
                 snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
 
-                if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_Promocode)) {
+                if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_PROMOCODE)) {
                     editText_PromoCode.setText("");
                 }
             }
@@ -186,10 +188,19 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
     @Override
     public void showError(String error) {
-        if (pd.isShowing()) {
-            pd.cancel();
-        }
+        try {
+            if (pd.isShowing()) {
+                pd.cancel();
+            }
+            if (error.isEmpty()) {
+                error = "Error in connection";
+            }
 
+            snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

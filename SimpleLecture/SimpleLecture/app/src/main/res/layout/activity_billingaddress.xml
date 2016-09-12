@@ -126,7 +126,8 @@
             android:id="@+id/btn_Save"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dip"
             android:background="@color/colorPrimary"
             android:text="@string/btn_Save"
             android:textColor="@android:color/white" />
@@ -135,8 +136,9 @@
             android:id="@+id/btn_Pay"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:visibility="gone"
+            android:layout_marginBottom="10dip"
             android:background="@color/colorPrimary"
             android:text="Pay Now"
             android:textColor="@android:color/white" />

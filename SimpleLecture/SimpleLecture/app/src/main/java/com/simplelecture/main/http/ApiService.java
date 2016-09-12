@@ -22,6 +22,8 @@ import com.simplelecture.main.transactions.CoursePostReviewTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
 import com.simplelecture.main.transactions.DashboardExerciseCourseChapterfileTransaction;
 import com.simplelecture.main.transactions.DashboardExerciseTransaction;
+import com.simplelecture.main.transactions.DashboardForumCourseGetTransaction;
+import com.simplelecture.main.transactions.DashboardForumCourseTransaction;
 import com.simplelecture.main.transactions.DashboardMyCourseTransaction;
 import com.simplelecture.main.transactions.DashboardTestPaperChapterTransaction;
 import com.simplelecture.main.transactions.DashboardTestPaperQuizQuestionsTransaction;
@@ -336,8 +338,9 @@ public class ApiService {
     public void doGetPromoCode(Context mContext, String code) {
 
         String userId = Util.getFromPrefrences(mContext, "uId");
-
-        PromoCodeTransaction promoCodeTransaction = new PromoCodeTransaction(null, mContext, userId, code);
+        JsonFactory jsonFactory = new JsonFactory();
+        JSONObject jsonObject = jsonFactory.getPromoCode(userId, code);
+        PromoCodeTransaction promoCodeTransaction = new PromoCodeTransaction(jsonObject, mContext);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(promoCodeTransaction);
 
@@ -489,7 +492,6 @@ public class ApiService {
 
     }
 
-
     public void doSubmitQuizAnswer(Context context, String testid, List<Answers> answerslst) {
         try {
 
@@ -502,5 +504,34 @@ public class ApiService {
             e.printStackTrace();
         }
     }
+
+    public void doGetDashboardForumCourse(Context mContext, Fragment fragmentContext) {
+
+        try {
+            String userId = Util.getFromPrefrences(mContext, "uId");
+
+
+            DashboardForumCourseTransaction dashboardForumCourseTransaction = new DashboardForumCourseTransaction(null, mContext, userId);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(dashboardForumCourseTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void doGetDashboardForumCourseGet(Context mContext, Fragment fragmentContext, String courseId) {
+
+        try {
+            String userId = Util.getFromPrefrences(mContext, "uId");
+
+
+            DashboardForumCourseGetTransaction dashboardForumCourseGetTransaction = new DashboardForumCourseGetTransaction(null, mContext, userId, courseId);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(dashboardForumCourseGetTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

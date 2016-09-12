@@ -10,21 +10,21 @@ public class OrderSummaryModel implements Serializable {
 
 
     private String SubTotalPrice;
-    private String PromocodeDiscountPrice;
     private String TaxPrice;
-    private String TotalPrice;
+    private String TotalOrderPrice;
     private List<OrderSummaryListModel> orderSummaryListModel;
+    private PromoDetails promoDetails;
     private boolean IsContainsCourseMaterial;
 
     public OrderSummaryModel() {
     }
 
-    public OrderSummaryModel(String subTotalPrice, String promocodeDiscountPrice, String taxPrice, String totalPrice, List<OrderSummaryListModel> orderSummaryListModel, boolean isContainsCourseMaterial) {
+    public OrderSummaryModel(String subTotalPrice, String taxPrice, String totalOrderPrice, List<OrderSummaryListModel> orderSummaryListModel, PromoDetails promoDetails, boolean isContainsCourseMaterial) {
         SubTotalPrice = subTotalPrice;
-        PromocodeDiscountPrice = promocodeDiscountPrice;
         TaxPrice = taxPrice;
-        TotalPrice = totalPrice;
+        TotalOrderPrice = totalOrderPrice;
         this.orderSummaryListModel = orderSummaryListModel;
+        this.promoDetails = promoDetails;
         IsContainsCourseMaterial = isContainsCourseMaterial;
     }
 
@@ -36,14 +36,6 @@ public class OrderSummaryModel implements Serializable {
         SubTotalPrice = subTotalPrice;
     }
 
-    public String getPromocodeDiscountPrice() {
-        return PromocodeDiscountPrice;
-    }
-
-    public void setPromocodeDiscountPrice(String promocodeDiscountPrice) {
-        PromocodeDiscountPrice = promocodeDiscountPrice;
-    }
-
     public String getTaxPrice() {
         return TaxPrice;
     }
@@ -52,12 +44,12 @@ public class OrderSummaryModel implements Serializable {
         TaxPrice = taxPrice;
     }
 
-    public String getTotalPrice() {
-        return TotalPrice;
+    public String getTotalOrderPrice() {
+        return TotalOrderPrice;
     }
 
-    public void setTotalPrice(String totalPrice) {
-        TotalPrice = totalPrice;
+    public void setTotalOrderPrice(String totalOrderPrice) {
+        TotalOrderPrice = totalOrderPrice;
     }
 
     public List<OrderSummaryListModel> getOrderSummaryListModel() {
@@ -66,6 +58,14 @@ public class OrderSummaryModel implements Serializable {
 
     public void setOrderSummaryListModel(List<OrderSummaryListModel> orderSummaryListModel) {
         this.orderSummaryListModel = orderSummaryListModel;
+    }
+
+    public PromoDetails getPromoDetails() {
+        return promoDetails;
+    }
+
+    public void setPromoDetails(PromoDetails promoDetails) {
+        this.promoDetails = promoDetails;
     }
 
     public boolean isContainsCourseMaterial() {
@@ -80,10 +80,10 @@ public class OrderSummaryModel implements Serializable {
     public String toString() {
         return "OrderSummaryModel{" +
                 "SubTotalPrice='" + SubTotalPrice + '\'' +
-                ", PromocodeDiscountPrice='" + PromocodeDiscountPrice + '\'' +
                 ", TaxPrice='" + TaxPrice + '\'' +
-                ", TotalPrice='" + TotalPrice + '\'' +
+                ", TotalOrderPrice='" + TotalOrderPrice + '\'' +
                 ", orderSummaryListModel=" + orderSummaryListModel +
+                ", promoDetails=" + promoDetails +
                 ", IsContainsCourseMaterial=" + IsContainsCourseMaterial +
                 '}';
     }

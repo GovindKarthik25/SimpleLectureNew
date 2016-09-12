@@ -2,6 +2,7 @@ package com.simplelecture.main.adapters;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -95,6 +96,7 @@ public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.MyVi
             holder.textExeCovered.setText(resultExerciseCovered, TextView.BufferType.SPANNABLE);
 
             holder.myRating.setRating(Integer.valueOf(dashboardMyCoursesResponseModelListArray.get(position).getCourseRating()));
+            holder.textView_coursedetails.setText(Html.fromHtml(dashboardMyCoursesResponseModelListArray.get(position).getCourseDesc()));
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -118,6 +120,7 @@ public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.MyVi
         TextView textExeCovered;
         ImageView courseimageView;
         RatingBar myRating;
+        TextView textView_coursedetails;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -126,6 +129,7 @@ public class MyCoursesAdapter extends RecyclerView.Adapter<MyCoursesAdapter.MyVi
             textNoOfChapters = (TextView) itemView.findViewById(R.id.text_no_chapters);
             textExeCovered = (TextView) itemView.findViewById(R.id.text_exer_covered);
             myRating = (RatingBar) itemView.findViewById(R.id.myRating);
+            textView_coursedetails = (TextView) itemView.findViewById(R.id.textView_coursedetails);
 
             itemView.setOnClickListener(this);
 

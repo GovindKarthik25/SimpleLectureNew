@@ -48,7 +48,6 @@ public class ScreenSlidePageFragment extends Fragment {
     int[] mResources = {
             R.mipmap.splash_screen,
             R.mipmap.splash2,
-            R.mipmap.splash_screen,
             R.mipmap.splash3
     };
 

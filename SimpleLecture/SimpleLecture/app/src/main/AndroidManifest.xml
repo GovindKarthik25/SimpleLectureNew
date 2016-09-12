@@ -40,14 +40,19 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.HomeActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activities.HomeActivity">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.HomeActivity" />
+        </activity>
+
         <activity
             android:name=".activities.ComboCourseActivity"
-            android:parentActivityName=".activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.SingleCourseActivity"
-            android:parentActivityName=".activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.VideoPlayerActivity"

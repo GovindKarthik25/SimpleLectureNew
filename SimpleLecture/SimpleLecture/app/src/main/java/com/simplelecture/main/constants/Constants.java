@@ -44,7 +44,7 @@ public class Constants {
 
     /*Summary*/
     public static String GET_ORDER_SUMMARY = "Order/Summary/";
-    public static String GET_Promocode = "User/VerifyOTP/";
+    public static String GET_PROMOCODE = "Order/CheckPromocode";
 
 
     /*Profile*/
@@ -66,6 +66,9 @@ public class Constants {
     public static String GET_USER_QUIZ_QUESTIONS = "Quiz/Questions/";
     public static String GET_USER_QUIZ_RESULT = "Quiz/Result/";
     public static String GET_USER_QUIZ_SUBMITANSWERS = "Quiz/SubmitAnswers/";
+
+    public static String GET_USER_FORUMCOURSES = "Forum/Courses/";
+    public static String GET_USER_FORUMGET = "Forum/Get/";
 
 
 

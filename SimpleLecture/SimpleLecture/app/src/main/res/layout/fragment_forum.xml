@@ -1,10 +1,51 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.simplelecture.main.fragments.ForumFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="forum" />
+    <RelativeLayout
+        android:id="@+id/spinner_ForumRelativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="50dip"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
 
-</FrameLayout>
+        <Spinner
+            android:id="@+id/spinner_Forum"
+            android:layout_width="150dp"
+            android:layout_height="45dip"
+            android:layout_marginRight="5dip"
+            android:background="@drawable/spinnerbg"
+            android:dropDownWidth="150dp"
+            android:dropDownVerticalOffset="5dip"
+            android:spinnerMode="dropdown"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/spinner_ForumRelativeLayout"
+        android:layout_centerHorizontal="true">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView_Forum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
+            android:scrollbars="horizontal" />
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/coordinatorLayout"
+        layout="@layout/coordinatelayout"></include>
+
+</RelativeLayout>

@@ -52,7 +52,7 @@ public class OrderDetailsAdapter extends RecyclerView.Adapter<OrderDetailsAdapte
 
         holder.textCourseName.setText(orderSummaryListModel.getCourseName());
         holder.textCoursePrice.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getPrice())));
-        holder.subTotal.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getSubTotalPrice())));
+        holder.subTotal.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getTotalCoursePrice())));
         holder.textMonths.setText(orderSummaryListModel.getMonths() + " Month(s)");
         holder.printedMatPrice.setText("Rs." + Util.decFormat(Float.valueOf(orderSummaryListModel.getCourseMaterialPrices())));
 

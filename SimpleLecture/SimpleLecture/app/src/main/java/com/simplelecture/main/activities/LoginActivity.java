@@ -9,8 +9,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -83,16 +81,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String param_get_ServiceCallResult = "";
 
 
-    /*@Override
+    @Override
     public void onBackPressed() {
-
-    }*/
+       // super.onBackPressed();
+        new ViewManager().gotoHomeView(LoginActivity.this);
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        if (sessionManager != null) {
+        if (sessionManager != null && sessionManager.isLoginStatus()) {
             Util.storeToPrefrencesBoolean(LoginActivity.this, "loginStatus", sessionManager.isLoginStatus());
             Util.storeToPrefrencesBoolean(LoginActivity.this, "FBStatus", sessionManager.isLoginFBStatus());
             Util.storeToPrefrencesBoolean(LoginActivity.this, "GmailStatus", sessionManager.isLoginGmailStatus());
@@ -133,7 +132,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText("Login"));
@@ -326,7 +324,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -344,9 +342,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.invalidateOptionsMenu();
 
         return true;
-    }
+    }*/
 
-    @Override
+    /*@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -363,13 +361,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         return super.onOptionsItemSelected(item);
     }
-
+*/
 
     @Override
     public void parseResponse(String response) {
         Log.i("Loginresponse-->", response);
         try {
-            pd.cancel();
+            if(pd.isShowing()) {
+                pd.cancel();
+            }
             if (param_get_ServiceCallResult.equals(Constants.GET_LOGIN)) {
                 Gson gson = new Gson();
                 JSONObject jSONObject = new JSONObject(response);
@@ -405,7 +405,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void showError(String error) {
         try {
-            pd.cancel();
+            if(pd.isShowing()) {
+                pd.cancel();
+            }
+
             if (error.isEmpty()) {
                 error = "Error in Login";
             }

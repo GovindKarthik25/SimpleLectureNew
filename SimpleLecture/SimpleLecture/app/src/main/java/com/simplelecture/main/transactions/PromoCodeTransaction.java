@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.simplelecture.main.BuildConfig;
 import com.simplelecture.main.constants.Constants;
-import com.simplelecture.main.http.GetTransaction;
+import com.simplelecture.main.http.PostTransaction;
 
 import org.json.JSONObject;
 
@@ -13,20 +13,19 @@ import java.net.URI;
 /**
  * Created by Raos on 7/27/2016.
  */
-public class PromoCodeTransaction extends GetTransaction {
+public class PromoCodeTransaction extends PostTransaction {
 
-    private String userID;
-    private String code;
+    JSONObject jsonObject;
 
-    public PromoCodeTransaction(JSONObject jsonObject, Context context, String userId, String coDE) {
+    public PromoCodeTransaction(JSONObject jsonObject, Context context) {
         super(jsonObject, context);
-        userID = userId;
-        code = coDE;
+        this.jsonObject = jsonObject;
+
     }
 
     @Override
     protected JSONObject setupRequestBody() {
-        return null;
+        return jsonObject;
     }
 
     @Override
@@ -46,7 +45,7 @@ public class PromoCodeTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_Promocode + userID + "/" + code;
+        return Constants.GET_PROMOCODE;
     }
 
 }

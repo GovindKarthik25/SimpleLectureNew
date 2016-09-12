@@ -1,11 +1,14 @@
 package com.simplelecture.main.controller;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.model.viewmodel.OrderSummaryListModel;
 import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
+import com.simplelecture.main.model.viewmodel.PromoDetails;
 
 import org.json.JSONObject;
 
@@ -19,6 +22,7 @@ public class SummaryController {
     private Gson gson = new Gson();
     private OrderSummaryModel orderSummaryModel;
     private JsonArray jarray;
+    private JsonArray yJarray;
     private JsonParser parser = new JsonParser();
     private ArrayList<OrderSummaryListModel> orderSummaryListModelArray;
 
@@ -44,6 +48,15 @@ public class SummaryController {
             }
 
             orderSummaryModel.setOrderSummaryListModel(orderSummaryListModelArray);
+
+            String promoDetailsContent = jSONObject.getString("PromoDetails");
+
+            PromoDetails promoDetailsObj = gson.fromJson(promoDetailsContent, PromoDetails.class);
+
+            orderSummaryModel.setPromoDetails(promoDetailsObj);
+
+            Log.i("orderSummaryModel", orderSummaryModel.toString());
+
 
         } catch (Exception e) {
             e.printStackTrace();

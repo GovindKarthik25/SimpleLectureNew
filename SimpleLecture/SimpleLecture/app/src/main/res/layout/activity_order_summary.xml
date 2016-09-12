@@ -25,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/lbl_subjects"
-        android:layout_marginBottom="240dp"
+        android:layout_marginBottom="260dp"
         android:paddingTop="5dp"
         android:scrollbars="vertical" />
 
@@ -53,6 +53,10 @@
                     android:id="@+id/editText_PromoCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:maxLines="1"
                     android:hint="Promo Code" />
             </android.support.design.widget.TextInputLayout>
 

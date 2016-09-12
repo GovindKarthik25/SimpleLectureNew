@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,7 @@ import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,7 +71,7 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
     private AlertMessageManagement alertMessageManagement;
     private String cID;
 
-    private List<DashboardMyCoursesResponseModel> dashboardMyCoursesResponseModelArray;
+    private List<DashboardMyCoursesResponseModel> dashboardMyCoursesResponseModelArray = new ArrayList<DashboardMyCoursesResponseModel>();
     private CourseDetailsResponseModel courseDetailsResponseModel;
 
     /**
@@ -99,6 +101,7 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
         super.onCreate(savedInstanceState);
 
         try {
+            setRetainInstance(true);
             snack = new SnackBarManagement(getContext());
             alertMessageManagement = new AlertMessageManagement(getContext());
 
@@ -121,17 +124,19 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
         return convertView;
     }
 
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         try {
+
             loadGetDashboardMyCourse();
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
             myCourse_recycler_view.setLayoutManager(linearLayoutManager);
 
-            if (myCoursesAdapter != null) {
+            if (dashboardMyCoursesResponseModelArray != null) {
                 myCoursesAdapter = new MyCoursesAdapter(getActivity(), dashboardMyCoursesResponseModelArray);
                 myCourse_recycler_view.setAdapter(myCoursesAdapter);
 
@@ -199,11 +204,12 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
     }
 
 
+    private DashboardMyCoursesResponseModel dashboardMyCoursesResponseModelObj;
     OnItemClickListener onItemClickListener = new OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
             try {
-                DashboardMyCoursesResponseModel dashboardMyCoursesResponseModelObj = dashboardMyCoursesResponseModelArray.get(position);
+                dashboardMyCoursesResponseModelObj = dashboardMyCoursesResponseModelArray.get(position);
                 cID = dashboardMyCoursesResponseModelObj.getCourseId();
                 loadGetCourse(cID);
             } catch (Exception e) {
@@ -223,11 +229,11 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
             Gson gson = new Gson();
             JsonArray jArray;
             JsonParser parser = new JsonParser();
-            dashboardMyCoursesResponseModelArray = new ArrayList<DashboardMyCoursesResponseModel>();
+
+            OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_MYCOURSES)) {
 
-                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
                     JSONObject jSONObject1 = new JSONObject(response);
@@ -244,7 +250,6 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
                     myCoursesAdapter.setOnItemClickListener(onItemClickListener);
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
-                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
 
@@ -272,8 +277,6 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
                     snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
-
-                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
 

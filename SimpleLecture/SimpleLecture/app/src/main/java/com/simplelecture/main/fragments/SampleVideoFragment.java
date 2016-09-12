@@ -230,7 +230,6 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
                 }
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -253,7 +252,7 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
         super.onCreateOptionsMenu(menu, inflater);
 
         inflater.inflate(R.menu.home, menu);
-        menu.findItem(R.id.action_filter).setVisible(true);
+        menu.findItem(R.id.action_filter).setVisible(false);
         menu.findItem(R.id.action_filter).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

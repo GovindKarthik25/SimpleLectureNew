@@ -1,56 +1,56 @@
 package com.simplelecture.main.model.viewmodel;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Raos on 7/10/2016.
  */
 public class CourseFaqs implements Serializable {
 
-    private String cfId;
-    private String cfName;
-    private String cfAnswer;
-
+    private String Id;
+    private String Name;
+    private List<Answer> answerModel;
 
     public CourseFaqs() {
     }
 
-    public CourseFaqs(String cfId, String cfName, String cfAnswer) {
-        this.cfId = cfId;
-        this.cfName = cfName;
-        this.cfAnswer = cfAnswer;
+    public CourseFaqs(String id, String name, List<Answer> answerModel) {
+        Id = id;
+        Name = name;
+        this.answerModel = answerModel;
     }
 
-    public String getCfId() {
-        return cfId;
+    public String getId() {
+        return Id;
     }
 
-    public void setCfId(String cfId) {
-        this.cfId = cfId;
+    public void setId(String id) {
+        Id = id;
     }
 
-    public String getCfName() {
-        return cfName;
+    public String getName() {
+        return Name;
     }
 
-    public void setCfName(String cfName) {
-        this.cfName = cfName;
+    public void setName(String name) {
+        Name = name;
     }
 
-    public String getCfAnswer() {
-        return cfAnswer;
+    public List<Answer> getAnswerModel() {
+        return answerModel;
     }
 
-    public void setCfAnswer(String cfAnswer) {
-        this.cfAnswer = cfAnswer;
+    public void setAnswerModel(List<Answer> answerModel) {
+        this.answerModel = answerModel;
     }
 
     @Override
     public String toString() {
         return "CourseFaqs{" +
-                "cfId='" + cfId + '\'' +
-                ", cfName='" + cfName + '\'' +
-                ", cfAnswer='" + cfAnswer + '\'' +
+                "Id='" + Id + '\'' +
+                ", Name='" + Name + '\'' +
+                ", answerModel=" + answerModel +
                 '}';
     }
 }

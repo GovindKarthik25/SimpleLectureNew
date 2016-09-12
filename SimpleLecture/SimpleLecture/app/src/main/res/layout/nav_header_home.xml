@@ -32,6 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <TextView
@@ -50,9 +51,10 @@
 
         <LinearLayout
             android:id="@+id/left_drawer1Button"
-            android:layout_width="match_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:gravity="right"
             android:background="@drawable/white_border_left">
 
             <Button
@@ -61,6 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:text="Profile"
+                android:textAllCaps="false"
                 android:layout_marginLeft="2dip"
                 android:background="@color/transperent"/>
         </LinearLayout>
