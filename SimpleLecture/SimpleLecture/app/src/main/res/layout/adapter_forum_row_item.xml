@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dip"
+        android:layout_marginRight="10dip"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_SubName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:text="New Text"
+            android:textColor="@color/colorAccent"
+            android:textSize="15dp" />
+
+        <TextView
+            android:id="@+id/textView_SubDesp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dip"
+            android:text="text "
+            android:textColor="@color/com_facebook_likeboxcountview_text_color"
+            android:textSize="12dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dip"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView_PostBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Posted By -"
+                android:textSize="13dp"
+                android:textColor="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/textView_Answered"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15 Answered"
+                android:textSize="13dp"
+                android:textColor="@color/colorAccent" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView_AdminPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Admin 0n 20-au-2016"
+            android:textSize="12dp"
+            android:textColor="@color/com_facebook_likeboxcountview_text_color" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"></LinearLayout>
+
+</LinearLayout>
+
