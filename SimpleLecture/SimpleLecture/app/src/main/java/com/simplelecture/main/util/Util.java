@@ -326,7 +326,7 @@ public class Util {
 
         ArrayList<CharSequence> coStringArrayList = new ArrayList<>();
         for (CourseMaterials materials : courseMaterials) {
-            coStringArrayList.add(materials.getName());
+            coStringArrayList.add(materials.getName() + " - " + "Rs." + materials.getPrice());
         }
 
         return coStringArrayList;
