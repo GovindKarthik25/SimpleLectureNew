@@ -306,7 +306,7 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.home, menu);
+        inflater.inflate(R.menu.course_category, menu);
         menu.findItem(R.id.action_filter).setVisible(true);
         menu.findItem(R.id.action_filter).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override

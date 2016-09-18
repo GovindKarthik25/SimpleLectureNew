@@ -251,7 +251,7 @@ public class SampleVideoFragment extends Fragment implements NetworkLayer {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        inflater.inflate(R.menu.home, menu);
+        inflater.inflate(R.menu.sample_videos, menu);
         menu.findItem(R.id.action_filter).setVisible(false);
         menu.findItem(R.id.action_filter).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
