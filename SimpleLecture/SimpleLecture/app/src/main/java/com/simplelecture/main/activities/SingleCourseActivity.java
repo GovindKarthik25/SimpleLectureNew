@@ -265,10 +265,10 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
 //                            jsonArray.put(jsonObject);
                             if (courseMaterialBuilder.length() > 0)
                                 courseMaterialBuilder.append(",");
-                            courseMaterialBuilder.append(Util.getMaterialData(courseHashMap, String.valueOf(list.getItemAtPosition(i))));
+                            courseMaterialBuilder.append(Util.getMaterialData(courseHashMap, String.valueOf(list.getItemAtPosition(i).toString().split("-")[0].trim())));
 
 
-                            stringBuilder.append(list.getItemAtPosition(i));
+                            stringBuilder.append(String.valueOf(list.getItemAtPosition(i).toString().split("-")[0].trim()));
                             textViewLabelMaterial.setVisibility(View.VISIBLE);
                             textViewLabelMaterial.setText(stringBuilder.toString());
 
