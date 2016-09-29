@@ -5,17 +5,22 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.HomePageResponseModel;
+import com.simplelecture.main.viewManager.ViewManager;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +42,9 @@ public class LegalFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private ListView listView;
+    private HomePageResponseModel homePageResponseModelObj;
+    private String urlLink = "";
+    private String namePage;
 
     /**
      * Use this factory method to create a new instance of
@@ -73,6 +81,10 @@ public class LegalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View convertView = inflater.inflate(R.layout.fragment_legalpolicy, container, false);
 
+        if (getArguments() != null) {
+            homePageResponseModelObj = (HomePageResponseModel) getArguments().getSerializable(ARG_PARAM1);
+        }
+
 
         listView = (ListView) convertView.findViewById(R.id.listViewLegal);
 
@@ -86,11 +98,35 @@ public class LegalFragment extends Fragment {
 
         String[] mobileArray = {"Term & Condition","Disclaimer","Privacy Policy","Cancellation & Refund Policy","Shipping & Delivery Policy"};
 
-//        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.adapter_legalrow, mobileArray);
-//
-//        listView.setAdapter(adapter);
-        //listView.setOnItemClickListener(itemClickListene);
+        ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(), R.layout.adapter_legalrow, mobileArray);
 
+        listView.setAdapter(adapter);
+       // listView.setOnItemClickListener(itemClickListener);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    namePage = parent.getItemAtPosition(position).toString();
+                    urlLink = homePageResponseModelObj.getPageUrlTermsAndConditions();
+                } else if(position == 1){
+                    namePage = parent.getItemAtPosition(position).toString();
+                    urlLink = homePageResponseModelObj.getPageUrlDisclaimer();
+                }  else if(position == 2){
+                    namePage = parent.getItemAtPosition(position).toString();
+                    urlLink = homePageResponseModelObj.getPageUrlPrivacyPolicy();
+                } else if(position == 3){
+                    namePage = parent.getItemAtPosition(position).toString();
+                    urlLink = homePageResponseModelObj.getPageUrlCancellationAndRefundPolicy();
+                } else if(position == 4){
+                    namePage = parent.getItemAtPosition(position).toString();
+                    urlLink = homePageResponseModelObj.getPageUrlShippingAndDeliveryPolicy();
+                }
+
+                Log.i("namePage",namePage);
+
+                new ViewManager().gotoPolicyWebview(getActivity(), urlLink, namePage);
+            }
+        });
 
 
 
@@ -119,7 +155,6 @@ public class LegalFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-
 
 }
 

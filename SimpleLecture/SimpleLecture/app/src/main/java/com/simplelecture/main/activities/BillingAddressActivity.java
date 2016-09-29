@@ -20,15 +20,18 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
+import com.simplelecture.main.controller.SummaryController;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.model.viewmodel.PlaceOrderResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.util.Validator;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONObject;
 
@@ -51,6 +54,7 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
     private Button btn_Pay;
     private EditText input_City;
     private TextInputLayout input_layout_City;
+    private PlaceOrderResponseModel placeOrderResponseModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,6 +187,22 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void showOrderPlaceOrder() {
+
+        try {
+            if (new ConnectionDetector(BillingAddressActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_ORDER_PLACEORDER;
+                pd = new Util().waitingMessage(BillingAddressActivity.this, "", getResources().getString(R.string.loading));
+
+                ApiService.getApiService().doGetPlaceOrder(BillingAddressActivity.this, getResources().getString(R.string.EbsCode));
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void parseResponse(String response) {
@@ -202,7 +222,8 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
                 if (outputResponseModel.isSuccess()) {
                     if (containsCourseMaterial) {
                         // To Payment Gate Way
-                        Toast.makeText(BillingAddressActivity.this, "Payment Gate Way", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(BillingAddressActivity.this, "Payment Gate Way", Toast.LENGTH_SHORT).show();
+                        showOrderPlaceOrder();
 
                     } else {
                         Toast.makeText(BillingAddressActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -234,6 +255,20 @@ public class BillingAddressActivity extends AppCompatActivity implements View.On
                     snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
 
                 }
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_ORDER_PLACEORDER)) {
+
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject1 = new JSONObject(response);
+                    String dataContent = jSONObject1.getString("data");
+
+                    placeOrderResponseModel = new SummaryController().getPlaceOrder(dataContent);
+
+                    new ViewManager().gotoEBSPaymentGatewayWebViewActivity(BillingAddressActivity.this, placeOrderResponseModel);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+                }
+
             }
         } catch (Exception e) {
             e.printStackTrace();

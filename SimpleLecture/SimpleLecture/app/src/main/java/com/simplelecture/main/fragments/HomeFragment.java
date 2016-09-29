@@ -405,9 +405,9 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
 
     private void displayAndSetTheItem() {
         try {
-            if (homePageResponseModelobj.getMyCoursesCount() != 0) {
+            if (homePageResponseModelobj.getMyCartCount() != 0) {
                 cart_stripLinearLayout.setVisibility(View.VISIBLE);
-                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " " + String.valueOf(homePageResponseModelobj.getMyCoursesCount()) + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
+                cart_CountTextView.setText(getResources().getString(R.string.Youhave) + " " + String.valueOf(homePageResponseModelobj.getMyCartCount()) + " " + getResources().getString(R.string.coursesinyouraccountchecknow));
             } else {
                 cart_stripLinearLayout.setVisibility(View.GONE);
             }
@@ -565,7 +565,7 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
                     // Log.i("courseDetailsResp***", courseDetailsResponseModel.toString() + " ***** ");
 
                     if (courseDetailsResponseModel.isCombo()) {
-                        courseDetailsResponseModel.setcComboName(cComboName);
+                        //courseDetailsResponseModel.setcComboName(cComboName);
 
                         new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
                     } else {

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -36,6 +37,7 @@ import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -206,7 +208,8 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
         @Override
         public void onItemClick(View view, int position) {
             try {
-
+                ForumGetModel forumGetModelObj = forumGetModelLst.get(position);
+                new ViewManager().gotoForumWebViewActivity(getActivity(), forumGetModelObj.getPageUrlForumDetails(), forumGetModelObj.getName());
             } catch (Exception e) {
                 e.printStackTrace();
             }

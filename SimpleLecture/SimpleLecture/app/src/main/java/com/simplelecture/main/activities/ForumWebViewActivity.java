@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,42 +13,49 @@ import android.webkit.WebViewClient;
 import com.simplelecture.main.R;
 import com.simplelecture.main.util.Util;
 
-/**
- * Created by Raos on 8/14/2016.
- */
-public class PolicyWebview extends AppCompatActivity {
+public class ForumWebViewActivity extends AppCompatActivity {
 
-    private WebView webView;
     private ProgressDialog pd;
-    private String Url;
     private Toolbar toolbar;
+    private WebView webView;
+    private String Url;
     private String namePage;
 
     @Override
     public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
+
+        super.onBackPressed();
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
+        setContentView(R.layout.activity_forum_web_view);
 
         Bundle bundle = getIntent().getExtras();
         Url = (String) bundle.get("urlLink");
         namePage = (String) bundle.get("namePage");
-        
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(Util.setActionBarText(namePage));
 
 
-        webView = (WebView) findViewById(R.id.webView);
+        webView = (WebView) findViewById(R.id.webView_Forum);
         pd = new ProgressDialog(this);
 
         webView.getSettings().setLoadsImagesAutomatically(true);
@@ -91,5 +99,5 @@ public class PolicyWebview extends AppCompatActivity {
             pd.dismiss();
         }
     }
-
+    
 }

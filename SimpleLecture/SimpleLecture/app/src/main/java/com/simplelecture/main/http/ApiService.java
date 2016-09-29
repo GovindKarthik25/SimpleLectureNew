@@ -17,6 +17,7 @@ import com.simplelecture.main.transactions.CartRemoveTransaction;
 import com.simplelecture.main.transactions.ChangeMonthTransaction;
 import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
+import com.simplelecture.main.transactions.CheckOrderStatusTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
 import com.simplelecture.main.transactions.CoursePostReviewTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
@@ -35,6 +36,7 @@ import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
+import com.simplelecture.main.transactions.PlaceOrderTransaction;
 import com.simplelecture.main.transactions.PromoCodeTransaction;
 import com.simplelecture.main.transactions.ResendOTPTransaction;
 import com.simplelecture.main.transactions.SelectMyCourseTransaction;
@@ -531,6 +533,25 @@ public class ApiService {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void doGetPlaceOrder(Context mContext, String code) {
+
+        String userId = Util.getFromPrefrences(mContext, "uId");
+        JsonFactory jsonFactory = new JsonFactory();
+        JSONObject jsonObject = jsonFactory.getPlaceOrder(userId, code);
+        PlaceOrderTransaction placeOrderTransaction = new PlaceOrderTransaction(jsonObject, mContext);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(placeOrderTransaction);
+
+    }
+
+    public void doGetCheckOrderStatus(Context mContext, int orderId) {
+
+        CheckOrderStatusTransaction checkOrderStatusTransaction = new CheckOrderStatusTransaction(null, mContext, orderId);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(checkOrderStatusTransaction);
+
     }
 
 

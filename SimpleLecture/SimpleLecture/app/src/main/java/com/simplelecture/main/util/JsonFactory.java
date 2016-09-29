@@ -153,4 +153,17 @@ public class JsonFactory {
         return jsonObject;
     }
 
+    public JSONObject getPlaceOrder(String userId, String code) {
+
+        try {
+
+            jsonObject.put("UserId", userId);
+            jsonObject.put("Code", code);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject;
+    }
+
 }

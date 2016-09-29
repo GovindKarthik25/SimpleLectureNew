@@ -18,6 +18,7 @@ public class CourseDetailsResponseModel implements Serializable {
     private String videoUrl;
     private String cComboName;
     private boolean isCombo;
+    private String courseComboNames;
     private List<ChaptersResponseModel> chaptersResponseModel;
     private List<CourseCombos> courseCombos;
     private List<courseFeatures> courseFeature;
@@ -28,8 +29,9 @@ public class CourseDetailsResponseModel implements Serializable {
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths) {
+    public CourseDetailsResponseModel(String cId, String coursePrice, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, String courseComboNames, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths) {
         this.cId = cId;
+        CoursePrice = coursePrice;
         this.cName = cName;
         this.cDesc = cDesc;
         this.cBenefits = cBenefits;
@@ -38,6 +40,7 @@ public class CourseDetailsResponseModel implements Serializable {
         this.videoUrl = videoUrl;
         this.cComboName = cComboName;
         this.isCombo = isCombo;
+        this.courseComboNames = courseComboNames;
         this.chaptersResponseModel = chaptersResponseModel;
         this.courseCombos = courseCombos;
         this.courseFeature = courseFeature;
@@ -52,6 +55,14 @@ public class CourseDetailsResponseModel implements Serializable {
 
     public void setcId(String cId) {
         this.cId = cId;
+    }
+
+    public String getCoursePrice() {
+        return CoursePrice;
+    }
+
+    public void setCoursePrice(String coursePrice) {
+        CoursePrice = coursePrice;
     }
 
     public String getcName() {
@@ -118,6 +129,14 @@ public class CourseDetailsResponseModel implements Serializable {
         isCombo = combo;
     }
 
+    public String getCourseComboNames() {
+        return courseComboNames;
+    }
+
+    public void setCourseComboNames(String courseComboNames) {
+        this.courseComboNames = courseComboNames;
+    }
+
     public List<ChaptersResponseModel> getChaptersResponseModel() {
         return chaptersResponseModel;
     }
@@ -170,6 +189,7 @@ public class CourseDetailsResponseModel implements Serializable {
     public String toString() {
         return "CourseDetailsResponseModel{" +
                 "cId='" + cId + '\'' +
+                ", CoursePrice='" + CoursePrice + '\'' +
                 ", cName='" + cName + '\'' +
                 ", cDesc='" + cDesc + '\'' +
                 ", cBenefits='" + cBenefits + '\'' +
@@ -178,6 +198,7 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", videoUrl='" + videoUrl + '\'' +
                 ", cComboName='" + cComboName + '\'' +
                 ", isCombo=" + isCombo +
+                ", courseComboNames='" + courseComboNames + '\'' +
                 ", chaptersResponseModel=" + chaptersResponseModel +
                 ", courseCombos=" + courseCombos +
                 ", courseFeature=" + courseFeature +
@@ -185,13 +206,5 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", courseMaterials=" + courseMaterials +
                 ", courseMonths=" + courseMonths +
                 '}';
-    }
-
-    public String getCoursePrice() {
-        return CoursePrice;
-    }
-
-    public void setCoursePrice(String coursePrice) {
-        CoursePrice = coursePrice;
     }
 }

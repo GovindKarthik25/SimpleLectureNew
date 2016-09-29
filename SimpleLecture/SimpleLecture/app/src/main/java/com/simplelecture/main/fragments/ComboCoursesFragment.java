@@ -137,7 +137,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
         comboCoursesAdapter.setOnItemClickListener(onItemClickListener);
 
 
-        String headingUpdate = courseDetailsResponseModelObj.getcName() + " (" + courseDetailsResponseModelObj.getcComboName() + ")";
+        String headingUpdate = courseDetailsResponseModelObj.getcName() + " (" + courseDetailsResponseModelObj.getCourseComboNames() + ")";
 
         textView_headerUpdateDetails.setText(headingUpdate);
     }

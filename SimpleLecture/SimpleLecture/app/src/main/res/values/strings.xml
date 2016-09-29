@@ -145,4 +145,7 @@
     <string name="title_activity_dashboard_test_paper_chapter">DashboardTestPaperChapterActivity
     </string>
 
+
+    <string name="EbsCode">TEST</string>
+
 </resources>

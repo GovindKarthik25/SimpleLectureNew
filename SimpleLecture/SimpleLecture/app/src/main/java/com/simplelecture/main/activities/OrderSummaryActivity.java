@@ -25,6 +25,7 @@ import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
 import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.model.viewmodel.PlaceOrderResponseModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -61,6 +62,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
     private TextInputLayout input_layout_Promocode;
     private CheckBox chk_TermOfUse;
     private CheckBox chk_PrivacyPlicy;
+    private PlaceOrderResponseModel placeOrderResponseModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +133,22 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
         }
     }
 
+    private void showOrderPlaceOrder() {
+
+        try {
+            if (new ConnectionDetector(OrderSummaryActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_ORDER_PLACEORDER;
+                pd = new Util().waitingMessage(OrderSummaryActivity.this, "", getResources().getString(R.string.loading));
+
+                ApiService.getApiService().doGetPlaceOrder(OrderSummaryActivity.this, getResources().getString(R.string.EbsCode));
+            } else {
+                snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void parseResponse(String response) {
@@ -148,7 +166,24 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_PROMOCODE)) {
 
                 doResponseRefresh(response);
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_ORDER_PLACEORDER)) {
+
+                Gson gson = new Gson();
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject1 = new JSONObject(response);
+                    String dataContent = jSONObject1.getString("data");
+
+                    placeOrderResponseModel = new SummaryController().getPlaceOrder(dataContent);
+
+                    new ViewManager().gotoEBSPaymentGatewayWebViewActivity(OrderSummaryActivity.this, placeOrderResponseModel);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
+                }
+
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -230,6 +265,8 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
                     new ViewManager().gotoBillingAddressActivityView(this, orderSummaryModel.isContainsCourseMaterial());
                 } else {
                     //Payment GateWay
+
+                    showOrderPlaceOrder();
                 }
             } else {
                 Toast.makeText(OrderSummaryActivity.this, "Please accept the Term of Use & Privacy Poicy", Toast.LENGTH_SHORT).show();

@@ -9,7 +9,7 @@ import java.util.List;
 public class HomePageResponseModel implements Serializable {
 
     private int MyCoursesCount;
-
+    private int MyCartCount;
     private List<HomeBannersModel> bannersLst;
     private List<CourseCombos> courseCombosLst;
     private List<HomeCoursesModel> coursesLst;
@@ -29,8 +29,9 @@ public class HomePageResponseModel implements Serializable {
     public HomePageResponseModel() {
     }
 
-    public HomePageResponseModel(int myCoursesCount, List<HomeBannersModel> bannersLst, List<CourseCombos> courseCombosLst, List<HomeCoursesModel> coursesLst, List<HomePopularCoursesModel> homePopularCoursesModelLst, List<HomeTestimonialsModel> homeTestimonialsModelLst, String pageUrlSupport, String pageUrlAboutUs, String pageUrlTermsAndConditions, String pageUrlDisclaimer, String pageUrlPrivacyPolicy, String pageUrlCancellationAndRefundPolicy, String pageUrlShippingAndDeliveryPolicy, boolean isMobileVerified) {
+    public HomePageResponseModel(int myCoursesCount, int myCartCount, List<HomeBannersModel> bannersLst, List<CourseCombos> courseCombosLst, List<HomeCoursesModel> coursesLst, List<HomePopularCoursesModel> homePopularCoursesModelLst, List<HomeTestimonialsModel> homeTestimonialsModelLst, String pageUrlSupport, String pageUrlAboutUs, String pageUrlTermsAndConditions, String pageUrlDisclaimer, String pageUrlPrivacyPolicy, String pageUrlCancellationAndRefundPolicy, String pageUrlShippingAndDeliveryPolicy, boolean isMobileVerified) {
         MyCoursesCount = myCoursesCount;
+        MyCartCount = myCartCount;
         this.bannersLst = bannersLst;
         this.courseCombosLst = courseCombosLst;
         this.coursesLst = coursesLst;
@@ -52,6 +53,14 @@ public class HomePageResponseModel implements Serializable {
 
     public void setMyCoursesCount(int myCoursesCount) {
         MyCoursesCount = myCoursesCount;
+    }
+
+    public int getMyCartCount() {
+        return MyCartCount;
+    }
+
+    public void setMyCartCount(int myCartCount) {
+        MyCartCount = myCartCount;
     }
 
     public List<HomeBannersModel> getBannersLst() {
@@ -162,6 +171,7 @@ public class HomePageResponseModel implements Serializable {
     public String toString() {
         return "HomePageResponseModel{" +
                 "MyCoursesCount=" + MyCoursesCount +
+                ", MyCartCount=" + MyCartCount +
                 ", bannersLst=" + bannersLst +
                 ", courseCombosLst=" + courseCombosLst +
                 ", coursesLst=" + coursesLst +

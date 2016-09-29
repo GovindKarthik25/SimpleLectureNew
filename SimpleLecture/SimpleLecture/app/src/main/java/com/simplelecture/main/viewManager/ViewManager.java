@@ -13,7 +13,9 @@ import com.simplelecture.main.activities.DasboardTestPaperStartQuizActivity;
 import com.simplelecture.main.activities.DashboardActivity;
 import com.simplelecture.main.activities.DashboardTestPaperChapterActivity;
 import com.simplelecture.main.activities.DashboardTestPaperQuesionAnswerActivity;
+import com.simplelecture.main.activities.EbsPaymentWebViewActivity;
 import com.simplelecture.main.activities.ForgotPasswordActivity;
+import com.simplelecture.main.activities.ForumWebViewActivity;
 import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.activities.LoginActivity;
 import com.simplelecture.main.activities.OTPcodeActivity;
@@ -25,6 +27,7 @@ import com.simplelecture.main.activities.VideoPlayerActivity;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardQuizQuestionsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardQuizResult;
+import com.simplelecture.main.model.viewmodel.PlaceOrderResponseModel;
 import com.simplelecture.main.model.viewmodel.myCourses;
 
 /**
@@ -202,8 +205,10 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoPolicyWebview(Activity activity) {
+    public Intent gotoPolicyWebview(Activity activity, String urlLink, String namePage) {
         intent = new Intent(activity, PolicyWebview.class);
+        intent.putExtra("urlLink", urlLink);
+        intent.putExtra("namePage", namePage);
         setDisplay(activity, intent);
         return intent;
     }
@@ -253,6 +258,31 @@ public class ViewManager {
     public Intent gotoTestPaperResultScreenActivity(Activity activity, DashboardQuizResult dashboardQuizResultObj) {
         intent = new Intent(activity, ResultScreenActivity.class);
         intent.putExtra("dashboardQuizResultObj", dashboardQuizResultObj);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Forum WebView
+     *
+     * @return
+     */
+    public Intent gotoForumWebViewActivity(Activity activity, String pageUrlForumDetails, String namePage) {
+        intent = new Intent(activity, ForumWebViewActivity.class);
+        intent.putExtra("urlLink", pageUrlForumDetails);
+        intent.putExtra("namePage", namePage);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to Forum WebView
+     *
+     * @return
+     */
+    public Intent gotoEBSPaymentGatewayWebViewActivity(Activity activity, PlaceOrderResponseModel placeOrderResponseModelObj) {
+        intent = new Intent(activity, EbsPaymentWebViewActivity.class);
+        intent.putExtra("placeOrderResponseModel", placeOrderResponseModelObj);
         setDisplay(activity, intent);
         return intent;
     }

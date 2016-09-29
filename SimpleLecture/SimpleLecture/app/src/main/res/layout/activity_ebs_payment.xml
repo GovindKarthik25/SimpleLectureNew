@@ -13,14 +13,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:layout_marginTop="5dip"
+            android:id="@+id/textView_progress"
+            android:textColor="@color/colorPrimary"
+            android:layout_gravity="center_horizontal" />
+
         <WebView
-            android:id="@+id/webView"
+            android:id="@+id/webView_EBSPayment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tool_bar"
             android:layout_marginBottom="2dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:layout_marginTop="2dip" />
 
 

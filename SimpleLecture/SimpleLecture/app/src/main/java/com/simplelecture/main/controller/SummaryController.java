@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.simplelecture.main.model.viewmodel.OrderSummaryListModel;
 import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
+import com.simplelecture.main.model.viewmodel.PlaceOrderResponseModel;
 import com.simplelecture.main.model.viewmodel.PromoDetails;
 
 import org.json.JSONObject;
@@ -63,5 +64,16 @@ public class SummaryController {
         }
 
         return orderSummaryModel;
+    }
+
+    public PlaceOrderResponseModel getPlaceOrder(String response) {
+        PlaceOrderResponseModel placeOrderResponseModel = null;
+        try {
+            placeOrderResponseModel = gson.fromJson(response, PlaceOrderResponseModel.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return placeOrderResponseModel;
     }
 }

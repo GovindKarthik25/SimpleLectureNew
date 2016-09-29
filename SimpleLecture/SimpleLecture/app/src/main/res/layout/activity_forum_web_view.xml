@@ -14,13 +14,13 @@
         android:orientation="vertical">
 
         <WebView
-            android:id="@+id/webView"
+            android:id="@+id/webView_Forum"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/tool_bar"
             android:layout_marginBottom="2dip"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
+            android:layout_marginLeft="5dip"
+            android:layout_marginRight="5dip"
             android:layout_marginTop="2dip" />
 
 

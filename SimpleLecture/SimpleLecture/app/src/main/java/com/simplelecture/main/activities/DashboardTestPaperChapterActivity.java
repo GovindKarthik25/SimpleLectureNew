@@ -119,6 +119,7 @@ public class DashboardTestPaperChapterActivity extends AppCompatActivity impleme
                 ApiService.getApiService().doGetDashboardUser_Quiz_Chapters(DashboardTestPaperChapterActivity.this, myCoursesObj.getcId());
             } else {
                 alertMessageManagement.alertDialogActivation(this, 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+
             }
         } catch (Exception e) {
             e.printStackTrace();
