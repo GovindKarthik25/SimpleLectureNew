@@ -246,7 +246,6 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
 
 
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_EXERCISE_FILE)) {
-                Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
                 //create parent directory
                 File myDirectory = new File(Environment.getExternalStorageDirectory(), "SimpleLecture");
 
