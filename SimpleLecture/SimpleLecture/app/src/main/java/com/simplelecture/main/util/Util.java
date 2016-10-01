@@ -9,6 +9,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.Signature;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -23,6 +24,7 @@ import com.simplelecture.main.R;
 import com.simplelecture.main.model.viewmodel.CourseMaterials;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -373,6 +375,15 @@ public class Util {
         return sb;
 
     }
+
+    public static void doCreateDir(){
+        File myDirectory = new File(Environment.getExternalStorageDirectory(), "SimpleLecture");
+
+        if(!myDirectory.exists()) {
+            myDirectory.mkdirs();
+        }
+    }
+
 
 
 }

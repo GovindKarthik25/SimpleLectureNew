@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
@@ -26,11 +27,14 @@ import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener
 import com.simplelecture.main.fragments.interfaces.OnImageClickListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.http.RestMethod;
+import com.simplelecture.main.http.TransactionProcessor;
 import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.ExerciseChapters;
 import com.simplelecture.main.model.viewmodel.ExerciseResponseModel;
 import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.transactions.FileDownloadTransaction;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -45,6 +49,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
@@ -228,6 +233,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
         }
     }
 
+    private static String fileName;
     @Override
     public void parseResponse(String response) {
         try {
@@ -236,6 +242,30 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
             }
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
+
+
+
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_EXERCISE_FILE)) {
+                Toast.makeText(getActivity(), response, Toast.LENGTH_LONG).show();
+                //create parent directory
+                File myDirectory = new File(Environment.getExternalStorageDirectory(), "SimpleLecture");
+
+                if (!myDirectory.exists()) {
+                    myDirectory.mkdirs();
+                }
+
+                File root = new File(myDirectory, "Files");
+                if (!root.exists()) {
+                    root.mkdirs();
+                }
+
+                File gpxfile = new File(root, fileName);
+                FileWriter writer = new FileWriter(gpxfile);
+                writer.append(response);
+                writer.flush();
+                writer.close();
+
+            }
 
             exerciseResponseModelArray = new ArrayList<ExerciseResponseModel>();
             OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
@@ -304,6 +334,15 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                     String dataContent = jSONObject1.getString("data");
                     JSONObject jSONObject = new JSONObject(dataContent);
                     String filePath = jSONObject.getString("FilePath");
+
+                    String fileExt[] = filePath.split("/");
+
+                    fileName = fileExt[fileExt.length - 1];
+
+                    param_get_ServiceCallResult = Constants.GET_EXERCISE_FILE;
+                    FileDownloadTransaction fileDownloadTransaction = new FileDownloadTransaction(getActivity(), filePath);
+                    TransactionProcessor transactionProcessor = new TransactionProcessor(this);
+                    transactionProcessor.execute(fileDownloadTransaction);
 
                     Log.i("filePath--->", filePath);
 

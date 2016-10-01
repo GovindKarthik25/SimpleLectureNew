@@ -52,6 +52,8 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
         Util.secureScreenShot(DashboardActivity.this);
         setContentView(R.layout.activity_dashboard);
 
+        Util.doCreateDir();
+
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

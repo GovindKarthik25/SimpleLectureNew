@@ -34,6 +34,7 @@ public class Constants {
     public static String GET_COURSEDETAILS = "Course/Details/";
     public static String GET_COURSECHAPTERS = "Course/Chapters/";
     public static String GET_COURSEPOSTREVIEW = "Course/PostReview";
+    public static String GET_EXERCISE_FILE = "Exercise/FILE";
 
 
     /*Cart*/
