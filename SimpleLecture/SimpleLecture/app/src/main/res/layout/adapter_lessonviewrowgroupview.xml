@@ -12,12 +12,54 @@
         android:id="@+id/textViewQuestion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginLeft="5dip"
         android:layout_marginRight="5dip"
         android:text="question"
         android:textColor="@color/colorAccent"
         android:textSize="15sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewQuestion"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/radio_answer1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Answer1" />
+
+            <RadioButton
+                android:id="@+id/radio_answer2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Answer2" />
+
+            <RadioButton
+                android:id="@+id/radio_answer3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Answer1" />
+
+            <RadioButton
+                android:id="@+id/radio_answer4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Answer2" />
+
+        </RadioGroup>
+
+
+
+
+    </LinearLayout>
 
 
 
