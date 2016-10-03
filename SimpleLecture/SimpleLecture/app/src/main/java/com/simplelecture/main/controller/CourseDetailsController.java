@@ -1,12 +1,9 @@
 package com.simplelecture.main.controller;
 
-import android.util.Log;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.simplelecture.main.model.viewmodel.Answer;
 import com.simplelecture.main.model.viewmodel.ChaptersResponseModel;
 import com.simplelecture.main.model.viewmodel.CourseCombos;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
@@ -15,7 +12,6 @@ import com.simplelecture.main.model.viewmodel.CourseMaterials;
 import com.simplelecture.main.model.viewmodel.CourseMonths;
 import com.simplelecture.main.model.viewmodel.courseFeatures;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -73,71 +69,16 @@ public class CourseDetailsController {
             courseDetailsResponseModel.setCourseFeature(courseFeaturesLstArray);
 
 
-           /* String courseFaqsContent = jSONObject.getString("courseFaqs");
-            jarray = parser.parse(courseFaqsContent).getAsJsonArray();*/
-
             courseFaqsLstArray = new ArrayList<CourseFaqs>();
-            ArrayList<Answer> answerModelLstArray = new ArrayList<Answer>();
 
-           /* for (JsonElement obj : jarray) {
-                CourseFaqs courseFaqsObj = gson.fromJson(obj, CourseFaqs.class);
-                courseFaqsLstArray.add(courseFaqsObj);
-            }*/
+            String courseFaqsContent = jSONObject.getString("courseFaqs");
+            jarray = parser.parse(courseFaqsContent).getAsJsonArray();
 
-
-            JSONArray eventDetails = jSONObject.getJSONArray("courseFaqs");
-
-            for (int i = 0; i < eventDetails.length(); i++) {
-                JSONObject eachData = eventDetails.getJSONObject(i);
-                CourseFaqs courseFaqsObj = new CourseFaqs();
-                courseFaqsObj.setId(eachData.getString("Id"));
-                courseFaqsObj.setName(eachData.getString("Name"));
-                courseFaqsLstArray.add(courseFaqsObj);
-              //  Log.i("Answer", eachData.getString("Answer"));
-                String courseFaqsContent = eachData.getString("Answer");
-                jarray = parser.parse(courseFaqsContent).getAsJsonArray();
-              //  JSONArray answer = eachData.getJSONArray("Answer");
-
-                for (JsonElement obj : jarray) {
-                    Answer answerModelObj = gson.fromJson(obj, Answer.class);
-                    answerModelLstArray.add(answerModelObj);
-                }
-               /* for (int j = 0; j < jarray.size(); j++) {
-                    JSONObject eachDataAnswer = answer.getJSONObject(j);
-                    Answer answerModelObj = new Answer();
-
-                    answerModelObj.setId(eachDataAnswer.getString("Id"));
-                    answerModelObj.setName(eachDataAnswer.getString("Name"));
-                    answerModelLstArray.add(answerModelObj);
-
-                }*/
-
+            for (JsonElement obj : jarray) {
+                CourseFaqs CourseFaqsobj = gson.fromJson(obj, CourseFaqs.class);
+                courseFaqsLstArray.add(CourseFaqsobj);
             }
 
-            for (int i = 0; i < courseFaqsLstArray.size(); i++) {
-                for (int k = 0; k < answerModelLstArray.size(); k++) {
-                    if (courseFaqsLstArray.get(i).getId() == answerModelLstArray.get(k).getId()) {
-                        courseFaqsLstArray.get(i).setAnswerModel(answerModelLstArray);
-                    }
-                }
-            }
-
-            Log.i("courseFaqsLstArray", courseFaqsLstArray.toString());
-
-
-          /*  ArrayList<Answer> answerModelLstArray = new ArrayList<Answer>();
-
-            JSONArray dataContent = jSONObject.getJSONArray("Answer");
-            for(int i=0;i<dataContent.length();i++){
-                JSONObject eachData = dataContent.getJSONObject(i);
-                Answer answerModelObj = new Answer();
-                answerModelObj.setId(eachData.getString("Id"));
-                answerModelObj.setName(eachData.getString("Name"));
-                answerModelLstArray.add(answerModelObj);
-
-            }*/
-
-            courseFaqsLstArray.get(0).setAnswerModel(answerModelLstArray);
             courseDetailsResponseModel.setCourseFaqs(courseFaqsLstArray);
 
             String courseMaterialsContent = jSONObject.getString("CourseMaterials");

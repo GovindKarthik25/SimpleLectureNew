@@ -1,13 +1,20 @@
 package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Html;
+import android.text.Spanned;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +30,7 @@ import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONObject;
 
@@ -37,6 +45,10 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
     private SnackBarManagement snack;
     private AlertMessageManagement alertMessageManagement;
     private CheckOrderStatusResponseModel checkOrderStatusResponseModel;
+    private Button buttonDashboard;
+    private boolean buttonclick = false;
+    private Intent intent;
+    private final Handler handler = new Handler();
 
     @Override
     public void onBackPressed() {
@@ -44,10 +56,21 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ebs_payment);
-
 
         Bundle bundle = getIntent().getExtras();
         placeOrderResponseModel = (PlaceOrderResponseModel) bundle.get("placeOrderResponseModel");
@@ -58,9 +81,11 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
         getSupportActionBar().setTitle(Util.setActionBarText("Payment"));
 
         snack = new SnackBarManagement(this);
-        alertMessageManagement = new AlertMessageManagement(this);
+        alertMessageManagement = new AlertMessageManagement(EbsPaymentWebViewActivity.this, new AlertDialogClick());
+
 
         webView = (WebView) findViewById(R.id.webView_EBSPayment);
+        buttonDashboard = (Button) findViewById(R.id.buttonDashboard);
         textView_progress = (TextView) findViewById(R.id.textView_progress);
         textView_progress.setVisibility(View.GONE);
         pd = new ProgressDialog(this);
@@ -75,15 +100,26 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
         webView.setWebViewClient(new myWebClient());
         webView.loadUrl(placeOrderResponseModel.getPaymentUrl());
 
-
         final Thread thread = new Thread() {
             public void run() {
+                EbsPaymentWebViewActivity.this.runOnUiThread(new Runnable() {
+                    public void run() {
+                        loadGetCheckOrderStatusUpdate();
 
-
+                    }
+                });
             }
         };
 
         thread.start();
+
+        buttonDashboard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                buttonclick = true;
+                loadGetCheckOrderStatus();
+            }
+        });
     }
 
     /**
@@ -130,6 +166,20 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
         }
     }
 
+    public void loadGetCheckOrderStatusUpdate() {
+        try {
+            if (new ConnectionDetector(EbsPaymentWebViewActivity.this).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_ORDER_CHECKORDERSTATUS;
+
+                ApiService.getApiService().doGetCheckOrderStatus(EbsPaymentWebViewActivity.this, Integer.valueOf(placeOrderResponseModel.getOrderId()));
+            } else {
+                alertMessageManagement.alertDialogActivation(EbsPaymentWebViewActivity.this, 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     @Override
     public void parseResponse(String response) {
@@ -151,7 +201,21 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
 
                     textView_progress.setVisibility(View.VISIBLE);
 
-                    textView_progress.setText(checkOrderStatusResponseModel.getOrderStatus());
+                    String orderStatus = "Payment Status: " + "<font color='black'><b>" + checkOrderStatusResponseModel.getOrderStatus() + "</b></font>"+ ". ";
+
+                    Spanned result;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                        result = Html.fromHtml(orderStatus, Html.FROM_HTML_MODE_LEGACY);
+                    } else {
+                        result = Html.fromHtml(orderStatus);
+                    }
+                    Log.i("orderStatus", response);
+                    textView_progress.setText(result);
+                    String orderStatusDialog = result + " To continue payment click 'Cancel' or to Cancel payment Click 'Dashboard'. ";
+
+                    if(buttonclick) {
+                        alertMessageManagement.alertDialogActivation(EbsPaymentWebViewActivity.this, 2, getResources().getString(R.string.alert), orderStatusDialog, getResources().getString(R.string.cancel), getResources().getString(R.string.dashboard));
+                    }
                 }
             } else {
                 Toast.makeText(this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
@@ -178,5 +242,24 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
             e.printStackTrace();
         }
     }
+
+    private class AlertDialogClick implements AlertMessageManagement.onCustomAlertDialogListener {
+        @Override
+        public void onClickResult(DialogInterface dialog, int whichButton) {
+            if (whichButton == -2) { // negative Button 2
+                buttonclick = false;
+                dialog.cancel();
+
+
+            } else if (whichButton == -1) { //Postive -1
+                buttonclick = false;
+                finish();
+                new ViewManager().gotoDashboardView(EbsPaymentWebViewActivity.this, 0);
+
+
+            }
+        }
+    }
+
 
 }

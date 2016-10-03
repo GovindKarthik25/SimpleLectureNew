@@ -153,12 +153,13 @@ public class JsonFactory {
         return jsonObject;
     }
 
-    public JSONObject getPlaceOrder(String userId, String code) {
+    public JSONObject getPlaceOrder(String userId, String code, String deviceType) {
 
         try {
 
             jsonObject.put("UserId", userId);
-            jsonObject.put("Code", code);
+            //jsonObject.put("Code", code);
+            jsonObject.put("DeviceType", deviceType);
 
         } catch (JSONException e) {
             e.printStackTrace();

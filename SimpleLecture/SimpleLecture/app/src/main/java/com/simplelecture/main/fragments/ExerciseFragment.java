@@ -152,10 +152,16 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                if (groupPosition != lastExpandedGroupPosition) {
-                    exercise_expandableListView.collapseGroup(lastExpandedGroupPosition);
+                try {
+                    if (exerciseResponseModelArray.get(groupPosition).getExerciseChapters().size() > 0) {
+                        if (groupPosition != lastExpandedGroupPosition) {
+                            exercise_expandableListView.collapseGroup(lastExpandedGroupPosition);
+                        }
+                        lastExpandedGroupPosition = groupPosition;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                lastExpandedGroupPosition = groupPosition;
             }
         });
 
@@ -234,6 +240,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
     }
 
     private static String fileName;
+
     @Override
     public void parseResponse(String response) {
         try {
@@ -242,7 +249,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
             }
             Gson gson = new Gson();
             JsonParser parser = new JsonParser();
-
+            exerciseResponseModelArray = new ArrayList<ExerciseResponseModel>();
 
 
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_EXERCISE_FILE)) {
@@ -264,13 +271,9 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                 writer.flush();
                 writer.close();
 
-            }
+            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_MYEXERCISES)) {
 
-            exerciseResponseModelArray = new ArrayList<ExerciseResponseModel>();
-            OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
-
-            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_MYEXERCISES)) {
-
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
 
@@ -315,19 +318,27 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                             }
                         }
 
+
                         dasboardExerciseListAdapter = new DasboardExerciseListAdapter(getActivity(), exerciseResponseModelArray, this);
                         exercise_expandableListView.setAdapter(dasboardExerciseListAdapter);
-                        exercise_expandableListView.expandGroup(0);
+
+                        if(exerciseResponseModelArray.size() == 0){
+                            Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                        } else {
+                            exercise_expandableListView.expandGroup(0);
+                        }
 
 
                     } catch (JsonSyntaxException e) {
                         e.printStackTrace();
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_COURSE_CHAPTERFILE)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
                 if (outputResponseModel.isSuccess()) {
                     JSONObject jSONObject1 = new JSONObject(response);
                     String dataContent = jSONObject1.getString("data");
@@ -347,6 +358,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
 
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
 
@@ -374,6 +386,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                     snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSECHAPTERS)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
 

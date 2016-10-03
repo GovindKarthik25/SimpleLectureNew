@@ -9,8 +9,9 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
 
 import com.simplelecture.main.R;
+import com.simplelecture.main.model.viewmodel.Answer;
+import com.simplelecture.main.model.viewmodel.CourseFaqs;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,37 +19,39 @@ import java.util.List;
  */
 public class FAQExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private final HashMap<String, List<String>> listDataChild;
+   // private final HashMap<String, List<String>> listDataChild;
+    private final List<CourseFaqs> courseFaqsResponselist;
     private Context mContext;
-    private List<String> listDataHeader; // header titles
+   // private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
 
-    public FAQExpandableListAdapter(Context context, List<String> listDataHeader, HashMap<String, List<String>> listDataChild) {
+    public FAQExpandableListAdapter(Context context, List<CourseFaqs> courseFaqsResponselst) {
         this.mContext = context;
-        this.listDataHeader = listDataHeader;
-        this.listDataChild = listDataChild;
+        // this.listDataHeader = listDataHeader;
+        this.courseFaqsResponselist = courseFaqsResponselst;
 
     }
 
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).size();
+        return this.courseFaqsResponselist.get(groupPosition).getAnswer().size();
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this.listDataHeader.get(groupPosition);
+        return this.courseFaqsResponselist.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this.listDataHeader.size();
+        return this.courseFaqsResponselist.size();
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+        return this.courseFaqsResponselist.get(groupPosition).getAnswer().get(childPosititon);
+                //listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -63,14 +66,14 @@ public class FAQExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+        CourseFaqs CourseFaqsObj = (CourseFaqs) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.adapter_faqlist_group, null);
         }
 
         TextView lblListHeaderFaq = (TextView) convertView.findViewById(R.id.lblListHeaderFaq);
-        lblListHeaderFaq.setText(headerTitle);
+        lblListHeaderFaq.setText(CourseFaqsObj.getName());
 
         return convertView;
     }
@@ -78,7 +81,8 @@ public class FAQExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        String childTitle = (String) getChild(groupPosition, childPosition);
+        //String childTitle = (String) getChild(groupPosition, childPosition);
+        Answer answerObj = (Answer) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -87,7 +91,7 @@ public class FAQExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView txtListChild = (TextView) convertView.findViewById(R.id.lblListItemFaq);
 
-        txtListChild.setText(Html.fromHtml(childTitle));
+        txtListChild.setText(Html.fromHtml(answerObj.getName()));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

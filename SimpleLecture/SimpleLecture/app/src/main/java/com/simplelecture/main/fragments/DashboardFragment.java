@@ -346,6 +346,10 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
 
                     dashboardResponseModelObj.setMyCoursesResponseModel(myCoursesResponseModelLstArray);
 
+                    if(dashboardResponseModelObj.getMyCoursesResponseModel().size() == 0){
+                        Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
+
                     dashboardAdapter = new DashboardAdapter(getActivity(), dashboardResponseModelObj.getMyCoursesResponseModel());
                     dashbord_recycler_view.setAdapter(dashboardAdapter);
 

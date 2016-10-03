@@ -13,14 +13,38 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_marginTop="5dip"
-            android:id="@+id/textView_progress"
-            android:textColor="@color/colorPrimary"
-            android:layout_gravity="center_horizontal" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dip"
+            android:background="@color/com_facebook_button_background_color_disabled">
+
+            <Button
+                android:text="Dashboard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonDashboard"
+                android:textAllCaps="false"
+                android:layout_marginRight="5dip"
+                android:textColor="@color/white"
+                android:background="@color/colorAccent"
+                android:layout_marginTop="3dip"
+                android:layout_marginBottom="3dip"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment Status: "
+                android:id="@+id/textView_progress"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center_horizontal"
+                android:layout_alignBaseline="@+id/buttonDashboard"
+                android:layout_alignBottom="@+id/buttonDashboard"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+
 
         <WebView
             android:id="@+id/webView_EBSPayment"

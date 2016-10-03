@@ -10,15 +10,15 @@ public class CourseFaqs implements Serializable {
 
     private String Id;
     private String Name;
-    private List<Answer> answerModel;
+    private List<Answer> Answer;
 
     public CourseFaqs() {
     }
 
-    public CourseFaqs(String id, String name, List<Answer> answerModel) {
+    public CourseFaqs(String id, List<com.simplelecture.main.model.viewmodel.Answer> answer, String name) {
         Id = id;
+        Answer = answer;
         Name = name;
-        this.answerModel = answerModel;
     }
 
     public String getId() {
@@ -37,12 +37,12 @@ public class CourseFaqs implements Serializable {
         Name = name;
     }
 
-    public List<Answer> getAnswerModel() {
-        return answerModel;
+    public List<com.simplelecture.main.model.viewmodel.Answer> getAnswer() {
+        return Answer;
     }
 
-    public void setAnswerModel(List<Answer> answerModel) {
-        this.answerModel = answerModel;
+    public void setAnswer(List<com.simplelecture.main.model.viewmodel.Answer> answer) {
+        Answer = answer;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CourseFaqs implements Serializable {
         return "CourseFaqs{" +
                 "Id='" + Id + '\'' +
                 ", Name='" + Name + '\'' +
-                ", answerModel=" + answerModel +
+                ", Answer=" + Answer +
                 '}';
     }
 }

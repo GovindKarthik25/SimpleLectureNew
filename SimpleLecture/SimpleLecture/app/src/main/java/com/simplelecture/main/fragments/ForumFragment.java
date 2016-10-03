@@ -245,6 +245,11 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
                         forumGetModelLst.add(forumGetModelObj);
                     }
 
+                    if(forumGetModelLst.size() == 0){
+                        Log.i("forumGetModelLst", "No Data Found:-" + forumGetModelLst.size());
+                        Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
+
                     forumListAdapter = new ForumListAdapter(getActivity(), forumGetModelLst);
                     recyclerView_Forum.setAdapter(forumListAdapter);
                     forumListAdapter.notifyDataSetChanged();

@@ -9,6 +9,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -221,9 +222,15 @@ public class TestPapersFragment extends Fragment implements NetworkLayer {
                         myCoursesList.add(myCoursesObj);
                     }
 
+                    if(myCoursesList.size() == 0){
+                        Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
+
                     testPapersAdapter = new TestPapersAdapter(getActivity(), myCoursesList);
                     testPapersRecycler_view.setAdapter(testPapersAdapter);
                     testPapersAdapter.setOnItemClickListener(onItemClickListener);
+
+
                 }
             }
         } catch (Exception e) {

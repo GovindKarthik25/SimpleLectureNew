@@ -104,8 +104,12 @@ public class DasboardExerciseListAdapter extends BaseExpandableListAdapter {
                 @Override
                 public void onClick(View v) {
 
-                    if (onImageClickListener != null) {
-                        onImageClickListener.onViewCourseclick(groupPosition, exerciseResponseModelObj.getCourseId());
+                    try {
+                        if (onImageClickListener != null) {
+                            onImageClickListener.onViewCourseclick(groupPosition, exerciseResponseModelObj.getCourseId());
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
             });
@@ -121,39 +125,43 @@ public class DasboardExerciseListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final ExerciseChapters exerciseChaptersObj = (ExerciseChapters) getChild(groupPosition, childPosition);
+        try {
+            final ExerciseChapters exerciseChaptersObj = (ExerciseChapters) getChild(groupPosition, childPosition);
 
-        final ChildHolder childHolder;
-        if (convertView == null) {
-            childHolder = new ChildHolder();
-            LayoutInflater infalInflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.adapter_dashboardexceriselist_item, null);
-            childHolder.downloadItem_TextView = (TextView) convertView.findViewById(R.id.downloadItem_TextView);
-            childHolder.downloadItem_ImageView = (ImageView) convertView.findViewById(R.id.downloadItem_ImageView);
+            final ChildHolder childHolder;
+            if (convertView == null) {
+                childHolder = new ChildHolder();
+                LayoutInflater infalInflater = (LayoutInflater) mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                convertView = infalInflater.inflate(R.layout.adapter_dashboardexceriselist_item, null);
+                childHolder.downloadItem_TextView = (TextView) convertView.findViewById(R.id.downloadItem_TextView);
+                childHolder.downloadItem_ImageView = (ImageView) convertView.findViewById(R.id.downloadItem_ImageView);
 
 
-            convertView.setTag(childHolder);
-        } else {
-            childHolder = (ChildHolder) convertView.getTag();
-        }
-
-        childHolder.downloadItem_TextView.setText(exerciseChaptersObj.getCourseChapterNumber() + " : " + exerciseChaptersObj.getCourseChapterName());
-
-        if (Boolean.valueOf(exerciseChaptersObj.getIsFileDownloaded())) {
-            childHolder.downloadItem_ImageView.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.download));
-        } else {
-            childHolder.downloadItem_ImageView.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.notdownload));
-        }
-
-        childHolder.downloadItem_ImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (onImageClickListener != null) {
-                    onImageClickListener.ondownloadclick(childPosition, exerciseChaptersObj.getCourseChapterId());
-                }
+                convertView.setTag(childHolder);
+            } else {
+                childHolder = (ChildHolder) convertView.getTag();
             }
-        });
+
+            childHolder.downloadItem_TextView.setText(exerciseChaptersObj.getCourseChapterNumber() + " : " + exerciseChaptersObj.getCourseChapterName());
+
+            if (Boolean.valueOf(exerciseChaptersObj.getIsFileDownloaded())) {
+                childHolder.downloadItem_ImageView.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.download));
+            } else {
+                childHolder.downloadItem_ImageView.setImageDrawable(mActivity.getResources().getDrawable(R.drawable.notdownload));
+            }
+
+            childHolder.downloadItem_ImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (onImageClickListener != null) {
+                        onImageClickListener.ondownloadclick(childPosition, exerciseChaptersObj.getCourseChapterId());
+                    }
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
       /*  convertView.setOnClickListener(new View.OnClickListener() {
             @Override

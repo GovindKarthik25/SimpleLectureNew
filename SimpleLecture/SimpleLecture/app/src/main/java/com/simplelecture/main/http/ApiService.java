@@ -538,8 +538,9 @@ public class ApiService {
     public void doGetPlaceOrder(Context mContext, String code) {
 
         String userId = Util.getFromPrefrences(mContext, "uId");
+        String deviceType = "Android";
         JsonFactory jsonFactory = new JsonFactory();
-        JSONObject jsonObject = jsonFactory.getPlaceOrder(userId, code);
+        JSONObject jsonObject = jsonFactory.getPlaceOrder(userId, code, deviceType);
         PlaceOrderTransaction placeOrderTransaction = new PlaceOrderTransaction(jsonObject, mContext);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(placeOrderTransaction);

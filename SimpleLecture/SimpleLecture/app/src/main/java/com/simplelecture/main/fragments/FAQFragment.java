@@ -81,7 +81,7 @@ public class FAQFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
 
-        listFAQAdapter = new FAQExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listFAQAdapter = new FAQExpandableListAdapter(getActivity(), courseFaqsResponselist);
 
         // setting list adapter
         lvExpFAQ.setAdapter(listFAQAdapter);

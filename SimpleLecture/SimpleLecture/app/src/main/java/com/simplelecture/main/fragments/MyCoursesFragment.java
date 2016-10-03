@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -246,6 +247,10 @@ public class MyCoursesFragment extends Fragment implements NetworkLayer {
 
                     myCoursesAdapter = new MyCoursesAdapter(getActivity(), dashboardMyCoursesResponseModelArray);
                     myCourse_recycler_view.setAdapter(myCoursesAdapter);
+
+                    if(dashboardMyCoursesResponseModelArray.size() == 0){
+                        Toast.makeText(getActivity(), "No Data Found", Toast.LENGTH_SHORT).show();
+                    }
 
                     myCoursesAdapter.setOnItemClickListener(onItemClickListener);
                 }

@@ -7,16 +7,17 @@
 
     <TextView
         android:id="@+id/lblListItemFaq"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="9"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="2dp"
         android:textColor="@android:color/tab_indicator_text"
+        android:layout_marginLeft="25dip"
+        android:layout_marginRight="3dip"
         android:paddingBottom="5dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
         android:paddingTop="5dp"
         android:layout_gravity="center"
-        android:text="test"
+        android:text="test dkmdlld"
         android:textSize="12dip" />
 
 
