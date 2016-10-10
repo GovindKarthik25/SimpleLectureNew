@@ -21,11 +21,13 @@ public class JsonFactory {
         jsonObject = new JSONObject();
     }
 
-    public JSONObject getLoginParams(String ue, String up) {
+    public JSONObject getLoginParams(String ue, String up, String loginType, String mobileOSType) {
 
         try {
             jsonObject.put("ue", ue);
             jsonObject.put("up", up);
+            jsonObject.put("LoginType", loginType);
+            jsonObject.put("MobileOSType", mobileOSType);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -63,6 +65,8 @@ public class JsonFactory {
             jsonObject.put("Email", signInModel.getEmail());
             jsonObject.put("Mobile", signInModel.getMobile());
             jsonObject.put("Password", signInModel.getPassword());
+            jsonObject.put("LoginType", signInModel.getLoginType());
+            jsonObject.put("MobileOSType", signInModel.getMobileOSType());
 
 
         } catch (JSONException e) {

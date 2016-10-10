@@ -7,10 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
+import com.simplelecture.main.model.Answers;
 import com.simplelecture.main.model.viewmodel.Questions;
 
 import java.util.List;
@@ -22,6 +24,8 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
 
     private final Activity activity;
     List<Questions> questionsLstArray;
+    private RadioButton lastCheckedRB = null;
+
 
     OnItemClickListener mItemClickListener;
 
@@ -41,7 +45,7 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         try {
 
@@ -50,6 +54,32 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
             holder.radioAns2.setText(questionsLstArray.get(position).getAnswer2());
             holder.radioAns3.setText(questionsLstArray.get(position).getAnswer3());
             holder.radioAns4.setText(questionsLstArray.get(position).getAnswer4());
+
+            holder.answerRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup rgp, int checkedId) {
+                    questionsLstArray.get(position).setSelectedCheckedId(rgp.getCheckedRadioButtonId());
+                    Answers answersObj = new Answers();
+                    answersObj.setQuestionId(questionsLstArray.get(position).getQuestionId());
+
+                    if(checkedId == R.id.radio_answer1){
+                        answersObj.setQuestionAnswer("A");
+                    } else if (checkedId == R.id.radio_answer2){
+                        answersObj.setQuestionAnswer("B");
+                    } else if (checkedId == R.id.radio_answer3){
+                        answersObj.setQuestionAnswer("C");
+                    } else if (checkedId == R.id.radio_answer4){
+                        answersObj.setQuestionAnswer("D");
+                    }
+
+
+
+                }
+            });
+
+            holder.answerRadioGroup.check(questionsLstArray.get(position).getSelectedCheckedId());
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,6 +99,7 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewQuestion;
+        RadioGroup answerRadioGroup;
         RadioButton radioAns1;
         RadioButton radioAns2;
         RadioButton radioAns3;
@@ -79,11 +110,10 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
         public MyViewHolder(View itemView) {
             super(itemView);
             textViewQuestion = (TextView) itemView.findViewById(R.id.textViewQuestion);
+            answerRadioGroup = (RadioGroup) itemView.findViewById(R.id.answerRadioGroup);
             radioAns1 = (RadioButton) itemView.findViewById(R.id.radio_answer1);
             radioAns2 = (RadioButton) itemView.findViewById(R.id.radio_answer2);
-            ;
             radioAns3 = (RadioButton) itemView.findViewById(R.id.radio_answer3);
-            ;
             radioAns4 = (RadioButton) itemView.findViewById(R.id.radio_answer4);
             //itemLayout = (LinearLayout) itemView.findViewById(item_layout);
             // itemView.setOnClickListener(this);

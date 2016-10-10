@@ -82,9 +82,10 @@ public class CourseIndexFragment extends Fragment {
 
 
         // preparing list data
-        prepareListData();
+       // prepareListData();
 
-        listAdapter = new CourseIndexExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        //listAdapter = new CourseIndexExpandableListAdapter(getActivity(), listDataHeader, listDataChild);
+        listAdapter = new CourseIndexExpandableListAdapter(getActivity(), chaptersResponseModel, courseDetailsResponseModelObj.isPurchased());
 
         // setting list adapter
         expListView.setAdapter(listAdapter);

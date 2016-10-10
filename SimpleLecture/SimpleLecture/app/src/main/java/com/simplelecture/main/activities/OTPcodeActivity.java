@@ -41,6 +41,11 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
     private TextInputLayout input_layout_MobileNo;
 
     @Override
+    public void onBackPressed() {
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otpcode);
@@ -50,7 +55,7 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(false);
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText("OTP Number"));
 

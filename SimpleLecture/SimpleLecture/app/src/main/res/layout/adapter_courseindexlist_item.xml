@@ -19,6 +19,7 @@
         android:textSize="12dip" />
 
     <ImageView
+        android:id="@+id/play_ImageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"

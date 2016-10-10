@@ -7,36 +7,17 @@ public class LoginModel {
 
     private String ue;
     private String up;
-
-    public String getLoginType() {
-        return LoginType;
-    }
-
-    public void setLoginType(String loginType) {
-        LoginType = loginType;
-    }
-
     private String LoginType;
-
-    public String getMobileOSType() {
-        return MobileOSType;
-    }
-
-    public void setMobileOSType(String mobileOSType) {
-        MobileOSType = mobileOSType;
-    }
-
     private String MobileOSType;
-
 
     public LoginModel() {
     }
 
-    public LoginModel(String ue, String up, String loginType, String mobileOsType) {
+    public LoginModel(String ue, String up, String loginType, String mobileOSType) {
         this.ue = ue;
         this.up = up;
         LoginType = loginType;
-        MobileOSType = mobileOsType;
+        MobileOSType = mobileOSType;
     }
 
     public String getUe() {
@@ -55,11 +36,29 @@ public class LoginModel {
         this.up = up;
     }
 
+    public String getLoginType() {
+        return LoginType;
+    }
+
+    public void setLoginType(String loginType) {
+        LoginType = loginType;
+    }
+
+    public String getMobileOSType() {
+        return MobileOSType;
+    }
+
+    public void setMobileOSType(String mobileOSType) {
+        MobileOSType = mobileOSType;
+    }
+
     @Override
     public String toString() {
         return "LoginModel{" +
                 "ue='" + ue + '\'' +
                 ", up='" + up + '\'' +
+                ", LoginType='" + LoginType + '\'' +
+                ", MobileOSType='" + MobileOSType + '\'' +
                 '}';
     }
 }

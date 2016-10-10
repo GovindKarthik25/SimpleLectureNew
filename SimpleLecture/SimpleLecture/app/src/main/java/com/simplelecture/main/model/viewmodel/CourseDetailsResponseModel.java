@@ -18,6 +18,7 @@ public class CourseDetailsResponseModel implements Serializable {
     private String videoUrl;
     private String cComboName;
     private boolean isCombo;
+    private boolean isPurchased;
     private String courseComboNames;
     private List<ChaptersResponseModel> chaptersResponseModel;
     private List<CourseCombos> courseCombos;
@@ -29,7 +30,7 @@ public class CourseDetailsResponseModel implements Serializable {
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String coursePrice, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, String courseComboNames, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths) {
+    public CourseDetailsResponseModel(String cId, String coursePrice, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, boolean isPurchased, String courseComboNames, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths) {
         this.cId = cId;
         CoursePrice = coursePrice;
         this.cName = cName;
@@ -40,6 +41,7 @@ public class CourseDetailsResponseModel implements Serializable {
         this.videoUrl = videoUrl;
         this.cComboName = cComboName;
         this.isCombo = isCombo;
+        this.isPurchased = isPurchased;
         this.courseComboNames = courseComboNames;
         this.chaptersResponseModel = chaptersResponseModel;
         this.courseCombos = courseCombos;
@@ -129,6 +131,14 @@ public class CourseDetailsResponseModel implements Serializable {
         isCombo = combo;
     }
 
+    public boolean isPurchased() {
+        return isPurchased;
+    }
+
+    public void setPurchased(boolean purchased) {
+        isPurchased = purchased;
+    }
+
     public String getCourseComboNames() {
         return courseComboNames;
     }
@@ -198,6 +208,7 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", videoUrl='" + videoUrl + '\'' +
                 ", cComboName='" + cComboName + '\'' +
                 ", isCombo=" + isCombo +
+                ", isPurchased=" + isPurchased +
                 ", courseComboNames='" + courseComboNames + '\'' +
                 ", chaptersResponseModel=" + chaptersResponseModel +
                 ", courseCombos=" + courseCombos +

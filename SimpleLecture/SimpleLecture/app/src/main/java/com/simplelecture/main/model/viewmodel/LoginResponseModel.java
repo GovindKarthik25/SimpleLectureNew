@@ -9,15 +9,18 @@ public class LoginResponseModel {
     private String uName;
     private String uToken;
     private boolean isSuccess;
+    private String FailureType;
+
 
     public LoginResponseModel() {
     }
 
-    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess) {
+    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess, String failureType) {
         this.uId = uId;
         this.uName = uName;
         this.uToken = uToken;
         this.isSuccess = isSuccess;
+        FailureType = failureType;
     }
 
     public String getuId() {
@@ -27,7 +30,6 @@ public class LoginResponseModel {
     public void setuId(String uId) {
         this.uId = uId;
     }
-
 
     public String getuName() {
         return uName;
@@ -49,8 +51,16 @@ public class LoginResponseModel {
         return isSuccess;
     }
 
-    public void setIsSuccess(boolean isSuccess) {
-        this.isSuccess = isSuccess;
+    public void setSuccess(boolean success) {
+        isSuccess = success;
+    }
+
+    public String getFailureType() {
+        return FailureType;
+    }
+
+    public void setFailureType(String failureType) {
+        FailureType = failureType;
     }
 
     @Override
@@ -60,6 +70,7 @@ public class LoginResponseModel {
                 ", uName='" + uName + '\'' +
                 ", uToken='" + uToken + '\'' +
                 ", isSuccess=" + isSuccess +
+                ", FailureType='" + FailureType + '\'' +
                 '}';
     }
 }

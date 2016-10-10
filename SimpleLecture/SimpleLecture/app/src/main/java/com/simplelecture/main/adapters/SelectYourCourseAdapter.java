@@ -96,6 +96,7 @@ public class SelectYourCourseAdapter extends BaseAdapter {
         }
 
 
+
         holder.chkListItem.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -106,6 +107,7 @@ public class SelectYourCourseAdapter extends BaseAdapter {
                 for (int i = 0; i < selectMyCourseLstArray.size(); i++) {
                     selectMyCourseLstArray.get(i).setSelected(false);
                 }
+
                 addrCB.setSelected(true);
 
                 notifyDataSetChanged();
@@ -115,8 +117,14 @@ public class SelectYourCourseAdapter extends BaseAdapter {
         holder.chkListItem.setTag(selectMyCourseResponseModelObj);
         holder.chkListItem.setText(selectMyCourseResponseModelObj.getName());
 
-        holder.chkListItem.setChecked(selectMyCourseResponseModelObj.isSelected());
+        // Single selection
+           /* if (holder.chkListItem.isChecked() && Util.getFromPrefrences(activity, "SelectYourCategoryID").equalsIgnoreCase(selectMyCourseResponseModelObj.getId())) {
+                selectMyCourseResponseModelObj.setSelected(true);
+                // holder.chkListItem.setChecked();
+            }
+*/
 
+            holder.chkListItem.setChecked(selectMyCourseResponseModelObj.isSelected());
 
 
         return convertView;

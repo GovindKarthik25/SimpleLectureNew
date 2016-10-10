@@ -25,6 +25,7 @@
         android:orientation="vertical">
 
         <RadioGroup
+            android:id="@+id/answerRadioGroup"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="visible"
@@ -34,24 +35,28 @@
                 android:id="@+id/radio_answer1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tag="A"
                 android:text="Answer1" />
 
             <RadioButton
                 android:id="@+id/radio_answer2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tag="B"
                 android:text="Answer2" />
 
             <RadioButton
                 android:id="@+id/radio_answer3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tag="C"
                 android:text="Answer1" />
 
             <RadioButton
                 android:id="@+id/radio_answer4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:tag="D"
                 android:text="Answer2" />
 
         </RadioGroup>

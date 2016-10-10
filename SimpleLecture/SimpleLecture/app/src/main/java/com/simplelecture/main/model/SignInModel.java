@@ -9,37 +9,19 @@ public class SignInModel {
     private String Email;
     private String Mobile;
     private String Password;
-
-    public String getLoginType() {
-        return LoginType;
-    }
-
-    public void setLoginType(String loginType) {
-        LoginType = loginType;
-    }
-
     private String LoginType;
-
-    public String getMobileOSType() {
-        return MobileOSType;
-    }
-
-    public void setMobileOSType(String mobileOSType) {
-        MobileOSType = mobileOSType;
-    }
-
     private String MobileOSType;
 
     public SignInModel() {
     }
 
-    public SignInModel(String name, String email, String mobile, String password,String loginType,String mobileOsType) {
+    public SignInModel(String name, String email, String mobile, String password, String loginType, String mobileOSType) {
         Name = name;
         Email = email;
         Mobile = mobile;
         Password = password;
         LoginType = loginType;
-        MobileOSType = mobileOsType;
+        MobileOSType = mobileOSType;
     }
 
     public String getName() {
@@ -74,6 +56,22 @@ public class SignInModel {
         Password = password;
     }
 
+    public String getLoginType() {
+        return LoginType;
+    }
+
+    public void setLoginType(String loginType) {
+        LoginType = loginType;
+    }
+
+    public String getMobileOSType() {
+        return MobileOSType;
+    }
+
+    public void setMobileOSType(String mobileOSType) {
+        MobileOSType = mobileOSType;
+    }
+
     @Override
     public String toString() {
         return "SignInModel{" +
@@ -81,6 +79,8 @@ public class SignInModel {
                 ", Email='" + Email + '\'' +
                 ", Mobile='" + Mobile + '\'' +
                 ", Password='" + Password + '\'' +
+                ", LoginType='" + LoginType + '\'' +
+                ", MobileOSType='" + MobileOSType + '\'' +
                 '}';
     }
 }

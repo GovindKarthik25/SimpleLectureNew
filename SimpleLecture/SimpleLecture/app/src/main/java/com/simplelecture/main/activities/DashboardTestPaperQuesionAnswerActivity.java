@@ -55,7 +55,7 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
     private String param_get_ServiceCallResult = "";
     private ProgressDialog pd;
     private DashboardQuizResult dashboardQuizResultObj;
-    private List<Answers> answerslst;
+    private List<Answers> answerslst = new ArrayList<Answers>();
 
     @Override
     public void onBackPressed() {

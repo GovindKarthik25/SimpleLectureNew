@@ -15,11 +15,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.Profile;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -34,8 +37,10 @@ import com.simplelecture.main.R;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.FBUser;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.viewmodel.LoginResponseModel;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -45,6 +50,8 @@ import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Arrays;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener, NetworkLayer {
 
@@ -79,11 +86,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginModel loginModel;
     private SessionManager sessionManager;
     private String param_get_ServiceCallResult = "";
+    private OutputResponseModel outputResponseModel;
 
 
     @Override
     public void onBackPressed() {
-       // super.onBackPressed();
+        // super.onBackPressed();
         new ViewManager().gotoHomeView(LoginActivity.this);
     }
 
@@ -108,7 +116,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         /*// Initialize the SDK before executing any other operations,
         // especially, if you're using Facebook UI elements.*/
         FacebookSdk.sdkInitialize(getApplicationContext());
-      //  AppEventsLogger.activateApp(this);
+        //  AppEventsLogger.activateApp(this);
+        //  Util.keyHashgenrate(this);
+        //facebook callbackManager
+        callbackManager = CallbackManager.Factory.create();
 
         setContentView(R.layout.activity_login);
 
@@ -117,14 +128,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .build();
 
         // Build a GoogleApiClient with access to the Google Sign-In API and the
-         // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        // options specified by gso.
+        mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
-      //  Util.keyHashgenrate(this);
-        //facebook callbackManager
-        callbackManager = CallbackManager.Factory.create();
 
         snack = new SnackBarManagement(LoginActivity.this);
         sessionManager = SessionManager.getInstance();
@@ -149,7 +155,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         createAccountTextView = (TextView) findViewById(R.id.createAccountTextView);
         forgotPasswordtextView = (TextView) findViewById(R.id.forgotPasswordtextView);
         facebooklogin_button = (LoginButton) findViewById(R.id.facebooklogin_button);
-       // facebooklogin_button.setReadPermissions("public_profile");
+        facebooklogin_button.setReadPermissions(Arrays.asList("public_profile", "email"));
+
         gmailSign_in_button = (SignInButton) findViewById(R.id.gmailSign_in_button);
 
 
@@ -166,18 +173,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.v("onSuccess", "onSuccess");
-                // If Facebook login is true Go to Homeview
-                sessionManager.setLoginStatus(true);
-                sessionManager.setLoginFBStatus(true);
-                Profile profile = Profile.getCurrentProfile();
-                String firstName = profile.getFirstName();
 
-             //   doFBLogin(loginResult.);
-                Log.i("FB Success", firstName);
-                Toast.makeText(LoginActivity.this, "FB Success" + firstName, Toast.LENGTH_SHORT).show();
+                final FBUser fbUser = new FBUser();
+                GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse graphResponse) {
+                        // Get facebook data from login
+                        Bundle bFacebookData = getFacebookData(object, fbUser);
 
-               // new ViewManager().gotoHomeView(LoginActivity.this);
+                        sessionManager.setLoginFBStatus(true);
+                        sessionManager.setLoginGmailStatus(false);
+                        sessionManager.setLoginSLStatus(false);
+                        Log.i("LoginActivity 1", fbUser.toString());
 
+                        doFBLogin(fbUser.getEmail());
+
+                    }
+                });
+
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id, first_name, last_name, email,gender, birthday, location"); // Parámetros que pedimos a facebook
+                request.setParameters(parameters);
+
+                request.executeAsync();
             }
 
             @Override
@@ -188,12 +206,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onError(FacebookException e) {
-                Toast.makeText(LoginActivity.this, "onError", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
                 sessionManager.setLoginStatus(false);
                 sessionManager.setLoginFBStatus(false);
             }
         });
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        //If signin
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            //Calling a new function to handle signin
+            handleSignInResult(result);
+        } else {
+
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -297,12 +330,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
 
+            sessionManager.setLoginFBStatus(false);
+            sessionManager.setLoginGmailStatus(true);
+            sessionManager.setLoginSLStatus(false);
 
             doGmailLogin(acct.getEmail());
 
         } else {
             //If login fails
             pd.cancel();
+            sessionManager.setLoginStatus(false);
+            sessionManager.setLoginGmailStatus(false);
             Toast.makeText(this, "Login Failed", Toast.LENGTH_LONG).show();
         }
     }
@@ -367,30 +405,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void parseResponse(String response) {
         Log.i("Loginresponse-->", response);
         try {
-            if(pd.isShowing()) {
+            if (pd.isShowing()) {
                 pd.cancel();
             }
             if (param_get_ServiceCallResult.equals(Constants.GET_LOGIN)) {
                 Gson gson = new Gson();
                 JSONObject jSONObject = new JSONObject(response);
-                boolean isSuccess = jSONObject.getBoolean("isSuccess");
-
-                if (isSuccess) {
+                outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+                if (outputResponseModel.isSuccess()) {
                     sessionManager.setLoginStatus(true);
-                    sessionManager.setLoginSLStatus(true);
+                    if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeSL)) {
+                        sessionManager.setLoginSLStatus(true);
+                        sessionManager.setLoginFBStatus(true);
+                        sessionManager.setLoginGmailStatus(false);
+                    }
 
                     String dataResponse = jSONObject.getString("data");
 
                     LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);
-                    loginResponseModelObj.setIsSuccess(isSuccess);
+                    loginResponseModelObj.setSuccess(outputResponseModel.isSuccess());
 
                     Util.storeToPrefrences(LoginActivity.this, "email", loginModel.getUe());
                     Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
                     Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
+
                     new ViewManager().gotoHomeView(this);
                 } else {
+                    if (sessionManager.isLoginFBStatus() && isLoggedIn()) {
+                        LoginManager.getInstance().logOut();
+                    }
                     param_get_ServiceCallResult = "";
-                    snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.loginFailed), getResources().getString(R.string.dismiss));
+
+                    String dataResponse = jSONObject.getString("data");
+                    LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);
+
+                    if (loginResponseModelObj.getFailureType().equalsIgnoreCase("1")) {
+                        Toast.makeText(LoginActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+
+                    } else if (loginResponseModelObj.getFailureType().equalsIgnoreCase("2")) {
+
+                        Toast.makeText(LoginActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                        new ViewManager().gotoSigninView(this);
+                    }
+
                 }
             } else {
                 param_get_ServiceCallResult = "";
@@ -405,8 +462,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void showError(String error) {
         try {
-            if(pd.isShowing()) {
+            if (pd.isShowing()) {
                 pd.cancel();
+            }
+
+            if (sessionManager.isLoginFBStatus() && isLoggedIn()) {
+                LoginManager.getInstance().logOut();
             }
 
             if (error.isEmpty()) {
@@ -417,5 +478,56 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             e.printStackTrace();
         }
 
+    }
+
+
+    private Bundle getFacebookData(JSONObject object, FBUser fbUser) {
+        Bundle bundle = new Bundle();
+
+        try {
+
+            String id = object.getString("id");
+            fbUser.setId(id);
+
+           /* try {
+                URL profile_pic = new URL("https://graph.facebook.com/" + id + "/picture?width=200&height=150");
+                Log.i("profile_pic", profile_pic + "");
+                bundle.putString("profile_pic", profile_pic.toString());
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+                return null;
+            }*/
+
+            bundle.putString("idFacebook", id);
+            if (object.has("first_name")) {
+                bundle.putString("first_name", object.getString("first_name"));
+                String first_name = object.getString("first_name");
+                fbUser.setName(first_name);
+            }
+            if (object.has("last_name")) {
+                bundle.putString("last_name", object.getString("last_name"));
+            }
+            if (object.has("email")) {
+                bundle.putString("email", object.getString("email"));
+                String email = object.getString("email");
+                fbUser.setEmail(email);
+            }
+           /* if (object.has("gender"))
+                bundle.putString("gender", object.getString("gender"));
+            if (object.has("birthday"))
+                bundle.putString("birthday", object.getString("birthday"));
+            if (object.has("location"))
+                bundle.putString("location", object.getJSONObject("location").getString("name"));*/
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bundle;
+    }
+
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
     }
 }

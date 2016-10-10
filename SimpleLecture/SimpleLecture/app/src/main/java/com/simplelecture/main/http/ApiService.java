@@ -73,7 +73,7 @@ public class ApiService {
     public void doLogin(LoginModel loginModel, Context context) {
         try {
             JsonFactory jsonFactory = new JsonFactory();
-            JSONObject jsonObject = jsonFactory.getLoginParams(loginModel.getUe(), loginModel.getUp());
+            JSONObject jsonObject = jsonFactory.getLoginParams(loginModel.getUe(), loginModel.getUp(), loginModel.getLoginType(), loginModel.getMobileOSType());
             LoginTransaction loginTransaction = new LoginTransaction(jsonObject, context);
             TransactionProcessor transactionProcessor = new TransactionProcessor(context);
             transactionProcessor.execute(loginTransaction);
