@@ -26,6 +26,7 @@ import com.simplelecture.main.model.Answers;
 import com.simplelecture.main.model.viewmodel.DashboardQuizQuestionsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardQuizResult;
 import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.model.viewmodel.Questions;
 import com.simplelecture.main.model.viewmodel.QuizToppersModel;
 import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
@@ -56,6 +57,7 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
     private ProgressDialog pd;
     private DashboardQuizResult dashboardQuizResultObj;
     private List<Answers> answerslst = new ArrayList<Answers>();
+    private List<Questions> question;
 
     @Override
     public void onBackPressed() {
@@ -93,8 +95,9 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
 
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView_QuestionAnswer.setLayoutManager(linearLayoutManager);
+        question = dashboardQuizQuestionsResponseModelObj.getQuestions();
 
-        dasboardTestPaperQuestionAnswerAdapter = new DasboardTestPaperQuestionAnswerAdapter(DashboardTestPaperQuesionAnswerActivity.this, dashboardQuizQuestionsResponseModelObj.getQuestions());
+        dasboardTestPaperQuestionAnswerAdapter = new DasboardTestPaperQuestionAnswerAdapter(DashboardTestPaperQuesionAnswerActivity.this, question);
         recyclerView_QuestionAnswer.setAdapter(dasboardTestPaperQuestionAnswerAdapter);
 
         buttonSubmit.setOnClickListener(this);
@@ -177,8 +180,12 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
     @Override
     public void onClick(View v) {
         if (v == buttonSubmit) {
-           // answerslst = new ArrayList<Answers>();
-            submitQuizAnswerMethod();
+            Log.i("buttonSubmit**", question.toString());
+
+            // answerslst = new ArrayList<Answers>();
+
+
+           // submitQuizAnswerMethod();
         }
     }
 

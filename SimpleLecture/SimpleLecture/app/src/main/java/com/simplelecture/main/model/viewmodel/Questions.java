@@ -14,13 +14,13 @@ public class Questions implements Serializable {
     private String Answer2;
     private String Answer3;
     private String Answer4;
+    private String SelectedAnswer = "";
     private int selectedCheckedId = -1;
 
     public Questions() {
     }
 
-
-    public Questions(String questionId, String number, String name, String answer1, String answer2, String answer3, String answer4, int selectedCheckedId) {
+    public Questions(String questionId, String number, String name, String answer1, String answer2, String answer3, String answer4, String selectedAnswer, int selectedCheckedId) {
         QuestionId = questionId;
         Number = number;
         Name = name;
@@ -28,6 +28,7 @@ public class Questions implements Serializable {
         Answer2 = answer2;
         Answer3 = answer3;
         Answer4 = answer4;
+        SelectedAnswer = selectedAnswer;
         this.selectedCheckedId = selectedCheckedId;
     }
 
@@ -87,6 +88,14 @@ public class Questions implements Serializable {
         Answer4 = answer4;
     }
 
+    public String getSelectedAnswer() {
+        return SelectedAnswer;
+    }
+
+    public void setSelectedAnswer(String selectedAnswer) {
+        SelectedAnswer = selectedAnswer;
+    }
+
     public int getSelectedCheckedId() {
         return selectedCheckedId;
     }
@@ -105,6 +114,7 @@ public class Questions implements Serializable {
                 ", Answer2='" + Answer2 + '\'' +
                 ", Answer3='" + Answer3 + '\'' +
                 ", Answer4='" + Answer4 + '\'' +
+                ", SelectedAnswer='" + SelectedAnswer + '\'' +
                 ", selectedCheckedId=" + selectedCheckedId +
                 '}';
     }

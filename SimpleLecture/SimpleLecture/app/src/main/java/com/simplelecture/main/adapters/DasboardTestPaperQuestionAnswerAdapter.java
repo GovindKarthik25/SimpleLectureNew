@@ -58,26 +58,25 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
                 @Override
                 public void onCheckedChanged(RadioGroup rgp, int checkedId) {
                     questionsLstArray.get(position).setSelectedCheckedId(rgp.getCheckedRadioButtonId());
-/*                    Answers answersObj = new Answers();
-                    answersObj.setQuestionId(questionsLstArray.get(position).getQuestionId());
 
-                    if(checkedId == R.id.radio_answer1){
-                        answersObj.setQuestionAnswer("A");
-                    } else if (checkedId == R.id.radio_answer2){
-                        answersObj.setQuestionAnswer("B");
-                    } else if (checkedId == R.id.radio_answer3){
-                        answersObj.setQuestionAnswer("C");
-                    } else if (checkedId == R.id.radio_answer4){
-                        answersObj.setQuestionAnswer("D");
-                    }*/
+                    if (checkedId == R.id.radio_answer1) {
+                        questionsLstArray.get(position).setSelectedAnswer("A");
 
+                    } else if (checkedId == R.id.radio_answer2) {
+                        questionsLstArray.get(position).setSelectedAnswer("B");
 
+                    } else if (checkedId == R.id.radio_answer3) {
+                        questionsLstArray.get(position).setSelectedAnswer("C");
+
+                    } else if (checkedId == R.id.radio_answer4) {
+                        questionsLstArray.get(position).setSelectedAnswer("D");
+
+                    }
 
                 }
             });
 
             holder.answerRadioGroup.check(questionsLstArray.get(position).getSelectedCheckedId());
-
 
 
         } catch (Exception e) {
