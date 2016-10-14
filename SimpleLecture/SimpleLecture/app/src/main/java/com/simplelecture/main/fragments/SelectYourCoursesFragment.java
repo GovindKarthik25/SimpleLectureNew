@@ -139,6 +139,12 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
                 listcourseAdapter = new SelectYourCourseAdapter(getActivity(), selectMyCourseLstArray);
                 myCourseListView.setAdapter(listcourseAdapter);
 
+                for (int i = 0; i < selectMyCourseLstArray.size(); i++) {
+                    if (Util.getFromPrefrences(getActivity(), "SelectYourCategoryID").equalsIgnoreCase(selectMyCourseLstArray.get(i).getId())){
+                        selectMyCourseLstArray.get(i).setSelected(true);
+                    }
+                }
+
 
             }
         } catch (Exception e) {
@@ -255,6 +261,15 @@ public class SelectYourCoursesFragment extends DialogFragment implements View.On
 
                     listcourseAdapter = new SelectYourCourseAdapter(getActivity(), selectMyCourseLstArray);
                     myCourseListView.setAdapter(listcourseAdapter);
+
+
+                    for (int i = 0; i < selectMyCourseLstArray.size(); i++) {
+                        if (Util.getFromPrefrences(getActivity(), "SelectYourCategoryID").equalsIgnoreCase(selectMyCourseLstArray.get(i).getId())){
+                            selectMyCourseLstArray.get(i).setSelected(true);
+                        }
+                    }
+
+
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
 

@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
-import com.simplelecture.main.model.Answers;
 import com.simplelecture.main.model.viewmodel.Questions;
 
 import java.util.List;
@@ -59,7 +58,7 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
                 @Override
                 public void onCheckedChanged(RadioGroup rgp, int checkedId) {
                     questionsLstArray.get(position).setSelectedCheckedId(rgp.getCheckedRadioButtonId());
-                    Answers answersObj = new Answers();
+/*                    Answers answersObj = new Answers();
                     answersObj.setQuestionId(questionsLstArray.get(position).getQuestionId());
 
                     if(checkedId == R.id.radio_answer1){
@@ -70,7 +69,7 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
                         answersObj.setQuestionAnswer("C");
                     } else if (checkedId == R.id.radio_answer4){
                         answersObj.setQuestionAnswer("D");
-                    }
+                    }*/
 
 
 

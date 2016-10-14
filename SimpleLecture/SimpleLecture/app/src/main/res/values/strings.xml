@@ -148,5 +148,6 @@
 
 
     <string name="EbsCode">TEST</string>
+    <string name="title_activity_splash_main_screen">SplashMainScreenActivity</string>
 
 </resources>

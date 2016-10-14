@@ -29,6 +29,7 @@ import com.simplelecture.main.model.viewmodel.DashboardQuizQuestionsResponseMode
 import com.simplelecture.main.model.viewmodel.DashboardQuizResult;
 import com.simplelecture.main.model.viewmodel.PlaceOrderResponseModel;
 import com.simplelecture.main.model.viewmodel.myCourses;
+import com.simplelecture.main.splash.SplashActivity;
 
 /**
  * Created by karthik.rao on 03-02-2016.
@@ -48,6 +49,16 @@ public class ViewManager {
         activity.startActivity(intent);
     }
 
+    /**
+     * Description: go to Splash Activity View
+     *
+     * @return
+     */
+    public Intent gotoSplashActivity(Activity activity) {
+        intent = new Intent(activity, SplashActivity.class);
+        setDisplay(activity, intent);
+        return intent;
+    }
 
     /**
      * Description: go to Login View

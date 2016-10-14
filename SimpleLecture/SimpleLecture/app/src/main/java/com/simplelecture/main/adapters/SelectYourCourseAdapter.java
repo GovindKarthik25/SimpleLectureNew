@@ -91,10 +91,9 @@ public class SelectYourCourseAdapter extends BaseAdapter {
             holder.chkListItem = (CheckBox) convertView.findViewById(R.id.chkListItem);
 
             convertView.setTag(holder);
-        }else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
-
 
 
         holder.chkListItem.setOnClickListener(new View.OnClickListener() {
@@ -117,21 +116,14 @@ public class SelectYourCourseAdapter extends BaseAdapter {
         holder.chkListItem.setTag(selectMyCourseResponseModelObj);
         holder.chkListItem.setText(selectMyCourseResponseModelObj.getName());
 
-        // Single selection
-           /* if (holder.chkListItem.isChecked() && Util.getFromPrefrences(activity, "SelectYourCategoryID").equalsIgnoreCase(selectMyCourseResponseModelObj.getId())) {
-                selectMyCourseResponseModelObj.setSelected(true);
-                // holder.chkListItem.setChecked();
-            }
-*/
-
-            holder.chkListItem.setChecked(selectMyCourseResponseModelObj.isSelected());
+        holder.chkListItem.setChecked(selectMyCourseResponseModelObj.isSelected());
 
 
         return convertView;
     }
 
 
-    static class ViewHolder{
+    static class ViewHolder {
         protected CheckBox chkListItem;
     }
 }

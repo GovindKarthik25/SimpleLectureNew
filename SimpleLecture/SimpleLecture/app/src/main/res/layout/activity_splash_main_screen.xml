@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dip"
+    tools:context="com.simplelecture.main.splash.SplashMainScreenActivity">
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="match_parent"
+        android:layout_height="100dip"
+        android:layout_above="@+id/textViewSplash"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        app:srcCompat="@mipmap/app_icon" />
+
+    <TextView
+        android:id="@+id/textViewSplash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:text="Simple Lecture"
+        android:textColor="@color/colorAccent"
+        android:textSize="40dip"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textViewComplexities"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textViewSplash"
+        android:layout_centerHorizontal="true"
+        android:gravity="right"
+        android:text="Complexities Simplified"
+        android:textSize="20dip" />
+
+</RelativeLayout>
+
