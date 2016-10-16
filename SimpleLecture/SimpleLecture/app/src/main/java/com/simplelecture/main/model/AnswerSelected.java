@@ -5,15 +5,15 @@ import java.io.Serializable;
 /**
  * Created by Raos on 8/31/2016.
  */
-public class Answers implements Serializable {
+public class AnswerSelected implements Serializable {
 
     private String QuestionId;
     private String QuestionAnswer;
 
-    public Answers() {
+    public AnswerSelected() {
     }
 
-    public Answers(String questionId, String questionAnswer) {
+    public AnswerSelected(String questionId, String questionAnswer) {
         QuestionId = questionId;
         QuestionAnswer = questionAnswer;
     }
@@ -36,7 +36,7 @@ public class Answers implements Serializable {
 
     @Override
     public String toString() {
-        return "Answers{" +
+        return "AnswerSelected{" +
                 "QuestionId='" + QuestionId + '\'' +
                 ", QuestionAnswer='" + QuestionAnswer + '\'' +
                 '}';

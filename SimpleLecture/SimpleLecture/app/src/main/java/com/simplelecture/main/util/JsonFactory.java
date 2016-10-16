@@ -1,13 +1,11 @@
 package com.simplelecture.main.util;
 
-import com.simplelecture.main.model.Answers;
 import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.SignInModel;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 /**
  * Created by M1032185 on 2/14/2016.
@@ -132,13 +130,13 @@ public class JsonFactory {
         return jsonObject;
     }
 
-    public JSONObject getSubmitQuizAnswer(List<Answers> answerslst) {
+    public JSONObject getSubmitQuizAnswer(String jsonData) { //AnswerSelected
 
         try {
 
-            jsonObject.put("Answers", answerslst);
+            jsonObject.put("Answers", new JSONArray(jsonData));
 
-        } catch (JSONException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return jsonObject;

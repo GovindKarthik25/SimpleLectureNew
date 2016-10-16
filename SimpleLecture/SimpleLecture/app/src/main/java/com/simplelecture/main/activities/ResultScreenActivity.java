@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -79,11 +80,12 @@ public class ResultScreenActivity extends AppCompatActivity implements View.OnCl
      */
     @Override
     public void onClick(View v) {
-        if(v == button_startAgain){
+        if (v == button_startAgain) {
             finish();
-            new ViewManager().gotoDashboardView(ResultScreenActivity.this, 2);
-        } else if(v == button_CheckyourAnswer){
-
+            new ViewManager().gotoDashboardViewPage(ResultScreenActivity.this, 2, 2345);
+        } else if (v == button_CheckyourAnswer) {
+            Log.i("testidResult", dashboardQuizResultObj.getTestId());
+            new ViewManager().gotoCheckYourAnswer(ResultScreenActivity.this, dashboardQuizResultObj.getTestId());
         }
     }
 }

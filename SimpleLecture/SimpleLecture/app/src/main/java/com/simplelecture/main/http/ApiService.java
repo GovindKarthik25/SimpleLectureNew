@@ -4,7 +4,8 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import com.simplelecture.main.model.Answers;
+import com.google.gson.Gson;
+import com.simplelecture.main.model.AnswerSelected;
 import com.simplelecture.main.model.BillingAddressModel;
 import com.simplelecture.main.model.CartModel;
 import com.simplelecture.main.model.LoginModel;
@@ -18,6 +19,7 @@ import com.simplelecture.main.transactions.ChangeMonthTransaction;
 import com.simplelecture.main.transactions.ChangePasswordTransaction;
 import com.simplelecture.main.transactions.ChaptersTransaction;
 import com.simplelecture.main.transactions.CheckOrderStatusTransaction;
+import com.simplelecture.main.transactions.CheckYourAnswerTransaction;
 import com.simplelecture.main.transactions.CourseCategoriesTransaction;
 import com.simplelecture.main.transactions.CoursePostReviewTransaction;
 import com.simplelecture.main.transactions.CoursesDetailsTransaction;
@@ -494,11 +496,14 @@ public class ApiService {
 
     }
 
-    public void doSubmitQuizAnswer(Context context, String testid, List<Answers> answerslst) {
+    public void doSubmitQuizAnswer(Context context, String testid, List<AnswerSelected> answerslst) {
         try {
 
+            String jsonData = new Gson().toJson(answerslst);
+
             JsonFactory jsonFactory = new JsonFactory();
-            JSONObject jsonObject = jsonFactory.getSubmitQuizAnswer(answerslst);
+            JSONObject jsonObject = jsonFactory.getSubmitQuizAnswer(jsonData);
+
             SubmitQuizAnswerTransaction submitQuizAnswerTransaction = new SubmitQuizAnswerTransaction(jsonObject, context, testid);
             TransactionProcessor transactionProcessor = new TransactionProcessor(context);
             transactionProcessor.execute(submitQuizAnswerTransaction);
@@ -552,6 +557,14 @@ public class ApiService {
         CheckOrderStatusTransaction checkOrderStatusTransaction = new CheckOrderStatusTransaction(null, mContext, orderId);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(checkOrderStatusTransaction);
+
+    }
+
+    public void doGetCheckYourAnswer(Context mContext, String testId) {
+
+        CheckYourAnswerTransaction checkYourAnswerTransaction = new CheckYourAnswerTransaction(null, mContext, testId);
+        TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+        transactionProcessor.execute(checkYourAnswerTransaction);
 
     }
 

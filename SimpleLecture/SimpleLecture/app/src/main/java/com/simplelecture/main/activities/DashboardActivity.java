@@ -21,6 +21,7 @@ import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.TestPapersFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.util.Util;
+import com.simplelecture.main.viewManager.ViewManager;
 
 public class DashboardActivity extends AppCompatActivity implements OnFragmentInteractionListener {
 
@@ -28,17 +29,28 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private EditText searchEditText;
+    private int page;
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        if(page == 2345) { // ResultScreenActivity
+            finish();
+            new ViewManager().gotoHomeView(DashboardActivity.this);
+        } else {
+            super.onBackPressed();
+        }
 
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
-            case android.R.id.home:
+            case 16908332:
+                finish();
+                new ViewManager().gotoHomeView(DashboardActivity.this);
+                return true;
+            case R.id.home:
                 this.onBackPressed();
                 return true;
             default:
@@ -73,6 +85,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         if (bundle != null) {
             int tabSelect = bundle.getInt("tabSelect");
+            page = bundle.getInt("Page");
             Log.i("tabSelect", String.valueOf(tabSelect));
             TabLayout.Tab tab = tabLayout.getTabAt(tabSelect);
             tab.select();

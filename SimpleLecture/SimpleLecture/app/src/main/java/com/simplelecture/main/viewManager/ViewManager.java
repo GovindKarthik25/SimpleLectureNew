@@ -3,10 +3,12 @@ package com.simplelecture.main.viewManager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.simplelecture.main.activities.BillingAddressActivity;
 import com.simplelecture.main.activities.CartActivity;
 import com.simplelecture.main.activities.ChangePasswordActivity;
+import com.simplelecture.main.activities.CheckyourAnswerActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
 import com.simplelecture.main.activities.DasboardTestPaperStartQuizActivity;
@@ -131,6 +133,14 @@ public class ViewManager {
     public Intent gotoDashboardView(Activity activity, int tabSelect) {
         intent = new Intent(activity, DashboardActivity.class);
         intent.putExtra("tabSelect", tabSelect);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    public Intent gotoDashboardViewPage(Activity activity, int tabSelect, int page) {
+        intent = new Intent(activity, DashboardActivity.class);
+        intent.putExtra("tabSelect", tabSelect);
+        intent.putExtra("Page", page);
         setDisplay(activity, intent);
         return intent;
     }
@@ -287,13 +297,26 @@ public class ViewManager {
     }
 
     /**
-     * Description: go to Forum WebView
+     * Description: go to EBSPayment Gateway WebView
      *
      * @return
      */
     public Intent gotoEBSPaymentGatewayWebViewActivity(Activity activity, PlaceOrderResponseModel placeOrderResponseModelObj) {
         intent = new Intent(activity, EbsPaymentWebViewActivity.class);
         intent.putExtra("placeOrderResponseModel", placeOrderResponseModelObj);
+        setDisplay(activity, intent);
+        return intent;
+    }
+
+    /**
+     * Description: go to CheckYourAnswer
+     *
+     * @return
+     */
+    public Intent gotoCheckYourAnswer(Activity activity, String testId) {
+        intent = new Intent(activity, CheckyourAnswerActivity.class);
+        Log.i("testId", testId);
+        intent.putExtra("testId", testId);
         setDisplay(activity, intent);
         return intent;
     }

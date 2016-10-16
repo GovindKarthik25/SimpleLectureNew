@@ -22,7 +22,7 @@ import com.simplelecture.main.adapters.DasboardTestPaperQuestionAnswerAdapter;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
-import com.simplelecture.main.model.Answers;
+import com.simplelecture.main.model.AnswerSelected;
 import com.simplelecture.main.model.viewmodel.DashboardQuizQuestionsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardQuizResult;
 import com.simplelecture.main.model.viewmodel.OutputResponseModel;
@@ -34,14 +34,10 @@ import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity implements NetworkLayer, View.OnClickListener {
@@ -60,7 +56,6 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
     private String param_get_ServiceCallResult = "";
     private ProgressDialog pd;
     private DashboardQuizResult dashboardQuizResultObj;
-    private List<Answers> answerslst = new ArrayList<Answers>();
     private List<Questions> question;
 
     @Override
@@ -96,6 +91,7 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
         textViewtotalQuestion.setText(dashboardQuizQuestionsResponseModelObj.getMaxQuestions());
 
         countLessonTimer(Long.valueOf(dashboardQuizQuestionsResponseModelObj.getMaxSeconds()));
+        //countLessonTimer(Long.valueOf(1000));
 
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView_QuestionAnswer.setLayoutManager(linearLayoutManager);
@@ -159,7 +155,7 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
         }
     }
 
-    private void submitQuizAnswerMethod() {
+    private void submitQuizAnswerMethod(List<AnswerSelected> answerslst) {
 
         try {
             if (new ConnectionDetector(DashboardTestPaperQuesionAnswerActivity.this).isConnectingToInternet()) {
@@ -184,44 +180,16 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
     @Override
     public void onClick(View v) {
         if (v == buttonSubmit) {
-            Log.i("buttonSubmit**", question.toString());
+            List<AnswerSelected> answerslst = new ArrayList<AnswerSelected>();
+            for (Questions questionsObj : question) {
 
-            // answerslst = new ArrayList<Answers>();
-
-            Log.d("Answers","" + DasboardTestPaperQuestionAnswerAdapter.answers);
-
-            JSONObject  jsonObject = new JSONObject();
-            JSONArray ansArray = new JSONArray();
-
-
-            Iterator it = DasboardTestPaperQuestionAnswerAdapter.answers.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-
-                try {
-                    JSONObject ansObject = new JSONObject();
-                    ansObject.put("QuestionId",pair.getKey());
-                    ansObject.put("QuestionAnswer",pair.getValue());
-
-                    ansArray.put(ansObject);
-                    System.out.println(pair.getKey() + " = " + pair.getValue());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
+                AnswerSelected answersObj = new AnswerSelected();
+                answersObj.setQuestionId(questionsObj.getQuestionId());
+                answersObj.setQuestionAnswer(questionsObj.getSelectedAnswer());
+                answerslst.add(answersObj);
             }
 
-            JSONObject jsonAnswersObj = new JSONObject();
-            try {
-                jsonAnswersObj.put("Answers",ansArray);
-
-                Log.d("Final Object", "" + jsonAnswersObj);
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-            // submitQuizAnswerMethod();
+            submitQuizAnswerMethod(answerslst);
         }
     }
 
@@ -240,7 +208,7 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
             OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
 
-            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_QUIZ_RESULT)) {
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_QUIZ_RESULT) || param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_QUIZ_SUBMITANSWERS)) {
 
                 if (outputResponseModel.isSuccess()) {
 
@@ -263,9 +231,11 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
 
                     new ViewManager().gotoTestPaperResultScreenActivity(DashboardTestPaperQuesionAnswerActivity.this, dashboardQuizResultObj);
                 }
-            } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_QUIZ_RESULT)) {
+            } /*else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_QUIZ_SUBMITANSWERS)) {
 
-            }
+                Log.i("QUIZ_SUBMITANSWERS", response);
+
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
