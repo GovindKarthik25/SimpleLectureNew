@@ -14,6 +14,7 @@ import com.simplelecture.main.R;
 import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.model.viewmodel.Questions;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -24,6 +25,8 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
     private final Activity activity;
     List<Questions> questionsLstArray;
     private RadioButton lastCheckedRB = null;
+
+    public static HashMap<Integer,String> answers = new HashMap<Integer,String>();
 
 
     OnItemClickListener mItemClickListener;
@@ -62,15 +65,21 @@ public class DasboardTestPaperQuestionAnswerAdapter extends RecyclerView.Adapter
                     if (checkedId == R.id.radio_answer1) {
                         questionsLstArray.get(position).setSelectedAnswer("A");
 
+                        answers.put(Integer.parseInt(questionsLstArray.get(position).getQuestionId()),questionsLstArray.get(position).getSelectedAnswer());
                     } else if (checkedId == R.id.radio_answer2) {
                         questionsLstArray.get(position).setSelectedAnswer("B");
+
+                        answers.put(Integer.parseInt(questionsLstArray.get(position).getQuestionId()),questionsLstArray.get(position).getSelectedAnswer());
 
                     } else if (checkedId == R.id.radio_answer3) {
                         questionsLstArray.get(position).setSelectedAnswer("C");
 
+                        answers.put(Integer.parseInt(questionsLstArray.get(position).getQuestionId()),questionsLstArray.get(position).getSelectedAnswer());
+
                     } else if (checkedId == R.id.radio_answer4) {
                         questionsLstArray.get(position).setSelectedAnswer("D");
 
+                        answers.put(Integer.parseInt(questionsLstArray.get(position).getQuestionId()),questionsLstArray.get(position).getSelectedAnswer());
                     }
 
                 }

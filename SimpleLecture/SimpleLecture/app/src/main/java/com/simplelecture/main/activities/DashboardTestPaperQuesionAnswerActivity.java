@@ -34,10 +34,14 @@ import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity implements NetworkLayer, View.OnClickListener {
@@ -184,8 +188,40 @@ public class DashboardTestPaperQuesionAnswerActivity extends AppCompatActivity i
 
             // answerslst = new ArrayList<Answers>();
 
+            Log.d("Answers","" + DasboardTestPaperQuestionAnswerAdapter.answers);
 
-           // submitQuizAnswerMethod();
+            JSONObject  jsonObject = new JSONObject();
+            JSONArray ansArray = new JSONArray();
+
+
+            Iterator it = DasboardTestPaperQuestionAnswerAdapter.answers.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+
+                try {
+                    JSONObject ansObject = new JSONObject();
+                    ansObject.put("QuestionId",pair.getKey());
+                    ansObject.put("QuestionAnswer",pair.getValue());
+
+                    ansArray.put(ansObject);
+                    System.out.println(pair.getKey() + " = " + pair.getValue());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            JSONObject jsonAnswersObj = new JSONObject();
+            try {
+                jsonAnswersObj.put("Answers",ansArray);
+
+                Log.d("Final Object", "" + jsonAnswersObj);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            // submitQuizAnswerMethod();
         }
     }
 
