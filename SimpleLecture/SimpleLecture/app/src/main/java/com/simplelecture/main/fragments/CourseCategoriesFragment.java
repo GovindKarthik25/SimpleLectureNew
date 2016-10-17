@@ -131,6 +131,13 @@ public class CourseCategoriesFragment extends Fragment implements NetworkLayer {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
         courseCategoriesRecycler_view.setLayoutManager(gridLayoutManager);
 
+        fabCourseCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                loadGetCourseCategoriesTutorial();
+            }
+        });
+
         return convertView;
     }
 

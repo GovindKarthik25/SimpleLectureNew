@@ -46,6 +46,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private TextView textView_EmailId;
     private HomePageResponseModel homePageResponseModelObj;
     private Button buttonProfile;
+    private MenuItem logIn;
+    private MenuItem logOut;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +88,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         buttonProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new ViewManager().gotoBillingAddressActivityView(HomeActivity.this, false);
+
+                if (sessionManager.isLoginStatus()) {
+                    new ViewManager().gotoBillingAddressActivityView(HomeActivity.this, false);
+                } else {
+                    onShowAlert();
+                }
             }
         });
 
@@ -115,8 +122,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getMenuInflater().inflate(R.menu.home, menu);
 
         menu.findItem(R.id.action_filter).setVisible(false);
+
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,17 +138,44 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (id == R.id.action_login) {
             new ViewManager().gotoLoginView(this);
         } else if (id == R.id.action_myProfile) {
-            new ViewManager().gotoBillingAddressActivityView(this, false);
+            if (sessionManager.isLoginStatus()) {
+                new ViewManager().gotoBillingAddressActivityView(HomeActivity.this, false);
+            } else {
+                onShowAlert();
+            }
         } else if (id == R.id.action_Signin) {
             new ViewManager().gotoSigninView(this);
         } else if (id == R.id.action_logout) {
-            return true;
+            Util.logout(HomeActivity.this);
+
         } else if (id == R.id.action_cart) {
-            new ViewManager().gotoCartActivity(this);
+            if (sessionManager.isLoginStatus()) {
+                new ViewManager().gotoCartActivity(this);
+            } else {
+                onShowAlert();
+            }
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem action_login = menu.findItem(R.id.action_login);
+        MenuItem action_logout = menu.findItem(R.id.action_logout);
+
+        if (sessionManager.isLoginStatus()) {
+            action_login.setVisible(false);
+            action_logout.setVisible(true);
+        } else {
+            action_login.setVisible(true);
+            action_logout.setVisible(false);
+        }
+        return true;
+    }
+
 
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

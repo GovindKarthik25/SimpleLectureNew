@@ -87,6 +87,16 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        if(isLoggedIn()){
+            LoginManager.getInstance().logOut();
+        }
+    }
+
+
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
                 /*// Initialize the SDK before executing any other operations,
@@ -300,13 +310,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         dialog.show();
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-    }
-
-
     /**
      * Validating form
      */
@@ -350,6 +353,8 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     @Override
     public void parseResponse(String response) {
+
+        Log.i("response", response);
 
         if (pd.isShowing()) {
             pd.cancel();

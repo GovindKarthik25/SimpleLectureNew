@@ -37,7 +37,13 @@ public class DasboardExerciseListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.exerciseResponseModelLstArray.get(groupPosition).getExerciseChapters().size();
+
+        int exer = 0;
+
+        if(exerciseResponseModelLstArray.get(groupPosition).getExerciseChapters() != null){
+            exer = this.exerciseResponseModelLstArray.get(groupPosition).getExerciseChapters().size();
+        }
+        return exer;
     }
 
     @Override

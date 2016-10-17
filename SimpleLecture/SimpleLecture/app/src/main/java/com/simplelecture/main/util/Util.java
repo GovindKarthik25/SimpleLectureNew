@@ -19,9 +19,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
 import com.simplelecture.main.R;
+import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.model.viewmodel.CourseMaterials;
+import com.simplelecture.main.viewManager.ViewManager;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -376,14 +380,38 @@ public class Util {
 
     }
 
-    public static void doCreateDir(){
+    public static void doCreateDir() {
         File myDirectory = new File(Environment.getExternalStorageDirectory(), "SimpleLecture");
 
-        if(!myDirectory.exists()) {
+        if (!myDirectory.exists()) {
             myDirectory.mkdirs();
         }
     }
 
+    public static void logout(Activity activity) {
+        SessionManager sessionManager = SessionManager.getInstance();
 
+        sessionManager.setLoginStatus(false);
+
+        if (sessionManager.isLoginSLStatus()) {
+            sessionManager.setLoginSLStatus(false);
+            goToHomeView(activity);
+        } else if (sessionManager.isLoginFBStatus()) {
+
+            LoginManager.getInstance().logOut();
+            sessionManager.setLoginFBStatus(false);
+            goToHomeView(activity);
+        } else if (sessionManager.isLoginGmailStatus()) {
+
+            sessionManager.setLoginGmailStatus(false);
+            goToHomeView(activity);
+        }
+    }
+
+    public static void goToHomeView(Activity activity) {
+        new ViewManager().gotoHomeView(activity);
+        Toast.makeText(activity, "Logout Successfully", Toast.LENGTH_SHORT).show();
+
+    }
 
 }

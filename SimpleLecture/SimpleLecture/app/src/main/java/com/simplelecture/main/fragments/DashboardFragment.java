@@ -460,7 +460,8 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
             new ViewManager().gotoDashboardView(getActivity(), 2);
 
         } else if (v == viewallVF_TextView) {
-
+            getActivity().finish();
+            new ViewManager().gotoDashboardView(getActivity(), 4);
         }
 
 

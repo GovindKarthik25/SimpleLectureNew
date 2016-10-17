@@ -140,7 +140,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
 
         loadGetDashboardExercise();
 
-        if (dasboardExerciseListAdapter != null) {
+        if (dasboardExerciseListAdapter != null ||exerciseResponseModelArray != null) {
             dasboardExerciseListAdapter = new DasboardExerciseListAdapter(getActivity(), exerciseResponseModelArray, this);
             exercise_expandableListView.setAdapter(dasboardExerciseListAdapter);
 
@@ -153,7 +153,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
             @Override
             public void onGroupExpand(int groupPosition) {
                 try {
-                    if (exerciseResponseModelArray.get(groupPosition).getExerciseChapters().size() > 0) {
+                    if (exerciseResponseModelArray.get(groupPosition).getExerciseChapters() != null && exerciseResponseModelArray.get(groupPosition).getExerciseChapters().size() > 0) {
                         if (groupPosition != lastExpandedGroupPosition) {
                             exercise_expandableListView.collapseGroup(lastExpandedGroupPosition);
                         }

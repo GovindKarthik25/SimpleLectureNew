@@ -181,9 +181,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // Get facebook data from login
                         Bundle bFacebookData = getFacebookData(object, fbUser);
 
-                        sessionManager.setLoginFBStatus(true);
-                        sessionManager.setLoginGmailStatus(false);
-                        sessionManager.setLoginSLStatus(false);
                         Log.i("LoginActivity 1", fbUser.toString());
 
                         doFBLogin(fbUser.getEmail());
@@ -330,10 +327,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
 
-            sessionManager.setLoginFBStatus(false);
-            sessionManager.setLoginGmailStatus(true);
-            sessionManager.setLoginSLStatus(false);
-
             doGmailLogin(acct.getEmail());
 
         } else {
@@ -362,45 +355,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        item.setVisible(false);
-        this.invalidateOptionsMenu();
-
-        MenuItem item1 = menu.findItem(R.id.action_settings);
-        item1.setVisible(false);
-        this.invalidateOptionsMenu();
-
-        MenuItem item2 = menu.findItem(R.id.action_changePassword);
-        item2.setVisible(false);
-        this.invalidateOptionsMenu();
-
-        return true;
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_changePassword) {
-          //  new ViewManager().gotoChangePasswordView(this);
-        }
-
-
-        return super.onOptionsItemSelected(item);
-    }
-*/
-
     @Override
     public void parseResponse(String response) {
         Log.i("Loginresponse-->", response);
@@ -418,6 +372,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         sessionManager.setLoginSLStatus(true);
                         sessionManager.setLoginFBStatus(true);
                         sessionManager.setLoginGmailStatus(false);
+                    } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeFB)) {
+
+                        sessionManager.setLoginFBStatus(true);
+                        sessionManager.setLoginGmailStatus(false);
+                        sessionManager.setLoginSLStatus(false);
+                    } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeG)) {
+
+                        sessionManager.setLoginFBStatus(false);
+                        sessionManager.setLoginGmailStatus(true);
+                        sessionManager.setLoginSLStatus(false);
                     }
 
                     String dataResponse = jSONObject.getString("data");
@@ -530,4 +494,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
     }
+
+
 }

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,6 +52,7 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
     private CartDetailsResponseModel cartDetailsResponseModels;
     private OutputResponseModel outputResponseModel;
     private TextView lbl_total;
+    private Button btn_check_out;
 
     public static int coursesId;
 
@@ -73,6 +75,9 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
         recyclerView = (RecyclerView) findViewById(R.id.cart_recycler_view);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
+
+        btn_check_out = (Button) findViewById(R.id.btn_check_out);
+        btn_check_out.setEnabled(true);
 
         loadCartDetails();
 
@@ -136,14 +141,14 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    switch (item.getItemId()) {
+        case android.R.id.home:
+            this.finish();
+            return true;
     }
+
+    return super.onOptionsItemSelected(item);
+}
 
 
     @Override
@@ -219,6 +224,10 @@ public class CartActivity extends AppCompatActivity implements OnItemClickListen
 
                 lbl_total.setText("Total : Rs " + Util.decFormat(Float.valueOf(cartDetailsResponseModels.getTotalPrice())));
 
+                if(cartDetailsResponseModels.getCourseCartList().size() == 0){
+                    btn_check_out.setEnabled(false);
+                    Toast.makeText(this, "No Item in the Cart", Toast.LENGTH_SHORT).show();
+                }
                 cartDetailsAdapter = new CartDetailsAdapter(CartActivity.this, cartDetailsResponseModels.getCourseCartList(), this, this);
                 recyclerView.setAdapter(cartDetailsAdapter);
             } else {

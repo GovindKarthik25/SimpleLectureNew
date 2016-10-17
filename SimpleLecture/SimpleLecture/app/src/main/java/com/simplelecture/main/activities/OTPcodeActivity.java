@@ -73,7 +73,7 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
 
         String mobile = Util.getFromPrefrences(this, "mobile");
 
-        if (mobile.equals("") && mobile != null) {
+        if (!mobile.equals("") && mobile != null) {
             input_MobileNo.setText(mobile.toString());
         }
 
