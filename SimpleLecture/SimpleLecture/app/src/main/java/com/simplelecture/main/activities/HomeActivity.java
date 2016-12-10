@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
+import com.simplelecture.main.fragments.DashboardMainFragment;
 import com.simplelecture.main.fragments.ExerciseFragment;
 import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.HomeFragment;
@@ -242,8 +243,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_demo));
                 break;
             case 3:
-
-                startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
+                fragment = new DashboardMainFragment();
+                getSupportActionBar().setTitle(getResources().getString(R.string.dashboard));
+//                startActivity(new Intent(getApplicationContext(), DashboardActivity.class));
 //                fragment = new DashboardFragment();
 //                getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_dashboard));
                 break;

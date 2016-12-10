@@ -83,13 +83,13 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         Bundle bundle = getIntent().getExtras();
 
-        if (bundle != null) {
-            int tabSelect = bundle.getInt("tabSelect");
-            page = bundle.getInt("Page");
-            Log.i("tabSelect", String.valueOf(tabSelect));
-            TabLayout.Tab tab = tabLayout.getTabAt(tabSelect);
-            tab.select();
-        }
+//        if (bundle != null) {
+//            int tabSelect = bundle.getInt("tabSelect");
+//            page = bundle.getInt("Page");
+//            Log.i("tabSelect", String.valueOf(tabSelect));
+//            TabLayout.Tab tab = tabLayout.getTabAt(tabSelect);
+//            tab.select();
+//        }
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
