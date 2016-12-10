@@ -201,12 +201,13 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
     private CompoundButton.OnCheckedChangeListener onCheckedChangeListener = new CompoundButton.OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
+            Log.i("isChecked", String.valueOf(isChecked));
             if (isChecked) {
                 showMaterialsDialog();
                 courseMaterialBuilder = new StringBuilder();
             } else {
                 textViewLabelMaterial.setText("");
+                courseMaterialBuilder = null;
                 textViewLabelMaterial.setVisibility(View.GONE);
             }
         }

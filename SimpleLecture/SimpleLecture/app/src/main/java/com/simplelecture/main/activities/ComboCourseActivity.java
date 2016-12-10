@@ -183,6 +183,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
                 courseMaterialBuilder = new StringBuilder();
             } else {
                 textViewLabelMaterial.setText("");
+                courseMaterialBuilder = null;
                 textViewLabelMaterial.setVisibility(View.GONE);
             }
         }

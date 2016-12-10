@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "369965636323",
-    "project_id": "plasma-respect-121711"
+    "project_number": "642229132282",
+    "project_id": "firebase-simple-lecture"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:369965636323:android:407a2c4a2559cbc2",
+        "mobilesdk_app_id": "1:642229132282:android:3bbce06d05584575",
         "android_client_info": {
           "package_name": "com.simplelecture.mainapp"
         }
       },
       "oauth_client": [
         {
-          "client_id": "369965636323-2mbgdd48fdmb0o5b8p3vcguoojjb7b5f.apps.googleusercontent.com",
+          "client_id": "642229132282-rj77erjkn403f5e9ubuganjdcd5qkt6b.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.simplelecture.mainapp",
-            "certificate_hash": "53C5BA330C539F57365B6A7E127A03ADAEFB4FFA"
+            "certificate_hash": "8809308E929606BFC89B327DD85AA9B3BBF6A234"
           }
         },
         {
-          "client_id": "369965636323-91dbkqiehrf3ott6q4b0j44564017tkc.apps.googleusercontent.com",
+          "client_id": "642229132282-5ttsu4oafhcnu4cebq5l4to1v77gk0rt.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDLWDXcTDlNtM6qvpGhNkhxMI5f9RwKH0"
+          "current_key": "AIzaSyC9Zg07OMDrWogAkS0QdX-N6AFI1T1S6ds"
         }
       ],
       "services": {
