@@ -26,11 +26,12 @@ public class CourseDetailsResponseModel implements Serializable {
     private List<CourseFaqs> courseFaqs;
     private List<CourseMaterials> courseMaterials;
     private List<CourseMonths> courseMonths;
+    private int page = 0;
 
     public CourseDetailsResponseModel() {
     }
 
-    public CourseDetailsResponseModel(String cId, String coursePrice, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, boolean isPurchased, String courseComboNames, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths) {
+    public CourseDetailsResponseModel(String cId, String coursePrice, String cName, String cDesc, String cBenefits, String cIcon, String videoImage, String videoUrl, String cComboName, boolean isCombo, boolean isPurchased, String courseComboNames, List<ChaptersResponseModel> chaptersResponseModel, List<CourseCombos> courseCombos, List<courseFeatures> courseFeature, List<CourseFaqs> courseFaqs, List<CourseMaterials> courseMaterials, List<CourseMonths> courseMonths, int page) {
         this.cId = cId;
         CoursePrice = coursePrice;
         this.cName = cName;
@@ -49,6 +50,7 @@ public class CourseDetailsResponseModel implements Serializable {
         this.courseFaqs = courseFaqs;
         this.courseMaterials = courseMaterials;
         this.courseMonths = courseMonths;
+        this.page = page;
     }
 
     public String getcId() {
@@ -195,6 +197,14 @@ public class CourseDetailsResponseModel implements Serializable {
         this.courseMonths = courseMonths;
     }
 
+    public int getPage() {
+        return page;
+    }
+
+    public void setPage(int page) {
+        this.page = page;
+    }
+
     @Override
     public String toString() {
         return "CourseDetailsResponseModel{" +
@@ -216,6 +226,7 @@ public class CourseDetailsResponseModel implements Serializable {
                 ", courseFaqs=" + courseFaqs +
                 ", courseMaterials=" + courseMaterials +
                 ", courseMonths=" + courseMonths +
+                ", page=" + page +
                 '}';
     }
 }

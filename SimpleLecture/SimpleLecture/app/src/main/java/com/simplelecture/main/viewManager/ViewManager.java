@@ -12,7 +12,6 @@ import com.simplelecture.main.activities.CheckyourAnswerActivity;
 import com.simplelecture.main.activities.ComboCourseActivity;
 import com.simplelecture.main.activities.CreateAccountActivity;
 import com.simplelecture.main.activities.DasboardTestPaperStartQuizActivity;
-import com.simplelecture.main.activities.DashboardActivity;
 import com.simplelecture.main.activities.DashboardTestPaperChapterActivity;
 import com.simplelecture.main.activities.DashboardTestPaperQuesionAnswerActivity;
 import com.simplelecture.main.activities.EbsPaymentWebViewActivity;
@@ -26,6 +25,7 @@ import com.simplelecture.main.activities.PolicyWebview;
 import com.simplelecture.main.activities.ResultScreenActivity;
 import com.simplelecture.main.activities.SingleCourseActivity;
 import com.simplelecture.main.activities.VideoPlayerActivity;
+import com.simplelecture.main.fragments.DashboardMainFragment;
 import com.simplelecture.main.model.viewmodel.CourseDetailsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardQuizQuestionsResponseModel;
 import com.simplelecture.main.model.viewmodel.DashboardQuizResult;
@@ -70,7 +70,7 @@ public class ViewManager {
     public Intent gotoLoginView(Activity activity) {
         intent = new Intent(activity, LoginActivity.class);
         setDisplay(activity, intent);
-        activity.finish();
+       // activity.finish();
         return intent;
     }
 
@@ -131,14 +131,14 @@ public class ViewManager {
 
 
     public Intent gotoDashboardView(Activity activity, int tabSelect) {
-        intent = new Intent(activity, DashboardActivity.class);
+        intent = new Intent(activity, DashboardMainFragment.class);
         intent.putExtra("tabSelect", tabSelect);
         setDisplay(activity, intent);
         return intent;
     }
 
     public Intent gotoDashboardViewPage(Activity activity, int tabSelect, int page) {
-        intent = new Intent(activity, DashboardActivity.class);
+        intent = new Intent(activity, DashboardMainFragment.class);
         intent.putExtra("tabSelect", tabSelect);
         intent.putExtra("Page", page);
         setDisplay(activity, intent);

@@ -10,17 +10,19 @@ public class LoginResponseModel {
     private String uToken;
     private boolean isSuccess;
     private String FailureType;
+    private int MyCoursesCount;
 
 
     public LoginResponseModel() {
     }
 
-    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess, String failureType) {
+    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess, String failureType, int myCoursesCount) {
         this.uId = uId;
         this.uName = uName;
         this.uToken = uToken;
         this.isSuccess = isSuccess;
         FailureType = failureType;
+        MyCoursesCount = myCoursesCount;
     }
 
     public String getuId() {
@@ -63,6 +65,14 @@ public class LoginResponseModel {
         FailureType = failureType;
     }
 
+    public int getMyCoursesCount() {
+        return MyCoursesCount;
+    }
+
+    public void setMyCoursesCount(int myCoursesCount) {
+        MyCoursesCount = myCoursesCount;
+    }
+
     @Override
     public String toString() {
         return "LoginResponseModel{" +
@@ -71,6 +81,7 @@ public class LoginResponseModel {
                 ", uToken='" + uToken + '\'' +
                 ", isSuccess=" + isSuccess +
                 ", FailureType='" + FailureType + '\'' +
+                ", MyCoursesCount=" + MyCoursesCount +
                 '}';
     }
 }

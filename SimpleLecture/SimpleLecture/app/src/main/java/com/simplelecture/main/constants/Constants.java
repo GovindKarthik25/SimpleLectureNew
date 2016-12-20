@@ -77,5 +77,8 @@ public class Constants {
     public static String GET_ORDER_PLACEORDER = "Order/PlaceOrder";
     public static String GET_ORDER_CHECKORDERSTATUS = "Order/CheckOrderStatus/";
 
+   /* Splash*/
+   public static String GET_HOME_FLASHIMAGES = "Home/FlashImages";
+
 
 }

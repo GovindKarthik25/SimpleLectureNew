@@ -43,6 +43,7 @@ import com.simplelecture.main.transactions.PromoCodeTransaction;
 import com.simplelecture.main.transactions.ResendOTPTransaction;
 import com.simplelecture.main.transactions.SelectMyCourseTransaction;
 import com.simplelecture.main.transactions.SignInTransaction;
+import com.simplelecture.main.transactions.SplashTransaction;
 import com.simplelecture.main.transactions.SubmitQuizAnswerTransaction;
 import com.simplelecture.main.transactions.SummaryDetailsTransaction;
 import com.simplelecture.main.transactions.VerifyOTPTransaction;
@@ -105,7 +106,8 @@ public class ApiService {
     public void doGetCourseDetails(Context mContext, Fragment fragmentContext, String uId) {
 
         try {
-            CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId);
+            String userId = Util.getFromPrefrences(mContext, "uId");
+            CoursesDetailsTransaction coursesDetailsTransaction = new CoursesDetailsTransaction(null, mContext, uId, userId);
             TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(coursesDetailsTransaction);
         } catch (Exception e) {
@@ -565,6 +567,19 @@ public class ApiService {
         CheckYourAnswerTransaction checkYourAnswerTransaction = new CheckYourAnswerTransaction(null, mContext, testId);
         TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
         transactionProcessor.execute(checkYourAnswerTransaction);
+
+    }
+
+    public void doGetSplashImage(Context mContext, Fragment fragmentContext) {
+
+        try {
+
+            SplashTransaction splashTransaction = new SplashTransaction(null, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(mContext);
+            transactionProcessor.execute(splashTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

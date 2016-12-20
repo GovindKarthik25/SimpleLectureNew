@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,8 +36,11 @@ import com.simplelecture.main.fragments.CourseBenifitsFragment;
 import com.simplelecture.main.fragments.CourseDescriptionFragment;
 import com.simplelecture.main.fragments.CourseFeatureFragment;
 import com.simplelecture.main.fragments.CourseIndexFragment;
+import com.simplelecture.main.fragments.ExerciseFragment;
 import com.simplelecture.main.fragments.FAQFragment;
+import com.simplelecture.main.fragments.ForumFragment;
 import com.simplelecture.main.fragments.ReviewFragment;
+import com.simplelecture.main.fragments.TestPapersFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
@@ -81,6 +85,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
     private OutputResponseModel outputResponseModel;
 
     HashMap<String, String> courseHashMap;
+    private LinearLayout bottom_BarLayout;
 
 
     @Override
@@ -114,6 +119,7 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         intent = getIntent();
         if (intent.hasExtra("courseDetails")) {
             courseDetailsResponseModelObj = (CourseDetailsResponseModel) intent.getSerializableExtra("courseDetails");
+
         }
 
         courseHashMap = new HashMap<>();
@@ -134,9 +140,6 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
-        TabLayout.Tab tab = tabLayout.getTabAt(2);
-        tab.select();
-
         spinnerMonths = (Spinner) findViewById(R.id.spinner_months);
         customSpinnerAdapter = new CustomSpinnerAdapter(this, courseDetailsResponseModelObj.getCourseMonths());
         spinnerMonths.setAdapter(customSpinnerAdapter);
@@ -148,8 +151,21 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         textViewLabelMaterial = (TextView) findViewById(R.id.textView_labelMaterial);
         btnBuy = (Button) findViewById(R.id.btn_buy);
         btnBuy.setOnClickListener(onClickListener);
+        bottom_BarLayout =(LinearLayout) findViewById(R.id.bottom_BarLayout);
 
         cartModel = new CartModel();
+
+        if(courseDetailsResponseModelObj.getPage() == 1){
+
+            TabLayout.Tab tab = tabLayout.getTabAt(0);
+            tab.select();
+            bottom_BarLayout.setVisibility(View.GONE);
+        } else {
+
+            TabLayout.Tab tab = tabLayout.getTabAt(2);
+            tab.select();
+            bottom_BarLayout.setVisibility(View.VISIBLE);
+        }
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 
@@ -300,12 +316,22 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new CourseFeatureFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseFeature));
-        adapter.addFrag(new CourseDescriptionFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseDescription));
-        adapter.addFrag(new CourseIndexFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseIndex));
-        adapter.addFrag(new CourseBenifitsFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseBenifits));
-        adapter.addFrag(new FAQFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.fAQ));
-        adapter.addFrag(new ReviewFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.review));
+
+        if(courseDetailsResponseModelObj.getPage() == 1){
+            adapter.addFrag(new CourseIndexFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseIndex));
+            //adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
+            adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
+            adapter.addFrag(new ExerciseFragment(), getResources().getString(R.string.excercise));
+            adapter.addFrag(new ForumFragment(), getResources().getString(R.string.forum));
+        } else {
+            adapter.addFrag(new CourseFeatureFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseFeature));
+            adapter.addFrag(new CourseDescriptionFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseDescription));
+            adapter.addFrag(new CourseIndexFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseIndex));
+            adapter.addFrag(new CourseBenifitsFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseBenifits));
+            adapter.addFrag(new FAQFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.fAQ));
+            adapter.addFrag(new ReviewFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.review));
+        }
+
 
         viewPager.setAdapter(adapter);
     }

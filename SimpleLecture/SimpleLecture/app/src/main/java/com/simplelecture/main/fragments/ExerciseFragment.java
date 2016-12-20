@@ -435,7 +435,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
     public void onViewCourseclick(int position, String courseId) {
         cID = courseId;
         loadGetCourse(cID);
-        Toast.makeText(getActivity(), (position + " - " + courseId), Toast.LENGTH_SHORT).show();
+       // Toast.makeText(getActivity(), (position + " - " + courseId), Toast.LENGTH_SHORT).show();
 
     }
 

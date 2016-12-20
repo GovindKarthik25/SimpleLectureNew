@@ -97,7 +97,7 @@ public class DashboardTestPaperChapterAdapter extends BaseAdapter {
             }
 
 
-            holder.textView_testPaperChapter.setText(dashboardTestPaperChapterModelObj.getCourseChapterId() +". "+dashboardTestPaperChapterModelObj.getCourseChapterName());
+            holder.textView_testPaperChapter.setText((position + 1) +". "+dashboardTestPaperChapterModelObj.getCourseChapterName());
         } catch (Exception e) {
             e.printStackTrace();
         }

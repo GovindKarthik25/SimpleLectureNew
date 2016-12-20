@@ -619,6 +619,12 @@ public class HomeFragment extends Fragment implements NetworkLayer, View.OnClick
             pd.cancel();
         }
 
+        if (error.isEmpty()) {
+            error = "Error in connection";
+        }
+
+        snack.snackBarNotification(coordinatorLayout, 1, error, getResources().getString(R.string.dismiss));
+
     }
 
     @Override

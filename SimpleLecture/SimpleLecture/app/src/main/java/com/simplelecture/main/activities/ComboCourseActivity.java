@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -87,6 +88,7 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
     private SnackBarManagement snack;
 
     HashMap<String, String> courseHashMap;
+    private LinearLayout bottom_BarLayout;
 
     @Override
     public void onBackPressed() {
@@ -148,8 +150,15 @@ public class ComboCourseActivity extends AppCompatActivity implements OnFragment
         chekInclude = (CheckBox) findViewById(R.id.checkBox);
         chekInclude.setOnCheckedChangeListener(onCheckedChangeListener);
         textViewLabelMaterial = (TextView) findViewById(R.id.textView_labelMaterial);
+        bottom_BarLayout =(LinearLayout) findViewById(R.id.bottom_BarLayout);
 
         cartModel = new CartModel();
+
+        if(courseDetailsResponseModelObj.getPage() == 1){
+            bottom_BarLayout.setVisibility(View.GONE);
+        } else {
+            bottom_BarLayout.setVisibility(View.VISIBLE);
+        }
 
         viewPager.setOnTouchListener(new View.OnTouchListener() {
 

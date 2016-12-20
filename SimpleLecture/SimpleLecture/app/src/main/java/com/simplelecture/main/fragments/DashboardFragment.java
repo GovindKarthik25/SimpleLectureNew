@@ -378,6 +378,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
                     String dataContent = jSONObject.getString("data");
 
                     courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
+                    courseDetailsResponseModel.setPage(1); // To Check the dashboard page or not
 
                     if (courseDetailsResponseModel.isCombo()) {
                         new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
@@ -409,7 +410,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
                     List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(dataContent);
 
                     courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
-
+                    courseDetailsResponseModel.setPage(1); // To Check the dashboard page or not
                     new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
                 } else {
                     snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));

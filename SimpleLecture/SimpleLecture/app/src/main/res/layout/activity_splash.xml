@@ -26,41 +26,59 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottomRelativeLayout"
         android:layout_width="match_parent"
-        android:layout_height="60dip"
+        android:layout_height="120dip"
         android:layout_alignParentBottom="true"
         android:background="@color/colorPrimary">
 
+        <LinearLayout
+            android:id="@+id/bottomLinerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@color/colorPrimary">
         <Button
-            android:id="@+id/buttonExplore"
-            android:layout_width="120dip"
+            android:id="@+id/buttonLogin"
+            android:layout_width="150dip"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_toStartOf="@+id/buttonSignin"
+            android:text="@string/btn_LogIn"
             android:layout_weight="1"
-            android:background="@drawable/button_border"
-            android:text="Explore"
             android:textAllCaps="false"
+            android:background="@drawable/button_border"
             android:textColor="@color/white" />
 
         <Button
             android:id="@+id/buttonSignin"
-            android:layout_width="120dip"
+            android:layout_width="150dip"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_gravity="center"
             android:layout_marginLeft="10dip"
             android:layout_marginRight="10dip"
-            android:layout_weight="1"
-            android:background="@drawable/button_border"
             android:text="SignUp"
+            android:layout_weight="1"
             android:textAllCaps="false"
+            android:background="@drawable/button_border"
             android:textColor="@color/white" />
+        </LinearLayout>
+        <Button
+            android:id="@+id/buttonExplore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:layout_marginBottom="5dip"
+            android:text="Explore"
+            android:background="@drawable/button_border"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:layout_alignParentBottom="true" />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 </RelativeLayout>

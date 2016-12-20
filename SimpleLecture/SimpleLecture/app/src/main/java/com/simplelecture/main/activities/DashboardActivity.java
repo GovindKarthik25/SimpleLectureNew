@@ -6,7 +6,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.simplelecture.main.adapters.ViewPagerAdapter;
 import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.fragments.ExerciseFragment;
 import com.simplelecture.main.fragments.ForumFragment;
-import com.simplelecture.main.fragments.MyCoursesFragment;
 import com.simplelecture.main.fragments.TestPapersFragment;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
 import com.simplelecture.main.util.Util;
@@ -68,7 +66,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false); // back button enable
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
 
@@ -105,7 +103,7 @@ public class DashboardActivity extends AppCompatActivity implements OnFragmentIn
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new DashboardFragment(), getResources().getString(R.string.dashboard));
-        adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
+       // adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
         adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
         adapter.addFrag(new ExerciseFragment(), getResources().getString(R.string.excercise));
         adapter.addFrag(new ForumFragment(), getResources().getString(R.string.forum));

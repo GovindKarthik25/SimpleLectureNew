@@ -114,7 +114,7 @@ public class DashboardMainFragment extends Fragment implements NetworkLayer, Vie
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFrag(new DashboardFragment(), getResources().getString(R.string.dashboard));
-        adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
+    //    adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
         adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
         adapter.addFrag(new ExerciseFragment(), getResources().getString(R.string.excercise));
         adapter.addFrag(new ForumFragment(), getResources().getString(R.string.forum));

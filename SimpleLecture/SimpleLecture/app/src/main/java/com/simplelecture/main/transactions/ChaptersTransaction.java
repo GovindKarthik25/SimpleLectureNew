@@ -15,14 +15,14 @@ import java.net.URI;
  */
 public class ChaptersTransaction extends GetTransaction {
 
-    private String mUrlEncoded;
+    private String uId;
 
-    private String mHeaderVal;
+    private String token;
 
     public ChaptersTransaction(JSONObject jsonObject, Context context, String urlEncoded, String headerVal) {
         super(jsonObject, context);
-        mUrlEncoded = urlEncoded;
-        mHeaderVal = headerVal;
+        uId = urlEncoded;
+        token = headerVal;
     }
 
     @Override
@@ -42,12 +42,12 @@ public class ChaptersTransaction extends GetTransaction {
 
     @Override
     protected String getHeader() {
-        return mHeaderVal;
+        return token;
     }
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_COURSECHAPTERS + mUrlEncoded;
+        return Constants.GET_COURSECHAPTERS + uId;
     }
 }
 

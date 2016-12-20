@@ -203,7 +203,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                     String dataContent = jSONObject1.getString("data");
 
                     courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
-
+                    courseDetailsResponseModel.setPage(courseDetailsResponseModelObj.getPage()); // To Check the dashboard page or not
 
                     if (param_IsCombo && courseDetailsResponseModel.isCombo()) {
                         param_IsCombo = false;
@@ -251,6 +251,7 @@ public class ComboCoursesFragment extends Fragment implements NetworkLayer {
                     List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(dataContent);
 
                     courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+                    courseDetailsResponseModel.setPage(courseDetailsResponseModelObj.getPage()); // To Check the dashboard page or not
 
                     new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
                 } else {

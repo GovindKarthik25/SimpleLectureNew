@@ -91,8 +91,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        // super.onBackPressed();
-        new ViewManager().gotoHomeView(LoginActivity.this);
+        super.onBackPressed();
+       // new ViewManager().gotoHomeView(LoginActivity.this);
     }
 
     @Override
@@ -393,7 +393,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
                     Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
 
-                    new ViewManager().gotoHomeView(this);
+                    if(loginResponseModelObj.getMyCoursesCount() == 0){
+                        new ViewManager().gotoHomeView(this);
+                    } else {
+                        new ViewManager().gotoDashboardView(this, 0);
+                    }
                 } else {
                     if (sessionManager.isLoginFBStatus() && isLoggedIn()) {
                         LoginManager.getInstance().logOut();

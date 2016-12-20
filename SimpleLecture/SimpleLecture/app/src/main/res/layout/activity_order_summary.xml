@@ -217,7 +217,7 @@
                 android:textColor="#FF3D0C"
                 android:textSize="12sp" />
 
-            <CheckBox
+            <!--<CheckBox
                 android:id="@+id/chk_PrivacyPlicy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -225,7 +225,7 @@
                 android:layout_weight="2"
                 android:text="Privacy Policy"
                 android:textColor="#FF3D0C"
-                android:textSize="12sp" />
+                android:textSize="12sp" />-->
 
         </LinearLayout>
 

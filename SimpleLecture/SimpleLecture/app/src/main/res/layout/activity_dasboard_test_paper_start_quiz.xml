@@ -55,7 +55,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:background="@color/colorPrimary"
-            android:text="Start Quiz"
+            android:text="Start Test"
             android:textAllCaps="false"
             android:textColor="@color/white" />
     </RelativeLayout>

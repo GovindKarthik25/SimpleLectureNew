@@ -108,7 +108,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
         recyclerView = (RecyclerView) findViewById(R.id.orders_recycler_view);
         chk_TermOfUse = (CheckBox) findViewById(R.id.chk_TermOfUse);
-        chk_PrivacyPlicy = (CheckBox) findViewById(R.id.chk_PrivacyPlicy);
+        //chk_PrivacyPlicy = (CheckBox) findViewById(R.id.chk_PrivacyPlicy);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
