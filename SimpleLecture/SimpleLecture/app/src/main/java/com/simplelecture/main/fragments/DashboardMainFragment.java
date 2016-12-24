@@ -1,17 +1,20 @@
 package com.simplelecture.main.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.adapters.ViewPagerAdapter;
@@ -40,7 +43,7 @@ public class DashboardMainFragment extends Fragment implements NetworkLayer, Vie
     private OnFragmentInteractionListener mListener;
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
+    public static ViewPager viewPager;
     private EditText searchEditText;
     private int page;
 
@@ -79,7 +82,7 @@ public class DashboardMainFragment extends Fragment implements NetworkLayer, Vie
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        Log.d("Simple","DashboardMainFragment-onCreateView");
         View convertView = inflater.inflate(R.layout.fragment_dashboard_main, container, false);
 
         Util.doCreateDir();
@@ -111,8 +114,10 @@ public class DashboardMainFragment extends Fragment implements NetworkLayer, Vie
         return convertView;
     }
 
+    ViewPagerAdapter adapter;
+
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFrag(new DashboardFragment(), getResources().getString(R.string.dashboard));
     //    adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
         adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
@@ -123,11 +128,23 @@ public class DashboardMainFragment extends Fragment implements NetworkLayer, Vie
         viewPager.setAdapter(adapter);
     }
 
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        Log.d("Simple","DashboardMainFragment-onSaveInstanceState");
+//        adapter.removeAllfragments();
+//        super.onSaveInstanceState(outState);
+//
+//    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+
+    public static  void changePage(){
+        viewPager.setCurrentItem(4,true);
     }
 
     @Override
@@ -162,4 +179,10 @@ public class DashboardMainFragment extends Fragment implements NetworkLayer, Vie
 
     }
 
+//    @Override
+//    public void onPageChange() {
+//
+//        viewPager.setCurrentItem(4,true);
+//
+//    }
 }

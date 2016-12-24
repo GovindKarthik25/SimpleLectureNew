@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
+import com.simplelecture.main.fragments.DashboardFragment;
 import com.simplelecture.main.fragments.DashboardMainFragment;
 import com.simplelecture.main.fragments.ExerciseFragment;
 import com.simplelecture.main.fragments.ForumFragment;
@@ -39,7 +40,7 @@ import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.Util;
 import com.simplelecture.main.viewManager.ViewManager;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, MainObjectReceiver {
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnFragmentInteractionListener, MainObjectReceiver,DashboardFragment.pageChangeListener {
 
     private AlertMessageManagement alertMessageManagement;
     private SessionManager sessionManager;
@@ -102,6 +103,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.getMenu().getItem(0).setChecked(true);
         displayView(0);
+
+        if(getIntent().getBooleanExtra("isDashboard",false)){
+            navigationView.getMenu().getItem(3).setChecked(true);
+            displayView(3);
+        }
     }
 
     @Override
@@ -320,6 +326,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         homePageResponseModelObj = homePageResponseModel;
 
+    }
+
+    @Override
+    public void onPageChange(int page) {
+        DashboardMainFragment.viewPager.setCurrentItem(page,true);
     }
 
     private class AlertDialogClick implements AlertMessageManagement.onCustomAlertDialogListener {

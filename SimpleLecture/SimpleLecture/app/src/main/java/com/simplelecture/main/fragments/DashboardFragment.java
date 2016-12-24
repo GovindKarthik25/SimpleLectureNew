@@ -2,6 +2,10 @@ package com.simplelecture.main.fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
@@ -146,6 +150,8 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
     TextView textPending;
     TextView textAtended;
 
+    BroadcastReceiver refreshBroadCastRec;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -175,12 +181,47 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
         forum_recycler_view = (RecyclerView) convertView.findViewById(R.id.forum_recycler_view);
         relatedCourse_recycler_view = (RecyclerView) convertView.findViewById(R.id.relatedCourse_recycler_view);
 
+        doRegister();
+        Log.d("Simple","DashboardFragment-onCreateView");
+
         return convertView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Log.d("Simple","DashboardFragment-onResume");
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        Log.d("Simple","DashboardFragment-onDestroy");
+    }
+
+    private void doRegister() {
+
+        refreshBroadCastRec = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+
+            }
+        };
+
+
+        getActivity().registerReceiver(refreshBroadCastRec,new IntentFilter("broadcast"));
+
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
+        Log.d("Simple","DashboardFragment-onActivityCreated");
 
         try {
 
@@ -295,11 +336,14 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
         }
     };
 
+    pageChangeListener pageChangeListener;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
             mListener = (OnFragmentInteractionListener) activity;
+            pageChangeListener = (DashboardFragment.pageChangeListener) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -452,19 +496,17 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
             getActivity().finish();
             new ViewManager().gotoHomeView(getActivity());
         } else if (v == dashboardExercise_ImageView) {
-
-            getActivity().finish();
-            new ViewManager().gotoDashboardView(getActivity(), 3);
-
+            pageChangeListener.onPageChange(2);
         } else if (v == dashboardQuizSummary_ImageView) {
-            getActivity().finish();
-            new ViewManager().gotoDashboardView(getActivity(), 2);
-
+            pageChangeListener.onPageChange(3);
         } else if (v == viewallVF_TextView) {
-            getActivity().finish();
-            new ViewManager().gotoDashboardView(getActivity(), 4);
+            pageChangeListener.onPageChange(4);
+//            getActivity().finish();
+//            new ViewManager().gotoDashboardView(getActivity(), 4);
         }
+    }
 
-
+    public interface pageChangeListener{
+        public void onPageChange(int page);
     }
 }

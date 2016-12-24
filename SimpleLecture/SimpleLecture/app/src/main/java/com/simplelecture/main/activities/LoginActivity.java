@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private LoginButton facebooklogin_button;
     private CallbackManager callbackManager;
 
-    GoogleApiClient mGoogleApiClient;
+    public static GoogleApiClient mGoogleApiClient;
 
     SignInButton gmailSign_in_button;
 
@@ -130,7 +130,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // Build a GoogleApiClient with access to the Google Sign-In API and the
         // options specified by gso.
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
-
 
         snack = new SnackBarManagement(LoginActivity.this);
         sessionManager = SessionManager.getInstance();
@@ -396,7 +395,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     if(loginResponseModelObj.getMyCoursesCount() == 0){
                         new ViewManager().gotoHomeView(this);
                     } else {
-                        new ViewManager().gotoDashboardView(this, 0);
+                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                        intent.putExtra("isDashboard",true);
+                        startActivity(intent);
                     }
                 } else {
                     if (sessionManager.isLoginFBStatus() && isLoggedIn()) {
