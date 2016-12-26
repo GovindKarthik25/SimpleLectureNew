@@ -85,7 +85,8 @@ public class SplashPromoSlidePageFragment extends Fragment {
             Picasso.with(getActivity())
                     .load(splashResponseModelLstArray.get(mPageNumber).getImage())
                     .placeholder(R.mipmap.loading)   // optional
-                    .error(R.mipmap.app_icon)      // optional
+                    .error(R.mipmap.app_icon)
+                    .fit()// optional
                     //.resize(250, 200)                        // optional
                     //.rotate(90)                             // optional
                     .into(imageView);

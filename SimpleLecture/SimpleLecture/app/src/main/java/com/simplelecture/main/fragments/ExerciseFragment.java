@@ -366,6 +366,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                     String dataContent = jSONObject.getString("data");
 
                     courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
+                    courseDetailsResponseModel.setPage(1); // To Check the dashboard page or not
 
                     if (courseDetailsResponseModel.isCombo()) {
                         new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);
@@ -396,6 +397,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                     List<ChaptersResponseModel> chaptersResponseModelLstArray = new CourseDetailsController().getChaptersResponse(dataContent);
 
                     courseDetailsResponseModel.setChaptersResponseModel(chaptersResponseModelLstArray);
+                    courseDetailsResponseModel.setPage(1); // To Check the dashboard page or not
 
                     new ViewManager().gotoSingleCourseView(getActivity(), courseDetailsResponseModel);
                 } else {

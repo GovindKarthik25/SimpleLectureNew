@@ -102,6 +102,8 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
     private TextView viewallVF_TextView;
     private ViewPager viewPager;
     private String cID;
+    private int dashboardPageNo = 0;
+
 
     /**
      * Use this factory method to create a new instance of
@@ -316,6 +318,8 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
             try {
                 myCoursesObj = dashboardResponseModelObj.getMyCoursesResponseModel().get(position);
                 cID = myCoursesObj.getCourseId();
+                dashboardPageNo = 1;
+
                 loadGetCourse(cID);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -329,6 +333,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
             try {
                 RelatedCourses relatedCoursesObj = dashboardResponseModelObj.getRelatedCourses().get(position);
                 cID = relatedCoursesObj.getcId();
+                dashboardPageNo = 0;
                 loadGetCourse(cID);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -422,7 +427,7 @@ public class DashboardFragment extends Fragment implements NetworkLayer, View.On
                     String dataContent = jSONObject.getString("data");
 
                     courseDetailsResponseModel = new CourseDetailsController().getCourseDetails(dataContent);
-                    courseDetailsResponseModel.setPage(1); // To Check the dashboard page or not
+                    courseDetailsResponseModel.setPage(dashboardPageNo); // To Check the dashboard page or not
 
                     if (courseDetailsResponseModel.isCombo()) {
                         new ViewManager().gotoComboCourseView(getActivity(), courseDetailsResponseModel);

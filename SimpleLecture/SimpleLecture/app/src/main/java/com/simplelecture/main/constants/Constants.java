@@ -79,6 +79,8 @@ public class Constants {
 
    /* Splash*/
    public static String GET_HOME_FLASHIMAGES = "Home/FlashImages";
+   public static String GET_HOME_FOOTERLINKS = "Home/FooterLinks";
+
 
 
 }

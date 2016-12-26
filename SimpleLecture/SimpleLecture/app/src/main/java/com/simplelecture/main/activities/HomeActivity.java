@@ -19,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.fragments.CourseCategoriesFragment;
@@ -172,11 +171,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         MenuItem action_login = menu.findItem(R.id.action_login);
         MenuItem action_logout = menu.findItem(R.id.action_logout);
+        MenuItem action_Signin = menu.findItem(R.id.action_Signin);
 
         if (sessionManager.isLoginStatus()) {
+            action_Signin.setVisible(false);
             action_login.setVisible(false);
             action_logout.setVisible(true);
         } else {
+            action_Signin.setVisible(true);
             action_login.setVisible(true);
             action_logout.setVisible(false);
         }
@@ -268,29 +270,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_forum));
                 break;
             case 7:
-                if (homePageResponseModelObj != null && homePageResponseModelObj.getPageUrlSupport() != null) {
-                    fragment = new SupportFragment().newInstance(homePageResponseModelObj.getPageUrlSupport(), "");
+                    fragment = new SupportFragment().newInstance("URLSUPPORT", null);
                     getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_Support));
-                } else {
-                    Toast.makeText(this, "Try again after some time", Toast.LENGTH_SHORT).show();
-                }
+
 
                 break;
             case 8:
-                if (homePageResponseModelObj != null) {
-                    fragment = new LegalFragment().newInstance(homePageResponseModelObj, "");
+                    fragment = new LegalFragment().newInstance("LEGAL", null);
                     getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_LeagalPolicy));
-                } else {
-                    Toast.makeText(this, "Try again after some time", Toast.LENGTH_SHORT).show();
-                }
+
                 break;
             case 9:
-                if (homePageResponseModelObj != null && homePageResponseModelObj.getPageUrlAboutUs() != null) {
-                    fragment = new SupportFragment().newInstance(homePageResponseModelObj.getPageUrlAboutUs(), "");
+                    fragment = new SupportFragment().newInstance("ABOUTUS", null);
                     getSupportActionBar().setTitle(getResources().getString(R.string.navigation_drawer_AboutUs));
-                } else {
-                    Toast.makeText(this, "Try again after some time", Toast.LENGTH_SHORT).show();
-                }
+
                 break;
 
         }

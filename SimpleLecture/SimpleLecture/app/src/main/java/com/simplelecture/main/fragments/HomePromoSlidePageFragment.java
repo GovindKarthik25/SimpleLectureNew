@@ -18,7 +18,6 @@ package com.simplelecture.main.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +86,7 @@ public class HomePromoSlidePageFragment extends Fragment {
                     .load(bannersArrayLst.get(mPageNumber).getImage())
                     .placeholder(R.mipmap.loading)   // optional
                     .error(R.mipmap.app_icon)      // optional
+                    .fit()
                     //.resize(250, 200)                        // optional
                     //.rotate(90)                             // optional
                     .into(imageView);

@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.facebook.login.LoginManager;
 import com.simplelecture.main.R;
-import com.simplelecture.main.activities.HomeActivity;
 import com.simplelecture.main.model.viewmodel.CourseMaterials;
 import com.simplelecture.main.viewManager.ViewManager;
 
@@ -285,7 +284,7 @@ public class Util {
         try {
             SharedPreferences preferences = context.getSharedPreferences(PREFRENCES_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean(type, true);
+            editor.putBoolean(type, vid);
             editor.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -406,9 +405,22 @@ public class Util {
             sessionManager.setLoginGmailStatus(false);
             goToHomeView(activity);
         }
+
+
+
     }
 
     public static void goToHomeView(Activity activity) {
+        SessionManager sessionManager = SessionManager.getInstance();
+        if (sessionManager != null) {
+
+            Util.storeToPrefrencesBoolean(activity.getApplicationContext(), "loginStatus", sessionManager.isLoginStatus());
+            Util.storeToPrefrencesBoolean(activity, "FBStatus", sessionManager.isLoginFBStatus());
+            Util.storeToPrefrencesBoolean(activity, "GmailStatus", sessionManager.isLoginGmailStatus());
+            Util.storeToPrefrencesBoolean(activity, "SLStatus", sessionManager.isLoginSLStatus());
+
+        }
+
         new ViewManager().gotoHomeView(activity);
         Toast.makeText(activity, "Logout Successfully", Toast.LENGTH_SHORT).show();
 

@@ -36,6 +36,7 @@ import com.simplelecture.main.transactions.DashboardUserQuizCoursesTransaction;
 import com.simplelecture.main.transactions.DemoTutorialTransaction;
 import com.simplelecture.main.transactions.ForgotPasswordTransaction;
 import com.simplelecture.main.transactions.HomePageDataTransaction;
+import com.simplelecture.main.transactions.LegalSupportTransaction;
 import com.simplelecture.main.transactions.LoginTransaction;
 import com.simplelecture.main.transactions.MyCoursesTransaction;
 import com.simplelecture.main.transactions.PlaceOrderTransaction;
@@ -583,5 +584,16 @@ public class ApiService {
 
     }
 
+    public void doGetLegalSupport(Context mContext, Fragment fragmentContext) {
 
+        try {
+
+            LegalSupportTransaction legalSupportTransaction = new LegalSupportTransaction(null, mContext);
+            TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
+            transactionProcessor.execute(legalSupportTransaction);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

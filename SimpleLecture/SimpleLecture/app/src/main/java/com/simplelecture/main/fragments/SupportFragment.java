@@ -12,9 +12,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.simplelecture.main.R;
+import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener;
+import com.simplelecture.main.http.ApiService;
+import com.simplelecture.main.http.NetworkLayer;
+import com.simplelecture.main.model.viewmodel.LegalSupportAboutusResponse;
+import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
+import com.simplelecture.main.util.ConnectionDetector;
+import com.simplelecture.main.util.SnackBarManagement;
+import com.simplelecture.main.util.Util;
+
+import org.json.JSONObject;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +37,7 @@ import com.simplelecture.main.fragments.interfaces.OnFragmentInteractionListener
  * Use the {@link SupportFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SupportFragment extends Fragment {
+public class SupportFragment extends Fragment implements NetworkLayer {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -37,6 +50,11 @@ public class SupportFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private WebView webView;
     private ProgressDialog pd;
+    private SnackBarManagement snack;
+    private AlertMessageManagement alertMessageManagement;
+    private String param_get_ServiceCallResult = "";
+    private LegalSupportAboutusResponse legalSupportAboutusResponseObj;
+    private String url = "";
 
     /**
      * Use this factory method to create a new instance of
@@ -63,10 +81,14 @@ public class SupportFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        snack = new SnackBarManagement(getContext());
+        alertMessageManagement = new AlertMessageManagement(getContext(), null);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        callSupportService();
     }
 
     @Override
@@ -81,7 +103,7 @@ public class SupportFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        String url = mParam1;
+        //String url = mParam1;
         pd = new ProgressDialog(getActivity());
 
         webView.getSettings().setLoadsImagesAutomatically(true);
@@ -89,8 +111,12 @@ public class SupportFragment extends Fragment {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setBuiltInZoomControls(false);
         webView.getSettings().setSupportZoom(false);
-        webView.setWebViewClient(new myWebClient());
-        webView.loadUrl(url);
+        if(url != null && !url.equals("")) {
+            webView.setWebViewClient(new myWebClient());
+            webView.loadUrl(url);
+        } /*else {
+            callSupportService();
+        }*/
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -116,6 +142,7 @@ public class SupportFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
 
     /**
      * Description: To disable default back button.
@@ -146,7 +173,76 @@ public class SupportFragment extends Fragment {
         }
     }
 
+    private void callSupportService() {
 
+        try {
+            if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
+                param_get_ServiceCallResult = Constants.GET_HOME_FOOTERLINKS;
+              //  pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
+
+                ApiService.getApiService().doGetLegalSupport(getActivity(), SupportFragment.this);
+            } else {
+                alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Override
+    public void parseResponse(String response) {
+
+        try {
+            Gson gson = new Gson();
+           /* if (pd.isShowing()) {
+                pd.cancel();
+            }*/
+            if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_HOME_FOOTERLINKS)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
+                if (outputResponseModel.isSuccess()) {
+
+                    JSONObject jSONObject1 = new JSONObject(response);
+                    String dataContent = jSONObject1.getString("data");
+
+                    legalSupportAboutusResponseObj = gson.fromJson(dataContent, LegalSupportAboutusResponse.class);
+
+
+                    if(mParam1.equals("URLSUPPORT")) {
+                        url = legalSupportAboutusResponseObj.getPageUrlSupport();
+                    } else if(mParam1.equals("ABOUTUS")){
+                        url = legalSupportAboutusResponseObj.getPageUrlAboutUs();
+                    }
+
+
+                    webView.setWebViewClient(new myWebClient());
+                    webView.loadUrl(url);
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void showError(String error) {
+        try {
+            /*if (pd.isShowing()) {
+                pd.cancel();
+            }*/
+
+            if (error.isEmpty()) {
+                error = "Error in connection";
+            }
+
+            Toast.makeText(getActivity(), error, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 }
 
