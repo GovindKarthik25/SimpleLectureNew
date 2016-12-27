@@ -30,7 +30,6 @@ import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SnackBarManagement;
 import com.simplelecture.main.util.Util;
-import com.simplelecture.main.viewManager.ViewManager;
 
 import org.json.JSONObject;
 
@@ -254,8 +253,10 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
             } else if (whichButton == -1) { //Postive -1
                 buttonclick = false;
                 finish();
-                new ViewManager().gotoDashboardView(EbsPaymentWebViewActivity.this, 0);
-
+                //new ViewManager().gotoDashboardView(EbsPaymentWebViewActivity.this, 0);
+                Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+                intent.putExtra("isDashboard",true);
+                startActivity(intent);
 
             }
         }

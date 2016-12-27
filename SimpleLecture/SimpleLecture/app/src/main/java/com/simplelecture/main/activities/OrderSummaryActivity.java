@@ -62,7 +62,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
     private EditText editText_PromoCode;
     private TextInputLayout input_layout_Promocode;
     private CheckBox chk_TermOfUse;
-    private CheckBox chk_PrivacyPlicy;
+   // private CheckBox chk_PrivacyPlicy;
     private PlaceOrderResponseModel placeOrderResponseModel;
 
     @Override
@@ -278,7 +278,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
         } else if (v == btn_continue_shopping) {
 
-            if (chk_TermOfUse.isChecked() && chk_PrivacyPlicy.isChecked()) {
+            if (chk_TermOfUse.isChecked()) {
                 if (orderSummaryModel.isContainsCourseMaterial()) {
                     new ViewManager().gotoBillingAddressActivityView(this, orderSummaryModel.isContainsCourseMaterial());
                 } else {
@@ -287,7 +287,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
                     showOrderPlaceOrder();
                 }
             } else {
-                Toast.makeText(OrderSummaryActivity.this, "Please accept the Term of Use & Privacy Poicy", Toast.LENGTH_SHORT).show();
+                Toast.makeText(OrderSummaryActivity.this, "Please accept the Term of Use", Toast.LENGTH_SHORT).show();
             }
         }
 
