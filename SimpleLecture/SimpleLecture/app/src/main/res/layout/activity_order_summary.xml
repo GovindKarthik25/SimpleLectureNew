@@ -212,10 +212,16 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="50dp"
-                android:layout_weight="1"
-                android:text="Term of use"
-                android:textColor="#FF3D0C"
                 android:textSize="12sp" />
+
+
+            <TextView
+                android:text="Term of use"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:textColor="#FF3D0C"
+                android:id="@+id/textViewTermOfUse" />
 
             <!--<CheckBox
                 android:id="@+id/chk_PrivacyPlicy"

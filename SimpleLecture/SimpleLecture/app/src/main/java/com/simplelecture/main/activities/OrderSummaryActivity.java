@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.simplelecture.main.activities.interfaces.OnItemClickListener;
 import com.simplelecture.main.adapters.OrderDetailsAdapter;
 import com.simplelecture.main.constants.Constants;
 import com.simplelecture.main.controller.SummaryController;
+import com.simplelecture.main.fragments.TermOfUseFragment;
 import com.simplelecture.main.http.ApiService;
 import com.simplelecture.main.http.NetworkLayer;
 import com.simplelecture.main.model.viewmodel.OrderSummaryModel;
@@ -64,6 +66,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
     private CheckBox chk_TermOfUse;
    // private CheckBox chk_PrivacyPlicy;
     private PlaceOrderResponseModel placeOrderResponseModel;
+    private TextView textViewTermOfUse;
 
     @Override
     public void onBackPressed() {
@@ -108,6 +111,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
         recyclerView = (RecyclerView) findViewById(R.id.orders_recycler_view);
         chk_TermOfUse = (CheckBox) findViewById(R.id.chk_TermOfUse);
+        textViewTermOfUse = (TextView) findViewById(R.id.textViewTermOfUse);
         //chk_PrivacyPlicy = (CheckBox) findViewById(R.id.chk_PrivacyPlicy);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -116,6 +120,7 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
 
         btn_continue_shopping.setOnClickListener(this);
         button_Apply.setOnClickListener(this);
+        textViewTermOfUse.setOnClickListener(this);
 
     }
 
@@ -289,6 +294,11 @@ public class OrderSummaryActivity extends AppCompatActivity implements NetworkLa
             } else {
                 Toast.makeText(OrderSummaryActivity.this, "Please accept the Term of Use", Toast.LENGTH_SHORT).show();
             }
+        } else if (v == textViewTermOfUse) {
+            String displayName = "OrderSummaryFragment";
+            TermOfUseFragment termOfUseFragment = new TermOfUseFragment().newInstance(displayName, "");
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            termOfUseFragment.show(fragmentManager, "OrderSummaryFragment");
         }
 
     }
