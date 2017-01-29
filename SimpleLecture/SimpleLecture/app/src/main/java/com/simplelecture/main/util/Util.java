@@ -21,6 +21,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.simplelecture.main.R;
 import com.simplelecture.main.model.viewmodel.CourseMaterials;
@@ -388,25 +389,28 @@ public class Util {
     }
 
     public static void logout(Activity activity) {
-        SessionManager sessionManager = SessionManager.getInstance();
+        try {
+            SessionManager sessionManager = SessionManager.getInstance();
 
-        sessionManager.setLoginStatus(false);
+            sessionManager.setLoginStatus(false);
 
-        if (sessionManager.isLoginSLStatus()) {
-            sessionManager.setLoginSLStatus(false);
-            goToHomeView(activity);
-        } else if (sessionManager.isLoginFBStatus()) {
+            if (sessionManager.isLoginSLStatus()) {
+                sessionManager.setLoginSLStatus(false);
+                goToHomeView(activity);
+            } else if (sessionManager.isLoginFBStatus()) {
 
-            LoginManager.getInstance().logOut();
-            sessionManager.setLoginFBStatus(false);
-            goToHomeView(activity);
-        } else if (sessionManager.isLoginGmailStatus()) {
+                if(FacebookSdk.isInitialized())
+                LoginManager.getInstance().logOut();
+                sessionManager.setLoginFBStatus(false);
+                goToHomeView(activity);
+            } else if (sessionManager.isLoginGmailStatus()) {
 
-            sessionManager.setLoginGmailStatus(false);
-            goToHomeView(activity);
+                sessionManager.setLoginGmailStatus(false);
+                goToHomeView(activity);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-
 
     }
 

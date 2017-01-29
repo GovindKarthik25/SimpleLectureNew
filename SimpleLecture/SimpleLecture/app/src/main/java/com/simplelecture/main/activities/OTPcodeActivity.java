@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,7 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
     private AlertMessageManagement alertMessageManagement;
     private CoordinatorLayout coordinatorLayout;
     private TextInputLayout input_layout_MobileNo;
+    private String mobile;
 
     @Override
     public void onBackPressed() {
@@ -50,12 +52,18 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otpcode);
 
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle != null){
+            mobile = bundle.getString("mobile");
+        }
+
         snack = new SnackBarManagement(getApplicationContext());
         alertMessageManagement = new AlertMessageManagement(getApplicationContext());
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(false);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         //Changing the action bar color
         getSupportActionBar().setTitle(Util.setActionBarText("OTP Number"));
 
@@ -71,7 +79,9 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
         btn_verify = (Button) findViewById(R.id.btn_verify);
         btn_verify.setOnClickListener(this);
 
-        String mobile = Util.getFromPrefrences(this, "mobile");
+       // String mobile = Util.getFromPrefrences(this, "mobile");
+
+        Log.v("mobile", mobile);
 
         if (!mobile.equals("") && mobile != null) {
             input_MobileNo.setText(mobile.toString());

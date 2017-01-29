@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +40,18 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
     private AlertMessageManagement alertMessageManagement;
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Util.secureScreenShot(ChangePasswordActivity.this);
@@ -51,11 +64,11 @@ public class ChangePasswordActivity extends AppCompatActivity implements View.On
         searchEditText = (EditText) toolbar.findViewById(R.id.searchEditText);
         searchEditText.setVisibility(View.GONE);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(Util.setActionBarText("Change Password"));
 
         //Changing the action bar color
-        getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
+        //getSupportActionBar().setTitle(Util.setActionBarText(getSupportActionBar().getTitle().toString()));
         input_layout_OldPassword = (TextInputLayout) findViewById(R.id.input_layout_OldPassword);
         input_layout_NewPassword = (TextInputLayout) findViewById(R.id.input_layout_NewPassword);
         input_layout_ConfirmPassword = (TextInputLayout) findViewById(R.id.input_layout_ConfirmPassword);

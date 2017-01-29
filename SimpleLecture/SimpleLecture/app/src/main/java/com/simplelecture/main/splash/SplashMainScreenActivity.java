@@ -3,7 +3,6 @@ package com.simplelecture.main.splash;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.simplelecture.main.R;
 import com.simplelecture.main.util.SessionManager;
@@ -13,16 +12,16 @@ import com.simplelecture.main.viewManager.ViewManager;
 
 public class SplashMainScreenActivity extends AppCompatActivity {
 
-    private TextView textViewSplash;
-    private TextView textViewComplexities;
+  //  private TextView textViewSplash;
+  //  private TextView textViewComplexities;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_main_screen);
 
-        textViewSplash = (TextView) findViewById(R.id.textViewSplash);
-        textViewComplexities = (TextView) findViewById(R.id.textViewComplexities);
+       // textViewSplash = (TextView) findViewById(R.id.textViewSplash);
+        //textViewComplexities = (TextView) findViewById(R.id.textViewComplexities);
 
         Thread timer = new Thread() {
             public void run() {

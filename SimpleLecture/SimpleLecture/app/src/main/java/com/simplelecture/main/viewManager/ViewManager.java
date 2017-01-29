@@ -90,8 +90,9 @@ public class ViewManager {
      *
      * @return
      */
-    public Intent gotoOTPcodeView(Activity activity) {
+    public Intent gotoOTPcodeView(Activity activity, String mobileNo) {
         intent = new Intent(activity, OTPcodeActivity.class);
+        intent.putExtra("mobile", mobileNo);
         setDisplay(activity, intent);
         return intent;
     }

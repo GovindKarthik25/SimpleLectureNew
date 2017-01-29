@@ -41,6 +41,7 @@ import com.simplelecture.main.model.FBUser;
 import com.simplelecture.main.model.LoginModel;
 import com.simplelecture.main.model.viewmodel.LoginResponseModel;
 import com.simplelecture.main.model.viewmodel.OutputResponseModel;
+import com.simplelecture.main.util.AlertMessageManagement;
 import com.simplelecture.main.util.ConnectionDetector;
 import com.simplelecture.main.util.SessionManager;
 import com.simplelecture.main.util.SnackBarManagement;
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private SessionManager sessionManager;
     private String param_get_ServiceCallResult = "";
     private OutputResponseModel outputResponseModel;
+    private AlertMessageManagement alertMessageManagement;
 
 
     @Override
@@ -132,6 +134,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mGoogleApiClient = new GoogleApiClient.Builder(this).addApi(Auth.GOOGLE_SIGN_IN_API, gso).build();
 
         snack = new SnackBarManagement(LoginActivity.this);
+        alertMessageManagement = new AlertMessageManagement(getApplicationContext());
+
         sessionManager = SessionManager.getInstance();
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar); // Attaching the layout to the toolbar object
@@ -167,6 +171,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         createAccountTextView.setOnClickListener(this);
         forgotPasswordtextView.setOnClickListener(this);
 
+        // to logout FB if LoginFBStatus is False
+        if (!sessionManager.isLoginFBStatus() && isLoggedIn()) {
+            LoginManager.getInstance().logOut();
+        }
 
         facebooklogin_button.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
@@ -369,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     sessionManager.setLoginStatus(true);
                     if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeSL)) {
                         sessionManager.setLoginSLStatus(true);
-                        sessionManager.setLoginFBStatus(true);
+                        sessionManager.setLoginFBStatus(false);
                         sessionManager.setLoginGmailStatus(false);
                     } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeFB)) {
 
@@ -409,7 +417,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);
 
                     if (loginResponseModelObj.getFailureType().equalsIgnoreCase("1")) {
-                        Toast.makeText(LoginActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                        alertMessageManagement.alertDialogActivation(LoginActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
 
                     } else if (loginResponseModelObj.getFailureType().equalsIgnoreCase("2")) {
 

@@ -153,7 +153,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             new ViewManager().gotoSigninView(this);
         } else if (id == R.id.action_logout) {
             Util.logout(HomeActivity.this);
-
+        } else if (id == R.id.action_changePassword) {
+            new ViewManager().gotoChangePasswordView(this);
         } else if (id == R.id.action_cart) {
             if (sessionManager.isLoginStatus()) {
                 new ViewManager().gotoCartActivity(this);
@@ -172,6 +173,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         MenuItem action_login = menu.findItem(R.id.action_login);
         MenuItem action_logout = menu.findItem(R.id.action_logout);
         MenuItem action_Signin = menu.findItem(R.id.action_Signin);
+        MenuItem action_ChangePassword = menu.findItem(R.id.action_changePassword);
 
         if (sessionManager.isLoginStatus()) {
             action_Signin.setVisible(false);
@@ -182,7 +184,14 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             action_login.setVisible(true);
             action_logout.setVisible(false);
         }
-        return true;
+
+        if(sessionManager.isLoginFBStatus() || sessionManager.isLoginGmailStatus()) {
+            action_ChangePassword.setVisible(false);
+        } else {
+            action_ChangePassword.setVisible(true);
+        }
+
+            return true;
     }
 
 

@@ -5,18 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="10dip"
+    android:background="@color/com_facebook_button_border_color_focused"
     tools:context="com.simplelecture.main.splash.SplashMainScreenActivity">
 
     <ImageView
         android:id="@+id/imageView3"
         android:layout_width="match_parent"
         android:layout_height="100dip"
-        android:layout_above="@+id/textViewSplash"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="50dp"
-        app:srcCompat="@mipmap/app_icon" />
+        app:srcCompat="@drawable/logo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="209dp" />
 
-    <TextView
+    <!--<TextView
         android:id="@+id/textViewSplash"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -36,7 +37,7 @@
         android:layout_centerHorizontal="true"
         android:gravity="right"
         android:text="Complexities Simplified"
-        android:textSize="20dip" />
+        android:textSize="20dip" />-->
 
 </RelativeLayout>
 

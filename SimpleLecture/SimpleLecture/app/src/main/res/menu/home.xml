@@ -34,7 +34,12 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/action_logout"
-        android:orderInCategory="103"
+        android:orderInCategory="104"
         android:title="@string/action_Logout"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_changePassword"
+        android:orderInCategory="103"
+        android:title="@string/action_ChangePassword"
         app:showAsAction="never" />
 </menu>

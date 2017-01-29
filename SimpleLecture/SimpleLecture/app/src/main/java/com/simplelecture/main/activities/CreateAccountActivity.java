@@ -368,7 +368,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             if (outputResponseModel.isSuccess()) {
                 Util.storeToPrefrences(this, "mobile", input_Mobile.getText().toString().trim());
                 Toast.makeText(CreateAccountActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
-                new ViewManager().gotoOTPcodeView(CreateAccountActivity.this);
+                new ViewManager().gotoOTPcodeView(CreateAccountActivity.this, input_Mobile.getText().toString().trim());
             } else {
                 if(isLoggedIn()){
                     LoginManager.getInstance().logOut();
