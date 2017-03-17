@@ -1,13 +1,16 @@
 package com.simplelecture.main.activities;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -84,6 +87,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
     private SignInButton signInButton;
 
     private int RC_SIGN_IN = 100;
+    private String number;
 
 
     @Override
@@ -162,6 +166,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                     public void onCompleted(JSONObject object, GraphResponse graphResponse) {
                         // Get facebook data from login
                         Bundle bFacebookData = getFacebookData(object, fbUser);
+                        Log.v("onSuccess", "onSuccess" + fbUser.getEmail());
 
                         doSendFBDetails(fbUser.getName(), fbUser.getEmail());
 
@@ -190,7 +195,6 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         });
 
     }
-
 
     View.OnClickListener googleClientListenr = new View.OnClickListener() {
         @Override
@@ -228,6 +232,45 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
 
     private void doSendFBDetails(final String displayName, final String email) {
 
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(CreateAccountActivity.this);
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(11) });
+        alert.setTitle("Mobile Number");
+        alert.setCancelable(false);
+        alert.setView(editText);
+
+        alert.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                number = editText.getText().toString();
+                if (!number.isEmpty() && number.length() == 11) {
+                    if (new ConnectionDetector(CreateAccountActivity.this).isConnectingToInternet()) {
+
+                        param_get_ServiceCallResult = Constants.GET_CREATEACCOUNT;
+                        pd = new Util().waitingMessage(CreateAccountActivity.this, "", getResources().getString(R.string.loading));
+
+                        SignInModel signInModel = new SignInModel();
+                        signInModel.setName(displayName);
+                        signInModel.setEmail(email);
+                        signInModel.setMobile(number);
+                        signInModel.setPassword("");
+                        signInModel.setLoginType(Constants.loginTypeFB);
+                        signInModel.setLoginType(Constants.android);
+
+                        ApiService.getApiService().doGetSignIn(CreateAccountActivity.this, signInModel);
+                    } else {
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+                } else {
+                    Toast.makeText(CreateAccountActivity.this, "Enter the valid mobile no", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        alert.show();
+
+/*
         final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_otp);
         dialog.setCancelable(false);
@@ -265,12 +308,50 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        dialog.show();
+        dialog.show();*/
     }
 
     private void doSendGmailDetails(final String displayName, final String email) {
 
-        final Dialog dialog = new Dialog(this);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText editText = new EditText(CreateAccountActivity.this);
+        editText.setInputType(InputType.TYPE_CLASS_PHONE);
+        editText.setFilters(new InputFilter[] { new InputFilter.LengthFilter(11) });
+        alert.setTitle("Mobile Number");
+        alert.setCancelable(false);
+        alert.setView(editText);
+
+        alert.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+               number = editText.getText().toString();
+                if (!number.isEmpty() && number.length() == 11) {
+                    if (new ConnectionDetector(CreateAccountActivity.this).isConnectingToInternet()) {
+
+                        param_get_ServiceCallResult = Constants.GET_CREATEACCOUNT;
+                        pd = new Util().waitingMessage(CreateAccountActivity.this, "", getResources().getString(R.string.loading));
+
+                        SignInModel signInModel = new SignInModel();
+                        signInModel.setName(displayName);
+                        signInModel.setEmail(email);
+                        signInModel.setMobile(number);
+                        signInModel.setPassword("");
+                        signInModel.setLoginType(Constants.loginTypeG);
+                        signInModel.setLoginType(Constants.android);
+
+                        ApiService.getApiService().doGetSignIn(CreateAccountActivity.this, signInModel);
+                    } else {
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+                } else {
+                    Toast.makeText(CreateAccountActivity.this, "Enter valid the mobile no", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        alert.show();
+
+      /*  final Dialog dialog = new Dialog(this);
         dialog.setContentView(R.layout.dialog_otp);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
@@ -307,7 +388,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        dialog.show();
+        dialog.show();*/
     }
 
     /**
@@ -335,6 +416,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             signInModel.setLoginType(Constants.loginTypeSL);
             signInModel.setLoginType(Constants.android);
 
+            number = input_Mobile.getText().toString().trim();
             ApiService.getApiService().doGetSignIn(CreateAccountActivity.this, signInModel);
         } else {
             snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
@@ -368,7 +450,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             if (outputResponseModel.isSuccess()) {
                 Util.storeToPrefrences(this, "mobile", input_Mobile.getText().toString().trim());
                 Toast.makeText(CreateAccountActivity.this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
-                new ViewManager().gotoOTPcodeView(CreateAccountActivity.this, input_Mobile.getText().toString().trim());
+                new ViewManager().gotoOTPcodeView(CreateAccountActivity.this, "CreateAccountPage", number, 0);
             } else {
                 if(isLoggedIn()){
                     LoginManager.getInstance().logOut();

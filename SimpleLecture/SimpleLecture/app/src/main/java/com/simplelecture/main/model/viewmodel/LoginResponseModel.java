@@ -11,18 +11,20 @@ public class LoginResponseModel {
     private boolean isSuccess;
     private String FailureType;
     private int MyCoursesCount;
+    private boolean IsMobileVerified;
 
 
     public LoginResponseModel() {
     }
 
-    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess, String failureType, int myCoursesCount) {
+    public LoginResponseModel(String uId, String uName, String uToken, boolean isSuccess, String failureType, int myCoursesCount, boolean isMobileVerified) {
         this.uId = uId;
         this.uName = uName;
         this.uToken = uToken;
         this.isSuccess = isSuccess;
         FailureType = failureType;
         MyCoursesCount = myCoursesCount;
+        IsMobileVerified = isMobileVerified;
     }
 
     public String getuId() {
@@ -73,6 +75,14 @@ public class LoginResponseModel {
         MyCoursesCount = myCoursesCount;
     }
 
+    public boolean isMobileVerified() {
+        return IsMobileVerified;
+    }
+
+    public void setMobileVerified(boolean mobileVerified) {
+        IsMobileVerified = mobileVerified;
+    }
+
     @Override
     public String toString() {
         return "LoginResponseModel{" +
@@ -82,6 +92,7 @@ public class LoginResponseModel {
                 ", isSuccess=" + isSuccess +
                 ", FailureType='" + FailureType + '\'' +
                 ", MyCoursesCount=" + MyCoursesCount +
+                ", IsMobileVerified=" + IsMobileVerified +
                 '}';
     }
 }

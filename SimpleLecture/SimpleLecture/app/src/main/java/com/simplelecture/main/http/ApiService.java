@@ -424,12 +424,12 @@ public class ApiService {
         }
     }
 
-    public void doGetDashboardExercise(Context mContext, Fragment fragmentContext) {
+    public void doGetDashboardExercise(Context mContext, Fragment fragmentContext, String courseId) {
 
         try {
             String userId = Util.getFromPrefrences(mContext, "uId");
 
-            DashboardExerciseTransaction dashboardExerciseTransaction = new DashboardExerciseTransaction(null, mContext, userId);
+            DashboardExerciseTransaction dashboardExerciseTransaction = new DashboardExerciseTransaction(null, mContext, userId, courseId);
             TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(dashboardExerciseTransaction);
         } catch (Exception e) {
@@ -450,12 +450,12 @@ public class ApiService {
         }
     }
 
-    public void doGetDashboardUSER_Quiz_Courses(Context mContext, Fragment fragmentContext) {
+    public void doGetDashboardUSER_Quiz_Courses(Context mContext, Fragment fragmentContext,String courseID) {
 
         try {
             String userId = Util.getFromPrefrences(mContext, "uId");
 
-            DashboardUserQuizCoursesTransaction dashboardUserQuizCoursesTransaction = new DashboardUserQuizCoursesTransaction(null, mContext, userId);
+            DashboardUserQuizCoursesTransaction dashboardUserQuizCoursesTransaction = new DashboardUserQuizCoursesTransaction(null, mContext, userId, courseID);
             TransactionProcessor transactionProcessor = new TransactionProcessor(fragmentContext);
             transactionProcessor.execute(dashboardUserQuizCoursesTransaction);
         } catch (Exception e) {

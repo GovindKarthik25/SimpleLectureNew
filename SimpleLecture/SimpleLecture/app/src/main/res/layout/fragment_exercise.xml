@@ -6,11 +6,11 @@
 
     <ExpandableListView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/exercise_expandableListView"
         android:divider="@color/listTextColor"
         android:dividerHeight="1dp"
-        android:layout_gravity="left|center_vertical" />
+        android:layout_gravity="top|center_vertical" />
 
     <include
         android:id="@+id/coordinatorLayout"

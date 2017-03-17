@@ -143,6 +143,8 @@ public class CheckyourAnswerActivity extends AppCompatActivity implements Networ
 
                     checkYourAnswerAdapter = new CheckYourAnswerAdapter(CheckyourAnswerActivity.this, checkYourAnswerResponseModelList);
                     recyclerView_CheckYourAnswer.setAdapter(checkYourAnswerAdapter);
+                } else {
+                    alertMessageManagement.alertDialogActivation(CheckyourAnswerActivity.this, 1, "Alert!", outputResponseModel.getMessage(), "OK", "");
                 }
             }
         } catch (Exception e) {

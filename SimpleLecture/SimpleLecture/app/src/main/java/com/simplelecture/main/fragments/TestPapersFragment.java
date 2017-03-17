@@ -54,7 +54,7 @@ public class TestPapersFragment extends Fragment implements NetworkLayer {
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mParam1 = "0";
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -67,6 +67,7 @@ public class TestPapersFragment extends Fragment implements NetworkLayer {
     private CoordinatorLayout coordinatorLayout;
     private TestPapersAdapter testPapersAdapter;
     private List<myCourses> myCoursesList;
+    private String courseID = "0";
 
     /**
      * Use this factory method to create a new instance of
@@ -142,11 +143,13 @@ public class TestPapersFragment extends Fragment implements NetworkLayer {
 
     private void loadGetDashboardTestPaper() {
         try {
+            Log.i("mParam1--->", mParam1);
+            courseID = mParam1;
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                 param_get_ServiceCallResult = Constants.GET_USER_QUIZ_COURSES;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
 
-                ApiService.getApiService().doGetDashboardUSER_Quiz_Courses(getActivity(), TestPapersFragment.this);
+                ApiService.getApiService().doGetDashboardUSER_Quiz_Courses(getActivity(), TestPapersFragment.this, courseID);
             } else {
                 alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
             }

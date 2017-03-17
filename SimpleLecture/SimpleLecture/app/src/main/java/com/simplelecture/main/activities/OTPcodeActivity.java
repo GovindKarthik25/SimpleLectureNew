@@ -41,6 +41,8 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
     private CoordinatorLayout coordinatorLayout;
     private TextInputLayout input_layout_MobileNo;
     private String mobile;
+    private String page;
+    private int myCoursesCount;
 
     @Override
     public void onBackPressed() {
@@ -56,6 +58,9 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
 
         if(bundle != null){
             mobile = bundle.getString("mobile");
+            page = bundle.getString("page");
+            myCoursesCount = bundle.getInt("count");
+            Log.i("mobile", mobile);
         }
 
         snack = new SnackBarManagement(getApplicationContext());
@@ -94,7 +99,7 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
 
         if (v == btn_verify) {
-            if (!Validator.validateName(this, input_OTPcode, input_layout_otpCode, getString(R.string.err_msg_Promocode))) {
+            if (!Validator.validateName(this, input_OTPcode, input_layout_otpCode, "Enter the OTPCode")) {
                 return;
             }
 
@@ -138,7 +143,7 @@ public class OTPcodeActivity extends AppCompatActivity implements View.OnClickLi
                 OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
 
                 if (outputResponseModel.isSuccess()) {
-
+                    finish();
                     Toast.makeText(this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
                     new ViewManager().gotoLoginView(this);
                 } else {

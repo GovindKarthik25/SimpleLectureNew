@@ -60,7 +60,7 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mParam1 = "0";
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -76,6 +76,7 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
     private List<ForumGetModel> forumGetModelLst;
     private ArrayList<ForumCourseModel> forumCourseModelLst = new ArrayList<ForumCourseModel>();
     private SpinnerCustomAdapter spinnerForumAdapter;
+    private int currentItem = 0;
 
     /**
      * Use this factory method to create a new instance of
@@ -132,6 +133,9 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
         super.onActivityCreated(savedInstanceState);
 
         try {
+
+           // Log.i("mParam1", mParam1);
+
             loadGetForumCourse();
 
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
@@ -223,6 +227,7 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
             if (pd.isShowing()) {
                 pd.cancel();
             }
+
             Gson gson = new Gson();
             JsonArray jArray;
             JsonParser parser = new JsonParser();
@@ -235,6 +240,7 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
             if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_USER_FORUMGET)) {
 
                 if (outputResponseModel.isSuccess()) {
+
                     JSONObject jSONObject1 = new JSONObject(response);
                     String dataContent = jSONObject1.getString("data");
 
@@ -253,7 +259,6 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
                     forumListAdapter = new ForumListAdapter(getActivity(), forumGetModelLst);
                     recyclerView_Forum.setAdapter(forumListAdapter);
                     forumListAdapter.notifyDataSetChanged();
-
 
                     forumListAdapter.setOnItemClickListener(onItemClickListener);
 
@@ -310,12 +315,21 @@ public class ForumFragment extends Fragment implements NetworkLayer, AdapterView
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         try {
-            String item = forumCourseModelLst.get(position).getId();
+            String courseID = "0";
 
-            Log.i("item--", item);
+            if(currentItem == position){
+                //return; //do nothing
+                courseID = mParam1;
+            }
+            else
+            {
+                String item = forumCourseModelLst.get(position).getId();
+                courseID = item;
+            }
+            Log.i("courseID--", courseID);
 
-
-            loadGetForumGet(item);
+            loadGetForumGet(courseID);
+            currentItem = position;
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,13 +1,17 @@
 package com.simplelecture.main.activities;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -89,6 +93,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String param_get_ServiceCallResult = "";
     private OutputResponseModel outputResponseModel;
     private AlertMessageManagement alertMessageManagement;
+    private String number;
+    private int myCoursesCount;
 
 
     @Override
@@ -369,43 +375,53 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             if (pd.isShowing()) {
                 pd.cancel();
             }
+            Gson gson = new Gson();
             if (param_get_ServiceCallResult.equals(Constants.GET_LOGIN)) {
-                Gson gson = new Gson();
+
                 JSONObject jSONObject = new JSONObject(response);
                 outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
                 if (outputResponseModel.isSuccess()) {
-                    sessionManager.setLoginStatus(true);
-                    if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeSL)) {
-                        sessionManager.setLoginSLStatus(true);
-                        sessionManager.setLoginFBStatus(false);
-                        sessionManager.setLoginGmailStatus(false);
-                    } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeFB)) {
-
-                        sessionManager.setLoginFBStatus(true);
-                        sessionManager.setLoginGmailStatus(false);
-                        sessionManager.setLoginSLStatus(false);
-                    } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeG)) {
-
-                        sessionManager.setLoginFBStatus(false);
-                        sessionManager.setLoginGmailStatus(true);
-                        sessionManager.setLoginSLStatus(false);
-                    }
-
                     String dataResponse = jSONObject.getString("data");
-
                     LoginResponseModel loginResponseModelObj = gson.fromJson(dataResponse, LoginResponseModel.class);
-                    loginResponseModelObj.setSuccess(outputResponseModel.isSuccess());
+                    myCoursesCount = loginResponseModelObj.getMyCoursesCount();
 
-                    Util.storeToPrefrences(LoginActivity.this, "email", loginModel.getUe());
                     Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
-                    Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
 
-                    if(loginResponseModelObj.getMyCoursesCount() == 0){
-                        new ViewManager().gotoHomeView(this);
+                    if (!loginResponseModelObj.isMobileVerified()) {
+                        doOtpDetails();
                     } else {
-                        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
-                        intent.putExtra("isDashboard",true);
-                        startActivity(intent);
+
+                        sessionManager.setLoginStatus(true);
+                        if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeSL)) {
+                            sessionManager.setLoginSLStatus(true);
+                            sessionManager.setLoginFBStatus(false);
+                            sessionManager.setLoginGmailStatus(false);
+                        } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeFB)) {
+
+                            sessionManager.setLoginFBStatus(true);
+                            sessionManager.setLoginGmailStatus(false);
+                            sessionManager.setLoginSLStatus(false);
+                        } else if (loginModel.getLoginType().equalsIgnoreCase(Constants.loginTypeG)) {
+
+                            sessionManager.setLoginFBStatus(false);
+                            sessionManager.setLoginGmailStatus(true);
+                            sessionManager.setLoginSLStatus(false);
+                        }
+
+
+                        loginResponseModelObj.setSuccess(outputResponseModel.isSuccess());
+
+                        Util.storeToPrefrences(LoginActivity.this, "email", loginModel.getUe());
+                        Util.storeToPrefrences(LoginActivity.this, "uId", loginResponseModelObj.getuId());
+                        Util.storeToPrefrences(LoginActivity.this, "uToken", loginResponseModelObj.getuToken());
+
+                        if (loginResponseModelObj.getMyCoursesCount() == 0) {
+                            new ViewManager().gotoHomeView(this);
+                        } else {
+                            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                            intent.putExtra("isDashboard", true);
+                            startActivity(intent);
+                        }
                     }
                 } else {
                     if (sessionManager.isLoginFBStatus() && isLoggedIn()) {
@@ -426,6 +442,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         new ViewManager().gotoSigninView(this);
                     }
 
+                }
+            } else if (param_get_ServiceCallResult.equals(Constants.GET_USER_RESENDOTP)) {
+                OutputResponseModel outputResponseModel = gson.fromJson(response, OutputResponseModel.class);
+
+                if (outputResponseModel.isSuccess()) {
+                    Toast.makeText(this, outputResponseModel.getMessage(), Toast.LENGTH_SHORT).show();
+                    new ViewManager().gotoOTPcodeView(LoginActivity.this, "LoginActivity", number.toString().trim(), myCoursesCount);
+                } else {
+                    snack.snackBarNotification(coordinatorLayout, 1, outputResponseModel.getMessage(), getResources().getString(R.string.dismiss));
                 }
             } else {
                 param_get_ServiceCallResult = "";
@@ -507,6 +532,39 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public boolean isLoggedIn() {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         return accessToken != null;
+    }
+
+
+    private void doOtpDetails() {
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        final EditText edittext = new EditText(LoginActivity.this);
+        edittext.setInputType(InputType.TYPE_CLASS_PHONE);
+        edittext.setFilters(new InputFilter[] { new InputFilter.LengthFilter(11) });
+        alert.setTitle("Mobile Number");
+        alert.setCancelable(false);
+        alert.setView(edittext);
+
+        alert.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+
+                number = edittext.getText().toString().trim();
+                if (!number.isEmpty() && number.length() == 11) {
+                    if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
+                        param_get_ServiceCallResult = Constants.GET_USER_RESENDOTP;
+                        pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));
+                        ApiService.getApiService().doGetResendOTP(LoginActivity.this, number);
+                    } else {
+                        doOtpDetails();
+                        snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
+                    }
+                } else {
+                    doOtpDetails();
+                    Toast.makeText(LoginActivity.this, "Enter vaild mobile no", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        alert.show();
     }
 
 

@@ -16,11 +16,13 @@ import java.net.URI;
 
 public class DashboardUserQuizCoursesTransaction extends GetTransaction {
 
+    private final String courseId;
     private String userID;
 
-    public DashboardUserQuizCoursesTransaction(JSONObject jsonObject, Context context, String userId) {
+    public DashboardUserQuizCoursesTransaction(JSONObject jsonObject, Context context, String userId, String courseID) {
         super(jsonObject, context);
         userID = userId;
+        courseId = courseID;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class DashboardUserQuizCoursesTransaction extends GetTransaction {
 
     @Override
     protected String getUrlPrefix() {
-        return Constants.GET_USER_QUIZ_COURSES + userID;
+        return Constants.GET_USER_QUIZ_COURSES + userID + "/" +courseId;
     }
 }
 

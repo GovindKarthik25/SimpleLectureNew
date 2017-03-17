@@ -72,7 +72,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
     private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
+    private String mParam1 = "0";
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
@@ -86,6 +86,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
     private CoordinatorLayout coordinatorLayout;
     private CourseDetailsResponseModel courseDetailsResponseModel;
     private String cID = "";
+    private String courseId = "0";
 
     /**
      * Use this factory method to create a new instance of
@@ -193,11 +194,14 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
 
     private void loadGetDashboardExercise() {
         try {
+
+            Log.i("loadGetDashbose", mParam1);
+            courseId = mParam1;
             if (new ConnectionDetector(getActivity()).isConnectingToInternet()) {
                 param_get_ServiceCallResult = Constants.GET_USER_MYEXERCISES;
                 pd = new Util().waitingMessage(getActivity(), "", getResources().getString(R.string.loading));
 
-                ApiService.getApiService().doGetDashboardExercise(getActivity(), ExerciseFragment.this);
+                ApiService.getApiService().doGetDashboardExercise(getActivity(), ExerciseFragment.this, courseId);
             } else {
                 alertMessageManagement.alertDialogActivation(getActivity(), 1, "Alert!", getResources().getString(R.string.noInternetConnection), "OK", "");
             }
@@ -355,6 +359,7 @@ public class ExerciseFragment extends Fragment implements NetworkLayer, OnImageC
                     transactionProcessor.execute(fileDownloadTransaction);
 
                     Log.i("filePath--->", filePath);
+                    Toast.makeText(getActivity(), "File Downloaded.", Toast.LENGTH_SHORT).show();
 
                 }
             } else if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_COURSEDETAILS)) {

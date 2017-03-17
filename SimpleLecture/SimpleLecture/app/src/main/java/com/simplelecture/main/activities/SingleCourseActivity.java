@@ -320,9 +320,9 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
         if(courseDetailsResponseModelObj.getPage() == 1){
             adapter.addFrag(new CourseIndexFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseIndex));
             //adapter.addFrag(new MyCoursesFragment(), getResources().getString(R.string.my_courses));
-            adapter.addFrag(new TestPapersFragment(), getResources().getString(R.string.test_papers));
-            adapter.addFrag(new ExerciseFragment(), getResources().getString(R.string.excercise));
-            adapter.addFrag(new ForumFragment(), getResources().getString(R.string.forum));
+            adapter.addFrag(new TestPapersFragment().newInstance(courseDetailsResponseModelObj.getcId(), ""), getResources().getString(R.string.test_papers));
+            adapter.addFrag(new ExerciseFragment().newInstance(courseDetailsResponseModelObj.getcId(), ""), getResources().getString(R.string.excercise));
+            adapter.addFrag(new ForumFragment().newInstance(courseDetailsResponseModelObj.getcId(), ""), getResources().getString(R.string.forum));
         } else {
             adapter.addFrag(new CourseFeatureFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseFeature));
             adapter.addFrag(new CourseDescriptionFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.courseDescription));
@@ -331,7 +331,6 @@ public class SingleCourseActivity extends AppCompatActivity implements OnFragmen
             adapter.addFrag(new FAQFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.fAQ));
             adapter.addFrag(new ReviewFragment().newInstance(courseDetailsResponseModelObj), getResources().getString(R.string.review));
         }
-
 
         viewPager.setAdapter(adapter);
     }
