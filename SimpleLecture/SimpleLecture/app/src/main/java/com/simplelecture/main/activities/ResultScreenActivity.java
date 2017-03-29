@@ -82,7 +82,10 @@ public class ResultScreenActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         if (v == button_startAgain) {
             finish();
-            new ViewManager().gotoDashboardViewPage(ResultScreenActivity.this, 2, 2345);
+            Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+            intent.putExtra("isDashboard",true);
+            startActivity(intent);
+           // new ViewManager().gotoDashboardViewPage(ResultScreenActivity.this, 2, 2345);
         } else if (v == button_CheckyourAnswer) {
             Log.i("testidResult", dashboardQuizResultObj.getTestId());
             new ViewManager().gotoCheckYourAnswer(ResultScreenActivity.this, dashboardQuizResultObj.getTestId());

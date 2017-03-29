@@ -21,7 +21,7 @@
 
     <RelativeLayout
         android:id="@+id/linearLayout1"
-        android:layout_width="200dip"
+        android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="10dp"
         android:layout_toEndOf="@+id/linearLayout2">

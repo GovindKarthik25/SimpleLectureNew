@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +58,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        Log.i(" sessionManager", String.valueOf(sessionManager.isLoginStatus()));
         sessionManager = SessionManager.getInstance();
         String email = Util.getFromPrefrences(getApplicationContext(), "email");
         alertMessageManagement = new AlertMessageManagement(HomeActivity.this, new AlertDialogClick());
@@ -104,6 +106,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         displayView(0);
 
         if(getIntent().getBooleanExtra("isDashboard",false)){
+            Log.i("isLoginStatus()", String.valueOf(sessionManager.isLoginStatus()));
             navigationView.getMenu().getItem(3).setChecked(true);
             displayView(3);
         }

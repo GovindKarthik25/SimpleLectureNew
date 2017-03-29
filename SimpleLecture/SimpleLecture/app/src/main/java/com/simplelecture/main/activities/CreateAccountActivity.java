@@ -167,6 +167,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         // Get facebook data from login
                         Bundle bFacebookData = getFacebookData(object, fbUser);
                         Log.v("onSuccess", "onSuccess" + fbUser.getEmail());
+                        Toast.makeText(CreateAccountActivity.this, "Facebook Login :" + fbUser.getEmail(), Toast.LENGTH_SHORT).show();
 
                         doSendFBDetails(fbUser.getName(), fbUser.getEmail());
 
@@ -219,7 +220,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             pd.cancel();
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
-
+            Toast.makeText(CreateAccountActivity.this, "Gmail Login :" + acct.getEmail(), Toast.LENGTH_SHORT).show();
 
             doSendGmailDetails(acct.getDisplayName(), acct.getEmail());
 
@@ -244,7 +245,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 number = editText.getText().toString();
-                if (!number.isEmpty() && number.length() == 11) {
+                if (!number.isEmpty() && number.length() == 10) {
                     if (new ConnectionDetector(CreateAccountActivity.this).isConnectingToInternet()) {
 
                         param_get_ServiceCallResult = Constants.GET_CREATEACCOUNT;
@@ -263,6 +264,9 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
                         snack.snackBarNotification(coordinatorLayout, 1, getResources().getString(R.string.noInternetConnection), getResources().getString(R.string.dismiss));
                     }
                 } else {
+                    if(isLoggedIn()){
+                        LoginManager.getInstance().logOut();
+                    }
                     Toast.makeText(CreateAccountActivity.this, "Enter the valid mobile no", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -324,7 +328,7 @@ public class CreateAccountActivity extends AppCompatActivity implements View.OnC
         alert.setPositiveButton("Verify", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                number = editText.getText().toString();
-                if (!number.isEmpty() && number.length() == 11) {
+                if (!number.isEmpty() && number.length() == 10) {
                     if (new ConnectionDetector(CreateAccountActivity.this).isConnectingToInternet()) {
 
                         param_get_ServiceCallResult = Constants.GET_CREATEACCOUNT;

@@ -195,6 +195,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Bundle bFacebookData = getFacebookData(object, fbUser);
 
                         Log.i("LoginActivity 1", fbUser.toString());
+                        Toast.makeText(LoginActivity.this, "Facebook Login :" + fbUser.getEmail(), Toast.LENGTH_SHORT).show();
 
                         doFBLogin(fbUser.getEmail());
 
@@ -335,10 +336,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void handleSignInResult(GoogleSignInResult result) {
         //If the login succeed
+        Log.d("handleSignInResult", "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
             pd.cancel();
             //Getting google account
             GoogleSignInAccount acct = result.getSignInAccount();
+            Toast.makeText(LoginActivity.this, "Gmail Login :" + acct.getEmail(), Toast.LENGTH_SHORT).show();
 
             doGmailLogin(acct.getEmail());
 
@@ -548,7 +551,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(DialogInterface dialog, int whichButton) {
 
                 number = edittext.getText().toString().trim();
-                if (!number.isEmpty() && number.length() == 11) {
+                if (!number.isEmpty() && number.length() == 10) {
                     if (new ConnectionDetector(LoginActivity.this).isConnectingToInternet()) {
                         param_get_ServiceCallResult = Constants.GET_USER_RESENDOTP;
                         pd = new Util().waitingMessage(LoginActivity.this, "", getResources().getString(R.string.loading));

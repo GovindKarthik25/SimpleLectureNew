@@ -84,6 +84,7 @@ public class DasboardExerciseListAdapter extends BaseExpandableListAdapter {
                 groupholder.text_ChapterName = (TextView) convertView.findViewById(R.id.text_ChapterName);
                 groupholder.text_DownloadCount = (TextView) convertView.findViewById(R.id.text_DownloadCount);
                 groupholder.viewCourse_button = (Button) convertView.findViewById(R.id.viewCourse_button);
+                groupholder.viewCourse_button.setVisibility(View.GONE);
 
                 convertView.setTag(groupholder);
             } else {

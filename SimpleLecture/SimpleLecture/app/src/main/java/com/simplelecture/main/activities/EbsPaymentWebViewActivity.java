@@ -15,7 +15,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -39,7 +38,7 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
     private WebView webView;
     private ProgressDialog pd;
     private PlaceOrderResponseModel placeOrderResponseModel;
-    private TextView textView_progress;
+    //private TextView textView_progress;
     private String param_get_ServiceCallResult = "";
     private SnackBarManagement snack;
     private AlertMessageManagement alertMessageManagement;
@@ -85,8 +84,8 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
 
         webView = (WebView) findViewById(R.id.webView_EBSPayment);
         buttonDashboard = (Button) findViewById(R.id.buttonDashboard);
-        textView_progress = (TextView) findViewById(R.id.textView_progress);
-        textView_progress.setVisibility(View.GONE);
+        //textView_progress = (TextView) findViewById(R.id.textView_progress);
+        //textView_progress.setVisibility(View.GONE);
         pd = new ProgressDialog(this);
 
         webView.getSettings().setLoadsImagesAutomatically(true);
@@ -198,7 +197,7 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
                 if (param_get_ServiceCallResult.equalsIgnoreCase(Constants.GET_ORDER_CHECKORDERSTATUS)) {
                     checkOrderStatusResponseModel = gson.fromJson(dataContent, CheckOrderStatusResponseModel.class);
 
-                    textView_progress.setVisibility(View.VISIBLE);
+                   // textView_progress.setVisibility(View.VISIBLE);
 
                     String orderStatus = "Payment Status: " + "<font color='black'><b>" + checkOrderStatusResponseModel.getOrderStatus() + "</b></font>"+ ". ";
 
@@ -209,7 +208,7 @@ public class EbsPaymentWebViewActivity extends AppCompatActivity implements Netw
                         result = Html.fromHtml(orderStatus);
                     }
                     Log.i("orderStatus", response);
-                    textView_progress.setText(result);
+                   // textView_progress.setText(result);
                     String orderStatusDialog = result + " To continue payment click 'Cancel' or to Cancel payment Click 'Dashboard'. ";
 
                     if(buttonclick) {
